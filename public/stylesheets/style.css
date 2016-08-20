@@ -7,7 +7,7 @@ body {
 }
 
 a {
-  color: #01579B;
+  color: #2F5032;
   font-weight: 600;
 }
 
@@ -16,6 +16,7 @@ a {
 nav {
   border-radius: 10px;
   font-weight: 700;
+  background-color: #2F5032;
 }
 
 .splashColor {
@@ -23,7 +24,7 @@ nav {
 }
 
 .other-color {
-  background-color: #01579B
+  background-color: #2F5032
 }
 
 .brand-logo {
@@ -62,7 +63,7 @@ nav {
 }
 
 .splash-lead {
-  color: #01579B;
+  color: #2F5032;
   font-weight: 800;
   margin-bottom: 5px;
 }
@@ -75,7 +76,7 @@ subLead {
 
 .intro-icons {
   font-size: 100px;
-  color: #01579B;
+  color: #2F5032;
 }
 
 .gameDesc {
@@ -92,7 +93,7 @@ subLead {
 
 .homeLink:hover {
   font-size: 40px;
-  color: #01579B
+  color: #2F5032
 }
 
 /*END SPLASH STYLES*/
@@ -121,7 +122,7 @@ regBox {
 }
 
 loginTitle {
-  color: #01579B;
+  color: #2F5032;
   font-size: 36px;
   font-weight: 700;
 }
@@ -159,7 +160,7 @@ regLink {
 }
 
 regLink a {
-  color: #01579B
+  color: #2F5032
 }
 
 regBox form label {
@@ -172,45 +173,45 @@ regBox form label {
 
 /* label focus color */
 .input-field input[type=text]:focus + label {
-  color: #01579B;
+  color: #2F5032;
 }
 /* label underline focus color */
 .input-field input[type=text]:focus {
-  border-bottom: 1px solid #01579B;
-  box-shadow: 0 1px 0 0 #01579B;
+  border-bottom: 1px solid #2F5032;
+  box-shadow: 0 1px 0 0 #2F5032;
 }
 
 /* label focus color */
 .input-field input[type=email]:focus + label {
-  color: #01579B;
+  color: #2F5032;
 }
 /* label underline focus color */
 .input-field input[type=email]:focus {
-  border-bottom: 1px solid #01579B;
-  box-shadow: 0 1px 0 0 #01579B;
+  border-bottom: 1px solid #2F5032;
+  box-shadow: 0 1px 0 0 #2F5032;
 }
 
 /* label focus color */
 .input-field input[type=password]:focus + label {
-  color: #01579B;
+  color: #2F5032;
 }
 /* label underline focus color */
 .input-field input[type=password]:focus {
-  border-bottom: 1px solid #01579B;
-  box-shadow: 0 1px 0 0 #01579B;
+  border-bottom: 1px solid #2F5032;
+  box-shadow: 0 1px 0 0 #2F5032;
 }
 
 /* icon prefix focus color */
 .input-field .prefix.active {
-  color: #01579B;
+  color: #2F5032;
 }
 
 /* Change Autocomplete styles in Chrome*/
 .input-field input:-webkit-autofill,
 .input-field input:-webkit-autofill:focus {
-  border-bottom: 1px solid #01579B;
-  box-shadow: 0 1px 0 0 #01579B;
-  color: #01579B;
+  border-bottom: 1px solid #2F5032;
+  box-shadow: 0 1px 0 0 #2F5032;
+  color: #2F5032;
 }
 
 .with-gap {
@@ -220,18 +221,18 @@ regBox form label {
 .login-button {
   margin-top: 10px;
   background-color: #D4D6D6;
-  color: #01579B;
+  color: #2F5032;
   font-weight: 800;
   border-radius: 10px;
 }
 
 .login-button:hover {
-  background-color: #01579B;
+  background-color: #2F5032;
   color: white;
 }
 
 .login-button:focus {
-  background-color: #01579B;
+  background-color: #2F5032;
   color: white;
 }
 
@@ -244,7 +245,7 @@ buyInLevel span {
 }
 
 .buy-in-label {
-  color: #01579B;
+  color: #2F5032;
   font-style: italic;
   font-weight: 600;
   margin-left: -30px;
@@ -318,7 +319,7 @@ section > div {
 .btb {
   font-weight: 800;
   font-size: 20px;
-  color: #01579B;
+  color: #2F5032;
 }
 
 .ps {
@@ -372,7 +373,7 @@ section > div {
 .pickHead {
   font-size: 32px;
   font-weight: 800;
-  color: #01579B;
+  color: #2F5032;
 }
 
 pickleadDiv {
@@ -536,7 +537,7 @@ leadDiv {
   font-size: 32px;
   font-weight: 800;
   margin-top: 30px;
-  color: #01579B;
+  color: #2F5032;
 }
 
 .result-head {
@@ -560,7 +561,7 @@ standings th, standings td {
 
 .ytd-header {
   font-size: 22px;
-  color: #01579B;
+  color: #2F5032;
 }
 
 .day-header {
@@ -676,7 +677,7 @@ userDiv {
 .username {
   font-size: 48px;
   font-weight: 800;
-  color: #01579B;
+  color: #2F5032;
 }
 
 .realname {
@@ -687,7 +688,7 @@ userDiv {
 
 .user-baseball {
   font-size: 100px;
-  color: #01579B;
+  color: #2F5032;
   margin-left: -30px;
 }
 
