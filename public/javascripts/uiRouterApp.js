@@ -91,7 +91,7 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
       }
     })
     .state('home.results', {
-      url: 'results',
+      url: 'weeklyresults',
       views: {
         'content@': {
           templateUrl: 'views/results.html',
