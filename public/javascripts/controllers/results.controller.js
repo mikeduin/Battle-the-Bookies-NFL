@@ -8,8 +8,8 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.dateNumbFilter;
   vm.weekNumbFilter;
   vm.weeksOfGames = [];
-  vm.mlbLines = [];
-  vm.getMlbLines = getMlbLines;
+  vm.nflLines = [];
+  vm.getNflLines = getNflLines;
   vm.updatePicks = updatePicks;
   vm.gameSort = "MatchTime";
   vm.gameSortTwo = "EventID";
@@ -124,11 +124,11 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   }
 
-  function getMlbLines (){
+  function getNflLines (){
     vm.showSpinner = true;
-    oddsService.getMlbLines().then(function(games){
+    oddsService.getNflLines().then(function(games){
       console.log(games);
-      vm.mlbLines = games;
+      vm.nflLines = games;
     })
   }
 

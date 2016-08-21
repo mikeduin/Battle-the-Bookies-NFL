@@ -1,4 +1,4 @@
-<resultsHead class="row" ng-init="vm.getMlbLines(); vm.getDates(); vm.getAllUsers()">
+<resultsHead class="row" ng-init="vm.getNflLines(); vm.getDates(); vm.getAllUsers()">
   <leadDiv class="col m12 result-head z-depth-1">
     <div class="col m3 left-align">
       <p class="resHead"> Daily Results </p>
@@ -26,7 +26,7 @@
         <th></th>
         <th class="center-align"></th>
         <th class="center-align"></th>
-        <th ng-repeat="game in vm.mlbLines | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: { Week: vm.gameWeekFilter }"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
+        <th ng-repeat="game in vm.nflLines | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: { Week: vm.gameWeekFilter }"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
       </tr> -->
       <tr>
         <th>
@@ -38,7 +38,7 @@
         <th class="left-align">
           Weekly $
         </th>
-        <th ng-repeat="game in vm.mlbLines | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: { Week: vm.gameWeekFilter }" ng-if="vm.checkTime(game.MatchTime) === true"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
+        <th ng-repeat="game in vm.nflLines | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: { Week: vm.gameWeekFilter }" ng-if="vm.checkTime(game.MatchTime) === true"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
       </tr>
     </thead>
     <tbody>

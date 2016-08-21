@@ -9,7 +9,7 @@ function resultsService ($http){
         console.log("results updated")
       })
     },
-    getMlbResults: function() {
+    getNflResults: function() {
       return $http.get('/results').then(function(results){
         console.log(results.data);
         return results.data

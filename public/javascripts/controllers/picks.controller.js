@@ -8,8 +8,8 @@ function PickController (oddsService, picksService, resultsService, authService)
   vm.currentTime = moment().format('MMMM Do YYYY, h:mm:ss a');
   vm.gameWeekFilter;
   vm.pick = {};
-  vm.mlbLines = [];
-  vm.mlbResults = [];
+  vm.nflLines = [];
+  vm.nflResults = [];
   vm.weeksOfGames = [];
   vm.pick.activeGame = {};
   vm.pick.activePick = {};
@@ -18,8 +18,8 @@ function PickController (oddsService, picksService, resultsService, authService)
   vm.pick.favType = {};
   vm.pick.username = vm.currentUser();
   vm.sortOrder = "MatchTime";
-  vm.getMlbLines = getMlbLines;
-  vm.getMlbResults = getMlbResults;
+  vm.getNflLines = getNflLines;
+  vm.getNflResults = getNflResults;
   vm.getDates = getDates;
   vm.getResult = getResult;
   vm.updateOdds = updateOdds;
@@ -47,15 +47,15 @@ function PickController (oddsService, picksService, resultsService, authService)
     return authService.currentUser();
   }
 
-  function getMlbLines() {
-    oddsService.getMlbLines().then(function(lines){
-      vm.mlbLines = lines;
+  function getNflLines() {
+    oddsService.getNflLines().then(function(lines){
+      vm.nflLines = lines;
     })
   };
 
-  function getMlbResults() {
-    resultsService.getMlbResults().then(function(results){
-      vm.mlbResults = results;
+  function getNflResults() {
+    resultsService.getNflResults().then(function(results){
+      vm.nflResults = results;
     })
   }
 

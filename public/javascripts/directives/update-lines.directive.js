@@ -9,7 +9,7 @@ function updateLines ($interval) {
 
     function refreshLines () {
       controller.updateOdds();
-      controller.getMlbLines();
+      controller.getNflLines();
     };
 
     scope.$watch(attrs.updateLines, function() {

@@ -226,7 +226,11 @@ router.get('/updateOdds', function(req, res, next) {
 // BEGIN LINE ROUTES
 
 router.get('/lines', function(req, res, next){
-  Line.find(function(err, games) {
+  Line.find({
+    Week: {
+      $nin: ["Preseason", "Postseason"]
+    }
+  }, function(err, games) {
     if (err) { next(err) };
 
     res.json(games);
@@ -360,7 +364,11 @@ setInterval(function(){
 
   }).then(function(users){
     users.forEach(function(user){
-      Line.find(function(err, lines){
+      Line.find({
+        Week: {
+          $nin: ["Preseason", "Postseason"]
+        }
+      }, function(err, lines){
         if (err) {console.log(err)}
 
       }).then(function(lines){
