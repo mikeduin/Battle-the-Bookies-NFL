@@ -6,11 +6,11 @@ function PickController (oddsService, picksService, resultsService, authService)
   var vm = this;
   vm.currentUser = currentUser;
   vm.currentTime = moment().format('MMMM Do YYYY, h:mm:ss a');
-  vm.gameDayFilter;
+  vm.gameWeekFilter;
   vm.pick = {};
   vm.mlbLines = [];
   vm.mlbResults = [];
-  vm.daysOfGames = [];
+  vm.weeksOfGames = [];
   vm.pick.activeGame = {};
   vm.pick.activePick = {};
   vm.pick.activeLine = {};
@@ -61,11 +61,11 @@ function PickController (oddsService, picksService, resultsService, authService)
 
   function getDates () {
     oddsService.getDates().then(function(dates){
-      vm.daysOfGames = dates;
-      var dateArray = vm.daysOfGames;
-      var lastDay = dateArray[dateArray.length - 1];
-      var currentDay = moment().format('MMMM Do, YYYY');
-      vm.gameDayFilter = currentDay;
+      vm.weeksOfGames = dates;
+      var dateArray = vm.weeksOfGames;
+      var lastWeek = dateArray[dateArray.length - 1];
+      var currentWeek = oddsService.weekSetter(moment().format());
+      vm.gameWeekFilter = currentWeek;
     })
   };
 

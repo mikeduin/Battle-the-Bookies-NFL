@@ -17,7 +17,8 @@ var Line = mongoose.model('Line');
 var Result = mongoose.model('Result');
 var Pick = mongoose.model('Pick');
 var abbrevs = require('../modules/abbrevs.js');
-var setWeek = require('../modules/weekSetter.js')
+var setWeek = require('../modules/weekSetter.js');
+var setWeekNumb = require('../modules/weekNumbSetter.js');
 
 // BEGIN ROUTES TO AUTO-UPDATE ODDS + RESULTS (FROM API) AND USER PICKS (FROM DB)
 
@@ -190,6 +191,7 @@ router.get('/updateOdds', function(req, res, next) {
           MatchDay: moment(odds[i].MatchTime).utcOffset(-7).format('MMMM Do, YYYY'),
           DateNumb: parseInt(moment(odds[i].MatchTime).utcOffset(-7).format('YYYYMMDD')),
           Week: setWeek.weekSetter(odds[i].MatchTime),
+          WeekNumb: setWeekNumb.weekNumbSetter(odds[i].MatchTime),
           MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
           MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
           PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
@@ -231,63 +233,63 @@ router.get('/lines', function(req, res, next){
   })
 })
 
-// setInterval(function(){
-//   Line.find({
-//     MLHomePicks: {
-//       $exists: false
-//     }
-//   }, function(err, lines){
-//     if (err) {console.log(err)}
-//
-//     lines.forEach(function(line){
-//       Line.findOneAndUpdate({EventID: line.EventID}, {
-//         MLHomePicks: 0,
-//         MLAwayPicks: 0,
-//         SpreadHomePicks: 0,
-//         SpreadAwayPicks: 0,
-//         OverPicks: 0,
-//         UnderPicks: 0
-//       }, function(err, line){
-//         console.log(line, " was updated")
-//       })
-//     })
-//
-//     console.log("pick counters updated")
-//   })
-// }, 10000)
+setInterval(function(){
+  Line.find({
+    MLHomePicks: {
+      $exists: false
+    }
+  }, function(err, lines){
+    if (err) {console.log(err)}
+
+    lines.forEach(function(line){
+      Line.findOneAndUpdate({EventID: line.EventID}, {
+        MLHomePicks: 0,
+        MLAwayPicks: 0,
+        SpreadHomePicks: 0,
+        SpreadAwayPicks: 0,
+        OverPicks: 0,
+        UnderPicks: 0
+      }, function(err, line){
+        console.log(line, " was updated")
+      })
+    })
+
+    console.log("pick counters updated")
+  })
+}, 10000)
 
 // This function checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 
-// setInterval(function(){
-//   Line.find({
-//     GameStatus: {
-//       $ne: "Final"
-//     }
-//   }, function(err, lines){
-//     if (err) {console.log(err)}
-//   }).then(function(lines){
-//     lines.forEach(function(line){
-//       Result.find({EventID: line.EventID}, function(err, result){
-//         if (err) {console.log(err)}
-//
-//       }).then(function(result){
-//         if (result[0].Final === true) {
-//           Line.update({EventID: result[0].EventID}, {
-//             HomeScore: result[0].HomeScore,
-//             AwayScore: result[0].AwayScore,
-//             GameStatus: "Final"
-//           }, function(err, message){
-//             if(err) {console.log(err)}
-//
-//             console.log("game final has been updated")
-//           })
-//         } else {
-//           console.log(result[0].EventID + " is not final")
-//         }
-//       })
-//     })
-//   })
-// }, 30000)
+setInterval(function(){
+  Line.find({
+    GameStatus: {
+      $ne: "Final"
+    }
+  }, function(err, lines){
+    if (err) {console.log(err)}
+  }).then(function(lines){
+    lines.forEach(function(line){
+      Result.find({EventID: line.EventID}, function(err, result){
+        if (err) {console.log(err)}
+
+      }).then(function(result){
+        if (result[0].Final === true) {
+          Line.update({EventID: result[0].EventID}, {
+            HomeScore: result[0].HomeScore,
+            AwayScore: result[0].AwayScore,
+            GameStatus: "Final"
+          }, function(err, message){
+            if(err) {console.log(err)}
+
+            console.log("game final has been updated")
+          })
+        } else {
+          console.log(result[0].EventID + " is not final")
+        }
+      })
+    })
+  })
+}, 30000)
 
 // END LINE ROUTES
 // BEGIN RESULTS ROUTES
@@ -325,74 +327,76 @@ router.get('/picks', function (req, res, next){
 
 // The function below checks every five minutes to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page.
 
-// setInterval(function(){
-//   Line.find({
-//     GameStatus: {
-//       $ne: "Final"
-//     }
-//   }, function (err, lines){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(lines){
-//     lines.forEach(function(line){
-//       Pick.update({
-//         EventID: line.EventID
-//       }, {
-//         MatchTime: line.MatchTime
-//       }, {
-//         multi: true
-//       },function(err, result){
-//         if (err) {console.log(err)}
-//
-//       })
-//     })
-//   })
-//   console.log("matchtimes have been updated")
-// }, 300000)
+setInterval(function(){
+  Line.find({
+    GameStatus: {
+      $ne: "Final"
+    }
+  }, function (err, lines){
+    if (err) {console.log(err)}
+
+  }).then(function(lines){
+    lines.forEach(function(line){
+      Pick.update({
+        EventID: line.EventID
+      }, {
+        MatchTime: line.MatchTime
+      }, {
+        multi: true
+      },function(err, result){
+        if (err) {console.log(err)}
+
+      })
+    })
+  })
+  console.log("matchtimes have been updated")
+}, 300000)
 
 // This function below checks every five minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 
-// setInterval(function(){
-//   User.find(function(err, users){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(users){
-//     users.forEach(function(user){
-//       Line.find(function(err, lines){
-//         if (err) {console.log(err)}
-//
-//       }).then(function(lines){
-//         lines.forEach(function(line){
-//           Pick.find({
-//             username: user.username,
-//             EventID: line.EventID
-//           }, function (err, pick){
-//             if (err) {console.log(err)}
-//
-//             if(!pick[0]) {
-//
-//               var template = Pick({
-//                 username: user.username,
-//                 EventID: line.EventID,
-//                 MatchDay: line.MatchDay,
-//                 MatchTime: line.MatchTime,
-//                 DateNumb: line.DateNumb,
-//                 finalPayout: 0
-//               });
-//
-//               template.save(function(err, template){
-//                 if (err) {console.log(err)}
-//
-//                 console.log(template + 'has been saved as a template!')
-//               })
-//             }
-//           })
-//         })
-//       })
-//     })
-//   })
-//   console.log("auto-templating complete")
-// }, 300000)
+setInterval(function(){
+  User.find(function(err, users){
+    if (err) {console.log(err)}
+
+  }).then(function(users){
+    users.forEach(function(user){
+      Line.find(function(err, lines){
+        if (err) {console.log(err)}
+
+      }).then(function(lines){
+        lines.forEach(function(line){
+          Pick.find({
+            username: user.username,
+            EventID: line.EventID
+          }, function (err, pick){
+            if (err) {console.log(err)}
+
+            if(!pick[0]) {
+
+              var template = Pick({
+                username: user.username,
+                EventID: line.EventID,
+                MatchDay: line.MatchDay,
+                MatchTime: line.MatchTime,
+                Week: line.Week,
+                DateNumb: line.DateNumb,
+                WeekNumb: line.WeekNumb,
+                finalPayout: 0
+              });
+
+              template.save(function(err, template){
+                if (err) {console.log(err)}
+
+                console.log(template + 'has been saved as a template!')
+              })
+            }
+          })
+        })
+      })
+    })
+  })
+  console.log("auto-templating complete")
+}, 300000)
 
 router.get('/picks/checkSubmission/:EventID', auth, function(req, res, next){
   Pick.find({
@@ -513,11 +517,11 @@ router.get('/picks/:username/stats', function (req, res, next){
   })
 })
 
-router.get('/picks/:username/:datenumb', function (req, res, next) {
-  console.log(req.params.datenumb);
+router.get('/picks/:username/:weeknumb', function (req, res, next) {
+  console.log("this is the server weeknumb", req.params.weeknumb);
   Pick.find({
     username: req.params.username,
-    DateNumb: req.params.datenumb
+    WeekNumb: req.params.weeknumb
   }, function(err, result){
     if(err) {console.log(err)}
 
@@ -533,6 +537,8 @@ router.post('/picks/addTemp', auth, function (req, res, next){
     MatchDay: req.body.MatchDay,
     MatchTime: req.body.MatchTime,
     DateNumb: req.body.DateNumb,
+    WeekNumb: setWeekNumb.weekNumbSetter(req.body.MatchTime),
+    Week: setWeek.weekSetter(req.body.MatchTime),
     finalPayout: 0
   });
 

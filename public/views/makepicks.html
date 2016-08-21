@@ -6,10 +6,10 @@
         <p class="pickHead"> Daily Lines </p>
       </div>
       <selectDiv class="col m2 offset-m6 res-select">
-          <label> Select a Day </label>
-          <select class="browser-default" ng-model="vm.gameDayFilter" ng-init="vm.getDates()">
-            <option value="" > (all Days) </option>
-            <option ng-repeat = "day in vm.daysOfGames" value="{{day}}"> {{day}} </option>
+          <label> Select a Week </label>
+          <select class="browser-default" ng-model="vm.gameWeekFilter" ng-init="vm.getDates()">
+            <option value="" > (all Weeks) </option>
+            <option ng-repeat = "day in vm.weeksOfGames" value="{{day}}"> {{day}} </option>
           </select>
       </selectDiv>
     </pickLeadDiv>
@@ -60,9 +60,9 @@
         <th colspan="2" class="center-align"> YOUR PICK </th>
       </tr>
     </thead>
-    <tbody ng-repeat="game in vm.mlbLines | orderBy: vm.sortOrder | filter: { MatchDay: vm.gameDayFilter }">
+    <tbody ng-repeat="game in vm.mlbLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter }">
       <tr ng-init="vm.timeCheck(game); vm.checkSubmission(game, vm.currentUser())">
-        <td rowspan="2"> {{game.MatchDay}} <br> {{game.MatchTime | date:'h:mm a'}} </td>
+        <td rowspan="2"> <b>{{game.Week}}</b> <br> {{game.MatchDay}} <br> {{game.MatchTime | date:'h:mm a'}} </td>
         <td> <b>(A)</b> {{game.AwayTeam}}
         </td>
         <td> <button ng-class="{disabled: game.locked}" class="btn btn-spread" ng-click="game.locked || vm.awaySpread(game)"> {{game.PointSpreadAway | mlFormat}} ({{game.PointSpreadAwayLine | mlFormat}})</button> </td>

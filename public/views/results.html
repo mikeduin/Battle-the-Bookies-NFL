@@ -4,16 +4,16 @@
       <p class="resHead"> Daily Results </p>
     </div>
     <selectDiv class="col m2 offset-m5 res-select">
-        <label> Select a Day </label>
-        <select class="browser-default" ng-model="vm.matchDayFilter">
-          <option ng-repeat = "day in vm.daysOfGames" value="{{day}}"> {{day}} </option>
+        <label> Select a Week </label>
+        <select class="browser-default" ng-model="vm.gameWeekFilter">
+          <option ng-repeat = "day in vm.weeksOfGames" value="{{day}}"> {{day}} </option>
         </select>
     </selectDiv>
     <selectDiv class="col m2 res-select">
         <label> Sort by </label>
         <select class="browser-default" ng-mode`l="vm.userSort">
           <option value="-sumYtd"> YTD $ </option>
-          <option value="-sumDay"> Daily $ </option>
+          <option value="-sumDay"> Weekly $ </option>
         </select>
     </selectDiv>
   </leadDiv>
@@ -26,7 +26,7 @@
         <th></th>
         <th class="center-align"></th>
         <th class="center-align"></th>
-        <th ng-repeat="game in vm.mlbLines | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: { MatchDay: vm.matchDayFilter }"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
+        <th ng-repeat="game in vm.mlbLines | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: { Week: vm.gameWeekFilter }"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
       </tr> -->
       <tr>
         <th>
@@ -36,18 +36,19 @@
           YTD $
         </th>
         <th class="left-align">
-          Daily $
+          Weekly $
         </th>
-        <th ng-repeat="game in vm.mlbLines | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: { MatchDay: vm.matchDayFilter }" ng-if="vm.checkTime(game.MatchTime) === true"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
+        <th ng-repeat="game in vm.mlbLines | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: { Week: vm.gameWeekFilter }" ng-if="vm.checkTime(game.MatchTime) === true"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="user in vm.users | orderBy: vm.userSort" ng-init="vm.getPicks(); vm.sumAllPicks(user)">
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a> </td>
         <td class="nobr center-align"> <b> {{user.sumYtd | currency:$:0}} </b> </td>
-        <td class="nobr"> <b> <sum-user-day user="user" datenumb="vm.dateNumbFilter"> </sum-user-day>
+        <td class="nobr"> <b>
+          <sum-user-week user="user" weeknumb="vm.weekNumbFilter"> </sum-user-week>
         </b> </td>
-        <td ng-repeat="pick in vm.picks | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: {MatchDay: vm.matchDayFilter} | filter: {username: user.username}" ng-if="vm.checkTime(pick.MatchTime) === true" ng-class="{pickWin: pick.pickResult === 'win', pickLoss: pick.pickResult === 'loss', pickPush: pick.pickResult === 'push'}" ng-init="vm.pickSettle(pick); vm.matchTimePull(pick.MatchTime)" on-finish-render="ngRepeatFinished"> {{pick.activePick}} <br><span> {{pick.dollars | currency:$:0}} </span> </td>
+        <td ng-repeat="pick in vm.picks | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: {Week: vm.gameWeekFilter} | filter: {username: user.username}" ng-if="vm.checkTime(pick.MatchTime) === true" ng-class="{pickWin: pick.pickResult === 'win', pickLoss: pick.pickResult === 'loss', pickPush: pick.pickResult === 'push'}" ng-init="vm.weekNumbPull(pick.MatchTime); vm.pickSettle(pick)" on-finish-render="ngRepeatFinished"> {{pick.activePick}} <br><span> {{pick.dollars | currency:$:0}} </span> </td>
       </tr>
     </tbody>
   </table>

@@ -4,9 +4,10 @@ angular
 
 function ResultController (oddsService, picksService, resultsService, usersService, $scope, $timeout) {
   var vm = this;
-  vm.matchDayFilter;
+  vm.gameWeekFilter;
   vm.dateNumbFilter;
-  vm.daysOfGames = [];
+  vm.weekNumbFilter;
+  vm.weeksOfGames = [];
   vm.mlbLines = [];
   vm.getMlbLines = getMlbLines;
   vm.updatePicks = updatePicks;
@@ -19,6 +20,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.activeUserSumToday;
   vm.picks = [];
   vm.users = [];
+
   // $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
   //   vm.showSpinner = false;
   // })
@@ -41,19 +43,41 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     usersService.getAllUsers().then(function(result){
       vm.users = result
     })
-  }
+  };
 
   vm.matchTimePull = function(time) {
     vm.dateNumbFilter = moment(time).format('YYYYMMDD')
-  }
+  };
 
-  vm.sumDay = function(user, datenumb) {
+  vm.weekNumbPull = function(time) {
+    console.log('hello');
+    // console.log('time in weeknumbpull is', time);
+    // oddsService.weekNumbSetter(time).then(function(result){
+    //   console.log('weekNumbFilter result is ', result)
+    // });
+    // console.log('vm.weeknumbfilter is', vm.weekNumbFilter);
+    // console.log('MatchTime in weekNumbSetter is', time);
+    if (moment(time).isBetween('2016-06-23', '2016-07-01')) {
+      vm.weekNumbFilter = "01"
+    } else if (moment(time).isBetween('2016-06-30', '2016-07-08')) {
+      vm.weekNumbFilter = "02"
+    } else if (moment(time).isBetween('2016-07-07', '2016-07-15')) {
+      vm.weekNumbFilter = "03"
+    } else if (moment(time).isBetween('2016-07-14', '2016-07-22')) {
+      vm.weekNumbFilter = "04"
+    } else {
+      vm.weekNumbFilter = "05"
+    }
+
+  };
+
+  vm.sumWeek = function(user, weeknumb) {
     username = user.username;
-    return picksService.sumToday(username, datenumb).then(function(result){
+    return picksService.sumWeek(username, weeknumb).then(function(result){
       // console.log("total returned in controller is " + result);
       return result;
     })
-  }
+  };
 
   vm.sumAllPicks = function(user) {
     username = user.username;
@@ -106,15 +130,11 @@ function ResultController (oddsService, picksService, resultsService, usersServi
 
   function getDates () {
     oddsService.getDates().then(function(dates){
-      vm.daysOfGames = dates;
-      var dateArray = vm.daysOfGames;
-      var lastDay = dateArray[dateArray.length - 1];
-      var currentDay = moment().format('MMMM Do, YYYY');
-      var currentDateNumb = moment().format('YYYYMMDD');
-      // console.log("last day is ", lastDay);
-      // console.log("current day is ", currentDay);
-      vm.matchDayFilter = currentDay;
-      // vm.dateNumbFilter = currentDateNumb;
+      vm.weeksOfGames = dates;
+      var dateArray = vm.weeksOfGames;
+      var lastWeek = dateArray[dateArray.length - 1];
+      var currentWeek = oddsService.weekSetter(moment().format());
+      vm.gameWeekFilter = currentWeek;
     })
   };
 

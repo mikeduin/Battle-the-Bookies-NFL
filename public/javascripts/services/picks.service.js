@@ -40,12 +40,13 @@ function picksService ($http, authService) {
       return $http.get('/updatePicks').then(function(){
       })
     },
-    sumToday: function(username, datenumb) {
-      return $http.get('/picks/' + username + '/' + datenumb).then(function(result){
-        var dayPicks = result.data;
+    sumWeek: function(username, weeknumb) {
+      // var newWeekNumb = parseInt(weeknumb);
+      return $http.get('/picks/' + username + '/' + weeknumb).then(function(result){
+        var weekPicks = result.data;
         var total = 0;
-        for (i=0; i<dayPicks.length; i++) {
-          var pickPayout = dayPicks[i].finalPayout;
+        for (i=0; i<weekPicks.length; i++) {
+          var pickPayout = weekPicks[i].finalPayout;
           total += pickPayout;
         }
         return total;

@@ -22,6 +22,7 @@ var LineSchema = new mongoose.Schema({
   },
   MatchDay: String,
   DateNumb: Number,
+  WeekNumb: Number,
   Week: String,
   HomeAbbrev: String,
   AwayAbbrev: String,

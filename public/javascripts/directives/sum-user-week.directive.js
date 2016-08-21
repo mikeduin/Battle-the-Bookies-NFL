@@ -1,14 +1,14 @@
 angular
   .module('battleBookies')
-  .directive('sumUserDay', [sumUserDay])
+  .directive('sumUserWeek', [sumUserWeek])
 
-function sumUserDay () {
+function sumUserWeek () {
 
   function getDailyTotal (scope, element, attrs, controller) {
 
-    scope.$watch('datenumb', function(newValue, oldValue){
-      controller.sumDay(scope.user, scope.datenumb).then(function(userDayTotal){
-        console.log("scope.datenumb is " + scope.datenumb)
+    scope.$watch('weeknumb', function(newValue, oldValue){
+      controller.sumWeek(scope.user, scope.weeknumb).then(function(userDayTotal){
+        console.log("scope.weeknumb is " + scope.weeknumb)
         scope.user.sumDay = userDayTotal;
       })
     })
@@ -18,7 +18,7 @@ function sumUserDay () {
     controller: 'ResultController',
     controllerAs: 'vm',
     link: getDailyTotal,
-    scope: {user: "=?", datenumb: "=?"},
+    scope: {user: "=?", weeknumb: "=?"},
     template: "{{user.sumDay | currency:$:0}}"
   }
 }
