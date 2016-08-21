@@ -1,6 +1,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
-   $(".button-collapse").sideNav();
+   $(".button-collapse").sideNav({
+     menuWidth: 360,
+     edge: 'left',
+     closeOnClick: true
+   });
  });
 </script>
 
@@ -8,13 +12,13 @@ $(document).ready(function(){
   <nav class="z-depth-2">
     <div class="nav-wrapper">
       <a ui-sref="home" class="brand-logo">Battle the Bookies</a>
-      <a ui-sref="#" data-activates="mobile-nav" class="button-collapse"><i class="fa fa-bars"></i></a>
+      <a data-activates="mobile-nav" class="button-collapse"><i class="fa fa-bars"></i></a>
       <ul class="left logo-lead">
         A Level Above <span class="weak"> presents <span>
       </ul>
       <ul class="right hide-on-med-and-down">
         <li ng-show="vm.isLoggedIn() !== false"><a ui-sref="home.user({username: vm.currentUser()})">{{ vm.currentUser() }}</a></li>
-        <li ng-hide="vm.isLoggedIn() !== false"><a ui-sref='home.login'>Login</a></li>
+        <li ng-hide="vm.isLoggedIn() !== false"><a ui-sref='home.login' class="gold">Login</a></li>
         <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()" class="gold">Logout</a></li>
         <li><a ui-sref="home.tutorial">How to Play</a></li>
         <li><a ui-sref="home.makepicks">Make Picks</a></li>
@@ -24,15 +28,25 @@ $(document).ready(function(){
         <li><a ui-sref='home.prizes'>Prizes</a></li>
       </ul>
       <ul class="side-nav" id="mobile-nav">
-        <li ng-show="vm.isLoggedIn() !== false"><a ui-sref="home.user({username: vm.currentUser()})">{{ vm.currentUser() }}</a></li>
-        <li ng-hide="vm.isLoggedIn() !== false"><a ui-sref='home.login'>Login</a></li>
-        <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()">Logout</a></li>
+        <li>
+          <div class="userView">
+            <img class="background" src="images/nfl-money-resize.jpg">
+            <!-- <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
+            <a href="#!name"><span class="white-text name">John Doe</span></a>
+            <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a> -->
+          </div>
+        </li>
+        <li><a ui-sref="home" style="color: #B68708; font-size: 28px">Battle the Bookies</a></li>
+        <li ng-show="vm.isLoggedIn() !== false" class="ala-link"><a ui-sref="home.user({username: vm.currentUser()})">{{ vm.currentUser() }}</a></li>
+        <li ng-hide="vm.isLoggedIn() !== false" class="ala-link"><a ui-sref='home.login'>Login</a></li>
+        <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()" style="color: #B68708">Logout</a></li>
         <li><a ui-sref="home.tutorial">How to Play</a></li>
         <li><a ui-sref="home.makepicks">Make Picks</a></li>
         <li><a ui-sref='home.results'>Results</a></li>
         <li><a ui-sref='home.standings'>Standings</a></li>
         <li><a ui-sref='home.user'>User Analytics</a></li>
         <li><a ui-sref='home.prizes'>Prizes</a></li>
+        <li class="ala-link"><a class="ala-linkage" style="color: #E1DFE1; font-size: 24px" href='http://www.mikeduin.com/alevelabove/blog/main'>A Level Above Home</a></li>
       </ul>
     </div>
   </nav>

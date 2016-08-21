@@ -19,6 +19,24 @@ nav {
   background-color: #2F5032;
 }
 
+#mobile-nav {
+  background-color: #45724A;
+}
+
+#mobile-nav a {
+  font-size: 36px;
+  color: white;
+}
+
+.ala-link {
+  border-top: solid 1px white;
+}
+
+.ala-linkage {
+  color: #5E5E5E;
+  font-size: 24px;
+}
+
 .splashColor {
   background-color: #343338
 }
@@ -53,11 +71,11 @@ nav {
 /*BEGIN SPLASH STYLES*/
 
 .parallax-container {
-  height: 440px;
+  height: 480px;
 }
 
 .para-div {
-  height: 480px;
+  height: 540px;
   background: url('../images/bet_board2.png') no-repeat center center;
   background-size: cover;
 }
@@ -94,6 +112,23 @@ subLead {
 .homeLink:hover {
   font-size: 40px;
   color: #2F5032
+}
+
+.homeLink:after {
+  display:block;
+  content:attr(title);
+  font-size: 40px;
+  color: #2F5032;
+  height:1px;
+  color:transparent;
+  overflow:hidden;
+  visibility:hidden;
+  margin-bottom:-1px;
+}
+
+.ala-tag {
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
 
 /*END SPLASH STYLES*/
