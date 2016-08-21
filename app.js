@@ -11,9 +11,7 @@ var moment = require('moment-timezone');
 require('dotenv').load();
 
 mongoose.connect(
-  // process.env.MONGOLAB_URI
-  // ||
-  'mongodb://localhost/battleTheBookies'
+  process.env.MONGODB_URI
 );
 
 require('./models/Users');

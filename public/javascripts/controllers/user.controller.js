@@ -26,7 +26,7 @@ function UserController ($stateParams, picksService, usersService, $state) {
       vm.userFilter = user[0].username;
       vm.sumAllPicks(user[0].username);
       vm.getPickStats(user[0].username);
-      vm.getDailyStats(user[0].username)
+      vm.getWeeklyStats(user[0].username);
     })
   }
 
@@ -40,9 +40,9 @@ function UserController ($stateParams, picksService, usersService, $state) {
     })
   }
 
-  vm.getDailyStats = function(username){
-    picksService.getDailyStats(username).then(function(result){
-      console.log(result.data);
+  vm.getWeeklyStats = function(username){
+    picksService.getWeeklyStats(username).then(function(result){
+      console.log('stats are', result.data);
       stats = result.data;
 
       var ytdDollars = 0
@@ -50,7 +50,7 @@ function UserController ($stateParams, picksService, usersService, $state) {
       for (i=0; i<stats.length; i++) {
         var dayDollars = stats[i].totalDollars;
         var lastDate = vm.dailyData.scaleX.values[vm.dailyData.scaleX.values.length - 1]
-        var date = stats[i].MatchDay.substr(0, stats[i].MatchDay.indexOf(','));
+        var date = stats[i].week;
         ytdDollars += dayDollars;
         if (date !== lastDate){
           vm.dailyData.scaleX.values.push(date);
@@ -99,7 +99,14 @@ function UserController ($stateParams, picksService, usersService, $state) {
     },
     'plot':{
       'aspect': 'spline',
-      'tooltip': '%scale-key-label'
+      'tooltip': '%scale-key-label',
+      'line-width': 5,
+      'marker': {
+        'background-color': '#B68708',
+        'size': 7,
+        'border-color': '#2F5032',
+        'border-width': 1
+      }
     },
     'scaleX':{
       'values': [],
@@ -110,7 +117,9 @@ function UserController ($stateParams, picksService, usersService, $state) {
     },
     'tooltip':{
       'text': '$%v',
-      'decimals': 2
+      'decimals': 2,
+      'negation':'currency',
+      'thousands-separator':','
     },
     'legend':{
     },
@@ -118,8 +127,8 @@ function UserController ($stateParams, picksService, usersService, $state) {
       {
         "values": [],
         "type": 'bar',
-        "background-color": "#01579B",
-        'legend-text': 'Daily $',
+        "background-color": "#2F5032",
+        'legend-text': 'Weekly $',
         "animation": {
           "delay": 0,
           "effect": 13,
@@ -131,7 +140,7 @@ function UserController ($stateParams, picksService, usersService, $state) {
       {
         "values": [],
         "type": 'line',
-        "line-color": "#B71C1C",
+        "line-color": "#B68708",
         'legend-text': 'YTD $',
         "animation": {
           "delay":10,

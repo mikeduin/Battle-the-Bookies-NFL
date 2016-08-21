@@ -79,8 +79,8 @@ function picksService ($http, authService) {
         return stats
       })
     },
-    getDailyStats: function(username){
-      return $http.get('/dailyStats/' + username).then(function(result){
+    getWeeklyStats: function(username){
+      return $http.get('/weeklyStats/' + username).then(function(result){
         return result
       })
     }

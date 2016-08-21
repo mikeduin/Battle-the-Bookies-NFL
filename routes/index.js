@@ -24,149 +24,149 @@ var setWeekNumb = require('../modules/weekNumbSetter.js');
 
 // This first function updates game results.
 
-// setInterval(function(){
-//   fetch('https://jsonodds.com/api/results/mlb', {
-//     method: 'GET',
-//     headers: {
-//       'JsonOdds-API-Key': process.env.API_KEY
-//     }
-//   }).then(function(res){
-//     return res.json()
-//   }).then(function(results){
-//
-//     var bulk = Result.collection.initializeOrderedBulkOp();
-//     var counter = 0;
-//
-//     for (i = 0; i < results.length; i++) {
-//       bulk.find({EventID: results[i].ID}).upsert().updateOne({
-//         $set: {
-//           EventID: results[i].ID,
-//           HomeScore: results[i].HomeScore,
-//           AwayScore: results[i].AwayScore,
-//           OddType: results[i].OddType,
-//           Final: results[i].Final,
-//           FinalType: results[i].FinalType
-//         }
-//       });
-//       counter++;
-//
-//       if (counter % 1000 == 0) {
-//         bulk.execute(function(err, res){
-//           bulk = Result.collection.initializeOrderedBulkOp();
-//         });
-//       }
-//     };
-//
-//     if (counter % 1000 != 0)
-//         bulk.execute(function(err,res) {
-//            console.log('results bulk update completed at ' + new Date());
-//         });
-//     // res.json(odds);
-//   })
-// }, 30000)
+setInterval(function(){
+  fetch('https://jsonodds.com/api/results/nfl', {
+    method: 'GET',
+    headers: {
+      'JsonOdds-API-Key': process.env.API_KEY
+    }
+  }).then(function(res){
+    return res.json()
+  }).then(function(results){
+
+    var bulk = Result.collection.initializeOrderedBulkOp();
+    var counter = 0;
+
+    for (i = 0; i < results.length; i++) {
+      bulk.find({EventID: results[i].ID}).upsert().updateOne({
+        $set: {
+          EventID: results[i].ID,
+          HomeScore: results[i].HomeScore,
+          AwayScore: results[i].AwayScore,
+          OddType: results[i].OddType,
+          Final: results[i].Final,
+          FinalType: results[i].FinalType
+        }
+      });
+      counter++;
+
+      if (counter % 1000 == 0) {
+        bulk.execute(function(err, res){
+          bulk = Result.collection.initializeOrderedBulkOp();
+        });
+      }
+    };
+
+    if (counter % 1000 != 0)
+        bulk.execute(function(err,res) {
+           console.log('results bulk update completed at ' + new Date());
+        });
+    // res.json(odds);
+  })
+}, 30000)
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
-// setInterval(function(){
-//   Pick.find({finalPayout: 0}, function (err, picks){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(picks){
-//     picks.forEach(function(pick){
-//       var HomeScore;
-//       var AwayScore;
-//       Result.findOne({EventID: pick.EventID}, function (err, result){
-//         if(err) {next(err)};
-//
-//         if(!result) {return};
-//
-//         if(result.Final === true) {
-//           var HomeScore = result.HomeScore;
-//           var AwayScore = result.AwayScore;
-//
-//           Pick.update({"_id": pick._id}, {
-//             HomeScore: HomeScore,
-//             AwayScore: AwayScore,
-//             Final: true
-//           }, function (err, pick) {
-//             if (err) {console.log(err)}
-//
-//           })
-//         }
-//       }).then(function(result){
-//         Pick.find({EventID: result.EventID}, function(err, picks){
-//           if (err) {console.log(err)}
-//
-//         }).then(function(picks){
-//           picks.forEach(function(pick){
-//             var activePayout = pick.activePayout;
-//
-//             if (pick.Final === true) {
-//
-//               if (
-//                 ((pick.pickType === "Away Moneyline") && (pick.AwayScore > pick.HomeScore))
-//                 ||
-//                 ((pick.pickType === "Home Moneyline") && (pick.HomeScore > pick.AwayScore))
-//                 ||
-//                 ((pick.pickType === "Away Spread") && ((pick.activeSpread + pick.AwayScore) > pick.HomeScore))
-//                 ||
-//                 ((pick.pickType === "Home Spread") && ((pick.activeSpread + pick.HomeScore) > pick.AwayScore))
-//                 ||
-//                 ((pick.pickType === "Total Over") && ((pick.HomeScore + pick.AwayScore) > pick.activeTotal))
-//                 ||
-//                 ((pick.pickType === "Total Under") && ((pick.HomeScore + pick.AwayScore) < pick.activeTotal))
-//               ) {
-//                   Pick.update({"_id": pick._id}, {
-//                     pickResult: "win",
-//                     resultBinary: 1,
-//                     finalPayout: activePayout,
-//                   }, function(err, result){
-//                     if (err) {console.log(err)}
-//                   })
-//                 } else if (
-//                   ((pick.pickType === "Away Moneyline") && (pick.AwayScore === pick.HomeScore))
-//                   ||
-//                   ((pick.pickType === "Home Moneyline") && (pick.HomeScore === pick.AwayScore))
-//                   ||
-//                   ((pick.pickType === "Away Spread") && ((pick.activeSpread + pick.AwayScore) === pick.HomeScore))
-//                   ||
-//                   ((pick.pickType === "Home Spread") && ((pick.activeSpread + pick.HomeScore) === pick.AwayScore))
-//                   ||
-//                   ((pick.pickType === "Total Over") && ((pick.HomeScore + pick.AwayScore) === pick.activeTotal))
-//                   ||
-//                   ((pick.pickType === "Total Under") && ((pick.HomeScore + pick.AwayScore) === pick.activeTotal))
-//                 ) {
-//                     Pick.update({"_id": pick._id}, {
-//                       pickResult: "push",
-//                       resultBinary: 0.5,
-//                       finalPayout: 0.00001,
-//                     }, function(err, result){
-//                       if (err) {console.log(err)}
-//                     })
-//                   }
-//                  else
-//                 {
-//                   Pick.update({"_id": pick._id}, {
-//                     pickResult: "loss",
-//                     resultBinary: 0,
-//                     finalPayout: -100,
-//                   }, function(err, result){
-//                     if (err) {console.log(err)}
-//                   })
-//                 }
-//               }
-//             })
-//           })
-//         })
-//       })
-//     })
-//   console.log('picks updated at ' + new Date())
-// }, 30000)
+setInterval(function(){
+  Pick.find({finalPayout: 0}, function (err, picks){
+    if (err) {console.log(err)}
+
+  }).then(function(picks){
+    picks.forEach(function(pick){
+      var HomeScore;
+      var AwayScore;
+      Result.findOne({EventID: pick.EventID}, function (err, result){
+        if(err) {next(err)};
+
+        if(!result) {return};
+
+        if(result.Final === true) {
+          var HomeScore = result.HomeScore;
+          var AwayScore = result.AwayScore;
+
+          Pick.update({"_id": pick._id}, {
+            HomeScore: HomeScore,
+            AwayScore: AwayScore,
+            Final: true
+          }, function (err, pick) {
+            if (err) {console.log(err)}
+
+          })
+        }
+      }).then(function(result){
+        Pick.find({EventID: result.EventID}, function(err, picks){
+          if (err) {console.log(err)}
+
+        }).then(function(picks){
+          picks.forEach(function(pick){
+            var activePayout = pick.activePayout;
+
+            if (pick.Final === true) {
+
+              if (
+                ((pick.pickType === "Away Moneyline") && (pick.AwayScore > pick.HomeScore))
+                ||
+                ((pick.pickType === "Home Moneyline") && (pick.HomeScore > pick.AwayScore))
+                ||
+                ((pick.pickType === "Away Spread") && ((pick.activeSpread + pick.AwayScore) > pick.HomeScore))
+                ||
+                ((pick.pickType === "Home Spread") && ((pick.activeSpread + pick.HomeScore) > pick.AwayScore))
+                ||
+                ((pick.pickType === "Total Over") && ((pick.HomeScore + pick.AwayScore) > pick.activeTotal))
+                ||
+                ((pick.pickType === "Total Under") && ((pick.HomeScore + pick.AwayScore) < pick.activeTotal))
+              ) {
+                  Pick.update({"_id": pick._id}, {
+                    pickResult: "win",
+                    resultBinary: 1,
+                    finalPayout: activePayout,
+                  }, function(err, result){
+                    if (err) {console.log(err)}
+                  })
+                } else if (
+                  ((pick.pickType === "Away Moneyline") && (pick.AwayScore === pick.HomeScore))
+                  ||
+                  ((pick.pickType === "Home Moneyline") && (pick.HomeScore === pick.AwayScore))
+                  ||
+                  ((pick.pickType === "Away Spread") && ((pick.activeSpread + pick.AwayScore) === pick.HomeScore))
+                  ||
+                  ((pick.pickType === "Home Spread") && ((pick.activeSpread + pick.HomeScore) === pick.AwayScore))
+                  ||
+                  ((pick.pickType === "Total Over") && ((pick.HomeScore + pick.AwayScore) === pick.activeTotal))
+                  ||
+                  ((pick.pickType === "Total Under") && ((pick.HomeScore + pick.AwayScore) === pick.activeTotal))
+                ) {
+                    Pick.update({"_id": pick._id}, {
+                      pickResult: "push",
+                      resultBinary: 0.5,
+                      finalPayout: 0.00001,
+                    }, function(err, result){
+                      if (err) {console.log(err)}
+                    })
+                  }
+                 else
+                {
+                  Pick.update({"_id": pick._id}, {
+                    pickResult: "loss",
+                    resultBinary: 0,
+                    finalPayout: -100,
+                  }, function(err, result){
+                    if (err) {console.log(err)}
+                  })
+                }
+              }
+            })
+          })
+        })
+      })
+    })
+  console.log('picks updated at ' + new Date())
+}, 30000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
 router.get('/updateOdds', function(req, res, next) {
-  fetch('https://jsonodds.com/api/odds/mlb', {
+  fetch('https://jsonodds.com/api/odds/nfl', {
     method: 'GET',
     headers: {
       'JsonOdds-API-Key': process.env.API_KEY
@@ -419,25 +419,24 @@ router.get('/picks/:username/all', function (req, res, next) {
   })
 })
 
-router.get('/dailyStats/:username', function(req, res, next){
+router.get('/weeklyStats/:username', function(req, res, next){
   var username = req.params.username;
-  var dateNumbArray = [];
-  Pick.find().distinct('DateNumb',function(err, datenumbs){
+  var weekArray = [];
+  Pick.find().distinct('Week',function(err, weeks){
     if (err) {console.log(err)}
 
-    dateNumbArray = datenumbs;
-    sortedDateNumbs = dateNumbArray.sort();
-    return sortedDateNumbs
-  }).then(function(sortedDateNumbs){
-
-    Promise.all(sortedDateNumbs.sort().map(function(date){
-      return Pick.find({username: username, DateNumb: date}).then(function(results){
+    weekArray = weeks;
+    weeks = weekArray.sort();
+    return weeks
+  }).then(function(weeks){
+    Promise.all(weeks.sort().map(function(week){
+      return Pick.find({username: username, Week: week}).then(function(results){
 
         var totalDollars = 0;
         var totalGames = 0;
         var totalWins = 0;
         var totalLosses = 0;
-        var dateNumb;
+        var week;
         var username;
 
         results.forEach(function(result){
@@ -445,7 +444,7 @@ router.get('/dailyStats/:username', function(req, res, next){
           // console.log('a pick-level result is: ' + result)
             if (result.finalPayout !== 0) {
               username = result.username;
-              dateNumb = result.DateNumb;
+              week = result.Week;
               MatchDay = result.MatchDay;
               totalDollars += result.finalPayout;
               totalGames += 1;
@@ -454,10 +453,12 @@ router.get('/dailyStats/:username', function(req, res, next){
             }
         })
 
-        return {username: username, dateNumb: dateNumb, MatchDay: MatchDay, totalDollars: totalDollars, totalWins: totalWins, totalLosses: totalLosses, totalGames: totalGames}
+        return {username: username, week: week, MatchDay: MatchDay, totalDollars: totalDollars, totalWins: totalWins, totalLosses: totalLosses, totalGames: totalGames}
       })
 
     })).then(function(userArray){
+      console.log('heello');
+      console.log('userArray is', userArray);
       res.json(userArray)
     })
   })

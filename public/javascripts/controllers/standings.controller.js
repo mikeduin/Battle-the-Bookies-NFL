@@ -37,7 +37,7 @@ function StandingsController (picksService, oddsService, usersService, $scope) {
     }).then(function(){
       console.log(user);
       username = user.username;
-      picksService.getDailyStats(username).then(function(result){
+      picksService.getWeeklyStats(username).then(function(result){
         user.dailyStats = result.data
       })
     })
