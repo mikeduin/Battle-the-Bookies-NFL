@@ -71,11 +71,11 @@ nav {
 /*BEGIN SPLASH STYLES*/
 
 .parallax-container {
-  height: 480px;
+  height: 420px;
 }
 
 .para-div {
-  height: 540px;
+  height: 500px;
   background: url('../images/bet_board2.png') no-repeat center center;
   background-size: cover;
 }
@@ -109,12 +109,16 @@ subLead {
   color: #424242;
 }
 
-.homeLink:hover {
-  font-size: 40px;
-  color: #2F5032
+.homeLinks a {
+  display: inline-block;
 }
 
-.homeLink:after {
+.homeLinks>a:hover {
+  font-size: 40px;
+  color: #2F5032;
+}
+
+.homeLinks>a::after {
   display:block;
   content:attr(title);
   font-size: 40px;
@@ -123,7 +127,6 @@ subLead {
   color:transparent;
   overflow:hidden;
   visibility:hidden;
-  margin-bottom:-1px;
 }
 
 .ala-tag {
