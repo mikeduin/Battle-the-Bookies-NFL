@@ -169,7 +169,7 @@ function UserController ($stateParams, picksService, usersService, $state) {
  	    "placement": 'out',
  	    "text": '%t\n%npv%',
  	    "fontFamily": "Raleway",
-      "font-size": 12,
+      "font-size": 10,
       "shadow": true,
       "padding": "10%"
       }
