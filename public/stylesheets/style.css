@@ -51,12 +51,21 @@ nav {
   margin-top: 5px
 }
 
-.logo-lead {
-  margin-top: -20px;
-  margin-left: 10px;
-  color: #B4B4B4;
-  font-size: 12px;
-  font-weight: 800;
+@media screen and (min-width: 300px) {
+  .logo-lead {
+    margin-top: -20px;
+    margin-left: 40%;
+    color: #B4B4B4;
+    font-size: 12px;
+    font-weight: 800;
+  }
+}
+
+@media screen and (min-width: 996px) {
+  .logo-lead {
+    margin-top: -20px;
+    margin-left: 10px;
+  }
 }
 
 .weak {
