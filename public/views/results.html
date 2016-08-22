@@ -1,9 +1,9 @@
 <resultsHead class="row" ng-init="vm.getNflLines(); vm.getDates(); vm.getAllUsers()">
   <leadDiv class="col m12 result-head z-depth-1">
-    <div class="col m3 left-align">
+    <div class="col m5 left-align">
       <p class="resHead"> Weekly Results </p>
     </div>
-    <selectDiv class="col m2 offset-m5 res-select">
+    <selectDiv class="col m2 offset-m3 res-select">
         <label> Select a Week </label>
         <select class="browser-default" ng-model="vm.gameWeekFilter">
           <option ng-repeat = "day in vm.weeksOfGames" value="{{day}}"> {{day}} </option>
