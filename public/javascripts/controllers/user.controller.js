@@ -161,7 +161,7 @@ function UserController ($stateParams, picksService, usersService, $state) {
       "animation":{
           "effect":"2",
           "delay":"1000",
-          "speed":"3000",
+          "speed":"2000",
           "method":"5",
           "sequence":"1"
       },
@@ -218,7 +218,7 @@ function UserController ($stateParams, picksService, usersService, $state) {
       "animation":{
           "effect":"2",
           "delay":"1000",
-          "speed":"2500",
+          "speed":"1500",
           "method":"5",
           "sequence":"1"
       },
@@ -260,7 +260,7 @@ function UserController ($stateParams, picksService, usersService, $state) {
       "animation":{
           "effect":"4",
           "delay":"2000",
-          "speed":"2500",
+          "speed":"1500",
           "method":"5",
           "sequence":"1"
       },
