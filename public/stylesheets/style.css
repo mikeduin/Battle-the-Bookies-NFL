@@ -368,16 +368,73 @@ section > div {
   padding-top: 10px;
 }
 
-.dollar-grey {
-  font-size: 50px;
-  color: #ABABAB;
+@media screen and (min-width: 300px) {
+  .dollar-grey-mid, .dollar-grey-bot {
+    font-size: 50px;
+    color: #ABABAB;
+  }
+
+  .dollar-grey-top {
+    padding-top: 15px;
+    font-size: 50px;
+    color: #ABABAB;
+  }
 }
 
-.dollar-grey-drop {
-  padding-top: 15px;
-  font-size: 50px;
-  color: #ABABAB;
+@media screen and (min-width: 1350px) {
+  .dollar-grey-bot {
+    margin-top: -10%;
+    margin-right: -20%;
+  }
+
+  .dollar-grey-top, .dollar-grey-mid {
+    margin-right: -20%;
+  }
+
 }
+
+@media screen and (min-width: 1550px) {
+  .tut-icons, .dollar-icons {
+    margin-right: -30%;
+    margin-top: -3%;
+  }
+
+  .dollar-grey-bot {
+    margin-top: -11%;
+  }
+
+  .ion-ios-calculator {
+    margin-top: -10%;
+  }
+}
+
+@media screen and (min-width: 1950px) {
+  .tut-icons, .dollar-icons {
+    margin-right: -45%;
+  }
+
+}
+
+@media screen and (min-width: 2050px) {
+  .dollar-grey-top {
+    margin-top: -8%;
+  }
+
+  .dollar-grey-bot {
+    margin-top: -5%
+  }
+
+  tutorialHead header  {
+    margin-top: 1%;
+  }
+}
+
+@media screen and (min-width: 2545px) {
+  .dollar-icons, .tut-icons {
+    margin-right: -55%;
+  }
+}
+
 
 .pie {
   font-size: 80px;
