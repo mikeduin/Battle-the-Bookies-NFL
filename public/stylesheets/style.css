@@ -76,6 +76,18 @@ nav {
   margin-left: 20px
 }
 
+#results-dropdown {
+  background-color: #2F5032;
+}
+
+#results-dropdown a {
+  color: white
+}
+
+#results-dropdown a:hover {
+  color: #2F5032;
+}
+
 /*END NAVBAR STYLES*/
 /*BEGIN SPLASH STYLES*/
 
@@ -176,7 +188,7 @@ error {
 }
 
 regBox {
-  margin-top: 80px;
+  margin-top: 15%;
   display: inline-block;
   background-color: #eeeeee;
   border: solid 3px #B4B4B4;

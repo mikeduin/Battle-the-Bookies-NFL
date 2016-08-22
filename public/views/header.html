@@ -5,10 +5,17 @@ $(document).ready(function(){
      edge: 'left',
      closeOnClick: true
    });
+
+   $(".dropdown-button").dropdown();
  });
 </script>
 
 <div class="navbar-fixed">
+  <ul id='results-dropdown' class="dropdown-content">
+    <li><a ui-sref='home.results'>Weekly Results</a></li>
+    <li><a ui-sref='home.standings'>Overall Standings</a></li>
+    <li><a ui-sref='home.prizes'>Prizes</a></li>
+  </ul>
   <nav class="z-depth-2">
     <div class="nav-wrapper">
       <a ui-sref="home" class="brand-logo">Battle the Bookies</a>
@@ -22,10 +29,8 @@ $(document).ready(function(){
         <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()" class="gold">Logout</a></li>
         <li><a ui-sref="home.tutorial">How to Play</a></li>
         <li><a ui-sref="home.makepicks">Make Picks</a></li>
-        <li><a ui-sref='home.results'>Results</a></li>
-        <li><a ui-sref='home.standings'>Standings</a></li>
+        <li><a class='dropdown-button' data-beloworigin="true" data-constrainwidth="false" href="#" data-activates='results-dropdown'>Standings</a></li>
         <li><a ui-sref='home.user'>User Analytics</a></li>
-        <li><a ui-sref='home.prizes'>Prizes</a></li>
         <li><a href='http://www.mikeduin.com/alevelabove/blog/main'>ALA Home</a></li>
       </ul>
       <ul class="side-nav" id="mobile-nav">
@@ -37,14 +42,14 @@ $(document).ready(function(){
             <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a> -->
           </div>
         </li>
-        <li><a ui-sref="home" style="color: #B68708; font-size: 28px">Battle the Bookies</a></li>
+        <li><a ui-sref="home" style="color: #B68708; font-size: 32px">Battle the Bookies</a></li>
         <li ng-show="vm.isLoggedIn() !== false" class="ala-link"><a ui-sref="home.user({username: vm.currentUser()})">{{ vm.currentUser() }}</a></li>
         <li ng-hide="vm.isLoggedIn() !== false" class="ala-link"><a ui-sref='home.login'>Login</a></li>
         <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()" style="color: #B68708">Logout</a></li>
         <li><a ui-sref="home.tutorial">How to Play</a></li>
         <li><a ui-sref="home.makepicks">Make Picks</a></li>
-        <li><a ui-sref='home.results'>Results</a></li>
-        <li><a ui-sref='home.standings'>Standings</a></li>
+        <li><a ui-sref='home.results'>Weekly Results</a></li>
+        <li><a ui-sref='home.standings'>YTD Standings</a></li>
         <li><a ui-sref='home.user'>User Analytics</a></li>
         <li><a ui-sref='home.prizes'>Prizes</a></li>
         <li class="ala-link"><a class="ala-linkage" style="color: #E1DFE1; font-size: 24px" href='http://www.mikeduin.com/alevelabove/blog/main'>A Level Above Home</a></li>
