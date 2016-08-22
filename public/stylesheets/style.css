@@ -826,17 +826,50 @@ userDiv {
   margin-bottom: 20px;
 }
 
-.user-baseball {
-  font-size: 100px;
-  color: #2F5032;
-  margin-left: -30px;
+@media screen and (min-width: 300px) {
+  .user-baseball {
+    font-size: 100px;
+    color: #2F5032;
+    margin-left: -30px;
+  }
+
+  .user-chart {
+    color: #5E5E5E;
+    padding-top: 30px;
+    margin-left: -30px;
+  }
 }
 
-.user-chart {
-  color: #5E5E5E;
-  padding-top: 30px;
-  margin-left: -30px;
+@media screen and (min-width: 1200px) {
+  .user-baseball, .user-chart {
+    margin-left: -15%;
+  }
 }
+
+@media screen and (min-width: 1550px) {
+  .user-baseball, .user-chart {
+    margin-left: 0%;
+  }
+}
+
+@media screen and (min-width: 1750px) {
+  .user-baseball, .user-chart {
+    margin-left: 10%;
+  }
+}
+
+@media screen and (min-width: 1950px) {
+  .user-baseball, .user-chart {
+    margin-left: 15%;
+  }
+}
+
+@media screen and (min-width: 2350px) {
+  .user-baseball, .user-chart {
+    margin-left: 25%;
+  }
+}
+
 
 gameBox {
   border: solid 3px #CCCDCD;
