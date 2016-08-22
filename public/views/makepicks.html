@@ -24,13 +24,13 @@
         - Queue up a pick by clicking its button, then click the green checkmark to confirm your pick. A pick is not submitted until it's confirmed.
       </p>
       <p class="col s12">
-        - Submit one pick at a time. To change your pick before it's confirmed, just click a different pick button.
+        - <b>Submit one pick at a time</b>. To change your pick before it's confirmed, just click a different pick button, or wait for the odds to refresh and your queued pick will disappear.
       </p>
       <p class="col s12">
         - A submitted pick locks in the odds and price of the pick at time of submission, even if the odds change prior to the game's start time.
       </p>
       <p class="col s12">
-        - Once a pick is submitted, it will show up in the <b> YOUR PICK </b> column. From that point forward it cannot be changed.
+        - Once a pick is submitted, it will show up in bold in the <b> YOUR PICK </b> column along with a 'GAME LOCKED' message. From that point forward it cannot be changed.
       </p>
       <p class="col s12">
         - Make sure to get each pick in before each game begins! A game locks at its scheduled start time; per the game rules, a missed/unsubmitted pick is an automatic loss.
@@ -46,7 +46,8 @@
   <table class="bordered col m12">
     <thead>
       <tr>
-        <th colspan="10"> <i>Current Time:</i> <time-keeper> </time-keeper> </th>
+        <th colspan="6"> <i>Current Time:</i> <time-keeper> </time-keeper> </th>
+        <th colspan="4"> <button type="button" class="btn clear-pick" ng-show="vm.clearPickButton" ng-click="vm.pick.activeGame = {}">Clear Active Pick</button></th>
       </tr>
       <tr class="center-align">
         <th> Date + Time </th>

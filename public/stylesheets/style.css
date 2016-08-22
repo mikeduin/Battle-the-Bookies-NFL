@@ -79,14 +79,29 @@ nav {
 /*END NAVBAR STYLES*/
 /*BEGIN SPLASH STYLES*/
 
-.parallax-container {
-  height: 420px;
+
+@media screen and (min-width: 300px) {
+  .parallax-container {
+    height: 480px;
+  }
+
+  .para-div {
+    height: 500px;
+    background: url('../images/bet_board2.png') no-repeat center center;
+    background-size: cover;
+  }
 }
 
-.para-div {
-  height: 500px;
-  background: url('../images/bet_board2.png') no-repeat center center;
-  background-size: cover;
+@media screen and (min-width: 996px) {
+  .parallax-container {
+    height: 440px;
+  }
+
+  .para-div {
+    height: 500px;
+    background: url('../images/bet_board2.png') no-repeat center center;
+    background-size: cover;
+  }
 }
 
 .splash-lead {
@@ -543,6 +558,10 @@ submitPick p {
 pickLocked {
   color: red;
   font-weight: 800;
+}
+
+.clear-pick {
+  background-color: #2F5032;
 }
 
 /*END MAKE PICK STYLES*/
