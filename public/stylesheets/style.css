@@ -187,13 +187,28 @@ error {
   color: #B71C1C;
 }
 
-regBox {
-  margin-top: 15%;
-  display: inline-block;
-  background-color: #eeeeee;
-  border: solid 3px #B4B4B4;
-  border-radius: 5px;
+@media screen and (min-width: 300px) {
+  regBox {
+    margin-top: 15%;
+    display: inline-block;
+    background-color: #eeeeee;
+    border: solid 3px #B4B4B4;
+    border-radius: 5px;
+  }
 }
+
+@media screen and (min-width: 700px) {
+  regBox {
+    margin-top: 10%;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  regBox {
+    margin-top: 7%;
+  }
+}
+
 
 loginTitle {
   color: #2F5032;
