@@ -25,7 +25,7 @@ var setWeekNumb = require('../modules/weekNumbSetter.js');
 // This first function updates game results.
 
 setInterval(function(){
-  fetch('https://jsonodds.com/api/results/nfl', {
+  fetch('https://jsonodds.com/api/results/nfl?oddType=Game', {
     method: 'GET',
     headers: {
       'JsonOdds-API-Key': process.env.API_KEY
@@ -166,7 +166,7 @@ setInterval(function(){
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
 router.get('/updateOdds', function(req, res, next) {
-  fetch('https://jsonodds.com/api/odds/nfl', {
+  fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
     method: 'GET',
     headers: {
       'JsonOdds-API-Key': process.env.API_KEY
@@ -192,6 +192,7 @@ router.get('/updateOdds', function(req, res, next) {
           DateNumb: parseInt(moment(odds[i].MatchTime).utcOffset(-7).format('YYYYMMDD')),
           Week: setWeek.weekSetter(odds[i].MatchTime),
           WeekNumb: setWeekNumb.weekNumbSetter(odds[i].MatchTime),
+          OddType: odds[i].Odds[0].OddType,
           MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
           MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
           PointSpreadHome: odds[i].Odds[0].PointSpreadHome,

@@ -20,6 +20,7 @@ var LineSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
+  OddType: String,
   MatchDay: String,
   DateNumb: Number,
   WeekNumb: Number,
