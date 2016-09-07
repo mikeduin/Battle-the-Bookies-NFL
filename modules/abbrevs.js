@@ -18,6 +18,7 @@ module.exports = {
       "Indianapolis Colts": "IND",
       "Jacksonville Jaguars": "JAX",
       "Kansas City Chiefs": "KC",
+      "Los Angeles Rams": "LA",
       "Miami Dolphins": "MIA",
       "Minnesota Vikings": "MIN",
       "New England Patriots": "NE",
@@ -30,7 +31,6 @@ module.exports = {
       "San Diego Chargers": "SD",
       "San Francisco 49ers": "SF",
       "Seattle Seahawks": "SEA",
-      "St. Louis Rams": "STL",
       "Tampa Bay Buccaneers": "TB",
       "Tennessee Titans": "TEN",
       "Washington Redskins": "WAS"
