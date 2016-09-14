@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('ResultController', ['oddsService', 'picksService', 'resultsService', 'usersService', '$scope', '$timeout', ResultController])
+  .controller('ResultController', ['oddsService', 'picksService', 'resultsService', 'usersService', '$scope', '$timeout', '$stateParams', ResultController])
 
-function ResultController (oddsService, picksService, resultsService, usersService, $scope, $timeout) {
+function ResultController (oddsService, picksService, resultsService, usersService, $scope, $timeout, $stateParams) {
   var vm = this;
   vm.gameWeekFilter;
   vm.dateNumbFilter;
@@ -10,12 +10,14 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.weeksOfGames = [];
   vm.nflLines = [];
   vm.getNflLines = getNflLines;
+  vm.getWeeklyNflLines = getWeeklyNflLines;
   vm.updatePicks = updatePicks;
   vm.gameSort = "MatchTime";
   vm.gameSortTwo = "EventID";
   vm.userSort = "-sumYtd";
   vm.updateResults = updateResults;
   vm.getPicks = getPicks;
+  vm.getWeeklyPicks = getWeeklyPicks;
   vm.getDates = getDates;
   vm.activeUserSumToday;
   vm.picks = [];
@@ -27,47 +29,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   $timeout(function(){
     vm.showSpinner = false
   }, 10000)
-
-  // $scope.$watch('vm.gameWeekFilter', function(){
-  //   if (vm.gameWeekFilter === 'Week 1') {
-  //     vm.weekNumbFilter === "01"
-  //   } else if (vm.gameWeekFilter === 'Week 2') {
-  //     vm.weekNumbFilter === "02"
-  //   } else if (vm.gameWeekFilter === 'Week 3') {
-  //     vm.weekNumbFilter === "03"
-  //   } else if (vm.gameWeekFilter === 'Week 4') {
-  //     vm.weekNumbFilter === "04"
-  //   } else if (vm.gameWeekFilter === 'Week 5') {
-  //     vm.weekNumbFilter === "05"
-  //   } else if (vm.gameWeekFilter === 'Week 6') {
-  //     vm.weekNumbFilter === "06"
-  //   } else if (vm.gameWeekFilter === 'Week 7') {
-  //     vm.weekNumbFilter === "07"
-  //   } else if (vm.gameWeekFilter === 'Week 8') {
-  //     vm.weekNumbFilter === "08"
-  //   } else if (vm.gameWeekFilter === 'Week 9') {
-  //     vm.weekNumbFilter === "09"
-  //   } else if (vm.gameWeekFilter === 'Week 10') {
-  //     vm.weekNumbFilter === "10"
-  //   } else if (vm.gameWeekFilter === 'Week 11') {
-  //     vm.weekNumbFilter === "11"
-  //   } else if (vm.gameWeekFilter === 'Week 12') {
-  //     vm.weekNumbFilter === "12"
-  //   } else if (vm.gameWeekFilter === 'Week 13') {
-  //     vm.weekNumbFilter === "13"
-  //   } else if (vm.gameWeekFilter === 'Week 14') {
-  //     vm.weekNumbFilter === "14"
-  //   } else if (vm.gameWeekFilter === 'Week 15') {
-  //     vm.weekNumbFilter === "15"
-  //   } else if (vm.gameWeekFilter === 'Week 16') {
-  //     vm.weekNumbFilter === "16"
-  //   } else if (vm.gameWeekFilter === 'Week 17') {
-  //     vm.weekNumbFilter === "17"
-  //   } else {
-  //     vm.weekNumbFilter = null
-  //   };
-  //   console.log('adjusted vm.WeekNumbFilter is', vm.weekNumbFilter)
-  // })
 
   vm.checkTime = function(gametime) {
     if (moment(gametime).isBefore(vm.currentTime)){
@@ -214,6 +175,13 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   }
 
+  function getWeeklyNflLines(){
+    vm.showSpinner = true;
+    oddsService.getWeeklyNflLines($stateParams.weekNumb).then(function(games){
+      vm.nflLines = games;
+    })
+  }
+
   function updatePicks() {
     picksService.updatePicks();
   }
@@ -225,6 +193,12 @@ function ResultController (oddsService, picksService, resultsService, usersServi
 
   function getPicks () {
     oddsService.getPicks().then(function(data){
+      vm.picks = data;
+    })
+  }
+
+  function getWeeklyPicks () {
+    oddsService.getWeeklyPicks($stateParams.weekNumb).then(function(data){
       vm.picks = data;
     })
   }
