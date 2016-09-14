@@ -28,46 +28,46 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     vm.showSpinner = false
   }, 10000)
 
-  $scope.$watch('vm.gameWeekFilter', function(){
-    if (vm.gameWeekFilter === 'Week 1') {
-      vm.weekNumbFilter === "01"
-    } else if (vm.gameWeekFilter === 'Week 2') {
-      vm.weekNumbFilter === "02"
-    } else if (vm.gameWeekFilter === 'Week 3') {
-      vm.weekNumbFilter === "03"
-    } else if (vm.gameWeekFilter === 'Week 4') {
-      vm.weekNumbFilter === "04"
-    } else if (vm.gameWeekFilter === 'Week 5') {
-      vm.weekNumbFilter === "05"
-    } else if (vm.gameWeekFilter === 'Week 6') {
-      vm.weekNumbFilter === "06"
-    } else if (vm.gameWeekFilter === 'Week 7') {
-      vm.weekNumbFilter === "07"
-    } else if (vm.gameWeekFilter === 'Week 8') {
-      vm.weekNumbFilter === "08"
-    } else if (vm.gameWeekFilter === 'Week 9') {
-      vm.weekNumbFilter === "09"
-    } else if (vm.gameWeekFilter === 'Week 10') {
-      vm.weekNumbFilter === "10"
-    } else if (vm.gameWeekFilter === 'Week 11') {
-      vm.weekNumbFilter === "11"
-    } else if (vm.gameWeekFilter === 'Week 12') {
-      vm.weekNumbFilter === "12"
-    } else if (vm.gameWeekFilter === 'Week 13') {
-      vm.weekNumbFilter === "13"
-    } else if (vm.gameWeekFilter === 'Week 14') {
-      vm.weekNumbFilter === "14"
-    } else if (vm.gameWeekFilter === 'Week 15') {
-      vm.weekNumbFilter === "15"
-    } else if (vm.gameWeekFilter === 'Week 16') {
-      vm.weekNumbFilter === "16"
-    } else if (vm.gameWeekFilter === 'Week 17') {
-      vm.weekNumbFilter === "17"
-    } else {
-      vm.weekNumbFilter = null
-    };
-    console.log('adjusted vm.WeekNumbFilter is', vm.weekNumbFilter)
-  })
+  // $scope.$watch('vm.gameWeekFilter', function(){
+  //   if (vm.gameWeekFilter === 'Week 1') {
+  //     vm.weekNumbFilter === "01"
+  //   } else if (vm.gameWeekFilter === 'Week 2') {
+  //     vm.weekNumbFilter === "02"
+  //   } else if (vm.gameWeekFilter === 'Week 3') {
+  //     vm.weekNumbFilter === "03"
+  //   } else if (vm.gameWeekFilter === 'Week 4') {
+  //     vm.weekNumbFilter === "04"
+  //   } else if (vm.gameWeekFilter === 'Week 5') {
+  //     vm.weekNumbFilter === "05"
+  //   } else if (vm.gameWeekFilter === 'Week 6') {
+  //     vm.weekNumbFilter === "06"
+  //   } else if (vm.gameWeekFilter === 'Week 7') {
+  //     vm.weekNumbFilter === "07"
+  //   } else if (vm.gameWeekFilter === 'Week 8') {
+  //     vm.weekNumbFilter === "08"
+  //   } else if (vm.gameWeekFilter === 'Week 9') {
+  //     vm.weekNumbFilter === "09"
+  //   } else if (vm.gameWeekFilter === 'Week 10') {
+  //     vm.weekNumbFilter === "10"
+  //   } else if (vm.gameWeekFilter === 'Week 11') {
+  //     vm.weekNumbFilter === "11"
+  //   } else if (vm.gameWeekFilter === 'Week 12') {
+  //     vm.weekNumbFilter === "12"
+  //   } else if (vm.gameWeekFilter === 'Week 13') {
+  //     vm.weekNumbFilter === "13"
+  //   } else if (vm.gameWeekFilter === 'Week 14') {
+  //     vm.weekNumbFilter === "14"
+  //   } else if (vm.gameWeekFilter === 'Week 15') {
+  //     vm.weekNumbFilter === "15"
+  //   } else if (vm.gameWeekFilter === 'Week 16') {
+  //     vm.weekNumbFilter === "16"
+  //   } else if (vm.gameWeekFilter === 'Week 17') {
+  //     vm.weekNumbFilter === "17"
+  //   } else {
+  //     vm.weekNumbFilter = null
+  //   };
+  //   console.log('adjusted vm.WeekNumbFilter is', vm.weekNumbFilter)
+  // })
 
   vm.checkTime = function(gametime) {
     if (moment(gametime).isBefore(vm.currentTime)){

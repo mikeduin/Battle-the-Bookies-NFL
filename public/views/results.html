@@ -46,7 +46,7 @@
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a> </td>
         <td class="nobr center-align"> <b> {{user.sumYtd | currency:$:0}} </b> </td>
         <td class="nobr"> <b>
-          <sum-user-week user="user" weeknumb="vm.weekNumbFilter"> </sum-user-week>
+          <!-- <sum-user-week user="user" weeknumb="vm.weekNumbFilter"> </sum-user-week> -->
         </b> </td>
         <td ng-repeat="pick in vm.picks | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: {Week: vm.gameWeekFilter} | filter: {username: user.username}" ng-if="vm.checkTime(pick.MatchTime) === true" ng-class="{pickWin: pick.pickResult === 'win', pickLoss: pick.pickResult === 'loss', pickPush: pick.pickResult === 'push'}" ng-init="vm.weekNumbPull(pick.MatchTime); vm.pickSettle(pick)" on-finish-render="ngRepeatFinished"> {{pick.activePick}} <br><span> {{pick.dollars | currency:$:0}} </span> </td>
       </tr>
