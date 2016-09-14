@@ -66,7 +66,9 @@ var UserSchema = new mongoose.Schema({
   w17games: Number,
   totalDollars: Number,
   totalW: Number,
-  totalG: Number
+  totalG: Number,
+  totalL: Number,
+  ytdPct: Number
 })
 
 UserSchema.methods.setPassword = function(password) {

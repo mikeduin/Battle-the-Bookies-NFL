@@ -7,6 +7,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.gameWeekFilter;
   vm.dateNumbFilter;
   vm.weekNumbFilter;
+  vm.weekNumb;
   vm.weeksOfGames = [];
   vm.nflLines = [];
   vm.getNflLines = getNflLines;
@@ -14,12 +15,11 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.updatePicks = updatePicks;
   vm.gameSort = "MatchTime";
   vm.gameSortTwo = "EventID";
-  vm.userSort = "-sumYtd";
+  vm.userSort = "-totalDollars";
   vm.updateResults = updateResults;
   vm.getPicks = getPicks;
   vm.getWeeklyPicks = getWeeklyPicks;
   vm.getDates = getDates;
-  vm.activeUserSumToday;
   vm.picks = [];
   vm.users = [];
 
@@ -29,6 +29,13 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   $timeout(function(){
     vm.showSpinner = false
   }, 10000)
+
+  console.log('$stateParams are', $stateParams.weekNumb);
+
+  vm.checkWeekNumb = function(){
+    vm.weekNumb = $stateParams.weekNumb
+  };
+  vm.checkWeekNumb();
 
   vm.checkTime = function(gametime) {
     if (moment(gametime).isBefore(vm.currentTime)){
@@ -134,33 +141,33 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     }
   }
 
-  vm.sumWeek = function(user, weeknumb) {
-    username = user.username;
-    console.log("vm.sumWeek weeknumb is", weeknumb)
-    return picksService.sumWeek(username, weeknumb).then(function(result){
-      // console.log("total returned in controller is " + result);
-      return result;
-    })
-  };
+  // vm.sumWeek = function(user, weeknumb) {
+  //   username = user.username;
+  //   console.log("vm.sumWeek weeknumb is", weeknumb)
+  //   return picksService.sumWeek(username, weeknumb).then(function(result){
+  //     // console.log("total returned in controller is " + result);
+  //     return result;
+  //   })
+  // };
 
-  vm.sumAllPicks = function(user) {
-    username = user.username;
-    picksService.sumAllPicks(username).then(function(result){
-      user.sumYtd = result.totalDollars
-    })
-  }
+  // vm.sumAllPicks = function(user) {
+  //   username = user.username;
+  //   picksService.sumAllPicks(username).then(function(result){
+  //     user.sumYtd = result.totalDollars
+  //   })
+  // }
 
-  vm.pickSettle = function(pick) {
-    if (pick.pickResult === "win") {
-      pick.dollars = pick.activePayout
-    } else if (pick.pickResult === "loss") {
-      pick.dollars = -100
-    } else if (pick.pickResult === "push"){
-      pick.dollars = 0
-    } else {
-      null
-    }
-  }
+  // vm.pickSettle = function(pick) {
+  //   if (pick.pickResult === "win") {
+  //     pick.dollars = pick.activePayout
+  //   } else if (pick.pickResult === "loss") {
+  //     pick.dollars = -100
+  //   } else if (pick.pickResult === "push"){
+  //     pick.dollars = 0
+  //   } else {
+  //     null
+  //   }
+  // }
 
   vm.updateDollars = function(){
     picksService.updateDollars().then(function(){

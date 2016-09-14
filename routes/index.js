@@ -678,7 +678,9 @@ setInterval(function(){
           w17wins: w17wins,
           w17games: w17games,
           totalW: totalW,
-          totalG: totalG
+          totalG: totalG,
+          totalL: totalG - totalW,
+          ytdPct: totalW/totalG
         }, function(err, data){
           if(err) {console.log(err)}
 
@@ -687,7 +689,7 @@ setInterval(function(){
       })
     })
   })
-}, 10000)
+}, 600000)
 
 router.get('/picks/checkSubmission/:EventID', auth, function(req, res, next){
   Pick.find({

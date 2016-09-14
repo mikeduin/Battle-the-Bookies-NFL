@@ -12,13 +12,13 @@ $(document).ready(function(){
 
 <div class="navbar-fixed">
   <ul id='standings-dropdown' class="dropdown-content">
-    <li><a>Weekly Results</a></li>
+    <li><a ui-sref='home.results'>Weekly Results</a></li>
     <li><a ui-sref='home.standings'>Overall Standings</a></li>
     <li><a ui-sref='home.prizes'>Prizes</a></li>
   </ul>
   <ul id='results-dropdown' class="dropdown-content">
-    <li><a ui-sref='home.results({weekNumb: "01"})'>Week 1</a></li>
     <li><a ui-sref='home.results({weekNumb: "02"})'>Week 2</a></li>
+    <li><a ui-sref='home.results({weekNumb: "01"})'>Week 1</a></li>
   </ul>
   <nav class="z-depth-2">
     <div class="nav-wrapper">
@@ -42,9 +42,6 @@ $(document).ready(function(){
         <li>
           <div class="userView">
             <img class="background" src="images/nfl-money-resize.jpg">
-            <!-- <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
-            <a href="#!name"><span class="white-text name">John Doe</span></a>
-            <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a> -->
           </div>
         </li>
         <li><a ui-sref="home" style="color: #B68708; font-size: 32px">Battle the Bookies</a></li>
@@ -53,7 +50,7 @@ $(document).ready(function(){
         <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()" style="color: #B68708">Logout</a></li>
         <li><a ui-sref="home.tutorial">How to Play</a></li>
         <li><a ui-sref="home.makepicks">Make Picks</a></li>
-        <li><a>Weekly Results</a></li>
+        <li><a ui-sref='home.results'>Weekly Results</a></li>
         <li><a ui-sref='home.standings'>YTD Standings</a></li>
         <li><a ui-sref='home.user'>Users</a></li>
         <li><a ui-sref='home.prizes'>Prizes</a></li>

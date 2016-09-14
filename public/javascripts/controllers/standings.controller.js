@@ -12,7 +12,7 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   vm.pageArray = [1];
   vm.activePage = 1;
   vm.pageView;
-  vm.sortOrder = "-sumYtd";
+  vm.sortOrder = "-totalDollars";
   vm.users = [];
   vm.username = "mikeduin";
   vm.user = {};
@@ -33,16 +33,8 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
 
   vm.sumAllPicks = function(user) {
     username = user.username;
-    picksService.sumAllPicks(username).then(function(result){
-      user.sumYtd = result.totalDollars;
-      user.ytdW = result.totalW;
-      user.ytdL = result.totalG - result.totalW;
-      user.ytdPct = result.totalW / result.totalG;
-    }).then(function(){
-      username = user.username;
-      picksService.getWeeklyStats(username).then(function(result){
-        user.dailyStats = result.data
-      })
+    picksService.getWeeklyStats(username).then(function(result){
+      user.dailyStats = result.data
     })
   }
 

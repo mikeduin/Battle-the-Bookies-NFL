@@ -1,4 +1,4 @@
-<resultsHead class="row" ng-init="vm.getWeeklyNflLines(); vm.getDates(); vm.getAllUsers()">
+<resultsHead class="row" ng-init="vm.getWeeklyNflLines(); vm.getDates(); vm.getAllUsers(); vm.getWeeklyPicks()">
   <leadDiv class="col m12 result-head z-depth-1">
     <div class="col m5 left-align">
       <p class="resHead"> Weekly Results </p>
@@ -9,11 +9,27 @@
           <option ng-repeat = "day in vm.weeksOfGames" value="{{day}}"> {{day}} </option>
         </select>
     </selectDiv> -->
-    <selectDiv class="col m2 res-select">
+    <selectDiv class="col m2 offset-m5 res-select">
         <label> Sort by </label>
         <select class="browser-default" ng-model="vm.userSort">
-          <option value="-sumYtd"> YTD $ </option>
-          <option value="-sumDay"> Week $ </option>
+          <option value="-totalDollars"> YTD $ </option>
+          <option ng-if="vm.weekNumb === '01'" value="-w1dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '02'" value="-w2dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '03'" value="-w3dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '04'" value="-w4dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '05'" value="-w5dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '06'" value="-w6dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '07'" value="-w7dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '08'" value="-w8dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '09'" value="-w9dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '10'" value="-w10dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '11'" value="-w11dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '12'" value="-w12dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '13'" value="-w13dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '14'" value="-w14dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '15'" value="-w15dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '16'" value="-w16dollars"> Week $ </option>
+          <option ng-if="vm.weekNumb === '17'" value="-w17dollars"> Week $ </option>
         </select>
     </selectDiv>
   </leadDiv>
@@ -22,12 +38,6 @@
 <results>
   <table class="bordered striped">
     <thead>
-      <!-- <tr>
-        <th></th>
-        <th class="center-align"></th>
-        <th class="center-align"></th>
-        <th ng-repeat="game in vm.nflLines | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: { Week: vm.gameWeekFilter }"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
-      </tr> -->
       <tr>
         <th>
           Entrant
@@ -36,21 +46,38 @@
           YTD $
         </th>
         <th class="left-align">
-          Weekly $
+          Week $
         </th>
         <th ng-repeat="game in vm.nflLines | orderBy: [vm.gameSort, vm.gameSortTwo]" ng-if="vm.checkTime(game.MatchTime) === true"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="user in vm.users | orderBy: vm.userSort" ng-init="vm.getWeeklyPicks(); vm.sumAllPicks(user)">
+      <tr ng-repeat="user in vm.users | orderBy: vm.userSort">
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a> </td>
-        <td class="nobr center-align"> <b> {{user.sumYtd | currency:$:0}} </b> </td>
+        <td class="nobr center-align"> <b> {{user.totalDollars | currency:$:0}} </b> </td>
         <td class="nobr"> <b>
+           <span ng-if="vm.weekNumb === '01'">{{user.w1dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '02'">{{user.w2dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '03'">{{user.w3dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '04'">{{user.w4dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '05'">{{user.w5dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '06'">{{user.w6dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '07'">{{user.w7dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '08'">{{user.w8dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '09'">{{user.w9dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '10'">{{user.w10dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '11'">{{user.w11dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '12'">{{user.w12dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '13'">{{user.w13dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '14'">{{user.w14dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '15'">{{user.w15dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '16'">{{user.w16dollars | currency:$:0}} </span>
+           <span ng-if="vm.weekNumb === '17'">{{user.w17dollars | currency:$:0}} </span>
           <!-- <sum-user-week user="user" weeknumb="vm.weekNumbFilter"> </sum-user-week> -->
         </b> </td>
-        <td ng-repeat="pick in vm.picks | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: {username: user.username}" ng-if="vm.checkTime(pick.MatchTime) === true" ng-class="{pickWin: pick.pickResult === 'win', pickLoss: pick.pickResult === 'loss', pickPush: pick.pickResult === 'push'}" ng-init="vm.weekNumbPull(pick.MatchTime); vm.pickSettle(pick)" on-finish-render="ngRepeatFinished"> {{pick.activePick}} <br><span> {{pick.dollars | currency:$:0}} </span> </td>
+        <td ng-repeat="pick in vm.picks | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: {username: user.username}" ng-if="vm.checkTime(pick.MatchTime) === true" ng-class="{pickWin: pick.pickResult === 'win', pickLoss: pick.pickResult === 'loss', pickPush: pick.pickResult === 'push'}" ng-init="vm.weekNumbPull(pick.MatchTime)" on-finish-render="ngRepeatFinished"> {{pick.activePick}} <br><span ng-if="pick.Final === true"> {{pick.finalPayout | currency:$:0}} </span> </td>
       </tr>
     </tbody>
   </table>
-  <chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
+  <!-- <chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner> -->
 </results>
