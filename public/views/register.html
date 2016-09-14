@@ -44,6 +44,11 @@
               </div>
             </div>
             <div class="row">
+              <div class="col m12 center-align">
+                <error ng-show="vm.error"> {{vm.error}} </error>
+              </div>
+            </div>
+            <div class="row">
               <buyInLevel class="col m5 offset-m3">
                 <span class="buy-in-label"> Choose Your Buy-in Level:</span>
                 <br>
@@ -57,7 +62,10 @@
                 <label for="goldTier"> <color class="gold">Gold</color> ($200) </label>
               </buyInLevel>
               <div class="col m3">
-                <button type="submit" class="btn btn-large waves-effect waves-light login-button" ng-class="{disabled: regForm.username.$error.required || regForm.email.$error.required || regForm.email.$invalid ||  regForm.password.$error.required || regForm.confirmPassword.$error.required || regForm.nameFirst.$error.required || regForm.nameLast.$error.required || regForm.group1.$error.required || regForm.confirmPassword.$error.validator}"> GAME ON! </button>
+                <button type="submit" class="btn btn-large waves-effect waves-light login-button disabled" > GAME ON! </button>
+                <div>
+                  <i> <b> Registration is now closed for the 2016 NFL season. </b> </i>
+                </div>
               </div>
             </div>
           </form>

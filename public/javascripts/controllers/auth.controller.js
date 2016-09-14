@@ -7,7 +7,7 @@ function AuthController ($state, authService) {
 
   vm.register = function(user) {
     authService.register(user).error(function(error){
-      vm.error = error;
+      vm.error = error.message;
     }).then(function(){
       $state.go('home.makepicks');
     })

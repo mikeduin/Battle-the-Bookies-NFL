@@ -691,23 +691,31 @@ router.post('/register', function(req, res, next){
     return res.status(400).json({message: 'You left something blank!'});
   }
 
-  var user = new User();
+  // User.findOne({
+  //   username: req.body.username
+  // }, function(err, username, next){
+  //   if(username) {
+  //     return res.status(400).json({message: 'That username already exists.'})
+  //   } else {
+      var user = new User();
 
-  user.username = req.body.username;
-  user.nameFirst = req.body.nameFirst;
-  user.nameLast = req.body.nameLast;
-  user.email = req.body.email;
-  user.buyin = req.body.buyin;
-  user.setPassword(req.body.password);
+      user.username = req.body.username;
+      user.nameFirst = req.body.nameFirst;
+      user.nameLast = req.body.nameLast;
+      user.email = req.body.email;
+      user.buyin = req.body.buyin;
+      user.setPassword(req.body.password);
 
-  console.log(user);
+      console.log(user);
 
-  user.save(function (err){
-    if(err){ console.log(err); }
+      user.save(function (err){
+        if(err){ console.log(err); }
 
-    console.log(user + 'has been added to db!');
-    res.json({token: user.generateJWT()})
-  });
+        console.log(user + 'has been added to db!');
+        res.json({token: user.generateJWT()})
+      });
+  //   }
+  // })
 
 });
 
