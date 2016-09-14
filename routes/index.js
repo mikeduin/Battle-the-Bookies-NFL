@@ -63,7 +63,7 @@ setInterval(function(){
         });
     // res.json(odds);
   })
-}, 30000)
+}, 60000)
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
@@ -161,7 +161,7 @@ setInterval(function(){
       })
     })
   console.log('picks updated at ' + new Date())
-}, 30000)
+}, 60000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
@@ -294,7 +294,7 @@ setInterval(function(){
       })
     })
   })
-}, 30000)
+}, 60000)
 
 // END LINE ROUTES
 // BEGIN RESULTS ROUTES
@@ -330,7 +330,7 @@ router.get('/picks', function (req, res, next){
   })
 })
 
-// The function below checks every five minutes to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page.
+// The function below checks every ten minutes to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page.
 
 setInterval(function(){
   Line.find({
@@ -355,7 +355,7 @@ setInterval(function(){
     })
   })
   console.log("matchtimes have been updated")
-}, 300000)
+}, 600000)
 
 // This function below checks every five minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 

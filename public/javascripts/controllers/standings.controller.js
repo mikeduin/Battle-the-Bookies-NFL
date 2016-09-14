@@ -17,13 +17,13 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   vm.username = "mikeduin";
   vm.user = {};
   vm.dailyStats = [];
-  // $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
-  //   vm.showSpinner = false;
-  // })
+  $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
+    vm.showSpinner = false;
+  })
 
-  $timeout(function(){
-    vm.showSpinner = false
-  }, 6000)
+  // $timeout(function(){
+  //   vm.showSpinner = false
+  // }, 6000)
 
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
@@ -39,7 +39,6 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
       user.ytdL = result.totalG - result.totalW;
       user.ytdPct = result.totalW / result.totalG;
     }).then(function(){
-      console.log(user);
       username = user.username;
       picksService.getWeeklyStats(username).then(function(result){
         user.dailyStats = result.data
