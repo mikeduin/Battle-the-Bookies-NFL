@@ -466,8 +466,6 @@ router.get('/weeklyStats/:username', function(req, res, next){
       })
 
     })).then(function(userArray){
-      console.log('heello');
-      console.log('userArray is', userArray);
       res.json(userArray)
     })
   })
