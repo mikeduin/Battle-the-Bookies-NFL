@@ -755,6 +755,11 @@ router.get('/weeklyStats/:username', function(req, res, next){
   })
 })
 
+// router.get('/newWeeklyStats/:username', function(req, res, next){
+//   var username = req.params.username;
+//
+// })
+
 router.get('/picks/:username/stats', function (req, res, next){
   Pick.find({
     username: req.params.username

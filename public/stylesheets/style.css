@@ -28,6 +28,14 @@ nav {
   color: white;
 }
 
+.collapsible-body ul {
+  background-color: #45724A;
+}
+
+.collapsible-body ul li a {
+  color: #B68708 !important;
+}
+
 .ala-link {
   border-top: solid 1px white;
 }
@@ -76,15 +84,15 @@ nav {
   margin-left: 20px
 }
 
-#results-dropdown {
+#results-dropdown, #standings-dropdown {
   background-color: #2F5032;
 }
 
-#results-dropdown a {
+#results-dropdown a, #standings-dropdown a {
   color: white
 }
 
-#results-dropdown a:hover {
+#results-dropdown a:hover, #standings-dropdown a:hover {
   color: #2F5032;
 }
 

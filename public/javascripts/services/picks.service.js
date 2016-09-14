@@ -84,5 +84,10 @@ function picksService ($http, authService) {
         return result
       })
     }
+    // getNewWeeklyStats: function(username){
+    //   return $http.get('/newWeeklyStats/' + username).then(function(result){
+    //     return result
+    //   })
+    // }
   }
 }

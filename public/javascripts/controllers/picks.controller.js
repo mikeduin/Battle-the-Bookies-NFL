@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('PickController', ['oddsService', 'picksService', 'resultsService', 'authService', PickController])
+  .controller('PickController', ['oddsService', 'picksService', 'resultsService', 'authService', '$scope', PickController])
 
-function PickController (oddsService, picksService, resultsService, authService) {
+function PickController (oddsService, picksService, resultsService, authService, $scope) {
   var vm = this;
   vm.currentUser = currentUser;
   vm.currentTime = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -36,6 +36,9 @@ function PickController (oddsService, picksService, resultsService, authService)
   vm.displayPayCalc = displayPayCalc;
   vm.activePayCalc = activePayCalc;
   vm.mlFormat = mlFormat;
+  $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
+    vm.showSpinner = false;
+  })
 
   vm.weekSetter = function(MatchTime) {
     if (moment(MatchTime).isBetween('2016-06-23', '2016-09-06')) {
@@ -90,6 +93,7 @@ function PickController (oddsService, picksService, resultsService, authService)
   }
 
   function getNflLines() {
+    vm.showSpinner = true;
     oddsService.getNflLines().then(function(lines){
       vm.nflLines = lines;
     })

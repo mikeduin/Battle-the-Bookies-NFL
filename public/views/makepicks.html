@@ -61,7 +61,7 @@
         <th colspan="2" class="center-align"> YOUR PICK </th>
       </tr>
     </thead>
-    <tbody ng-repeat="game in vm.nflLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter }">
+    <tbody ng-repeat="game in vm.nflLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter }" on-finish-render="ngRepeatFinished">
       <tr ng-init="vm.timeCheck(game); vm.checkSubmission(game, vm.currentUser())">
         <td rowspan="2"> <b>{{game.Week}}</b> <br> {{game.MatchTime | date:'MM/dd/yyyy'}} <br> {{game.MatchTime | date:'h:mm a'}} </td>
         <td> <b>(A)</b> {{game.AwayTeam}}
@@ -95,4 +95,5 @@
       </tr>
     </tbody>
   </table>
+  <chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
 </picksTable>

@@ -28,7 +28,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   // })
   $timeout(function(){
     vm.showSpinner = false
-  }, 10000)
+  }, 6000)
 
   console.log('$stateParams are', $stateParams.weekNumb);
 
