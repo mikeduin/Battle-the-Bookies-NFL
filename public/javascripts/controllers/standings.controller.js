@@ -14,12 +14,11 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   vm.pageView;
   vm.sortOrder = "-totalDollars";
   vm.users = [];
-  vm.username = "mikeduin";
   vm.user = {};
   vm.dailyStats = [];
-  $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
-    vm.showSpinner = false;
-  })
+    $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
+      vm.showSpinner = false;
+    })
 
   // $timeout(function(){
   //   vm.showSpinner = false

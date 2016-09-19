@@ -100,6 +100,26 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
         }
       }
     })
+    .state('home.results.picks', {
+      url: '/picks',
+      views: {
+        'picks@home.results': {
+          templateUrl: 'views/res-picks.html',
+          controller: 'ResultController',
+          controllerAs: 'vm'
+        }
+      }
+    })
+    .state('home.results.poolsplits', {
+      url: '/poolsplits',
+      views: {
+        'poolsplits@home.results': {
+          templateUrl: 'views/res-poolsplits.html',
+          controller: 'ResultController',
+          controllerAs: 'vm'
+        }
+      }
+    })
     .state('home.standings', {
       url: 'standings',
       views: {
