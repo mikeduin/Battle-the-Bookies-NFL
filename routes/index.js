@@ -17,6 +17,7 @@ var Line = mongoose.model('Line');
 var Result = mongoose.model('Result');
 var Pick = mongoose.model('Pick');
 var abbrevs = require('../modules/abbrevs.js');
+var helmets = require('../modules/helmets.js');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
 
@@ -187,6 +188,8 @@ router.get('/updateOdds', function(req, res, next) {
           AwayTeam: odds[i].AwayTeam,
           HomeAbbrev: abbrevs.teamAbbrev(odds[i].HomeTeam),
           AwayAbbrev: abbrevs.teamAbbrev(odds[i].AwayTeam),
+          HomeHelmet: helmets.teamHelmet(odds[i].HomeTeam),
+          AwayHelmet: helmets.teamHelmet(odds[i].AwayTeam),
           MatchTime: new Date(odds[i].MatchTime),
           MatchDay: moment(odds[i].MatchTime).utcOffset(-7).format('MMMM Do, YYYY'),
           DateNumb: parseInt(moment(odds[i].MatchTime).utcOffset(-7).format('YYYYMMDD')),

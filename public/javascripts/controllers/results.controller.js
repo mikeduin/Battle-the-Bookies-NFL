@@ -3,6 +3,7 @@ angular
   .controller('ResultController', ['oddsService', 'picksService', 'resultsService', 'usersService', '$scope', '$timeout', '$stateParams', ResultController])
 
 function ResultController (oddsService, picksService, resultsService, usersService, $scope, $timeout, $stateParams) {
+
   var vm = this;
   vm.gameWeekFilter;
   vm.dateNumbFilter;
@@ -19,7 +20,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.updateResults = updateResults;
   vm.getPicks = getPicks;
   vm.getWeeklyPicks = getWeeklyPicks;
-  vm.getDates = getDates;
+  // vm.getDates = getDates;
   vm.picks = [];
   vm.users = [];
 
@@ -70,6 +71,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     vm.showSpinner = true;
     oddsService.getWeeklyNflLines($stateParams.weekNumb).then(function(games){
       vm.nflLines = games;
+      console.log('nfl lines are', vm.nflLines);
     })
   }
 
@@ -94,25 +96,25 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   }
 
-  function getDates () {
-    oddsService.getDates().then(function(dates){
-      vm.weeksOfGames = dates;
-      var dateArray = vm.weeksOfGames;
-      var lastWeek = dateArray[dateArray.length - 1];
-      if (currentWeek === "Preseason") {
-        vm.gameWeekFilter = "Week 1";
-        vm.weekNumbFilter = "01";
-      } else if (
-        currentWeek === "Postseason"
-      ) {
-        vm.gameWeekFilter = "Week 17";
-        vm.weekNumbFilter - "17";
-      } else {
-        vm.gameWeekFilter = currentWeek;
-        vm.weekNumbFilter = currentWeekNumb;
-      }
-      console.log('current weekNumb is', vm.weekNumbFilter);
-    })
-  };
+  // function getDates () {
+  //   oddsService.getDates().then(function(dates){
+  //     vm.weeksOfGames = dates;
+  //     var dateArray = vm.weeksOfGames;
+  //     var lastWeek = dateArray[dateArray.length - 1];
+  //     if (currentWeek === "Preseason") {
+  //       vm.gameWeekFilter = "Week 1";
+  //       vm.weekNumbFilter = "01";
+  //     } else if (
+  //       currentWeek === "Postseason"
+  //     ) {
+  //       vm.gameWeekFilter = "Week 17";
+  //       vm.weekNumbFilter - "17";
+  //     } else {
+  //       vm.gameWeekFilter = currentWeek;
+  //       vm.weekNumbFilter = currentWeekNumb;
+  //     }
+  //     console.log('current weekNumb is', vm.weekNumbFilter);
+  //   })
+  // };
 
 }
