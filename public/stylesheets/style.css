@@ -693,7 +693,6 @@ chasing-dots-spinner {
 
 leadDiv {
   margin-top: 20px;
-  margin-bottom: -10px;
 }
 
 .resHead {
@@ -712,6 +711,35 @@ leadDiv {
 
 .res-select {
   margin-top: 20px;
+}
+
+splits lead  {
+  margin-top: 80px;
+}
+
+resBox {
+  width: 30%;
+}
+
+.helmet-size {
+  max-height: 80px;
+}
+
+splits tr td {
+  margin-bottom: 200px
+}
+
+.no-sp {
+  padding: 1%;
+  margin: 0;
+}
+
+.sm-sp {
+  padding: 1%;
+}
+
+.split-table {
+  padding-left: 0.5%;
 }
 
 /*END RESULT STYLES*/

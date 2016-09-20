@@ -38,7 +38,7 @@
            <span ng-if="vm.weekNumb === '17'">{{user.w17dollars | currency:$:0}} </span>
           <!-- <sum-user-week user="user" weeknumb="vm.weekNumbFilter"> </sum-user-week> -->
         </b> </td>
-        <td ng-repeat="pick in vm.picks | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: {username: user.username}" ng-if="vm.checkTime(pick.MatchTime) === true" ng-class="{pickWin: pick.pickResult === 'win', pickLoss: pick.pickResult === 'loss', pickPush: pick.pickResult === 'push'}" ng-init="vm.weekNumbPull(pick.MatchTime)" on-finish-render="ngRepeatFinished"> {{pick.activePick}} <br><span ng-if="pick.Final === true"> {{pick.finalPayout | currency:$:0}} </span> </td>
+        <td ng-repeat="pick in vm.picks | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: {username: user.username}" ng-if="vm.checkTime(pick.MatchTime) === true" ng-class="{pickWin: pick.pickResult === 'win', pickLoss: pick.pickResult === 'loss', pickPush: pick.pickResult === 'push'}" on-finish-render="ngRepeatFinished"> {{pick.activePick}} <br><span ng-if="pick.Final === true"> {{pick.finalPayout | currency:$:0}} </span> </td>
       </tr>
     </tbody>
   </table>

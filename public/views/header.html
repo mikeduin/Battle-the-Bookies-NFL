@@ -17,6 +17,7 @@ $(document).ready(function(){
     <li><a ui-sref='home.prizes'>Prizes</a></li>
   </ul>
   <ul id='results-dropdown' class="dropdown-content">
+    <li><a ui-sref='home.results.picks({weekNumb: "03"})'>Week 3</a></li>
     <li><a ui-sref='home.results.picks({weekNumb: "02"})'>Week 2</a></li>
     <li><a ui-sref='home.results.picks({weekNumb: "01"})'>Week 1</a></li>
   </ul>
@@ -57,6 +58,7 @@ $(document).ready(function(){
               <a class="collapsible-header">Results</a>
               <div class="collapsible-body">
                 <ul>
+                  <li><a ui-sref='home.results.picks({weekNumb: "03"})'>Week 3</a></li>
                   <li><a ui-sref='home.results.picks({weekNumb: "02"})'>Week 2</a></li>
                   <li><a ui-sref='home.results.picks({weekNumb: "01"})'>Week 1</a></li>
                 </ul>
