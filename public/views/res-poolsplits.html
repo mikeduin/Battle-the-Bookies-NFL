@@ -9,29 +9,29 @@
         </thead> -->
         <tbody>
           <tr>
-            <td class="center-align no-sp"> <img src="http://www.riddell.com/media/catalog/product/cache/1/image/475x/040ec09b1e35df139433887a97daa66f/3/0/30129_PL_Cardinals_5.png" alt="" class="helmet-size"/> </td>
-            <td></td>
-            <td class="center-align no-sp"> <img src="http://www.riddell.com/media/catalog/product/3/0/30101_PL_Falcons_5.png" alt="" class="helmet-size"/> </td>
+            <td class="center-align no-sp"> <img src="{{game.AwayHelmet}}" alt="" class="helmet-size"/> </td>
+            <td class="center-align"> <b>GAME {{$index + 1}}</b></td>
+            <td class="center-align no-sp"> <img src="{{game.HomeHelmet}}" alt="" class="helmet-size"/> </td>
           </tr>
           <tr>
             <td class="center-align no-sp"> <b>{{game.AwayAbbrev}}</b> </td>
-            <td class="center-align no-sp"> CLOSING ODDS</td>
+            <td class="center-align no-sp"> <i>CLOSING ODDS</i></td>
             <td class="center-align no-sp"> <b>{{game.HomeAbbrev}}</b> </td>
           </tr>
           <tr>
-            <td class="center-align no-sp"> {{game.PointSpreadAway | mlFormat}} </td>
+            <td class="center-align no-sp"> {{game.PointSpreadAway | mlFormat}} ({{game.PointSpreadAwayLine | mlFormat}}) </td>
             <td class="center-align no-sp"> <b>SPREAD</b> </td>
-            <td class="center-align no-sp"> {{game.PointSpreadHome | mlFormat}} </td>
+            <td class="center-align no-sp"> {{game.PointSpreadHome | mlFormat}} ({{game.PointSpreadHomeLine | mlFormat}}) </td>
           </tr>
           <tr>
-            <td class="center-align no-sp"> {{game.MoneyLineAway | mlFormat}} </td>
+            <td class="center-align no-sp"> {{game.MoneyLineAway | mlFormat}}  </td>
             <td class="center-align no-sp"> <b>MONEYLINE</b> </td>
             <td class="center-align no-sp"> {{game.MoneyLineHome | mlFormat}} </td>
           </tr>
           <tr>
-            <td class="center-align no-sp"> Under {{game.TotalNumber}} </td>
+            <td class="center-align no-sp"> Under {{game.TotalNumber}} ({{game.UnderLine | mlFormat}}) </td>
             <td class="center-align no-sp"> <b>TOTAL</b> </td>
-            <td class="center-align no-sp"> Over {{game.TotalNumber}} </td>
+            <td class="center-align no-sp"> Over {{game.TotalNumber}} ({{game.OverLine | mlFormat}}) </td>
           </tr>
         </tbody>
       </table>

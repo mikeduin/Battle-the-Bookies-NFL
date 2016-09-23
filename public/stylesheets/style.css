@@ -670,6 +670,10 @@ chasing-dots-spinner {
   top: 40%;
 }
 
+.week-number {
+  color: #B68708;
+}
+
 .pickWin {
   color: green;
   font-weight: 600;

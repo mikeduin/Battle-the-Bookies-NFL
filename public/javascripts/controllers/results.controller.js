@@ -1,14 +1,16 @@
 angular
   .module('battleBookies')
-  .controller('ResultController', ['oddsService', 'picksService', 'resultsService', 'usersService', '$scope', '$timeout', '$stateParams', ResultController])
+  .controller('ResultController', ['oddsService', 'picksService', 'resultsService', 'usersService', '$scope', '$timeout', '$stateParams', '$state', ResultController])
 
-function ResultController (oddsService, picksService, resultsService, usersService, $scope, $timeout, $stateParams) {
+function ResultController (oddsService, picksService, resultsService, usersService, $scope, $timeout, $stateParams, $state) {
 
+  $scope.uiRouterState = $state;
   var vm = this;
   vm.gameWeekFilter;
   vm.dateNumbFilter;
   vm.weekNumbFilter;
   vm.weekNumb;
+  vm.week;
   vm.weeksOfGames = [];
   vm.nflLines = [];
   vm.getNflLines = getNflLines;
@@ -34,7 +36,8 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   console.log('$stateParams are', $stateParams.weekNumb);
 
   vm.checkWeekNumb = function(){
-    vm.weekNumb = $stateParams.weekNumb
+    vm.weekNumb = $stateParams.weekNumb;
+    vm.week = parseInt(vm.weekNumb);
   };
   vm.checkWeekNumb();
 
@@ -72,6 +75,12 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     oddsService.getWeeklyNflLines($stateParams.weekNumb).then(function(games){
       vm.nflLines = games;
       console.log('nfl lines are', vm.nflLines);
+      for (i=0; i<vm.nflLines.length; i++){
+        var nflLine = vm.nflLines[i].AwayAbbrev + 'v' + vm.nflLines[i].HomeAbbrev;
+        $scope[nflLine] = vm.nflLines[i];
+        // console.log('this line is', $scope[nflLine]);
+      }
+      console.log($scope.BALvCLE)
     })
   }
 

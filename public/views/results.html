@@ -1,9 +1,9 @@
 <resultsHead class="row">
   <leadDiv class="col m12 result-head z-depth-1" style="width: 100%">
     <div class="col m5 left-align">
-      <p class="resHead"> Weekly Results </p>
+      <p class="resHead"> Weekly Results: <span class="week-number">Week {{vm.week}} </span></p>
     </div>
-    <selectDiv class="col m2 offset-m5 res-select">
+    <selectDiv class="col m2 offset-m5 res-select" ng-show="uiRouterState.current.name === 'home.results.picks'">
         <label> Sort by </label>
         <select class="browser-default" ng-model="vm.userSort">
           <option value="-totalDollars"> YTD $ </option>
