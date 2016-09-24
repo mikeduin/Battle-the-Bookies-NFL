@@ -138,27 +138,27 @@ function ResultController (oddsService, picksService, resultsService, usersServi
           $scope.nflLines[vm.nflLines[i].AwayAbbrev].series[0].rules.push(
             {
                 "rule":"%i==0",
-                "background-color": vm.nflLines[i].homeColor
+                "background-color": "#838383"
             },
             {
                 "rule":"%i==1",
-                "background-color": vm.nflLines[i].homeColor
+                "background-color": "#2D2D2D"
             },
             {
                 "rule":"%i==2",
-                "background-color": vm.nflLines[i].homeColor
+                "background-color": vm.nflLines[i].HomeColor
             },
             {
                 "rule":"%i==3",
-                "background-color": vm.nflLines[i].homeColor
+                "background-color": vm.nflLines[i].AwayColor
             },
             {
                 "rule":"%i==4",
-                "background-color": vm.nflLines[i].homeColor
+                "background-color": vm.nflLines[i].HomeColor
             },
             {
                 "rule":"%i==5",
-                "background-color": vm.nflLines[i].homeColor
+                "background-color": vm.nflLines[i].AwayColor
             }
           )
       }
