@@ -29,6 +29,8 @@ var LineSchema = new mongoose.Schema({
   AwayAbbrev: String,
   HomeHelmet: String,
   AwayHelmet: String,
+  HomeColor: String,
+  AwayColor: String,
   MoneyLineHome: Number,
   MoneyLineAway: Number,
   PointSpreadHome: Number,
