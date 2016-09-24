@@ -9,12 +9,12 @@
         </thead> -->
         <tbody>
           <tr>
-            <td class="center-align no-sp"> <img src="{{game.AwayHelmet}}" alt="" class="helmet-size"/> </td>
+            <td class="center-align no-sp"> <img src="{{game.AwayHelmet}}" alt="" class="helmet-size"/> <div class="h-a"><i>Away</i></td>
             <td class="center-align"> <b>GAME {{$index + 1}}</b></td>
-            <td class="center-align no-sp"> <img src="{{game.HomeHelmet}}" alt="" class="helmet-size"/> </td>
+            <td class="center-align no-sp"> <img src="{{game.HomeHelmet}}" alt="" class="helmet-size"/> <div class="h-a"><i>Home</i></td>
           </tr>
           <tr>
-            <td class="center-align no-sp"> <b>{{game.AwayAbbrev}}</b> </td>
+            <td class="center-align no-sp"> <b>{{game.AwayAbbrev}} </b> </td>
             <td class="center-align no-sp"> <i>CLOSING ODDS</i></td>
             <td class="center-align no-sp"> <b>{{game.HomeAbbrev}}</b> </td>
           </tr>
@@ -35,7 +35,7 @@
           </tr>
         </tbody>
       </table>
+      <div zingchart id="pick-chart[{{$index}}]" zc-json="nflLines[game.AwayAbbrev]" zc-width="100%" zc-height="350px"></div>
     </div>
   </div>
-
 </splits>

@@ -674,6 +674,11 @@ chasing-dots-spinner {
   color: #B68708;
 }
 
+.h-a {
+  margin-top: -10px;
+  font-size: 8px;
+}
+
 .pickWin {
   color: green;
   font-weight: 600;
