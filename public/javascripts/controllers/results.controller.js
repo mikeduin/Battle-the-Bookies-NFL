@@ -4,6 +4,8 @@ angular
 
 function ResultController (oddsService, picksService, resultsService, usersService, $scope, $timeout, $stateParams, $state) {
 
+  console.log($state);
+
   $scope.uiRouterState = $state;
   var vm = this;
   vm.gameWeekFilter;

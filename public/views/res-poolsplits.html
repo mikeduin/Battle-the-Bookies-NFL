@@ -2,21 +2,16 @@
   <div class="row">
     <div class="col s4 split-table" ng-repeat="game in vm.nflLines | orderBy: [vm.gameSort, vm.gameSortTwo]" ng-if="vm.checkTime(game.MatchTime) === true">
       <table class="striped">
-        <!-- <thead>
-          <tr>
-            <th class="center-align" colspan="3"> Game 1 </th>
-          </tr>
-        </thead> -->
         <tbody>
           <tr>
             <td class="center-align no-sp"> <img src="{{game.AwayHelmet}}" alt="" class="helmet-size"/> <div class="h-a"><i>Away</i></td>
-            <td class="center-align"> <b>GAME {{$index + 1}}</b></td>
+            <td class="center-align" style="font-size: 22px"> <b>GAME {{$index + 1}}</b></td>
             <td class="center-align no-sp"> <img src="{{game.HomeHelmet}}" alt="" class="helmet-size"/> <div class="h-a"><i>Home</i></td>
           </tr>
           <tr>
-            <td class="center-align no-sp"> <b>{{game.AwayAbbrev}} </b> </td>
+            <td class="center-align no-sp point-total" style="color: {{game.AwayColor}}"> <b>{{game.AwayAbbrev}} </b> </td>
             <td class="center-align no-sp"> <i>CLOSING ODDS</i></td>
-            <td class="center-align no-sp"> <b>{{game.HomeAbbrev}}</b> </td>
+            <td class="center-align no-sp point-total" style="color: {{game.HomeColor}}"> <b>{{game.HomeAbbrev}}</b> </td>
           </tr>
           <tr>
             <td class="center-align no-sp"> {{game.PointSpreadAway | mlFormat}} ({{game.PointSpreadAwayLine | mlFormat}}) </td>
@@ -33,9 +28,15 @@
             <td class="center-align no-sp"> <b>TOTAL</b> </td>
             <td class="center-align no-sp"> Over {{game.TotalNumber}} ({{game.OverLine | mlFormat}}) </td>
           </tr>
+          <!-- <tr class="center-align no-sp" ng-if="game.GameStatus === 'Final' ">
+            <td class="center-align no-sp point-total" style="color: {{game.AwayColor}}"> {{game.AwayScore}} </td>
+            <td class="center-align no-sp"> <b>Final Score</b> </td>
+            <td class="center-align no-sp point-total" style="color: {{game.HomeColor}}"> {{game.HomeScore}} </td>
+          </tr> -->
         </tbody>
       </table>
       <div zingchart id="pick-chart[{{$index}}]" zc-json="nflLines[game.AwayAbbrev]" zc-width="100%" zc-height="350px"></div>
     </div>
   </div>
 </splits>
+<chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>

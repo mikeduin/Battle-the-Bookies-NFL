@@ -27,6 +27,12 @@
         </select>
     </selectDiv>
   </leadDiv>
+  <div class="col s12 res-toggle">
+    <div class="col s12 left-align results-links">
+      <a ui-sref="home.results.picks" ng-class="{activeResult: uiRouterState.current.name === 'home.results.picks'}">USER SELECTIONS</a> |
+      <a ui-sref="home.results.poolsplits" ng-class="{activeResult: uiRouterState.current.name === 'home.results.poolsplits'}">PICK DISTRIBUTION</a>
+    </div>
+  </div>
 </resultsHead>
 
 <div ui-view="picks"> </div>

@@ -674,9 +674,28 @@ chasing-dots-spinner {
   color: #B68708;
 }
 
+.res-toggle {
+  margin-top: -1%;
+}
+
+.activeResult {
+  font-weight: 800;
+  color: #B68708;
+  font-size: 18px;
+}
+
 .h-a {
   margin-top: -10px;
   font-size: 10px;
+}
+
+.point-total {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.results-links {
+  margin-top: -2%;
 }
 
 .pickWin {
