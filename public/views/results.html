@@ -5,25 +5,9 @@
     </div>
     <selectDiv class="col m2 offset-m5 res-select" ng-show="uiRouterState.current.name === 'home.results.picks'">
         <label> Sort by </label>
-        <select class="browser-default" ng-model="vm.userSort">
+        <select class="browser-default" ng-model="vm.userSort" ng-change="vm.checkWeekNumb()">
           <option value="-totalDollars"> YTD $ </option>
-          <option ng-if="vm.weekNumb === '01'" value="-w1dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '02'" value="-w2dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '03'" value="-w3dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '04'" value="-w4dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '05'" value="-w5dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '06'" value="-w6dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '07'" value="-w7dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '08'" value="-w8dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '09'" value="-w9dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '10'" value="-w10dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '11'" value="-w11dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '12'" value="-w12dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '13'" value="-w13dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '14'" value="-w14dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '15'" value="-w15dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '16'" value="-w16dollars"> Week $ </option>
-          <option ng-if="vm.weekNumb === '17'" value="-w17dollars"> Week $ </option>
+          <option ng-repeat="week in vm.weekValues" ng-show="week.weekNumb === vm.weekNumb" value="{{week.value}}"> {{week.text}} </option>
         </select>
     </selectDiv>
   </leadDiv>
