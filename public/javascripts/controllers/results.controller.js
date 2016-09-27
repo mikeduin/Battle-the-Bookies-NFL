@@ -6,13 +6,11 @@ function ResultController (oddsService, picksService, resultsService, usersServi
 
   $scope.uiRouterState = $state;
   var vm = this;
-  vm.gameWeekFilter;
-  vm.dateNumbFilter;
-  vm.weekNumbFilter;
   vm.weekNumb;
   vm.week;
   vm.weeksOfGames = [];
   vm.nflLines = [];
+  vm.lastWeekNumb;
   $scope.nflLines={};
   vm.getNflLines = getNflLines;
   vm.getWeeklyNflLines = getWeeklyNflLines;
@@ -23,7 +21,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.updateResults = updateResults;
   vm.getPicks = getPicks;
   vm.getWeeklyPicks = getWeeklyPicks;
-  // vm.getDates = getDates;
+  vm.getDates = getDates;
   vm.picks = [];
   vm.users = [];
 
@@ -33,6 +31,8 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   $timeout(function(){
     vm.showSpinner = false
   }, 6000);
+
+  vm.weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
   vm.weekValues = [
     {"value": "-w1dollars", "text": "Week $", "weekNumb": "01"},
@@ -57,10 +57,17 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.checkWeekNumb = function(){
     vm.weekNumb = $stateParams.weekNumb;
     vm.week = parseInt(vm.weekNumb);
-    console.log('weeknumb is', vm.weekNumb);
-    console.log('vm.userSort is ', vm.userSort)
   };
   vm.checkWeekNumb();
+
+  vm.weekConfig = function(week){
+    var newWeek = week.toString();
+    if (newWeek.length === 1) {
+      return ("0" + newWeek)
+    } else {
+      return newWeek;
+    }
+  }
 
   vm.checkTime = function(gametime) {
     if (moment(gametime).isBefore(vm.currentTime)){
@@ -75,7 +82,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
       vm.users = result;
-      console.log(vm.users);
     })
   };
 
@@ -96,7 +102,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     vm.showSpinner = true;
     oddsService.getWeeklyNflLines($stateParams.weekNumb).then(function(games){
       vm.nflLines = games;
-      console.log('nfl lines are', vm.nflLines);
       for (i=0; i<vm.nflLines.length; i++){
         // var nflLine = vm.nflLines[i].AwayAbbrev + 'v' + vm.nflLines[i].HomeAbbrev;
         // $scope[nflLine] = vm.nflLines[i];
@@ -207,25 +212,13 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   }
 
-  // function getDates () {
-  //   oddsService.getDates().then(function(dates){
-  //     vm.weeksOfGames = dates;
-  //     var dateArray = vm.weeksOfGames;
-  //     var lastWeek = dateArray[dateArray.length - 1];
-  //     if (currentWeek === "Preseason") {
-  //       vm.gameWeekFilter = "Week 1";
-  //       vm.weekNumbFilter = "01";
-  //     } else if (
-  //       currentWeek === "Postseason"
-  //     ) {
-  //       vm.gameWeekFilter = "Week 17";
-  //       vm.weekNumbFilter - "17";
-  //     } else {
-  //       vm.gameWeekFilter = currentWeek;
-  //       vm.weekNumbFilter = currentWeekNumb;
-  //     }
-  //     console.log('current weekNumb is', vm.weekNumbFilter);
-  //   })
-  // };
+  function getDates () {
+    oddsService.getDates().then(function(dates){
+      vm.weeksOfGames = dates;
+      var dateArray = vm.weeksOfGames;
+      var lastWeek = dateArray[dateArray.length - 1];
+      vm.lastWeekNumb = lastWeek.substring(5);
+    })
+  };
 
 }

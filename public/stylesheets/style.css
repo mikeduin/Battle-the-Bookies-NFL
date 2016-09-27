@@ -6,9 +6,15 @@ body {
   font-family: 'Raleway', sans-serif;
 }
 
-a {
+a, .default {
   color: #2F5032;
   font-weight: 600;
+}
+
+.default-lg {
+  color: #2F5032;
+  font-weight: 600;
+  font-size: 20px;
 }
 
 /*BEGIN NAVBAR STYLES*/
@@ -674,10 +680,6 @@ chasing-dots-spinner {
   color: #B68708;
 }
 
-.res-toggle {
-  margin-top: -1%;
-}
-
 .activeResult {
   font-weight: 800;
   color: #B68708;
@@ -694,8 +696,8 @@ chasing-dots-spinner {
   font-size: 18px;
 }
 
-.results-links {
-  margin-top: -2%;
+.week-list {
+  margin-top: 6%;
 }
 
 .pickWin {
@@ -738,7 +740,11 @@ leadDiv {
 }
 
 .res-select {
-  margin-top: 20px;
+  margin-top: 10px;
+}
+
+.res-options {
+  padding-left: -100px !important;
 }
 
 splits lead  {

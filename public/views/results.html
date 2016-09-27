@@ -1,22 +1,26 @@
-<resultsHead class="row">
-  <leadDiv class="col m12 result-head z-depth-1" style="width: 100%">
-    <div class="col m5 left-align">
-      <p class="resHead"> Weekly Results: <span class="week-number">Week {{vm.week}} </span></p>
+<resultsHead class="row" ng-init="vm.getDates()">
+  <leadDiv class="col s12 result-head z-depth-1" style="width: 100%">
+    <div class="col m5 left-align" style="margin-left: -2%">
+      <div class="col s12 default week-list">
+        <a ui-sref="home.results.picks" class="res-options" ng-class="{activeResult: uiRouterState.current.name === 'home.results.picks'}">USER SELECTIONS</a> |
+        <a ui-sref="home.results.poolsplits" ng-class="{activeResult: uiRouterState.current.name === 'home.results.poolsplits'}">PICK DISTRIBUTION</a>
+      </div>
+      <div class="col s12 default-lg">
+        <span class="res-options">WEEK:</span>
+        <span ng-repeat="week in vm.weeks" ng-show="week <= vm.lastWeekNumb"> <a ui-sref='home.results.picks({weekNumb: vm.weekConfig(week)})' ng-class="{activeResult: vm.week === week}">{{week}}</a> </span>
+      </div>
     </div>
-    <selectDiv class="col m2 offset-m5 res-select" ng-show="uiRouterState.current.name === 'home.results.picks'">
+    <div class="col m5 left-align">
+      <p class="resHead"> Weekly Results</p>
+    </div>
+    <selectDiv class="col m2 res-select" ng-show="uiRouterState.current.name === 'home.results.picks'">
         <label> Sort by </label>
-        <select class="browser-default" ng-model="vm.userSort" ng-change="vm.checkWeekNumb()">
+        <select class="browser-default" ng-model="vm.userSort">
           <option value="-totalDollars"> YTD $ </option>
           <option ng-repeat="week in vm.weekValues" ng-show="week.weekNumb === vm.weekNumb" value="{{week.value}}"> {{week.text}} </option>
         </select>
     </selectDiv>
   </leadDiv>
-  <div class="col s12 res-toggle">
-    <div class="col s12 left-align results-links">
-      <a ui-sref="home.results.picks" ng-class="{activeResult: uiRouterState.current.name === 'home.results.picks'}">USER SELECTIONS</a> |
-      <a ui-sref="home.results.poolsplits" ng-class="{activeResult: uiRouterState.current.name === 'home.results.poolsplits'}">PICK DISTRIBUTION</a>
-    </div>
-  </div>
 </resultsHead>
 
 <div ui-view="picks"> </div>
