@@ -34,7 +34,8 @@ module.exports = {
       "Tampa Bay Buccaneers": "#C31734",
       "Tennessee Titans": "#488BBD",
       "Washington Redskins": "#6E3B43"
-    }
+    };
+
     return color[team];
   }
 }

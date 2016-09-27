@@ -104,9 +104,7 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
       url: '/picks',
       views: {
         'picks@home.results': {
-          templateUrl: 'views/res-picks.html',
-          controller: 'ResultController',
-          controllerAs: 'vm'
+          templateUrl: 'views/res-picks.html'
         }
       }
     })
@@ -114,9 +112,7 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
       url: '/poolsplits',
       views: {
         'poolsplits@home.results': {
-          templateUrl: 'views/res-poolsplits.html',
-          controller: 'ResultController',
-          controllerAs: 'vm'
+          templateUrl: 'views/res-poolsplits.html'
         }
       }
     })

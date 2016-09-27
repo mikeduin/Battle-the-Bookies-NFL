@@ -35,23 +35,23 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   }, 6000);
 
   vm.weekValues = [
-    {"value": "-w1dollars", "text": "Week 1 $", "weekNumb": "01"},
-    {"value": "-w2dollars", "text": "Week 2 $", "weekNumb": "02"},
-    {"value": "-w3dollars", "text": "Week 3 $", "weekNumb": "03"},
-    {"value": "-w4dollars", "text": "Week 4 $", "weekNumb": "04"},
-    {"value": "-w5dollars", "text": "Week 5 $", "weekNumb": "05"},
-    {"value": "-w6dollars", "text": "Week 6 $", "weekNumb": "06"},
-    {"value": "-w7dollars", "text": "Week 7 $", "weekNumb": "07"},
-    {"value": "-w8dollars", "text": "Week 8 $", "weekNumb": "08"},
-    {"value": "-w9dollars", "text": "Week 9 $", "weekNumb": "09"},
-    {"value": "-w10dollars", "text": "Week 10 $", "weekNumb": "10"},
-    {"value": "-w11dollars", "text": "Week 11 $", "weekNumb": "11"},
-    {"value": "-w12dollars", "text": "Week 12 $", "weekNumb": "12"},
-    {"value": "-w13dollars", "text": "Week 13 $", "weekNumb": "13"},
-    {"value": "-w14dollars", "text": "Week 14 $", "weekNumb": "14"},
-    {"value": "-w15dollars", "text": "Week 15 $", "weekNumb": "15"},
-    {"value": "-w16dollars", "text": "Week 16 $", "weekNumb": "16"},
-    {"value": "-w17dollars", "text": "Week 17 $", "weekNumb": "17"},
+    {"value": "-w1dollars", "text": "Week $", "weekNumb": "01"},
+    {"value": "-w2dollars", "text": "Week $", "weekNumb": "02"},
+    {"value": "-w3dollars", "text": "Week $", "weekNumb": "03"},
+    {"value": "-w4dollars", "text": "Week $", "weekNumb": "04"},
+    {"value": "-w5dollars", "text": "Week $", "weekNumb": "05"},
+    {"value": "-w6dollars", "text": "Week $", "weekNumb": "06"},
+    {"value": "-w7dollars", "text": "Week $", "weekNumb": "07"},
+    {"value": "-w8dollars", "text": "Week $", "weekNumb": "08"},
+    {"value": "-w9dollars", "text": "Week $", "weekNumb": "09"},
+    {"value": "-w10dollars", "text": "Week $", "weekNumb": "10"},
+    {"value": "-w11dollars", "text": "Week $", "weekNumb": "11"},
+    {"value": "-w12dollars", "text": "Week $", "weekNumb": "12"},
+    {"value": "-w13dollars", "text": "Week $", "weekNumb": "13"},
+    {"value": "-w14dollars", "text": "Week $", "weekNumb": "14"},
+    {"value": "-w15dollars", "text": "Week $", "weekNumb": "15"},
+    {"value": "-w16dollars", "text": "Week $", "weekNumb": "16"},
+    {"value": "-w17dollars", "text": "Week $", "weekNumb": "17"}
   ]
 
   vm.checkWeekNumb = function(){
