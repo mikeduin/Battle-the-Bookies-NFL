@@ -323,6 +323,65 @@ router.get('/results', function(req, res, next){
   })
 })
 
+// setInterval(function(){
+//   var now = moment();
+//   console.log(now);
+//   Line.find({
+//     GameStatus: {
+//       $ne: "Final"
+//     },
+//     MatchTime: {
+//       $gt: now
+//     }
+//   }, function(err, games){
+//     if(err) {console.log(err)}
+//
+//     // console.log(games)
+//   }).then(function(games){
+//     games.forEach(function(game){
+//       var overPickArray = [];
+//       var underPickArray = [];
+//       var favSpreadPickArray = [];
+//       var undSpreadPickArray = [];
+//       var favMLPickArray = [];
+//       var undMLPickArray = [];
+//       Pick.find({EventID: game.EventID}, function(err, picks){
+//         if(err) {console.log(err)}
+//
+//       }).then(function(picks){
+//         picks.forEach(function(pick){
+//           var relevantLine;
+//           if (pick.pickType === "Total Over" || pick.pickType === "Total Under") {
+//             relevantLine = pick.activeTotal
+//           } else if (pick.pickType === "Home Spread" || pick.pickType === "Away Spread") {
+//             relevantLine = pick.activeSpread
+//           } else {
+//             relevantLine = pick.activeLine
+//           };
+//           var pickObject = {
+//             id: pick.id,
+//             username: pick.username,
+//             submittedAt: pick.submittedAt,
+//             pickType: pick.pickType,
+//             favType: pick.favType,
+//             activePayout: pick.activePayout,
+//             activePick: pick.activePick,
+//             relevantLine: relevantLine
+//           };
+//           // if (pick.pickType === "Total Over") {
+//           //   overPickArray.push(pickObject)
+//           // } else if (pick.pickType === "Total Under") {
+//           //   underPickArray.push(pickObject)
+//           // } else if (pick.pickType === "")
+//
+//           // console.log(pickArray);
+//         });
+//         console.log("game.id is", game.EventID, "pick array is", pickArray);
+//       })
+//     })
+//   })
+// }, 10000)
+
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });
 

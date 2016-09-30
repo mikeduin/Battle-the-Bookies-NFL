@@ -145,5 +145,15 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
           controllerAs: 'vm'
         }
       }
+    })
+    .state('home.game', {
+      url: 'game/:EventID',
+      views: {
+        'content@': {
+          templateUrl: 'views/game.html',
+          controller: 'GameController',
+          controllerAs: 'vm'
+        }
+      }
     });
 }
