@@ -342,9 +342,10 @@ router.get('/results', function(req, res, next){
 //       var overPickArray = [];
 //       var underPickArray = [];
 //       var favSpreadPickArray = [];
-//       var undSpreadPickArray = [];
+//       var dogSpreadPickArray = [];
 //       var favMLPickArray = [];
-//       var undMLPickArray = [];
+//       var dogMLPickArray = [];
+//       var noPickArray = [];
 //       Pick.find({EventID: game.EventID}, function(err, picks){
 //         if(err) {console.log(err)}
 //
@@ -363,20 +364,37 @@ router.get('/results', function(req, res, next){
 //             username: pick.username,
 //             submittedAt: pick.submittedAt,
 //             pickType: pick.pickType,
+//             geoType: pick.geoType,
+//             betType: pick.betType,
 //             favType: pick.favType,
 //             activePayout: pick.activePayout,
 //             activePick: pick.activePick,
 //             relevantLine: relevantLine
 //           };
-//           // if (pick.pickType === "Total Over") {
-//           //   overPickArray.push(pickObject)
-//           // } else if (pick.pickType === "Total Under") {
-//           //   underPickArray.push(pickObject)
-//           // } else if (pick.pickType === "")
-//
-//           // console.log(pickArray);
+//           if (pick.betType === "Total Over") {
+//             overPickArray.push(pickObject)
+//           } else if (pick.betType === "Total Under") {
+//             underPickArray.push(pickObject)
+//           } else if (pick.betType === "Fav Spread") {
+//             favSpreadPickArray.push(pickObject)
+//           } else if (pick.betType === "Dog Spread") {
+//             dogSpreadPickArray.push(pickObject)
+//           } else if (pick.betType === "Fav ML") {
+//             favMLPickArray.push(pickObject)
+//           } else if (pick.betType === "Dog ML") {
+//             dogMLPickArray.push(pickObject)
+//           } else {
+//             noPickArray.push(pickObject)
+//           };
 //         });
-//         console.log("game.id is", game.EventID, "pick array is", pickArray);
+//         console.log(overPickArray);
+//         console.log(underPickArray);
+//         console.log(favSpreadPickArray);
+//         console.log(dogSpreadPickArray);
+//         console.log(favMLPickArray);
+//         console.log(dogMLPickArray);
+//         console.log('noPickArray is', noPickArray)
+//         // console.log("game.id is", game.EventID, "pick array is", pickArray);
 //       })
 //     })
 //   })
@@ -933,6 +951,8 @@ router.put('/picks', auth, function(req, res, next){
     activePayout: req.body.activePayout,
     pickType: req.body.pickType,
     favType: req.body.favType,
+    betType: req.body.betType,
+    geoType: req.body.geoType,
     submittedAt: new Date()
   }, {new: true}, function(err, pick) {
     if (err) {console.log(err)}

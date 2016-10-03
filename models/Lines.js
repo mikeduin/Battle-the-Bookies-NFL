@@ -52,9 +52,10 @@ var LineSchema = new mongoose.Schema({
   OverPickArray: Array,
   UnderPickArray: Array,
   FavSpreadPickArray: Array,
-  UndSpreadPickArray: Array,
+  DogSpreadPickArray: Array,
   FavMLPickArray: Array,
-  UndMLPickArray: Array
+  DogMLPickArray: Array,
+  NoPickArray: Array
 })
 
 mongoose.model('Line', LineSchema);

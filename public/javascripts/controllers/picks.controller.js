@@ -199,7 +199,6 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.MatchTime = game.MatchTime;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.PointSpreadAwayLine);
-    console.log('vm.pick is', vm.pick)
   }
 
   function homeSpread (game) {
