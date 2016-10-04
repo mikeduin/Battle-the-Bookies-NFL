@@ -6,7 +6,7 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   var vm = this;
   vm.getDates = getDates;
   vm.getDateNumbs = getDateNumbs;
-  vm.daysOfGames = [];
+  vm.weeksOfGames = [];
   vm.dateNumbs = [];
   vm.dayArrayLength;
   vm.pageArray = [1];
@@ -60,11 +60,18 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   function getDates () {
     vm.showSpinner = true;
     oddsService.getDates().then(function(dates){
-      // console.log(dates);
-      vm.daysOfGames = dates;
-      vm.dayArrayLength = dates.length;
+      var weekNumbers = [];
+      for (i=0; i<dates.length; i++) {
+        var weekNumber = parseInt(dates[i].substring(5));
+        weekNumbers.push(weekNumber)
+      }
+      weekNumbers.sort();
+      for (i=0; i<weekNumbers.length; i++) {
+        var newWeek = "Week " + weekNumbers[i];
+        vm.weeksOfGames.push(newWeek)
+      }
     }).then(function(){
-      getPageArray(vm.daysOfGames)
+      getPageArray(vm.weeksOfGames)
     })
   };
 

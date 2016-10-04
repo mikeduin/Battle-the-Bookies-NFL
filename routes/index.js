@@ -336,6 +336,7 @@ setInterval(function(){
     if(err) {console.log(err)}
 
   }).then(function(games){
+    console.log('games function entered')
     games.forEach(function(game){
       var overPickArray = [];
       var underPickArray = [];

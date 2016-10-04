@@ -107,9 +107,19 @@ function PickController (oddsService, picksService, resultsService, authService,
 
   function getDates () {
     oddsService.getDates().then(function(dates){
-      vm.weeksOfGames = dates;
-      var dateArray = vm.weeksOfGames;
-      var lastWeek = dateArray[dateArray.length - 1];
+      var weekNumbers = [];
+      for (i=0; i<dates.length; i++) {
+        var weekNumber = parseInt(dates[i].substring(5));
+        weekNumbers.push(weekNumber)
+      }
+      weekNumbers.sort();
+      for (i=0; i<weekNumbers.length; i++) {
+        var newWeek = "Week " + weekNumbers[i];
+        vm.weeksOfGames.push(newWeek)
+      }
+      // vm.weeksOfGames = dates;
+      // var dateArray = vm.weeksOfGames;
+      // var lastWeek = dateArray[dateArray.length - 1];
       var currentWeek = vm.weekSetter(moment().format());
       if (currentWeek === "Preseason") {
         vm.gameWeekFilter = "Week 1"

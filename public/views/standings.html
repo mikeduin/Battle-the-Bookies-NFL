@@ -21,16 +21,16 @@
       <tr>
         <th colspan="2"> </th>
         <th colspan="4" class="center-align ytd-header"> Year to Date </th>
-        <th colspan="4" class="center-align day-header" ng-repeat="day in vm.daysOfGames | limitTo: 4: vm.pageView"> {{day}} </th>
+        <th colspan="4" class="center-align day-header" ng-repeat="day in vm.weeksOfGames | limitTo: 4: vm.pageView"> {{day}} </th>
       </tr>
       <tr class="bord-bottom">
         <th class="pushdown"> Entrant </th>
         <th class="pushdown bord-right"> Buy-in </th>
         <th class="pushdown"> W </th>
-        <th class="pushdown"> L </th>
+        <th class="pushdown"> L </th> 
         <th class="pushdown"> Win% </th>
         <th class="pushdown bord-right"> $ </th>
-        <th colspan="4" ng-repeat="day in vm.daysOfGames | limitTo: 4: vm.pageView" class="bord-right">
+        <th colspan="4" ng-repeat="day in vm.weeksOfGames | limitTo: 4: vm.pageView" class="bord-right">
           <table><tr>
             <th class="wBox"> W </th>
             <th class="wBox"> L </th>
