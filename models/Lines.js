@@ -49,13 +49,6 @@ var LineSchema = new mongoose.Schema({
   SpreadAwayPicks: Number,
   OverPicks: Number,
   UnderPicks: Number,
-  OverPickArray: Array,
-  UnderPickArray: Array,
-  FavSpreadPickArray: Array,
-  DogSpreadPickArray: Array,
-  FavMLPickArray: Array,
-  DogMLPickArray: Array,
-  NoPickArray: Array,
   ArraysBuilt: Boolean
 })
 
