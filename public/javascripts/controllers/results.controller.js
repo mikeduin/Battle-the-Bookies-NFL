@@ -8,7 +8,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   var vm = this;
   vm.weekNumb;
   vm.week;
-  vm.weeksOfGames = [];
   vm.nflLines = [];
   vm.lastWeekNumb;
   $scope.nflLines={};
@@ -214,10 +213,9 @@ function ResultController (oddsService, picksService, resultsService, usersServi
 
   function getDates () {
     oddsService.getDates().then(function(dates){
-      vm.weeksOfGames = dates;
       var weekNumbers = [];
-      for (i=0; i<vm.weeksOfGames.length; i++) {
-        var weekNumber = parseInt(vm.weeksOfGames[i].substring(5));
+      for (i=0; i<dates.length; i++) {
+        var weekNumber = parseInt(dates[i].substring(5));
         weekNumbers.push(weekNumber)
       }
       weekNumbers.sort();

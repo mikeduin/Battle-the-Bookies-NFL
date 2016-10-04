@@ -7,11 +7,17 @@ function NavController (authService, oddsService, $state) {
 
   vm.getDates = function () {
     oddsService.getDates().then(function(dates){
-      vm.weeksOfGames = dates.reverse();
-      console.log(vm.weeksOfGames);
-      var dateArray = vm.weeksOfGames;
-      var lastWeek = dateArray[dateArray.length - 1];
-      vm.lastWeekNumb = lastWeek.substring(5);
+      var weekNumbers = [];
+      for (i=0; i<dates.length; i++) {
+        var weekNumber = parseInt(dates[i].substring(5));
+        weekNumbers.push(weekNumber)
+      }
+      weekNumbers.sort().reverse();
+      vm.weeksOfGames = [];
+      for (i=0; i<weekNumbers.length; i++) {
+        var newWeek = "Week " + weekNumbers[i];
+        vm.weeksOfGames.push(newWeek)
+      }
     })
   };
 
