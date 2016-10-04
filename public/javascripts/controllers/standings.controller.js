@@ -60,6 +60,7 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   function getDates () {
     vm.showSpinner = true;
     oddsService.getDates().then(function(dates){
+      vm.dayArrayLength = dates.length;
       var weekNumbers = [];
       for (i=0; i<dates.length; i++) {
         var weekNumber = parseInt(dates[i].substring(5));
