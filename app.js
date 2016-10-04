@@ -18,6 +18,7 @@ require('./models/Users');
 require('./models/Lines');
 require('./models/Results');
 require('./models/Picks');
+require('./models/PickArrays');
 require('./config/passport')
 
 var db = mongoose.connection;

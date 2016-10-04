@@ -1,6 +1,6 @@
 var mongoose = require ('mongoose');
 
-var PickArraySchema = new mongoose.schema({
+var PickArraySchema = new mongoose.Schema({
   EventID: {
     type: String,
     required: true,
@@ -13,6 +13,6 @@ var PickArraySchema = new mongoose.schema({
   FavMLPickArray: Array,
   DogMLPickArray: Array,
   NoPickArray: Array
-})
+});
 
-mongoose.model('PickArray', PickArraySchema)
+mongoose.model('PickArray', PickArraySchema);
