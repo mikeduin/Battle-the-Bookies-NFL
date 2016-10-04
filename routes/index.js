@@ -325,86 +325,86 @@ router.get('/results', function(req, res, next){
 
 // The function below runs every ten minutes and checks to see if a game has started and has not yet had its pick arrays built. In that case, it constructs the pick arrays and then marks ArraysBuilt as 'true' so as not to needlessly reproduce the update in the future.
 
-setInterval(function(){
-  var now = moment();
-  Line.find({
-    MatchTime: {
-      $lt: now
-    },
-    ArraysBuilt: false || null
-  }, function(err, games){
-    if(err) {console.log(err)}
-
-  }).then(function(games){
-    console.log('games function entered')
-    games.forEach(function(game){
-      var overPickArray = [];
-      var underPickArray = [];
-      var favSpreadPickArray = [];
-      var dogSpreadPickArray = [];
-      var favMLPickArray = [];
-      var dogMLPickArray = [];
-      var noPickArray = [];
-      Pick.find({EventID: game.EventID}, function(err, picks){
-        if(err) {console.log(err)}
-
-      }).then(function(picks){
-        picks.forEach(function(pick){
-          var relevantLine;
-          if (pick.pickType === "Total Over" || pick.pickType === "Total Under") {
-            relevantLine = pick.activeTotal
-          } else if (pick.pickType === "Home Spread" || pick.pickType === "Away Spread") {
-            relevantLine = pick.activeSpread
-          } else {
-            relevantLine = pick.activeLine
-          };
-          var pickObject = {
-            id: pick.id,
-            username: pick.username,
-            submittedAt: pick.submittedAt,
-            pickType: pick.pickType,
-            geoType: pick.geoType,
-            betType: pick.betType,
-            favType: pick.favType,
-            activePayout: pick.activePayout,
-            activePick: pick.activePick,
-            relevantLine: relevantLine
-          };
-          if (pick.betType === "Total Over") {
-            overPickArray.push(pickObject)
-          } else if (pick.betType === "Total Under") {
-            underPickArray.push(pickObject)
-          } else if (pick.betType === "Fav Spread") {
-            favSpreadPickArray.push(pickObject)
-          } else if (pick.betType === "Dog Spread") {
-            dogSpreadPickArray.push(pickObject)
-          } else if (pick.betType === "Fav ML") {
-            favMLPickArray.push(pickObject)
-          } else if (pick.betType === "Dog ML") {
-            dogMLPickArray.push(pickObject)
-          } else {
-            noPickArray.push(pickObject)
-          };
-        });
-      }).then(function(){
-        Line.findOneAndUpdate({EventID: game.EventID}, {
-          OverPickArray: overPickArray,
-          UnderPickArray: underPickArray,
-          FavSpreadPickArray: favSpreadPickArray,
-          DogSpreadPickArray: dogSpreadPickArray,
-          FavMLPickArray: favMLPickArray,
-          DogMLPickArray: dogMLPickArray,
-          NoPickArray: noPickArray,
-          ArraysBuilt: true
-        }, {returnNewDocument: true}, function(err, result){
-          if(err) {console.log(err)}
-
-          console.log("arrays have been updated for", result)
-        });
-      })
-    })
-  })
-}, 600000)
+// setInterval(function(){
+//   var now = moment();
+//   Line.find({
+//     MatchTime: {
+//       $lt: now
+//     },
+//     ArraysBuilt: false || null
+//   }, function(err, games){
+//     if(err) {console.log(err)}
+//
+//   }).then(function(games){
+//     console.log('games function entered')
+//     games.forEach(function(game){
+//       var overPickArray = [];
+//       var underPickArray = [];
+//       var favSpreadPickArray = [];
+//       var dogSpreadPickArray = [];
+//       var favMLPickArray = [];
+//       var dogMLPickArray = [];
+//       var noPickArray = [];
+//       Pick.find({EventID: game.EventID}, function(err, picks){
+//         if(err) {console.log(err)}
+//
+//       }).then(function(picks){
+//         picks.forEach(function(pick){
+//           var relevantLine;
+//           if (pick.pickType === "Total Over" || pick.pickType === "Total Under") {
+//             relevantLine = pick.activeTotal
+//           } else if (pick.pickType === "Home Spread" || pick.pickType === "Away Spread") {
+//             relevantLine = pick.activeSpread
+//           } else {
+//             relevantLine = pick.activeLine
+//           };
+//           var pickObject = {
+//             id: pick.id,
+//             username: pick.username,
+//             submittedAt: pick.submittedAt,
+//             pickType: pick.pickType,
+//             geoType: pick.geoType,
+//             betType: pick.betType,
+//             favType: pick.favType,
+//             activePayout: pick.activePayout,
+//             activePick: pick.activePick,
+//             relevantLine: relevantLine
+//           };
+//           if (pick.betType === "Total Over") {
+//             overPickArray.push(pickObject)
+//           } else if (pick.betType === "Total Under") {
+//             underPickArray.push(pickObject)
+//           } else if (pick.betType === "Fav Spread") {
+//             favSpreadPickArray.push(pickObject)
+//           } else if (pick.betType === "Dog Spread") {
+//             dogSpreadPickArray.push(pickObject)
+//           } else if (pick.betType === "Fav ML") {
+//             favMLPickArray.push(pickObject)
+//           } else if (pick.betType === "Dog ML") {
+//             dogMLPickArray.push(pickObject)
+//           } else {
+//             noPickArray.push(pickObject)
+//           };
+//         });
+//       }).then(function(){
+//         Line.findOneAndUpdate({EventID: game.EventID}, {
+//           OverPickArray: overPickArray,
+//           UnderPickArray: underPickArray,
+//           FavSpreadPickArray: favSpreadPickArray,
+//           DogSpreadPickArray: dogSpreadPickArray,
+//           FavMLPickArray: favMLPickArray,
+//           DogMLPickArray: dogMLPickArray,
+//           NoPickArray: noPickArray,
+//           ArraysBuilt: true
+//         }, {returnNewDocument: true}, function(err, result){
+//           if(err) {console.log(err)}
+//
+//           console.log("arrays have been updated for", result)
+//         });
+//       })
+//     })
+//   })
+// }, 600000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });
