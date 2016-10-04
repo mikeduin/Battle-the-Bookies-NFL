@@ -323,19 +323,18 @@ router.get('/results', function(req, res, next){
   })
 })
 
+// The function below runs every ten minutes and checks to see if a game has started and has not yet had its pick arrays built. In that case, it constructs the pick arrays and then marks ArraysBuilt as 'true' so as not to needlessly reproduce the update in the future.
+
 setInterval(function(){
   var now = moment();
   Line.find({
-    GameStatus: {
-      $ne: "Final"
-    },
     MatchTime: {
-      $gt: now
-    }
+      $lt: now
+    },
+    ArraysBuilt: false || null
   }, function(err, games){
     if(err) {console.log(err)}
 
-    // console.log(games)
   }).then(function(games){
     games.forEach(function(game){
       var overPickArray = [];
@@ -394,7 +393,8 @@ setInterval(function(){
           DogSpreadPickArray: dogSpreadPickArray,
           FavMLPickArray: favMLPickArray,
           DogMLPickArray: dogMLPickArray,
-          NoPickArray: noPickArray
+          NoPickArray: noPickArray,
+          ArraysBuilt: true
         }, {returnNewDocument: true}, function(err, result){
           if(err) {console.log(err)}
 
@@ -403,7 +403,7 @@ setInterval(function(){
       })
     })
   })
-}, 10000)
+}, 600000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });

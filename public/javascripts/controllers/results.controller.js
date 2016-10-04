@@ -215,9 +215,13 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   function getDates () {
     oddsService.getDates().then(function(dates){
       vm.weeksOfGames = dates;
-      var dateArray = vm.weeksOfGames;
-      var lastWeek = dateArray[dateArray.length - 1];
-      vm.lastWeekNumb = lastWeek.substring(5);
+      var weekNumbers = [];
+      for (i=0; i<vm.weeksOfGames.length; i++) {
+        var weekNumber = parseInt(vm.weeksOfGames[i].substring(5));
+        weekNumbers.push(weekNumber)
+      }
+      weekNumbers.sort();
+      vm.lastWeekNumb = weekNumbers[weekNumbers.length-1]
     })
   };
 

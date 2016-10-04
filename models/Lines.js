@@ -55,7 +55,8 @@ var LineSchema = new mongoose.Schema({
   DogSpreadPickArray: Array,
   FavMLPickArray: Array,
   DogMLPickArray: Array,
-  NoPickArray: Array
+  NoPickArray: Array,
+  ArraysBuilt: Boolean
 })
 
 mongoose.model('Line', LineSchema);
