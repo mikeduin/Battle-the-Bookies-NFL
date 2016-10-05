@@ -1,8 +1,9 @@
 angular
   .module('battleBookies')
-  .controller('GameController', ['$state', GameController])
+  .controller('GameController', ['$state', 'gameService', GameController])
 
-function GameController ($state) {
+function GameController ($state, gameService) {
   var vm = this;
-  
+
+
 }

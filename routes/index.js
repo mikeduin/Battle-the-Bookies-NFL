@@ -233,6 +233,14 @@ router.get('/updateOdds', function(req, res, next) {
 // END ROUTES TO AUTO-UPDATE ODDS + RESULTS FROM API
 // BEGIN LINE ROUTES
 
+router.get('/line/:gameID', function(req, res, next){
+  Line.find({EventID: req.params.gameID}, function(err, result){
+    if (err) {console.log(err)}
+
+    res.json(result)
+  })
+});
+
 router.get('/lines', function(req, res, next){
   Line.find({
     Week: {

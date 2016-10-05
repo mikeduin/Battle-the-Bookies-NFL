@@ -41,7 +41,6 @@ function picksService ($http, authService) {
       })
     },
     sumWeek: function(username, weeknumb) {
-      // var newWeekNumb = parseInt(weeknumb);
       return $http.get('/picks/' + username + '/' + weeknumb).then(function(result){
         var weekPicks = result.data;
         var total = 0;
@@ -84,10 +83,5 @@ function picksService ($http, authService) {
         return result
       })
     }
-    // getNewWeeklyStats: function(username){
-    //   return $http.get('/newWeeklyStats/' + username).then(function(result){
-    //     return result
-    //   })
-    // }
   }
 }
