@@ -1,16 +1,18 @@
 angular
   .module('battleBookies')
-  .factory('gameService', [$http, gameService])
+  .factory('gameService', ['$http', gameService])
 
 function gameService ($http) {
   return {
-    getArrays: function(game) {
-      return $http.get('pullGame/' + game.EventID).then(function(result){
-        return result
+    getPickArrays: function(game) {
+      return $http.get('/pullGame/' + game.EventID).then(function(result){
+        return result.data
       })
     },
     getLineData: function(game){
-      
+      return $http.get('/line/' + game.EventID).then(function(result){
+        return result.data
+      })
     }
   }
 }

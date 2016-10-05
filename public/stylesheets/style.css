@@ -686,6 +686,14 @@ chasing-dots-spinner {
   font-size: 18px;
 }
 
+.float-color {
+  background-color: #2F5032;
+}
+
+.float-color:hover {
+  background-color: #B68708;
+}
+
 .h-a {
   margin-top: -10px;
   font-size: 10px;

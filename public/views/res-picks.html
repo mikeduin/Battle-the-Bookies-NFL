@@ -2,7 +2,7 @@
   <table class="bordered striped">
     <thead>
       <tr>
-        <th>
+        <th style="font-size: 24px">
           Entrant
         </th>
         <th class="center-align">
@@ -11,7 +11,7 @@
         <th class="left-align">
           Week $
         </th>
-        <th ng-repeat="game in vm.nflLines | orderBy: [vm.gameSort, vm.gameSortTwo]" ng-if="vm.checkTime(game.MatchTime) === true"> <span class="nobr" style="background-color: game.AwayColor">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr" style="background-color: game.AwayColor"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} </th>
+        <th ng-repeat="game in vm.nflLines | orderBy: [vm.gameSort, vm.gameSortTwo]" ng-if="vm.checkTime(game.MatchTime) === true"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}} <br> <a class="btn-floating float-color" ui-sref="home.game({EventID: game.EventID})"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></th>
       </tr>
     </thead>
     <tbody>
