@@ -1,12 +1,21 @@
 angular
   .module('battleBookies')
-  .controller('GameController', ['$state', 'gameService', GameController])
+  .controller('GameController', ['$stateParams', 'gameService', GameController])
 
-function GameController ($state, gameService) {
+function GameController ($stateParams, gameService) {
   var vm = this;
+  vm.EventID = $stateParams.EventID;
 
-  vm.getPickArrays = function(game) {
-    gameService.getPickArrays(game.EventID)
+  vm.getPickArrays = function() {
+    gameService.getPickArrays(vm.EventID).then(function(result){
+      console.log(result)
+    })
+  }
+
+  vm.getLineData = function(){
+    gameService.getLineData(vm.EventID).then(function(result){
+      console.log(result)
+    })
   }
 
 }

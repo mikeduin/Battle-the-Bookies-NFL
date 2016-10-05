@@ -332,11 +332,13 @@ router.get('/results', function(req, res, next){
   })
 })
 
-router.get('pullGame/:gameID', function(req, res, next){
-  PickArray.find({EventID: req.params.gameID}, function(err, arrays){
+router.get('/pullGame/:gameID', function(req, res, next){
+  PickArray.find({
+    EventID: req.params.gameID
+  }, function(err, arrays){
     if (err) {console.log(err)}
 
-    res.json(arrays)
+    res.json(arrays);
   })
 })
 

@@ -4,13 +4,13 @@ angular
 
 function gameService ($http) {
   return {
-    getPickArrays: function(game) {
-      return $http.get('/pullGame/' + game.EventID).then(function(result){
+    getPickArrays: function(EventID) {
+      return $http.get('/pullGame/' + EventID).then(function(result){
         return result.data
       })
     },
-    getLineData: function(game){
-      return $http.get('/line/' + game.EventID).then(function(result){
+    getLineData: function(EventID){
+      return $http.get('/line/' + EventID).then(function(result){
         return result.data
       })
     }
