@@ -324,6 +324,14 @@ router.get('/results', function(req, res, next){
   })
 })
 
+router.get('pullGame/:gameID', function(req, res, next){
+  PickArray.find({EventID: req.params.gameID}, function(err, arrays){
+    if (err) {console.log(err)}
+
+    res.json(arrays)
+  })
+})
+
 // The function below runs every ten minutes and checks to see if a game has started and has not yet had its pick arrays built. In that case, it constructs the pick arrays and then marks ArraysBuilt as 'true' so as not to needlessly reproduce the update in the future.
 
 setInterval(function(){
@@ -339,8 +347,6 @@ setInterval(function(){
     if(err) {console.log(err)}
 
   }).then(function(games){
-    console.log('games function entered');
-    console.log(games);
     games.forEach(function(game){
       var overPickArray = [];
       var underPickArray = [];
@@ -390,9 +396,7 @@ setInterval(function(){
             noPickArray.push(pickObject)
           };
         });
-        console.log('end of array compiling');
       }).then(function(){
-        console.log('we have reached pick array');
         PickArray.findOneAndUpdate({EventID: game.EventID}, {
           EventID: game.EventID,
           OverPickArray: overPickArray,
