@@ -680,18 +680,23 @@ chasing-dots-spinner {
   color: #B68708;
 }
 
-.activeResult {
-  font-weight: 800;
-  color: #B68708;
-  font-size: 18px;
-}
-
 .float-color {
   background-color: #2F5032;
 }
 
 .float-color:hover {
   background-color: #B68708;
+}
+
+.game-details {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.selection-image {
+  max-height: 20px;
+  padding-top: 4%;
+  margin-left: 5px;
 }
 
 .h-a {
@@ -738,6 +743,13 @@ leadDiv {
   font-weight: 800;
   margin-top: 30px;
   color: #2F5032;
+}
+
+.gameHead {
+  font-size: 32px;
+  font-weight: 800;
+  color: #2F5032;
+  margin-top: 10px;
 }
 
 .result-head {
@@ -807,7 +819,7 @@ standings th, standings td {
   font-weight: 600
 }
 
-.buyGold {
+.buyGold, .activeResult {
   color: #B68708;
   font-weight: 800;
   font-size: 16px;

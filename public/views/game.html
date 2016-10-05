@@ -1,7 +1,43 @@
 <gameHead class="row" ng-init="vm.getPickArrays(); vm.getLineData()">
   <div class="col s12 result-head z-depth-1">
-    <div class="col m5 left-align">
-      <p class="resHead"> Selection Analysis </p>
+    <div class="col s6 left-align">
+      <div class="gameHead"> Selection Analysis </div>
+      <div class="game-details"> {{vm.game.Week}}: <span style="color: {{vm.game.AwayColor}}">{{vm.game.AwayTeam}}</span> @ <span style="color: {{vm.game.HomeColor}}">{{vm.game.HomeTeam}}<span></div>
+    </div>
+    <div class="col s6">
+      <table class="bordered">
+        <thead>
+          <tr>
+            <th class="center-align no-sp"><b>CLOSING ODDS</b></th>
+            <th class="center-align no-sp"><b>Spread</b></th>
+            <th class="center-align no-sp"><b>ML</b></th>
+            <th class="center-align no-sp"><b>Total</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="center-align no-sp" style="color: {{vm.game.AwayColor}}; margin-top: -2%"> <b><img class="selection-image" src="{{vm.game.AwayHelmet}}" alt=""/>{{vm.game.AwayAbbrev}}</b></td>
+            <td class="center-align no-sp"> {{vm.game.PointSpreadAway | mlFormat}} ({{vm.game.PointSpreadAwayLine | mlFormat}}) </td>
+            <td class="center-align no-sp"> {{vm.game.MoneyLineAway | mlFormat}}  </td>
+            <td class="center-align no-sp"> Over {{vm.game.TotalNumber}} ({{vm.game.OverLine | mlFormat}}) </td>
+          </tr>
+          <tr>
+            <td class="center-align no-sp" style="color: {{vm.game.HomeColor}}"> <b><img class="selection-image" src="{{vm.game.HomeHelmet}}" alt=""/>{{vm.game.HomeAbbrev}}</b></td>
+            <td class="center-align no-sp"> {{vm.game.PointSpreadHome | mlFormat}} ({{vm.game.PointSpreadHomeLine | mlFormat}}) </td>
+            <td class="center-align no-sp"> {{vm.game.MoneyLineHome | mlFormat}} </td>
+            <td class="center-align no-sp"> Under {{vm.game.TotalNumber}} ({{vm.game.UnderLine | mlFormat}}) </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </gameHead>
+
+<gameHeader class="row">
+  <div class="col s6">
+    
+  </div>
+  <div class="col s6">
+    <div zingchart id="pick-chart" zc-json="vm.pickDistribution" zc-width="100%" zc-height="350px"></div>
+  </div>
+<gameHeader>
