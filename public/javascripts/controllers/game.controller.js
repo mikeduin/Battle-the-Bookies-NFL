@@ -5,6 +5,7 @@ angular
 function GameController ($stateParams, gameService) {
   var vm = this;
   vm.EventID = $stateParams.EventID;
+  vm.myArray = [72,56,78,58,62];
 
   vm.getPickArrays = function() {
     gameService.getPickArrays(vm.EventID).then(function(result){
@@ -105,5 +106,484 @@ function GameController ($stateParams, gameService) {
       }
       ]
   }
+
+  zingchart.THEME="classic";
+var myConfig = {
+    "background-color":"#d6d6d6",
+    "graphset":[
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"3%",
+            "width":"63%",
+            "background-color":"#f9f9f9",
+            "title":{
+                "text":":: CHRONOLOGICAL SELECTION CHARTING",
+                "font-size":"16px",
+                "color":"#605958",
+                "background-color":"#f9f9f9",
+                "border-bottom":"1px solid #d6d6d6",
+                "padding":"26 30 28 30"
+            }
+            // "shapes":[
+            //     {
+            //         "type":"square",
+            //         "x":"97%",
+            //         "y":"10px",
+            //         "gradient-colors":"#f9f9f9 #f9f9f9 #d44434 #d44434",
+            //         "gradient-stops":"0 0.5 0.5 1",
+            //         "fill-angle":45,
+            //         "size":7,
+            //         "angle":-90
+            //     }
+            // ]
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"13.33%",
+            "width":"15%",
+            "height": "26.67%",
+            "background-color":"#d44434",
+            "images":[
+                {
+                    "src":"http://www.zingchart.com/resources/heart.png",
+                    "x":"10px",
+                    "y":"12px"
+                }
+            ],
+            "title":
+            {
+                "height":"40px",
+                "text":"SPREAD",
+                "font-size":"12px",
+                "text-align":"left",
+                "color":"#fff",
+                "background-color":"#d44434",
+                "border-bottom":"1px solid #d6d6d6",
+                "padding-left":"40px"
+            },
+            "subtitle":{
+                "height":"160px",
+                "offset-y":"10px",
+                "background-color":"#f75b48",
+                "font-color":"#f0f0f0",
+                "font-size":"60px",
+                "text-align":"center",
+                "text":"76"
+            }
+        },
+        {
+            "type":"line",
+            "x":"17%",
+            "y":"13.33%",
+            "height":"26.67%",
+            "width":"48%",
+            "background-color":"#f75b48",
+            "title":{
+                "height":"40px",
+                "text":"",
+                "font-size":"10px",
+                "text-align":"left",
+                "color":"#fff",
+                "background-color":"#d44434",
+                "border-bottom":"1px solid #d6d6d6",
+                "padding-left":"30px"
+            },
+            "plotarea":{
+                "margin":"60 40 40 20"
+            },
+            "plot":{
+                "line-color":"#fff",
+                "marker":{
+                    "type":"circle",
+                    "background-color":"#f75b48",
+                    "border-width":2,
+                    "size":4,
+                    "shadow":0,
+                    "border-color":"#ffffff"
+                },
+                "hover-marker":{
+                    "background-color":"#ffffff"
+                },
+                "hover-state":{
+                    "visible":false
+                }
+            },
+            "scale-x":{
+                "values":["8:00","10:00","12:00","2:00","4:00"],
+                "item":{
+                    "font-color":"#fff"
+                },
+                "line-width":1,
+                "line-color":"#d44434",
+                "guide":{
+                    "visible":true,
+                    "line-style":"solid",
+                    "line-width":1
+                },
+                "tick":{
+                    "visible":false
+                }
+            },
+            "scale-y":{
+                "values":"40:80:10",
+                "guide":{
+                    "visible":false
+                },
+                "line-color":"none",
+                "tick":{
+                    "line-color":"none"
+                },
+                "item":{
+                    "font-color":"#75251d",
+                    "offset-x":"-10px"
+                }
+            },
+            "scale-y-2":{
+                "values":"40:80:10",
+                "guide":{
+                    "visible":false
+                },
+                "line-color":"none",
+                "tick":{
+                    "line-color":"none"
+                },
+                "item":{
+                    "font-color":"#75251d",
+                    "offset-x":"10px"
+                }
+            },
+            "tooltip":{
+                "text":"%v",
+                "font-color":"#d44434",
+                "font-size":"20px",
+                "border-radius":"6px",
+                "background-color":"#fff",
+                "shadow":true,
+                "padding":"10px"
+            },
+            "series":[
+                {
+                    "values": vm.myArray
+                }
+            ]
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"40%",
+            "width":"15%",
+            "background-color":"#969191",
+            "title":{
+                "height":"40px",
+                "text":"MONEYLINE",
+                "font-size":"12px",
+                "text-align":"left",
+                "color":"#fff",
+                "background-color":"#605958",
+                "border-bottom":"1px solid #d6d6d6",
+                "padding-left":"40px"
+            },
+            "images":[
+                {
+                    "src":"http://www.zingchart.com/resources/thermo.png",
+                    "x":"10px",
+                    "y":"12px"
+                }
+            ],
+            "subtitle":{
+                "height":"145px",
+                "offset-y":"10px",
+                "background-color":"#969191",
+                "font-color":"#f0f0f0",
+                "font-size":"60px",
+                "text-align":"center",
+                "text":"98.7"
+            }
+        },
+        {
+            "type":"line",
+            "x":"17%",
+            "y":"40%",
+            "height":"26.67%",
+            "width":"48%",
+            "background-color":"#969191",
+            "title":{
+                "height":"40px",
+                "text":"",
+                "font-size":"10px",
+                "text-align":"left",
+                "color":"#fff",
+                "background-color":"#605958",
+                "border-bottom":"1px solid #d6d6d6",
+                "padding-left":"30px"
+            },
+            "plotarea":{
+                "margin":"60 40 40 50",
+                "background-color":"#969191"
+            },
+            "plot":{
+                "line-color":"#fff",
+                "marker":{
+                    "type":"circle",
+                    "background-color":"#969191",
+                    "border-width":2,
+                    "size":4,
+                    "shadow":0,
+                    "border-color":"#ffffff"
+                },
+                "hover-marker":{
+                    "background-color":"#fff"
+                },
+                "hover-state":{
+                    "visible":false
+                }
+            },
+            "scale-x":{
+                "values":["4:00","6:00"],
+                "item":{
+                    "font-color":"#fff"
+                },
+                "line-width":1,
+                "line-color":"#969191",
+                "guide":{
+                    "visible":true,
+                    "line-style":"solid",
+                    "line-width":1
+                },
+                "tick":{
+                    "visible":false
+                }
+            },
+            "scale-y":{
+                "values":"90:110:10",
+                "guide":{
+                    "visible":false
+                },
+                "line-color":"none",
+                "tick":{
+                    "line-color":"none"
+                },
+                "item":{
+                    "font-color":"#4d4645",
+                    "offset-x":"-20px"
+                }
+            },
+            "tooltip":{
+                "text":"%v",
+                "font-color":"#605958",
+                "font-size":"20px",
+                "border-radius":"6px",
+                "background-color":"#fff",
+                "shadow":true,
+                "padding":"10px"
+            },
+            "series":[
+                {
+                    "values":[98.9,99.5]
+                }
+            ]
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"66.67%",
+            "width":"15%",
+            "height": "26.67%",
+            "background-color":"#7BA7F5",
+            "title":{
+                "height":"40px",
+                "text":"TOTAL",
+                "font-size":"12px",
+                "text-align":"left",
+                "color":"#fff",
+                "background-color":"#5B7DB9",
+                "border-bottom":"1px solid #d6d6d6",
+                "padding-left":"40px"
+            },
+            "images":[
+                {
+                    "src":"http://www.zingchart.com/resources/thermo.png",
+                    "x":"10px",
+                    "y":"12px"
+                }
+            ],
+            "subtitle":{
+                "height":"145px",
+                "offset-y":"10px",
+                "background-color":"#7BA7F5",
+                "font-color":"#f0f0f0",
+                "font-size":"60px",
+                "text-align":"center",
+                "text":"98.7"
+            }
+        },
+        {
+            "type":"line",
+            "x":"17%",
+            "y":"66.67%",
+            "height":"26.67%",
+            "width":"48%",
+            "background-color":"#7BA7F5",
+            "title":{
+                "height":"40px",
+                "text":"",
+                "font-size":"10px",
+                "text-align":"left",
+                "color":"#fff",
+                "background-color":"#5B7DB9",
+                "border-bottom":"1px solid #d6d6d6",
+                "padding-left":"30px"
+            },
+            "plotarea":{
+                "margin":"60 40 40 50",
+                "background-color":"#7BA7F5"
+            },
+            "plot":{
+                "line-color":"#fff",
+                "marker":{
+                    "type":"circle",
+                    "background-color":"#7BA7F5",
+                    "border-width":2,
+                    "size":4,
+                    "shadow":0,
+                    "border-color":"#ffffff"
+                },
+                "hover-marker":{
+                    "background-color":"#fff"
+                },
+                "hover-state":{
+                    "visible":false
+                }
+            },
+            "scale-x":{
+                "values":["4:00","6:00"],
+                "item":{
+                    "font-color":"#fff"
+                },
+                "line-width":1,
+                "line-color":"#969191",
+                "guide":{
+                    "visible":true,
+                    "line-style":"solid",
+                    "line-width":1
+                },
+                "tick":{
+                    "visible":false
+                }
+            },
+            "scale-y":{
+                "values":"90:110:10",
+                "guide":{
+                    "visible":false
+                },
+                "line-color":"none",
+                "tick":{
+                    "line-color":"none"
+                },
+                "item":{
+                    "font-color":"#4d4645",
+                    "offset-x":"-20px"
+                }
+            },
+            "tooltip":{
+                "text":"%v",
+                "font-color":"#605958",
+                "font-size":"20px",
+                "border-radius":"6px",
+                "background-color":"#fff",
+                "shadow":true,
+                "padding":"10px"
+            },
+            "series":[
+                {
+                    "values":[98.9,99.5]
+                }
+            ]
+        },
+        {
+            "type":"grid",
+            "x":"67%",
+            "y":"3%",
+            "width":"48%",
+            "title":{
+                "text":":: DEMOGRAPHICS",
+                "font-size":"12px",
+                "color":"#605958",
+                "background-color":"#f9f9f9",
+                "border-bottom":"1px solid #d6d6d6",
+                "padding":"26 30 28 30"
+            },
+            // "shapes":[
+            //     {
+            //         "type":"square",
+            //         "x":"94%",
+            //         "y":"10px",
+            //         "gradient-colors":"#f9f9f9 #f9f9f9 #d44434 #d44434",
+            //         "gradient-stops":"0 0.5 0.5 1",
+            //         "fill-angle":45,
+            //         "size":7,
+            //         "angle":-90
+            //     }
+            // ],
+            "plotarea":{
+                "margin":"70 0 0 0"
+            },
+            "options":{
+                "header-row":false,
+                "col-widths":["35%","65%"],
+                "style":{
+                    ".tr":{
+                        "border-width":"0px",
+                        "border-bottom":"0px",
+                        "padding":"24 10 19 10",
+                        "height":67
+                    },
+                    ".tr_even":{
+                        "background-color":"#fcfcfc"
+                    },
+                    ".tr_odd":{
+                        "background-color":"#f9f9f9"
+                    },
+                    ".td_0":{
+                        "align":"right",
+                        "font-color":"#969191"
+                    },
+                    ".td_1":{
+                        "font-weight":"bold"
+                    }
+                }
+            },
+            "series":[
+                {
+                    "values":["NAME","John Smith"]
+                },
+                {
+                    "values":["GENDER","Male"]
+                },
+                {
+                    "values":["AGE","30"]
+                },
+                {
+                    "values":["HEIGHT","6 ft."]
+                },
+                {
+                    "values":["WEIGHT","180 lbs."]
+                },
+                {
+                    "values":["CITY","Chicago"]
+                }
+            ]
+        }
+    ]
+};
+
+zingchart.render({
+	id : 'myChart',
+	data : myConfig,
+	height: 750,
+	width: '75%'
+});
 
 }
