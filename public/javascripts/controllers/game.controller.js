@@ -6,16 +6,59 @@ function GameController ($stateParams, gameService) {
   var vm = this;
   vm.EventID = $stateParams.EventID;
   vm.myArray = [72,56,78,58,62];
+  vm.utcAdjust;
+  vm.dogMLs = [];
+  vm.favMLs = [];
+  vm.dogSpreads = [];
+  vm.favSpreads = [];
+  vm.overs = [];
+  vm.unders = [];
+  vm.highSpread;
+  vm.lowSpread;
+  vm.checkDST = function() {
+    if (moment().isDST() === true){
+      vm.utcAdjust = -7
+    } else {
+      vm.utcAdjust = -8
+    }
+  };
+
 
   vm.getPickArrays = function() {
     gameService.getPickArrays(vm.EventID).then(function(result){
-      vm.dogMLPicks = result.DogMLPickArray;
-      vm.dogSpreadPicks = result.DogSpreadPickArray;
-      vm.favMLPicks = result.FavMLPickArray;
-      vm.favSpreadPicks = result.FavSpreadPickArray;
-      vm.overPicks = result.OverPickArray;
-      vm.underPicks = result.UnderPickArray;
-      vm.noPicks = result.NoPickArray;
+      vm.dogMLPicks = result[0].DogMLPickArray;
+      vm.dogSpreadPicks = result[0].DogSpreadPickArray;
+      vm.favMLPicks = result[0].FavMLPickArray;
+      vm.favSpreadPicks = result[0].FavSpreadPickArray;
+      vm.overPicks = result[0].OverPickArray;
+      vm.underPicks = result[0].UnderPickArray;
+      vm.noPicks = result[0].NoPickArray;
+
+      for (i=0; i<vm.dogMLPicks.length; i++){
+        vm.dogMLs.push(vm.dogMLPicks[i].relevantLine)
+      };
+
+      for (i=0; i<vm.dogSpreadPicks.length; i++){
+        vm.dogSpreads.push(vm.dogSpreadPicks[i].relevantLine)
+      };
+
+
+      for (i=0; i<vm.favMLPicks.length; i++){
+        vm.favMLs.push(vm.favMLPicks[i].relevantLine)
+      };
+
+      for (i=0; i<vm.favSpreadPicks.length; i++){
+        vm.favSpreads.push(vm.favSpreadPicks[i].relevantLine)
+      };
+
+      for (i=0; i<vm.overPicks.length; i++){
+        vm.overs.push(vm.overPicks[i].relevantLine)
+      };
+
+      for (i=0; i<vm.underPicks.length; i++){
+        vm.unders.push(vm.underPicks[i].relevantLine)
+      };
+
     })
   }
 
@@ -108,7 +151,7 @@ function GameController ($stateParams, gameService) {
   }
 
   zingchart.THEME="classic";
-var myConfig = {
+  var myConfig = {
     "background-color":"#d6d6d6",
     "graphset":[
         {
@@ -210,7 +253,13 @@ var myConfig = {
                     "visible":false
                 }
             },
+            "utc" : true,
+            "timezone" : vm.utcAdjust,
             "scale-x":{
+                "transform": {
+                  "type": "date",
+                  "all": "%m/%d/%y"
+                },
                 "values":["8:00","10:00","12:00","2:00","4:00"],
                 "item":{
                     "font-color":"#fff"
