@@ -49,6 +49,14 @@ var LineSchema = new mongoose.Schema({
   SpreadAwayPicks: Number,
   OverPicks: Number,
   UnderPicks: Number,
+  SpreadHigh: Number,
+  SpreadLow: Number,
+  DogMLBest: Number,
+  DogMLWorst: Number,
+  FavMLBest: Number,
+  FavMLWorst: Number,
+  TotalHigh: Number,
+  TotalLow: Number,
   ArraysBuilt: Boolean,
   RangesSet: Boolean
 })

@@ -470,6 +470,7 @@ setInterval(function(){
         var overPicks = gameArrays[0].OverPickArray;
         var underPicks = gameArrays[0].UnderPickArray;
         var noPicks = gameArrays[0].NoPickArray;
+        var EventID = gameArrays[0].EventID;
 
         var dogMLs = [];
         var favMLs = [];
@@ -502,19 +503,48 @@ setInterval(function(){
           unders.push(underPicks[i].relevantLine)
         };
 
-        console.log(favMLs);
-        // console.log(overs);
-
         var dogMLBest = Array.max(dogMLs);
         var dogMLWorst = Array.min(dogMLs);
         var favMLBest = Array.max(favMLs);
         var favMLWorst = Array.min(favMLs);
-        var spreadBest = Math.max(Array.max(dogSpreads), Math.abs(Array.min(favSpreads)));
-        var spreadWorst = Math.min(Array.min(vm.dogSpreads), Math.abs(Array.min(vm.favSpreads)));
+        var spreadHigh = Math.max(Array.max(dogSpreads), Math.abs(Array.min(favSpreads)));
+        var spreadLow = Math.min(Array.min(dogSpreads), Math.abs(Array.max(favSpreads)));
+        var totalHigh = Math.max(Array.max(overs), Array.max(unders));
+        var totalLow = Math.min(Array.min(overs), Array.min(unders));
 
-        console.log('best favML is', favMLBest, 'worst favML is', favMLWorst);
+        if (spreadHigh === "Infinity") {
+          spreadHigh = spreadLow
+        };
 
+        if (spreadLow === "Infinity") {
+          spreadLow = spreadHigh
+        };
 
+        if (totalHigh === "Infinity") {
+          totalHigh = totalLow
+        };
+
+        if (totalLow === "Infinity") {
+          totalLow = totalHigh
+        };
+
+        Line.findOneAndUpdate({EventID: EventID}, {
+          $set: {
+            DogMLBest: dogMLBest,
+            DogMLWorst: dogMLWorst,
+            FavMLBest: favMLBest,
+            FavMLWorst: favMLWorst,
+            TotalHigh: totalHigh,
+            TotalLow: totalLow,
+            SpreadHigh: spreadHigh,
+            SpreadLow: spreadLow,
+            RangesSet: true
+          }
+        }, {upsert: true}, function(err, updatedLine){
+          if (err) {console.log(err)}
+
+          console.log('spread ranges have been set for ', updatedLine.EventID)
+        })
       })
     })
   })
