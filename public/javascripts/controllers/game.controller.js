@@ -5,7 +5,6 @@ angular
 function GameController ($stateParams, gameService) {
   var vm = this;
   vm.EventID = $stateParams.EventID;
-  vm.myArray = [72,56,78,58,62];
   vm.utcAdjust;
   vm.dogMLs = [];
   vm.favMLs = [];
@@ -13,14 +12,27 @@ function GameController ($stateParams, gameService) {
   vm.favSpreads = [];
   vm.overs = [];
   vm.unders = [];
-  vm.highSpread;
-  vm.lowSpread;
+  vm.favSpreadAxisTop;
+  vm.favSpreadAxisBot;
+  vm.dogSpreadAxisTop;
+  vm.dogSpreadAxisBot;
+  vm.favMLAxisTop;
+  vm.favMLAxisBot;
+  vm.dogMLAxisTop;
+  vm.dogMLAxisBot;
+  vm.favScaleValues;
   vm.checkDST = function() {
     if (moment().isDST() === true){
       vm.utcAdjust = -7
     } else {
       vm.utcAdjust = -8
     }
+  };
+  Array.max = function(array){
+    return Math.max.apply(Math, array)
+  };
+  Array.min = function(array){
+    return Math.min.apply(Math, array)
   };
 
 
@@ -38,18 +50,31 @@ function GameController ($stateParams, gameService) {
         vm.dogMLs.push(vm.dogMLPicks[i].relevantLine)
       };
 
-      for (i=0; i<vm.dogSpreadPicks.length; i++){
-        vm.dogSpreads.push(vm.dogSpreadPicks[i].relevantLine)
-      };
-
-
       for (i=0; i<vm.favMLPicks.length; i++){
         vm.favMLs.push(vm.favMLPicks[i].relevantLine)
+      };
+
+      for (i=0; i<vm.dogSpreadPicks.length; i++){
+        vm.dogSpreads.push(vm.dogSpreadPicks[i].relevantLine)
       };
 
       for (i=0; i<vm.favSpreadPicks.length; i++){
         vm.favSpreads.push(vm.favSpreadPicks[i].relevantLine)
       };
+
+      vm.spreadAxisHigh = Math.max(Array.max(vm.dogSpreads), Math.abs(Array.min(vm.favSpreads))) + 0.5;
+
+      vm.spreadAxisLow = Math.min(Array.min(vm.dogSpreads), Math.abs(Array.min(vm.favSpreads))) - 0.5;
+
+      vm.favSpreadAxisTop = -vm.spreadAxisLow;
+      vm.favSpreadAxisBot = -vm.spreadAxisHigh;
+      vm.dogSpreadAxisTop = vm.spreadAxisHigh;
+      vm.dogSpreadAxisBot = vm.spreadAxisLow;
+
+      console.log(vm.dogSpreadAxisTop);
+      console.log(vm.dogSpreadAxisBot);
+      console.log(vm.favSpreadAxisTop);
+      console.log(vm.favSpreadAxisBot);
 
       for (i=0; i<vm.overPicks.length; i++){
         vm.overs.push(vm.overPicks[i].relevantLine)
@@ -66,89 +91,89 @@ function GameController ($stateParams, gameService) {
     gameService.getLineData(vm.EventID).then(function(result){
       vm.game = result[0];
       console.log(vm.game);
-      vm.pickDistribution.scaleX.labels.push(vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Under', vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Over', vm.game.HomeAbbrev + ' ML', vm.game.AwayAbbrev + ' ML', vm.game.HomeAbbrev + ' Spread', vm.game.AwayAbbrev + ' Spread');
-
-      vm.pickDistribution.series[0].values.push(vm.game.UnderPicks, vm.game.OverPicks, vm.game.MLHomePicks, vm.game.MLAwayPicks, vm.game.SpreadHomePicks, vm.game.SpreadAwayPicks);
-
-      vm.pickDistribution.series[0].rules.push(
-        {
-            "rule":"%i==0",
-            "background-color": "#838383"
-        },
-        {
-            "rule":"%i==1",
-            "background-color": "#2D2D2D"
-        },
-        {
-            "rule":"%i==2",
-            "background-color": vm.game.HomeColor
-        },
-        {
-            "rule":"%i==3",
-            "background-color": vm.game.AwayColor
-        },
-        {
-            "rule":"%i==4",
-            "background-color": vm.game.HomeColor
-        },
-        {
-            "rule":"%i==5",
-            "background-color": vm.game.AwayColor
-        }
-      )
+      // vm.pickDistribution.scaleX.labels.push(vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Under', vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Over', vm.game.HomeAbbrev + ' ML', vm.game.AwayAbbrev + ' ML', vm.game.HomeAbbrev + ' Spread', vm.game.AwayAbbrev + ' Spread');
+      //
+      // vm.pickDistribution.series[0].values.push(vm.game.UnderPicks, vm.game.OverPicks, vm.game.MLHomePicks, vm.game.MLAwayPicks, vm.game.SpreadHomePicks, vm.game.SpreadAwayPicks);
+      //
+      // vm.pickDistribution.series[0].rules.push(
+      //   {
+      //       "rule":"%i==0",
+      //       "background-color": "#838383"
+      //   },
+      //   {
+      //       "rule":"%i==1",
+      //       "background-color": "#2D2D2D"
+      //   },
+      //   {
+      //       "rule":"%i==2",
+      //       "background-color": vm.game.HomeColor
+      //   },
+      //   {
+      //       "rule":"%i==3",
+      //       "background-color": vm.game.AwayColor
+      //   },
+      //   {
+      //       "rule":"%i==4",
+      //       "background-color": vm.game.HomeColor
+      //   },
+      //   {
+      //       "rule":"%i==5",
+      //       "background-color": vm.game.AwayColor
+      //   }
+      // )
     })
   }
 
-  vm.pickDistribution = {
-    "globals": {
-      "font-family" : "Raleway"
-    },
-    "type": "hbar",
-    "plotarea": {
-      "adjust-layout":true
-    },
-    "scaleX": {
-      "label":{ /* Scale Title */
-      },
-      "labels":[] /* Scale Labels */
-    },
-    "scaleY": {
-      "label":{ /* Scale Title */
-        "text":"Total Pool Selections",
-      },
-      "values": "0:40:5",
-      "labels":[] /* Scale Labels */
-    },
-    "tooltip": {
-      "text": "<b>%kl</b><br>%v Picks",
-      "shadow": false,
-      "font-color": "#e5ebeb",
-      "border-color": "#ffffff",
-      "border-width": "2px",
-      "border-radius": "10px",
-      "padding": "8px 15px"
-    },
-    "series": [
-      {"values": [],
-      "value-box": {
-                "placement":"top-out",
-                "text":"%v Picks",
-                "decimals":0,
-                "font-color":"#5E5E5E",
-                "font-size":"14px",
-                "alpha":0.6
-            },
-        "animation": {
-            "delay": 100,
-            "effect": "ANIMATION_EXPAND_BOTTOM",
-            "speed": "1600",
-            "method": "0",
-            "sequence": "1"
-        },
-        "rules":[ ]
-      }
-      ]
-  }
+  // vm.pickDistribution = {
+  //   "globals": {
+  //     "font-family" : "Raleway"
+  //   },
+  //   "type": "hbar",
+  //   "plotarea": {
+  //     "adjust-layout":true
+  //   },
+  //   "scaleX": {
+  //     "label":{ /* Scale Title */
+  //     },
+  //     "labels":[] /* Scale Labels */
+  //   },
+  //   "scaleY": {
+  //     "label":{ /* Scale Title */
+  //       "text":"Total Pool Selections",
+  //     },
+  //     "values": "0:40:5",
+  //     "labels":[] /* Scale Labels */
+  //   },
+  //   "tooltip": {
+  //     "text": "<b>%kl</b><br>%v Picks",
+  //     "shadow": false,
+  //     "font-color": "#e5ebeb",
+  //     "border-color": "#ffffff",
+  //     "border-width": "2px",
+  //     "border-radius": "10px",
+  //     "padding": "8px 15px"
+  //   },
+  //   "series": [
+  //     {"values": [],
+  //     "value-box": {
+  //               "placement":"top-out",
+  //               "text":"%v Picks",
+  //               "decimals":0,
+  //               "font-color":"#5E5E5E",
+  //               "font-size":"14px",
+  //               "alpha":0.6
+  //           },
+  //       "animation": {
+  //           "delay": 100,
+  //           "effect": "ANIMATION_EXPAND_BOTTOM",
+  //           "speed": "1600",
+  //           "method": "0",
+  //           "sequence": "1"
+  //       },
+  //       "rules":[ ]
+  //     }
+  //     ]
+  // }
 
   zingchart.THEME="classic";
   var myConfig = {
@@ -276,7 +301,7 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-y":{
-                "values":"40:80:10",
+                "values": vm.sampleScaleValues,
                 "guide":{
                     "visible":false
                 },

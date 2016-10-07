@@ -23,6 +23,15 @@ var colors = require('../modules/colors.js');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
 
+// methods for determining pick ranges
+Array.max = function(array){
+  return Math.max.apply(Math, array)
+};
+
+Array.min = function(array){
+  return Math.min.apply(Math, array)
+};
+
 // BEGIN ROUTES TO AUTO-UPDATE ODDS + RESULTS (FROM API) AND USER PICKS (FROM DB)
 
 // This first function updates game results.
@@ -421,8 +430,10 @@ setInterval(function(){
 
           console.log("arrays have been built for", result)
         }).then(function(){
-          Line.findOneAndUpdate({EventID: game.EventID}, {
-            ArraysBuilt: true
+          Line.findOneAndUpdate({EventID: game.EventID}, {$set:
+            {
+              ArraysBuilt: true
+            }
           }, function(err, updatedLine){
             if (err) {console.log(err)}
 
@@ -433,6 +444,81 @@ setInterval(function(){
     })
   })
 }, 600000)
+
+setInterval(function(){
+  var now = moment();
+  Line.find({
+    MatchTime: {
+      $lt: now
+    },
+    RangesSet: {
+      $in: [false, null]
+    }
+  }, function(err, games){
+    if (err) {console.log(err)}
+
+  }).then(function(games){
+    games.forEach(function(game){
+      PickArray.find({EventID: game.EventID}, function(err, gameArrays){
+        if (err) {console.log(err)}
+
+      }).then(function(gameArrays){
+        var dogMLPicks = gameArrays[0].DogMLPickArray;
+        var dogSpreadPicks = gameArrays[0].DogSpreadPickArray;
+        var favMLPicks = gameArrays[0].FavMLPickArray;
+        var favSpreadPicks = gameArrays[0].FavSpreadPickArray;
+        var overPicks = gameArrays[0].OverPickArray;
+        var underPicks = gameArrays[0].UnderPickArray;
+        var noPicks = gameArrays[0].NoPickArray;
+
+        var dogMLs = [];
+        var favMLs = [];
+        var dogSpreads = [];
+        var favSpreads = [];
+        var overs = [];
+        var unders = [];
+
+        for (i=0; i<dogMLPicks.length; i++){
+          dogMLs.push(dogMLPicks[i].relevantLine)
+        };
+
+        for (i=0; i<favMLPicks.length; i++){
+          favMLs.push(favMLPicks[i].relevantLine)
+        };
+
+        for (i=0; i<dogSpreadPicks.length; i++){
+          dogSpreads.push(dogSpreadPicks[i].relevantLine)
+        };
+
+        for (i=0; i<favSpreadPicks.length; i++){
+          favSpreads.push(favSpreadPicks[i].relevantLine)
+        };
+
+        for (i=0; i<overPicks.length; i++){
+          overs.push(overPicks[i].relevantLine)
+        };
+
+        for (i=0; i<underPicks.length; i++){
+          unders.push(underPicks[i].relevantLine)
+        };
+
+        console.log(favMLs);
+        // console.log(overs);
+
+        var dogMLBest = Array.max(dogMLs);
+        var dogMLWorst = Array.min(dogMLs);
+        var favMLBest = Array.max(favMLs);
+        var favMLWorst = Array.min(favMLs);
+        var spreadBest = Math.max(Array.max(dogSpreads), Math.abs(Array.min(favSpreads)));
+        var spreadWorst = Math.min(Array.min(vm.dogSpreads), Math.abs(Array.min(vm.favSpreads)));
+
+        console.log('best favML is', favMLBest, 'worst favML is', favMLWorst);
+
+
+      })
+    })
+  })
+}, 10000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });

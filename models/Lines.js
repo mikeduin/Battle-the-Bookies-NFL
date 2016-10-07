@@ -49,7 +49,8 @@ var LineSchema = new mongoose.Schema({
   SpreadAwayPicks: Number,
   OverPicks: Number,
   UnderPicks: Number,
-  ArraysBuilt: Boolean
+  ArraysBuilt: Boolean,
+  RangesSet: Boolean
 })
 
 mongoose.model('Line', LineSchema);
