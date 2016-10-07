@@ -30,7 +30,10 @@ var PickSchema = new mongoose.Schema({
   geoType: String,
   pickResult: String,
   resultBinary: Number,
-  finalPayout: Number
+  finalPayout: Number,
+  capperGraded: Boolean,
+  capperGrade: Number,
+  bestLineAvail: Number
 })
 
 mongoose.model('Pick', PickSchema);

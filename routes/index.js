@@ -445,6 +445,8 @@ setInterval(function(){
   })
 }, 600000)
 
+// This function below runs every ten minutes and checks to see whether a game's pick ranges have been added to the original line data.
+
 setInterval(function(){
   var now = moment();
   Line.find({
@@ -546,6 +548,50 @@ setInterval(function(){
           console.log('spread ranges have been set for ', updatedLine.EventID)
         })
       })
+    })
+  })
+}, 600000)
+
+setInterval(function(){
+  var now = moment();
+  Pick.find({
+    MatchTime: {
+      $lt: now
+    },
+    CapperGraded: {
+      $in: [false, null]
+    }
+  }, function(err, picks){
+    if (err) {console.log(err)}
+
+  }).then(function(picks){
+    picks.forEach(function(pick){
+      var capperGrade = 10;
+      var bestLineAvail;
+      Line.find({EventID: pick.EventID}, function(err, line){
+        if (err) {console.log(err)}
+
+        if(pick.betType === "Fav Spread") {
+          capperGrade -= (line[0].SpreadLow - pick.activeSpread)
+        } else if (pick.betType === "Dog Spread") {
+          capperGrade -= (line[0].SpreadHigh - pick.activeSpread)
+        } else if (pick.betType === "Fav ML") {
+          capperGrade -= ((line[0].FavMLBest - pick.activeLine)*0.025)
+        } else if (pick.betType === "Dog ML") {
+          capperGrade -= ((line[0].DogMLBest - pick.activeLine)*0.025)
+        } else if (pick.betType === "Total Over"){
+          capperGrade -= (pick.activeTotal - line[0].TotalLow)
+        } else if (pick.betType === "Total Under"){
+          capperGrade -= (line[0].TotalHigh - pick.activeTotal)
+        } else {
+          return
+        }
+
+        console.log('pick is', pick);
+        console.log('line is', line);
+        console.log('capperGrade is', capperGrade);
+      })
+
     })
   })
 }, 10000)
@@ -659,6 +705,8 @@ setInterval(function(){
   })
   console.log("auto-templating complete")
 }, 300000)
+
+// The function below runs every ten minutes and calculates a user's weekly totals in terms of picks won, picks lost, and net profits.
 
 setInterval(function(){
   User.find(function(err, users){
