@@ -12,15 +12,10 @@ function GameController ($stateParams, gameService) {
   vm.favSpreads = [];
   vm.overs = [];
   vm.unders = [];
-  vm.favSpreadAxisTop;
-  vm.favSpreadAxisBot;
-  vm.dogSpreadAxisTop;
-  vm.dogSpreadAxisBot;
-  vm.favMLAxisTop;
-  vm.favMLAxisBot;
-  vm.dogMLAxisTop;
-  vm.dogMLAxisBot;
-  vm.favScaleValues;
+  vm.spreadRange = [];
+  vm.dogMLRange = [];
+  vm.favMLRange = [];
+  vm.totalRange = [];
   vm.checkDST = function() {
     if (moment().isDST() === true){
       vm.utcAdjust = -7
@@ -46,43 +41,6 @@ function GameController ($stateParams, gameService) {
       vm.underPicks = result[0].UnderPickArray;
       vm.noPicks = result[0].NoPickArray;
 
-      for (i=0; i<vm.dogMLPicks.length; i++){
-        vm.dogMLs.push(vm.dogMLPicks[i].relevantLine)
-      };
-
-      for (i=0; i<vm.favMLPicks.length; i++){
-        vm.favMLs.push(vm.favMLPicks[i].relevantLine)
-      };
-
-      for (i=0; i<vm.dogSpreadPicks.length; i++){
-        vm.dogSpreads.push(vm.dogSpreadPicks[i].relevantLine)
-      };
-
-      for (i=0; i<vm.favSpreadPicks.length; i++){
-        vm.favSpreads.push(vm.favSpreadPicks[i].relevantLine)
-      };
-
-      vm.spreadAxisHigh = Math.max(Array.max(vm.dogSpreads), Math.abs(Array.min(vm.favSpreads))) + 0.5;
-
-      vm.spreadAxisLow = Math.min(Array.min(vm.dogSpreads), Math.abs(Array.min(vm.favSpreads))) - 0.5;
-
-      vm.favSpreadAxisTop = -vm.spreadAxisLow;
-      vm.favSpreadAxisBot = -vm.spreadAxisHigh;
-      vm.dogSpreadAxisTop = vm.spreadAxisHigh;
-      vm.dogSpreadAxisBot = vm.spreadAxisLow;
-
-      console.log(vm.dogSpreadAxisTop);
-      console.log(vm.dogSpreadAxisBot);
-      console.log(vm.favSpreadAxisTop);
-      console.log(vm.favSpreadAxisBot);
-
-      for (i=0; i<vm.overPicks.length; i++){
-        vm.overs.push(vm.overPicks[i].relevantLine)
-      };
-
-      for (i=0; i<vm.underPicks.length; i++){
-        vm.unders.push(vm.underPicks[i].relevantLine)
-      };
 
     })
   }
@@ -91,6 +49,39 @@ function GameController ($stateParams, gameService) {
     gameService.getLineData(vm.EventID).then(function(result){
       vm.game = result[0];
       console.log(vm.game);
+
+        var spreadRangeMin = (vm.game.SpreadLow)-0.5;
+        var spreadRangeLoopMax = (vm.game.SpreadHigh)+1;
+        var spreadRange = [];
+
+        for (i=spreadRangeMin; i<spreadRangeLoopMax; i+=0.5){
+          vm.spreadRange.push(i)
+        };
+
+        var dogMLRangeMin = (vm.game.DogMLWorst) - 15;
+        var dogMLRangeMax = (vm.game.DogMLBest) + 30;
+
+        for (i=dogMLRangeMin; i<dogMLRangeMax; i+=15){
+          vm.dogMLRange.push(i)
+        };
+
+        var favMLRangeMin = (vm.game.FavMLWorst) - 15;
+        var favMLRangeMax = (vm.game.FavMLBest) + 30;
+
+        for (i=favMLRangeMin; i<favMLRangeMax; i+=15){
+          vm.favMLRange.push(i)
+        };
+
+        var totalRangeMin = (vm.game.TotalLow) - 0.5;
+        var totalRangeMax = (vm.game.TotalHigh) + 1;
+
+        for (i=totalRangeMin; i<totalRangeMax; i+=0.5){
+          vm.totalRange.push(i)
+        }
+
+
+
+
       // vm.pickDistribution.scaleX.labels.push(vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Under', vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Over', vm.game.HomeAbbrev + ' ML', vm.game.AwayAbbrev + ' ML', vm.game.HomeAbbrev + ' Spread', vm.game.AwayAbbrev + ' Spread');
       //
       // vm.pickDistribution.series[0].values.push(vm.game.UnderPicks, vm.game.OverPicks, vm.game.MLHomePicks, vm.game.MLAwayPicks, vm.game.SpreadHomePicks, vm.game.SpreadAwayPicks);
@@ -175,8 +166,8 @@ function GameController ($stateParams, gameService) {
   //     ]
   // }
 
-  zingchart.THEME="classic";
-  var myConfig = {
+  // zingchart.THEME="classic";
+  vm.myConfig = {
     "background-color":"#d6d6d6",
     "graphset":[
         {
@@ -301,7 +292,7 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-y":{
-                "values": vm.sampleScaleValues,
+                "values": vm.spreadRange,
                 "guide":{
                     "visible":false
                 },
@@ -314,20 +305,20 @@ function GameController ($stateParams, gameService) {
                     "offset-x":"-10px"
                 }
             },
-            "scale-y-2":{
-                "values":"40:80:10",
-                "guide":{
-                    "visible":false
-                },
-                "line-color":"none",
-                "tick":{
-                    "line-color":"none"
-                },
-                "item":{
-                    "font-color":"#75251d",
-                    "offset-x":"10px"
-                }
-            },
+            // "scale-y-2":{
+            //     "values":"40:80:10",
+            //     "guide":{
+            //         "visible":false
+            //     },
+            //     "line-color":"none",
+            //     "tick":{
+            //         "line-color":"none"
+            //     },
+            //     "item":{
+            //         "font-color":"#75251d",
+            //         "offset-x":"10px"
+            //     }
+            // },
             "tooltip":{
                 "text":"%v",
                 "font-color":"#d44434",
@@ -431,7 +422,7 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-y":{
-                "values":"90:110:10",
+                "values": vm.favMLRange,
                 "guide":{
                     "visible":false
                 },
@@ -442,6 +433,20 @@ function GameController ($stateParams, gameService) {
                 "item":{
                     "font-color":"#4d4645",
                     "offset-x":"-20px"
+                }
+            },
+            "scale-y-2":{
+                "values": vm.dogMLRange,
+                "guide":{
+                    "visible":false
+                },
+                "line-color":"none",
+                "tick":{
+                    "line-color":"none"
+                },
+                "item":{
+                    "font-color":"#4d4645",
+                    "offset-x":"10px"
                 }
             },
             "tooltip":{
@@ -548,7 +553,7 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-y":{
-                "values":"90:110:10",
+                "values": vm.totalRange,
                 "guide":{
                     "visible":false
                 },
@@ -653,11 +658,11 @@ function GameController ($stateParams, gameService) {
     ]
 };
 
-zingchart.render({
-	id : 'myChart',
-	data : myConfig,
-	height: 750,
-	width: '75%'
-});
+// zingchart.render({
+// 	id : 'myChart',
+// 	data : myConfig,
+// 	height: 750,
+// 	width: '75%'
+// });
 
 }

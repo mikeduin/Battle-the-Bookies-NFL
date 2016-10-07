@@ -558,7 +558,7 @@ setInterval(function(){
     MatchTime: {
       $lt: now
     },
-    CapperGraded: {
+    capperGraded: {
       $in: [false, null]
     }
   }, function(err, picks){
@@ -594,10 +594,6 @@ setInterval(function(){
           return
         }
 
-        // console.log('pick is', pick);
-        // console.log('line is', line);
-        console.log('betType is ', pick.betType, 'capperGrade is', capperGrade);
-
         Pick.findOneAndUpdate({_id: pickID}, {
           $set: {
             capperGrade: capperGrade,
@@ -612,7 +608,7 @@ setInterval(function(){
       })
     })
   })
-}, 10000)
+}, 600000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });
