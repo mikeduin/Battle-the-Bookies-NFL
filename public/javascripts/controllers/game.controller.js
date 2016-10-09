@@ -25,8 +25,8 @@ function GameController ($stateParams, gameService) {
   vm.dogSpreadJuices = [];
   vm.dogSpreadUsers = [];
   vm.dateRangeLow;
-  vm.game = {};
   vm.awayColor;
+  vm.homeColor;
   vm.checkDST = function() {
     if (moment().isDST() === true){
       vm.utcAdjust = -7
@@ -78,16 +78,27 @@ function GameController ($stateParams, gameService) {
       console.log(vm.game);
       console.log(moment(vm.game.MatchTime).day());
       vm.awayColor = vm.game.AwayColor;
+      vm.homeColor = vm.game.HomeColor;
       console.log(vm.awayColor);
 
-      if (moment(vm.game.MatchTime).day() !== 7 && moment(vm.game.MatchTime).day() !== 1) {
-        vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(9).valueOf()
+      if(vm.game.PointSpreadAway < 0) {
+        vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.homeColor;
       } else {
-        vm.dateRangeLow = moment(vm.game.MatchTime).day(-7).hour(9).valueOf()
+        vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.awayColor;
+      }
+
+
+
+      if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
+        vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(19).valueOf()
+      } else {
+        vm.dateRangeLow = moment(vm.game.MatchTime).day(-7).hour(19).valueOf()
       };
 
       vm.dateRangeHigh = moment(vm.game.MatchTime).valueOf();
-      var extraDay = vm.dateRangeHigh + 86400000;
+      var extraDay = vm.dateRangeHigh + 80000001;
 
       for (i=vm.dateRangeLow; i<extraDay; i+=86400000){
         vm.timeValues.push(i)
@@ -369,7 +380,6 @@ function GameController ($stateParams, gameService) {
                     "usernames": vm.favSpreadUsers,
                     "submitted": vm.favSpreadTimes,
                     "marker":{
-                      "background-color": vm.awayColor,
                       "border-color":"white",
                       "background-repeat":"no-repeat",
                       "shadow":false,
@@ -381,6 +391,12 @@ function GameController ($stateParams, gameService) {
                     "values": vm.dogSpreadChartValues,
                     "usernames": vm.dogSpreadUsers,
                     "submitted": vm.dogSpreadTimes,
+                    "marker":{
+                      "border-color":"white",
+                      "background-repeat":"no-repeat",
+                      "shadow":false,
+                      "size": 8
+                    },
                     "scales": "scale-x, scale-y"
                 }
             ]
