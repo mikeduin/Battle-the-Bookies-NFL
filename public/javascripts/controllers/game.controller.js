@@ -16,6 +16,7 @@ function GameController ($stateParams, gameService) {
   vm.dogMLRange = [];
   vm.favMLRange = [];
   vm.totalRange = [];
+  vm.timeValues = [];
   vm.checkDST = function() {
     if (moment().isDST() === true){
       vm.utcAdjust = -7
@@ -29,7 +30,6 @@ function GameController ($stateParams, gameService) {
   Array.min = function(array){
     return Math.min.apply(Math, array)
   };
-
 
   vm.getPickArrays = function() {
     gameService.getPickArrays(vm.EventID).then(function(result){
@@ -48,36 +48,54 @@ function GameController ($stateParams, gameService) {
   vm.getLineData = function(){
     gameService.getLineData(vm.EventID).then(function(result){
       vm.game = result[0];
-      console.log(vm.game);
+      // console.log(vm.game);
 
-        var spreadRangeMin = (vm.game.SpreadLow)-0.5;
-        var spreadRangeLoopMax = (vm.game.SpreadHigh)+1;
-        var spreadRange = [];
+      var dateRollback;
 
-        for (i=spreadRangeMin; i<spreadRangeLoopMax; i+=0.5){
-          vm.spreadRange.push(i)
-        };
+      console.log(vm.game.MatchTime);
+      console.log(moment(vm.game.MatchTime));
+      console.log(moment(vm.game.MatchTime).day());
 
-        var dogMLRangeMin = (vm.game.DogMLWorst) - 15;
-        var dogMLRangeMax = (vm.game.DogMLBest) + 30;
+      if(moment(vm.game.MatchTime).day() === 4) {
+        dateRollback = -4
+      } else if (moment(vm.game.MatchTime).day() === 6) {
+        dateRollback = -6
+      } else if (moment(vm.game.MatchTime).day() === 7) {
+        dateRollback = -7
+      } else if (moment(vm.game.MatchTime).day() === 1) {
+        dateRollback = -8
+      } else {
+        dateRollback = -7
+      }
 
-        for (i=dogMLRangeMin; i<dogMLRangeMax; i+=15){
-          vm.dogMLRange.push(i)
-        };
+      var spreadRangeMin = (vm.game.SpreadLow)-0.5;
+      var spreadRangeLoopMax = (vm.game.SpreadHigh)+1;
+      var spreadRange = [];
 
-        var favMLRangeMin = (vm.game.FavMLWorst) - 15;
-        var favMLRangeMax = (vm.game.FavMLBest) + 30;
+      for (i=spreadRangeMin; i<spreadRangeLoopMax; i+=0.5){
+        vm.spreadRange.push(i)
+      };
 
-        for (i=favMLRangeMin; i<favMLRangeMax; i+=15){
-          vm.favMLRange.push(i)
-        };
+      var dogMLRangeMin = (vm.game.DogMLWorst) - 15;
+      var dogMLRangeMax = (vm.game.DogMLBest) + 30;
 
-        var totalRangeMin = (vm.game.TotalLow) - 0.5;
-        var totalRangeMax = (vm.game.TotalHigh) + 1;
+      for (i=dogMLRangeMin; i<dogMLRangeMax; i+=15){
+        vm.dogMLRange.push(i)
+      };
 
-        for (i=totalRangeMin; i<totalRangeMax; i+=0.5){
-          vm.totalRange.push(i)
-        }
+      var favMLRangeMin = (vm.game.FavMLWorst) - 15;
+      var favMLRangeMax = (vm.game.FavMLBest) + 30;
+
+      for (i=favMLRangeMin; i<favMLRangeMax; i+=15){
+        vm.favMLRange.push(i)
+      };
+
+      var totalRangeMin = (vm.game.TotalLow) - 0.5;
+      var totalRangeMax = (vm.game.TotalHigh) + 1;
+
+      for (i=totalRangeMin; i<totalRangeMax; i+=0.5){
+        vm.totalRange.push(i)
+      };
 
 
 
@@ -274,7 +292,7 @@ function GameController ($stateParams, gameService) {
             "scale-x":{
                 "transform": {
                   "type": "date",
-                  "all": "%m/%d/%y"
+                  "all": "%D<br>%m/%d/%y"
                 },
                 "values":["8:00","10:00","12:00","2:00","4:00"],
                 "item":{
