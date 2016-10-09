@@ -89,8 +89,6 @@ function GameController ($stateParams, gameService) {
         vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.awayColor;
       }
 
-
-
       if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
         vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(19).valueOf()
       } else {
@@ -435,7 +433,7 @@ function GameController ($stateParams, gameService) {
             }
         },
         {
-            "type":"line",
+            "type":"scatter",
             "x":"17%",
             "y":"40%",
             "height":"26.67%",
@@ -570,7 +568,7 @@ function GameController ($stateParams, gameService) {
             }
         },
         {
-            "type":"line",
+            "type":"scatter",
             "x":"17%",
             "y":"66.67%",
             "height":"26.67%",
