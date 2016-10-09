@@ -42,7 +42,22 @@ function GameController ($stateParams, gameService) {
       vm.underPicks = result[0].UnderPickArray;
       vm.noPicks = result[0].NoPickArray;
 
-      console.log(vm.favSpreadPicks)
+      vm.favSpreadChartValues = [];
+      vm.favSpreadJuices = [];
+      vm.favSpreadUsers = [];
+      console.log(vm.favSpreadPicks);
+
+      for (i=0; i<vm.favSpreadPicks.length; i++) {
+        var unixTime = moment(vm.favSpreadPicks[i].submittedAt).valueOf();
+        var absSpread = Math.abs(vm.favSpreadPicks[i].relevantLine);
+
+        vm.favSpreadChartValues.push([unixTime, absSpread, vm.favSpreadPicks[i].capperGrade]);
+        vm.favSpreadJuices.push(vm.favSpreadPicks[i].activeLine);
+        vm.favSpreadUsers.push(vm.favSpreadPicks[i].username);
+      }
+
+      console.log(vm.favSpreadChartValues);
+
     })
   }
 
@@ -225,7 +240,7 @@ function GameController ($stateParams, gameService) {
             }
         },
         {
-            "type":"line",
+            "type":"bubble",
             "x":"17%",
             "y":"13.33%",
             "height":"26.67%",
@@ -244,23 +259,23 @@ function GameController ($stateParams, gameService) {
             "plotarea":{
                 "margin":"60 40 40 20"
             },
-            "plot":{
-                "line-color":"#fff",
-                "marker":{
-                    "type":"circle",
-                    "background-color":"#f75b48",
-                    "border-width":2,
-                    "size":4,
-                    "shadow":0,
-                    "border-color":"#ffffff"
-                },
-                "hover-marker":{
-                    "background-color":"#ffffff"
-                },
-                "hover-state":{
-                    "visible":false
-                }
-            },
+            // "plot":{
+            //     "line-color":"#fff",
+            //     "marker":{
+            //         "type":"circle",
+            //         "background-color":"#f75b48",
+            //         "border-width":2,
+            //         "size":4,
+            //         "shadow":0,
+            //         "border-color":"#ffffff"
+            //     },
+            //     "hover-marker":{
+            //         "background-color":"#ffffff"
+            //     },
+            //     "hover-state":{
+            //         "visible":false
+            //     }
+            // },
             "utc" : true,
             "timezone" : vm.utcAdjust,
             "scale-x":{
@@ -324,7 +339,14 @@ function GameController ($stateParams, gameService) {
             },
             "series":[
                 {
-                    "values": vm.myArray
+                    "values": vm.favSpreadChartValues,
+                    "usernames": vm.favSpreadUsers,
+                    "submitted": vm.favSpreadTimes
+                },
+                {
+                    "values": [
+
+                    ]
                 }
             ]
         },
