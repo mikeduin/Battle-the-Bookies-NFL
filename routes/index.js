@@ -397,6 +397,8 @@ setInterval(function(){
             favType: pick.favType,
             activePayout: pick.activePayout,
             activePick: pick.activePick,
+            activeLine: pick.activeLine,
+            capperGrade: pick.capperGrade,
             relevantLine: relevantLine
           };
           if (pick.betType === "Total Over") {
@@ -415,16 +417,20 @@ setInterval(function(){
             noPickArray.push(pickObject)
           };
         });
+
+        console.log('dogSpreadPickArray is', dogSpreadPickArray)
       }).then(function(){
         PickArray.findOneAndUpdate({EventID: game.EventID}, {
-          EventID: game.EventID,
-          OverPickArray: overPickArray,
-          UnderPickArray: underPickArray,
-          FavSpreadPickArray: favSpreadPickArray,
-          DogSpreadPickArray: dogSpreadPickArray,
-          FavMLPickArray: favMLPickArray,
-          DogMLPickArray: dogMLPickArray,
-          NoPickArray: noPickArray
+          $set: {
+            EventID: game.EventID,
+            OverPickArray: overPickArray,
+            UnderPickArray: underPickArray,
+            FavSpreadPickArray: favSpreadPickArray,
+            DogSpreadPickArray: dogSpreadPickArray,
+            FavMLPickArray: favMLPickArray,
+            DogMLPickArray: dogMLPickArray,
+            NoPickArray: noPickArray
+          }
         }, {upsert: true}, function(err, result){
           if(err) {console.log(err)}
 

@@ -17,6 +17,7 @@ function GameController ($stateParams, gameService) {
   vm.favMLRange = [];
   vm.totalRange = [];
   vm.timeValues = [];
+  vm.dateRangeLow;
   vm.checkDST = function() {
     if (moment().isDST() === true){
       vm.utcAdjust = -7
@@ -41,32 +42,17 @@ function GameController ($stateParams, gameService) {
       vm.underPicks = result[0].UnderPickArray;
       vm.noPicks = result[0].NoPickArray;
 
-
+      console.log(vm.favSpreadPicks)
     })
   }
 
   vm.getLineData = function(){
     gameService.getLineData(vm.EventID).then(function(result){
       vm.game = result[0];
-      // console.log(vm.game);
+      console.log(vm.game);
 
-      var dateRollback;
-
-      console.log(vm.game.MatchTime);
-      console.log(moment(vm.game.MatchTime));
-      console.log(moment(vm.game.MatchTime).day());
-
-      if(moment(vm.game.MatchTime).day() === 4) {
-        dateRollback = -4
-      } else if (moment(vm.game.MatchTime).day() === 6) {
-        dateRollback = -6
-      } else if (moment(vm.game.MatchTime).day() === 7) {
-        dateRollback = -7
-      } else if (moment(vm.game.MatchTime).day() === 1) {
-        dateRollback = -8
-      } else {
-        dateRollback = -7
-      }
+      vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(9).valueOf();
+      vm.dateRangeHigh = moment(vm.game.MatchTime).valueOf();
 
       var spreadRangeMin = (vm.game.SpreadLow)-0.5;
       var spreadRangeLoopMax = (vm.game.SpreadHigh)+1;
@@ -202,18 +188,6 @@ function GameController ($stateParams, gameService) {
                 "border-bottom":"1px solid #d6d6d6",
                 "padding":"26 30 28 30"
             }
-            // "shapes":[
-            //     {
-            //         "type":"square",
-            //         "x":"97%",
-            //         "y":"10px",
-            //         "gradient-colors":"#f9f9f9 #f9f9f9 #d44434 #d44434",
-            //         "gradient-stops":"0 0.5 0.5 1",
-            //         "fill-angle":45,
-            //         "size":7,
-            //         "angle":-90
-            //     }
-            // ]
         },
         {
             "type":"null",
@@ -294,7 +268,9 @@ function GameController ($stateParams, gameService) {
                   "type": "date",
                   "all": "%D<br>%m/%d/%y"
                 },
-                "values":["8:00","10:00","12:00","2:00","4:00"],
+                "min-value": vm.dateRangeLow,
+                "max-value": vm.dateRangeHigh,
+                "step": "day",
                 "item":{
                     "font-color":"#fff"
                 },
