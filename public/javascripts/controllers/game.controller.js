@@ -12,12 +12,21 @@ function GameController ($stateParams, gameService) {
   vm.favSpreads = [];
   vm.overs = [];
   vm.unders = [];
-  vm.spreadRange = [];
+  vm.dogSpreadRange = [];
+  vm.favSpreadRange = [];
   vm.dogMLRange = [];
   vm.favMLRange = [];
   vm.totalRange = [];
   vm.timeValues = [];
+  vm.favSpreadChartValues = [];
+  vm.favSpreadJuices = [];
+  vm.favSpreadUsers = [];
+  vm.dogSpreadChartValues = [];
+  vm.dogSpreadJuices = [];
+  vm.dogSpreadUsers = [];
   vm.dateRangeLow;
+  vm.game = {};
+  vm.awayColor;
   vm.checkDST = function() {
     if (moment().isDST() === true){
       vm.utcAdjust = -7
@@ -42,21 +51,23 @@ function GameController ($stateParams, gameService) {
       vm.underPicks = result[0].UnderPickArray;
       vm.noPicks = result[0].NoPickArray;
 
-      vm.favSpreadChartValues = [];
-      vm.favSpreadJuices = [];
-      vm.favSpreadUsers = [];
-      console.log(vm.favSpreadPicks);
-
       for (i=0; i<vm.favSpreadPicks.length; i++) {
         var unixTime = moment(vm.favSpreadPicks[i].submittedAt).valueOf();
-        var absSpread = Math.abs(vm.favSpreadPicks[i].relevantLine);
 
-        vm.favSpreadChartValues.push([unixTime, absSpread, vm.favSpreadPicks[i].capperGrade]);
+        vm.favSpreadChartValues.push([unixTime, vm.favSpreadPicks[i].relevantLine]);
         vm.favSpreadJuices.push(vm.favSpreadPicks[i].activeLine);
         vm.favSpreadUsers.push(vm.favSpreadPicks[i].username);
       }
 
-      console.log(vm.favSpreadChartValues);
+      for (i=0; i<vm.dogSpreadPicks.length; i++) {
+        var unixTime = moment(vm.dogSpreadPicks[i].submittedAt).valueOf();
+
+        vm.dogSpreadChartValues.push([unixTime, vm.dogSpreadPicks[i].relevantLine]);
+        vm.dogSpreadJuices.push(vm.dogSpreadPicks[i].activeLine);
+        vm.dogSpreadUsers.push(vm.dogSpreadPicks[i].username);
+      }
+
+      console.log(vm.dogSpreadChartValues);
 
     })
   }
@@ -65,17 +76,37 @@ function GameController ($stateParams, gameService) {
     gameService.getLineData(vm.EventID).then(function(result){
       vm.game = result[0];
       console.log(vm.game);
+      console.log(moment(vm.game.MatchTime).day());
+      vm.awayColor = vm.game.AwayColor;
+      console.log(vm.awayColor);
 
-      vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(9).valueOf();
+      if (moment(vm.game.MatchTime).day() !== 7 && moment(vm.game.MatchTime).day() !== 1) {
+        vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(9).valueOf()
+      } else {
+        vm.dateRangeLow = moment(vm.game.MatchTime).day(-7).hour(9).valueOf()
+      };
+
       vm.dateRangeHigh = moment(vm.game.MatchTime).valueOf();
+      var extraDay = vm.dateRangeHigh + 86400000;
+
+      for (i=vm.dateRangeLow; i<extraDay; i+=86400000){
+        vm.timeValues.push(i)
+      };
+
+      console.log(vm.timeValues);
 
       var spreadRangeMin = (vm.game.SpreadLow)-0.5;
       var spreadRangeLoopMax = (vm.game.SpreadHigh)+1;
       var spreadRange = [];
 
       for (i=spreadRangeMin; i<spreadRangeLoopMax; i+=0.5){
-        vm.spreadRange.push(i)
+        vm.dogSpreadRange.push(i)
       };
+
+      for (i=0; i<vm.dogSpreadRange.length; i++){
+        vm.favSpreadRange.push(-vm.dogSpreadRange[i]);
+      };
+      vm.favSpreadRange.reverse();
 
       var dogMLRangeMin = (vm.game.DogMLWorst) - 15;
       var dogMLRangeMax = (vm.game.DogMLBest) + 30;
@@ -240,7 +271,7 @@ function GameController ($stateParams, gameService) {
             }
         },
         {
-            "type":"bubble",
+            "type":"scatter",
             "x":"17%",
             "y":"13.33%",
             "height":"26.67%",
@@ -276,16 +307,14 @@ function GameController ($stateParams, gameService) {
             //         "visible":false
             //     }
             // },
-            "utc" : true,
-            "timezone" : vm.utcAdjust,
+            // "utc" : true,
+            // "timezone" : vm.utcAdjust,
             "scale-x":{
-                "transform": {
-                  "type": "date",
-                  "all": "%D<br>%m/%d/%y"
+                "values": vm.timeValues,
+                "transform":{
+                  "type":"date",
+                  "all":"%D<br>%m/%d/%y"
                 },
-                "min-value": vm.dateRangeLow,
-                "max-value": vm.dateRangeHigh,
-                "step": "day",
                 "item":{
                     "font-color":"#fff"
                 },
@@ -295,13 +324,24 @@ function GameController ($stateParams, gameService) {
                     "visible":true,
                     "line-style":"solid",
                     "line-width":1
-                },
-                "tick":{
-                    "visible":false
                 }
             },
             "scale-y":{
-                "values": vm.spreadRange,
+                "values": vm.dogSpreadRange,
+                "guide":{
+                    "visible":false
+                },
+                "line-color":"#d44434",
+                "tick":{
+                    "line-color":"none"
+                },
+                "item":{
+                    "font-color":"#75251d",
+                    "offset-x":"-10px"
+                }
+            },
+            "scale-y-2":{
+                "values": vm.favSpreadRange,
                 "guide":{
                     "visible":false
                 },
@@ -311,23 +351,9 @@ function GameController ($stateParams, gameService) {
                 },
                 "item":{
                     "font-color":"#75251d",
-                    "offset-x":"-10px"
+                    "offset-x":"10px"
                 }
             },
-            // "scale-y-2":{
-            //     "values":"40:80:10",
-            //     "guide":{
-            //         "visible":false
-            //     },
-            //     "line-color":"none",
-            //     "tick":{
-            //         "line-color":"none"
-            //     },
-            //     "item":{
-            //         "font-color":"#75251d",
-            //         "offset-x":"10px"
-            //     }
-            // },
             "tooltip":{
                 "text":"%v",
                 "font-color":"#d44434",
@@ -341,12 +367,21 @@ function GameController ($stateParams, gameService) {
                 {
                     "values": vm.favSpreadChartValues,
                     "usernames": vm.favSpreadUsers,
-                    "submitted": vm.favSpreadTimes
+                    "submitted": vm.favSpreadTimes,
+                    "marker":{
+                      "background-color": vm.awayColor,
+                      "border-color":"white",
+                      "background-repeat":"no-repeat",
+                      "shadow":false,
+                      "size": 8
+                    },
+                    "scales": "scale-x, scale-y-2"
                 },
                 {
-                    "values": [
-
-                    ]
+                    "values": vm.dogSpreadChartValues,
+                    "usernames": vm.dogSpreadUsers,
+                    "submitted": vm.dogSpreadTimes,
+                    "scales": "scale-x, scale-y"
                 }
             ]
         },
@@ -422,7 +457,11 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-x":{
-                "values":["4:00","6:00"],
+                "values": vm.timeValues,
+                "transform":{
+                  "type":"date",
+                  "all":"%D<br>%m/%d/%y"
+                },
                 "item":{
                     "font-color":"#fff"
                 },
@@ -553,7 +592,11 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-x":{
-                "values":["4:00","6:00"],
+                "values": vm.timeValues,
+                "transform":{
+                  "type":"date",
+                  "all":"%D<br>%m/%d/%y"
+                },
                 "item":{
                     "font-color":"#fff"
                 },
@@ -596,81 +639,81 @@ function GameController ($stateParams, gameService) {
                     "values":[98.9,99.5]
                 }
             ]
-        },
-        {
-            "type":"grid",
-            "x":"67%",
-            "y":"3%",
-            "width":"48%",
-            "title":{
-                "text":":: DEMOGRAPHICS",
-                "font-size":"12px",
-                "color":"#605958",
-                "background-color":"#f9f9f9",
-                "border-bottom":"1px solid #d6d6d6",
-                "padding":"26 30 28 30"
-            },
-            // "shapes":[
-            //     {
-            //         "type":"square",
-            //         "x":"94%",
-            //         "y":"10px",
-            //         "gradient-colors":"#f9f9f9 #f9f9f9 #d44434 #d44434",
-            //         "gradient-stops":"0 0.5 0.5 1",
-            //         "fill-angle":45,
-            //         "size":7,
-            //         "angle":-90
-            //     }
-            // ],
-            "plotarea":{
-                "margin":"70 0 0 0"
-            },
-            "options":{
-                "header-row":false,
-                "col-widths":["35%","65%"],
-                "style":{
-                    ".tr":{
-                        "border-width":"0px",
-                        "border-bottom":"0px",
-                        "padding":"24 10 19 10",
-                        "height":67
-                    },
-                    ".tr_even":{
-                        "background-color":"#fcfcfc"
-                    },
-                    ".tr_odd":{
-                        "background-color":"#f9f9f9"
-                    },
-                    ".td_0":{
-                        "align":"right",
-                        "font-color":"#969191"
-                    },
-                    ".td_1":{
-                        "font-weight":"bold"
-                    }
-                }
-            },
-            "series":[
-                {
-                    "values":["NAME","John Smith"]
-                },
-                {
-                    "values":["GENDER","Male"]
-                },
-                {
-                    "values":["AGE","30"]
-                },
-                {
-                    "values":["HEIGHT","6 ft."]
-                },
-                {
-                    "values":["WEIGHT","180 lbs."]
-                },
-                {
-                    "values":["CITY","Chicago"]
-                }
-            ]
         }
+        // {
+        //     "type":"grid",
+        //     "x":"67%",
+        //     "y":"3%",
+        //     "width":"48%",
+        //     "title":{
+        //         "text":":: DEMOGRAPHICS",
+        //         "font-size":"12px",
+        //         "color":"#605958",
+        //         "background-color":"#f9f9f9",
+        //         "border-bottom":"1px solid #d6d6d6",
+        //         "padding":"26 30 28 30"
+        //     },
+        //     // "shapes":[
+        //     //     {
+        //     //         "type":"square",
+        //     //         "x":"94%",
+        //     //         "y":"10px",
+        //     //         "gradient-colors":"#f9f9f9 #f9f9f9 #d44434 #d44434",
+        //     //         "gradient-stops":"0 0.5 0.5 1",
+        //     //         "fill-angle":45,
+        //     //         "size":7,
+        //     //         "angle":-90
+        //     //     }
+        //     // ],
+        //     "plotarea":{
+        //         "margin":"70 0 0 0"
+        //     },
+        //     "options":{
+        //         "header-row":false,
+        //         "col-widths":["35%","65%"],
+        //         "style":{
+        //             ".tr":{
+        //                 "border-width":"0px",
+        //                 "border-bottom":"0px",
+        //                 "padding":"24 10 19 10",
+        //                 "height":67
+        //             },
+        //             ".tr_even":{
+        //                 "background-color":"#fcfcfc"
+        //             },
+        //             ".tr_odd":{
+        //                 "background-color":"#f9f9f9"
+        //             },
+        //             ".td_0":{
+        //                 "align":"right",
+        //                 "font-color":"#969191"
+        //             },
+        //             ".td_1":{
+        //                 "font-weight":"bold"
+        //             }
+        //         }
+        //     },
+        //     "series":[
+        //         {
+        //             "values":["NAME","John Smith"]
+        //         },
+        //         {
+        //             "values":["GENDER","Male"]
+        //         },
+        //         {
+        //             "values":["AGE","30"]
+        //         },
+        //         {
+        //             "values":["HEIGHT","6 ft."]
+        //         },
+        //         {
+        //             "values":["WEIGHT","180 lbs."]
+        //         },
+        //         {
+        //             "values":["CITY","Chicago"]
+        //         }
+        //     ]
+        // }
     ]
 };
 

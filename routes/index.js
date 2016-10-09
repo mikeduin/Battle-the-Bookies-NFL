@@ -435,7 +435,10 @@ setInterval(function(){
           if(err) {console.log(err)}
 
           console.log("arrays have been built for", result)
+
+
         }).then(function(){
+          console.log('game EVENTID is', game.EventID)
           Line.findOneAndUpdate({EventID: game.EventID}, {$set:
             {
               ArraysBuilt: true
