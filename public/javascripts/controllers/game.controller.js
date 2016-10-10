@@ -21,11 +21,17 @@ function GameController ($stateParams, gameService) {
   vm.favSpreadChartValues = [];
   vm.favSpreadJuices = [];
   vm.favSpreadUsers = [];
-  vm.favAbbrevs = [];
+  vm.favSpreadAbbrevs = [];
   vm.dogSpreadChartValues = [];
   vm.dogSpreadJuices = [];
   vm.dogSpreadUsers = [];
-  vm.dogAbbrevs = [];
+  vm.dogSpreadAbbrevs = [];
+  vm.favMLChartValues = [];
+  vm.favMLActivePicks = [];
+  vm.favMLUsers = [];
+  vm.dogMLChartValues = [];
+  vm.dogMLActivePicks = [];
+  vm.dogMLUsers = [];
   vm.dateRangeLow;
 
   vm.checkDST = function() {
@@ -53,18 +59,15 @@ function GameController ($stateParams, gameService) {
       vm.underPicks = result[0].UnderPickArray;
       vm.noPicks = result[0].NoPickArray;
 
-      console.log(vm.favSpreadPicks);
-
       for (i=0; i<vm.favSpreadPicks.length; i++) {
         var unixTime = moment(vm.favSpreadPicks[i].submittedAt).valueOf();
         var favAbbrev = vm.favSpreadPicks[i].activePick.substr(0, vm.favSpreadPicks[i].activePick.indexOf(' '));
-        console.log(favAbbrev);
 
         vm.favSpreadChartValues.push([unixTime, vm.favSpreadPicks[i].relevantLine]);
         vm.favSpreadJuices.push(vm.favSpreadPicks[i].activeLine);
         vm.favSpreadUsers.push(vm.favSpreadPicks[i].username);
-        vm.favAbbrevs.push(favAbbrev);
-      }
+        vm.favSpreadAbbrevs.push(favAbbrev);
+      };
 
       for (i=0; i<vm.dogSpreadPicks.length; i++) {
         var unixTime = moment(vm.dogSpreadPicks[i].submittedAt).valueOf();
@@ -73,8 +76,28 @@ function GameController ($stateParams, gameService) {
         vm.dogSpreadChartValues.push([unixTime, vm.dogSpreadPicks[i].relevantLine]);
         vm.dogSpreadJuices.push(vm.dogSpreadPicks[i].activeLine);
         vm.dogSpreadUsers.push(vm.dogSpreadPicks[i].username);
-        vm.dogAbbrevs.push(dogAbbrev);
-      }
+        vm.dogSpreadAbbrevs.push(dogAbbrev);
+      };
+
+      console.log(vm.favMLPicks);
+
+      for (i=0; i<vm.favMLPicks.length; i++){
+        var unixTime = moment(vm.favMLPicks[i].submittedAt).valueOf();
+
+        vm.favMLChartValues.push([unixTime, vm.favMLPicks[i].relevantLine]);
+        vm.favMLActivePicks.push(vm.favMLPicks[i].activePick);
+        vm.favMLUsers.push(vm.favMLPicks[i].username);
+      };
+
+      for (i=0; i<vm.dogMLPicks.length; i++){
+        var unixTime = moment(vm.dogMLPicks[i].submittedAt).valueOf();
+
+        vm.dogMLChartValues.push([unixTime, vm.dogMLPicks[i].relevantLine]);
+        vm.dogMLActivePicks.push(vm.dogMLPicks[i].activePick);
+        vm.dogMLUsers.push(vm.dogMLPicks[i].username);
+      };
+
+
 
     })
   }
@@ -92,17 +115,25 @@ function GameController ($stateParams, gameService) {
       if(vm.game.PointSpreadAway < 0) {
         vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.awayColor;
         vm.myConfig.graphset[2].series[0].tooltip.fontColor = vm.awayColor;
-        vm.favColor = vm.awayColor;
+        vm.myConfig.graphset[4].series[0].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[4].series[0].tooltip.fontColor = vm.awayColor;
+        // vm.favColor = vm.awayColor;
         vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.homeColor;
         vm.myConfig.graphset[2].series[1].tooltip.fontColor = vm.homeColor;
-        vm.dogColor = vm.homeColor;
+        vm.myConfig.graphset[4].series[1].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[4].series[1].tooltip.fontColor = vm.homeColor;
+        // vm.dogColor = vm.homeColor;
       } else {
         vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.homeColor;
         vm.myConfig.graphset[2].series[0].tooltip.fontColor = vm.homeColor;
-        vm.favColor = vm.homeColor;
+        vm.myConfig.graphset[4].series[0].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[4].series[0].tooltip.fontColor = vm.homeColor;
+        // vm.favColor = vm.homeColor;
         vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.awayColor;
         vm.myConfig.graphset[2].series[1].tooltip.fontColor = vm.awayColor;
-        vm.dogColor = vm.awayColor;
+        vm.myConfig.graphset[4].series[1].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[4].series[1].tooltip.fontColor = vm.awayColor;
+        // vm.dogColor = vm.awayColor;
       };
 
       if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
@@ -117,8 +148,6 @@ function GameController ($stateParams, gameService) {
       for (i=vm.dateRangeLow; i<extraDay; i+=86400000){
         vm.timeValues.push(i)
       };
-
-      console.log(vm.timeValues);
 
       var spreadRangeMin = (vm.game.SpreadLow)-0.5;
       var spreadRangeLoopMax = (vm.game.SpreadHigh)+1;
@@ -308,23 +337,24 @@ function GameController ($stateParams, gameService) {
             "plotarea":{
                 "margin":"60 40 40 20"
             },
-            // "plot":{
-            //     "line-color":"#fff",
-            //     "marker":{
-            //         "type":"circle",
-            //         "background-color":"#f75b48",
-            //         "border-width":2,
-            //         "size":4,
-            //         "shadow":0,
-            //         "border-color":"#ffffff"
-            //     },
-            //     "hover-marker":{
-            //         "background-color":"#ffffff"
-            //     },
-            //     "hover-state":{
-            //         "visible":false
-            //     }
-            // },
+            "plot":{
+                "line-color":"#fff",
+                "marker":{
+                    "type":"circle",
+                    "background-color":"#f75b48",
+                    "border-width":2,
+                    "size":4,
+                    "shadow":0,
+                    "border-color":"#ffffff"
+                },
+                "hover-marker":{
+                    "size": 12,
+                    "alpha": 0.5
+                },
+                "hover-state":{
+                    "visible":false
+                }
+            },
             // "utc" : true,
             // "timezone" : vm.utcAdjust,
             "scale-x":{
@@ -344,7 +374,7 @@ function GameController ($stateParams, gameService) {
                     "line-width":1
                 }
             },
-            "scale-y":{
+            "scale-y-2":{
                 "values": vm.dogSpreadRange,
                 "guide":{
                     "visible":false
@@ -359,11 +389,11 @@ function GameController ($stateParams, gameService) {
                 },
                 "label":{
                   "text": "Underdog Spread",
-                  "font-color": vm.dogColor,
+                  // "font-color": vm.dogColor,
                   "offset-x": "-2 px"
                 }
             },
-            "scale-y-2":{
+            "scale-y":{
                 "values": vm.favSpreadRange,
                 "guide":{
                     "visible":false
@@ -378,7 +408,7 @@ function GameController ($stateParams, gameService) {
                 },
                 "label":{
                   "text": "Favorite Spread",
-                  "font-color": vm.favColor,
+                  // "font-color": vm.favColor,
                   "offset-x": "-15 px"
                 }
             },
@@ -388,14 +418,15 @@ function GameController ($stateParams, gameService) {
                     "data-username": vm.favSpreadUsers,
                     "data-submitted": vm.favSpreadTimes,
                     "data-juice": vm.favSpreadJuices,
-                    "data-favAbbrev": vm.favAbbrevs,
+                    "data-favAbbrev": vm.favSpreadAbbrevs,
                     "marker":{
-                      "border-color":"white",
+                      "border-color":"black",
+                      "border-width": 2,
                       "background-repeat":"no-repeat",
                       "shadow":false,
-                      "size": 8
+                      "size": 9
                     },
-                    "scales": "scale-x, scale-y-2",
+                    "scales": "scale-x, scale-y",
                     "tooltip":{
                         "text": "%data-favAbbrev %v (%data-juice)<br>%data-username",
                         "font-size":"20px",
@@ -410,14 +441,15 @@ function GameController ($stateParams, gameService) {
                     "data-username": vm.dogSpreadUsers,
                     "data-submitted": vm.dogSpreadTimes,
                     "data-juice": vm.dogSpreadJuices,
-                    "data-dogAbbrev": vm.dogAbbrevs,
+                    "data-dogAbbrev": vm.dogSpreadAbbrevs,
                     "marker":{
                       "border-color":"white",
                       "background-repeat":"no-repeat",
+                      "border-width": 2,
                       "shadow":false,
-                      "size": 8
+                      "size": 9
                     },
-                    "scales": "scale-x, scale-y",
+                    "scales": "scale-x, scale-y-2",
                     "tooltip":{
                         "text": "%data-dogAbbrev +%v (%data-juice)<br>%data-username",
                         "font-size":"20px",
@@ -494,7 +526,8 @@ function GameController ($stateParams, gameService) {
                     "border-color":"#ffffff"
                 },
                 "hover-marker":{
-                    "background-color":"#fff"
+                    "size": 12,
+                    "alpha": 0.5
                 },
                 "hover-state":{
                     "visible":false
@@ -558,9 +591,48 @@ function GameController ($stateParams, gameService) {
                 "padding":"10px"
             },
             "series":[
-                {
-                    "values":[98.9,99.5]
-                }
+              {
+                  "values": vm.favMLChartValues,
+                  "data-username": vm.favMLUsers,
+                  "data-submitted": vm.favMLTimes,
+                  "data-activePicks": vm.favMLActivePicks,
+                  "marker":{
+                    "border-color":"black",
+                    "background-repeat":"no-repeat",
+                    "shadow":false,
+                    "size": 8
+                  },
+                  "scales": "scale-x, scale-y",
+                  "tooltip":{
+                      "text": "%data-activePicks<br>%data-username",
+                      "font-size":"20px",
+                      "border-radius":"6px",
+                      "background-color":"#fff",
+                      "shadow":true,
+                      "padding":"10px"
+                  },
+              },
+              {
+                "values": vm.dogMLChartValues,
+                "data-username": vm.dogMLUsers,
+                "data-submitted": vm.dogMLTimes,
+                "data-activePicks": vm.dogMLActivePicks,
+                  "marker":{
+                    "border-color":"white",
+                    "background-repeat":"no-repeat",
+                    "shadow":false,
+                    "size": 8
+                  },
+                  "scales": "scale-x, scale-y-2",
+                  "tooltip":{
+                      "text":"%data-activePicks<br>%data-username",
+                      "font-size":"20px",
+                      "border-radius":"6px",
+                      "background-color":"#fff",
+                      "shadow":true,
+                      "padding":"10px"
+                  },
+              }
             ]
         },
         {
