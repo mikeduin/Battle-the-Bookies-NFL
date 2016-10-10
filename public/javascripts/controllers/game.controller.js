@@ -17,6 +17,7 @@ function GameController ($stateParams, gameService) {
   vm.dogMLRange = [];
   vm.favMLRange = [];
   vm.totalRange = [];
+  vm.totalRangeRev = [];
   vm.timeValues = [];
   vm.favSpreadChartValues = [];
   vm.favSpreadJuices = [];
@@ -32,6 +33,14 @@ function GameController ($stateParams, gameService) {
   vm.dogMLChartValues = [];
   vm.dogMLActivePicks = [];
   vm.dogMLUsers = [];
+  vm.overChartValues = [];
+  vm.overJuices = [];
+  vm.overUsers = [];
+  vm.overActivePicks = [];
+  vm.underChartValues = [];
+  vm.underJuices = [];
+  vm.underUsers = [];
+  vm.underActivePicks = [];
   vm.dateRangeLow;
 
   vm.checkDST = function() {
@@ -79,7 +88,7 @@ function GameController ($stateParams, gameService) {
         vm.dogSpreadAbbrevs.push(dogAbbrev);
       };
 
-      console.log(vm.favMLPicks);
+      console.log(vm.overPicks);
 
       for (i=0; i<vm.favMLPicks.length; i++){
         var unixTime = moment(vm.favMLPicks[i].submittedAt).valueOf();
@@ -95,6 +104,24 @@ function GameController ($stateParams, gameService) {
         vm.dogMLChartValues.push([unixTime, vm.dogMLPicks[i].relevantLine]);
         vm.dogMLActivePicks.push(vm.dogMLPicks[i].activePick);
         vm.dogMLUsers.push(vm.dogMLPicks[i].username);
+      };
+
+      for (i=0; i<vm.overPicks.length; i++){
+        var unixTime = moment(vm.overPicks[i].submittedAt).valueOf();
+
+        vm.overChartValues.push([unixTime, vm.overPicks[i].relevantLine]);
+        vm.overActivePicks.push(vm.overPicks[i].activePick);
+        vm.overJuices.push(vm.overPicks[i].activeLine);
+        vm.overUsers.push(vm.overPicks[i].username);
+      };
+
+      for (i=0; i<vm.underPicks.length; i++){
+        var unixTime = moment(vm.underPicks[i].submittedAt).valueOf();
+
+        vm.underChartValues.push([unixTime, vm.underPicks[i].relevantLine]);
+        vm.underActivePicks.push(vm.underPicks[i].activePick);
+        vm.underJuices.push(vm.underPicks[i].activeLine);
+        vm.underUsers.push(vm.underPicks[i].username);
       };
 
 
@@ -180,10 +207,12 @@ function GameController ($stateParams, gameService) {
       var totalRangeMax = (vm.game.TotalHigh) + 1;
 
       for (i=totalRangeMin; i<totalRangeMax; i+=0.5){
-        vm.totalRange.push(i)
+        vm.totalRange.push(i);
+        vm.totalRangeRev.unshift(i);
       };
 
-
+      // vm.totalRangeRev = vm.totalRange.reverse();
+      // console.log('reversed is', vm.totalRangeRev);
 
 
       // vm.pickDistribution.scaleX.labels.push(vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Under', vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Over', vm.game.HomeAbbrev + ' ML', vm.game.AwayAbbrev + ' ML', vm.game.HomeAbbrev + ' Spread', vm.game.AwayAbbrev + ' Spread');
@@ -364,14 +393,15 @@ function GameController ($stateParams, gameService) {
                   "all":"%D<br>%m/%d/%y"
                 },
                 "item":{
-                    "font-color":"#fff"
+                    "font-color":"#C13D2F"
                 },
                 "line-width":1,
-                "line-color":"#fff",
+                "line-color":"#D44434",
                 "guide":{
                     "visible":true,
                     "line-style":"solid",
-                    "line-width":1
+                    "line-width":1,
+                    "line-color": "#D44434"
                 },
                 "tick":{
                     "visible":false
@@ -387,13 +417,13 @@ function GameController ($stateParams, gameService) {
                     "line-color":"none"
                 },
                 "item":{
-                    "font-color":"#75251d",
+                    "font-color":"black",
                     "offset-x":"5px"
                 },
                 "label":{
                   "text": "Favorite Spread",
                   "font-color": "black",
-                  "offset-x": "5px"
+                  "offset-x": "7px"
                 }
             },
             "scale-y-2":{
@@ -406,12 +436,12 @@ function GameController ($stateParams, gameService) {
                     "line-color":"none"
                 },
                 "item":{
-                    "font-color":"#75251d",
+                    "font-color":"white",
                     "offset-x":"-10px"
                 },
                 "label":{
                   "text": "Underdog Spread",
-                  "font-color": "black",
+                  "font-color": "white",
                   "offset-x": "-10px"
                 }
             },
@@ -480,13 +510,6 @@ function GameController ($stateParams, gameService) {
                 "border-bottom":"1px solid #d6d6d6",
                 "padding-left":"40px"
             },
-            "images":[
-                {
-                    "src":"http://www.zingchart.com/resources/thermo.png",
-                    "x":"10px",
-                    "y":"12px"
-                }
-            ],
             "subtitle":{
                 "height":"145px",
                 "offset-y":"10px",
@@ -543,14 +566,15 @@ function GameController ($stateParams, gameService) {
                   "all":"%D<br>%m/%d/%y"
                 },
                 "item":{
-                    "font-color":"#fff"
+                    "font-color":"#726F6E"
                 },
                 "line-width":1,
-                "line-color":"#fff",
+                "line-color":"#827E7E",
                 "guide":{
                     "visible":true,
                     "line-style":"solid",
-                    "line-width":1
+                    "line-width":1,
+                    "line-color": "#827E7E"
                 },
                 "tick":{
                     "visible":false
@@ -566,13 +590,13 @@ function GameController ($stateParams, gameService) {
                     "line-color":"none"
                 },
                 "item":{
-                    "font-color":"#4d4645",
+                    "font-color":"black",
                     "offset-x":"5px"
                 },
                 "label":{
                   "text": "Favorite ML",
                   "font-color": "black",
-                  "offset-x": "5px"
+                  "offset-x": "7px"
                 }
             },
             "scale-y-2":{
@@ -585,12 +609,12 @@ function GameController ($stateParams, gameService) {
                     "line-color":"none"
                 },
                 "item":{
-                    "font-color":"#4d4645",
+                    "font-color":"white",
                     "offset-x":"-10px"
                 },
                 "label":{
                   "text": "Underdog ML",
-                  "font-color": "black",
+                  "font-color": "white",
                   "offset-x": "-12px"
                 }
             },
@@ -714,7 +738,8 @@ function GameController ($stateParams, gameService) {
                     "border-color":"#ffffff"
                 },
                 "hover-marker":{
-                    "background-color":"#fff"
+                    "size": 12,
+                    "alpha": 0.5
                 },
                 "hover-state":{
                     "visible":false
@@ -727,14 +752,15 @@ function GameController ($stateParams, gameService) {
                   "all":"%D<br>%m/%d/%y"
                 },
                 "item":{
-                    "font-color":"#fff"
+                    "font-color":"#5B7DB9"
                 },
                 "line-width":1,
-                "line-color":"#969191",
+                "line-color":"#5B7DB9",
                 "guide":{
                     "visible":true,
                     "line-style":"solid",
-                    "line-width":1
+                    "line-width":1,
+                    "line-color": "#7099E2"
                 },
                 "tick":{
                     "visible":false
@@ -750,8 +776,32 @@ function GameController ($stateParams, gameService) {
                     "line-color":"none"
                 },
                 "item":{
-                    "font-color":"#4d4645",
-                    "offset-x":"-20px"
+                    "font-color":"black",
+                    "offset-x":"10px"
+                },
+                "label":{
+                  "text": "Total Under",
+                  "font-color": "black",
+                  "offset-x": "14px"
+                }
+            },
+            "scale-y-2":{
+                "values": vm.totalRangeRev,
+                "guide":{
+                    "visible":false
+                },
+                "line-color":"none",
+                "tick":{
+                    "line-color":"none"
+                },
+                "item":{
+                    "font-color":"white",
+                    "offset-x":"-12px"
+                },
+                "label":{
+                  "text": "Total Over",
+                  "font-color": "white",
+                  "offset-x": "-17px"
                 }
             },
             "tooltip":{
@@ -764,9 +814,50 @@ function GameController ($stateParams, gameService) {
                 "padding":"10px"
             },
             "series":[
-                {
-                    "values":[98.9,99.5]
-                }
+              {
+                  "values": vm.overChartValues,
+                  "data-username": vm.overUsers,
+                  "data-submitted": vm.overTimes,
+                  "data-activePicks": vm.overActivePicks,
+                  "marker":{
+                    "border-color":"white",
+                    "background-color": "#E8E8E8",
+                    "background-repeat":"no-repeat",
+                    "shadow":false,
+                    "size": 9
+                  },
+                  "scales": "scale-x, scale-y-2",
+                  "tooltip":{
+                      "text": "%data-activePicks<br>%data-username",
+                      "font-size":"20px",
+                      "border-radius":"6px",
+                      "background-color":"#fff",
+                      "shadow":true,
+                      "padding":"10px"
+                  },
+              },
+              {
+                "values": vm.underChartValues,
+                "data-username": vm.underUsers,
+                "data-submitted": vm.underTimes,
+                "data-activePicks": vm.underActivePicks,
+                  "marker":{
+                    "border-color":"black",
+                    "background-color": "#2D2D2D",
+                    "background-repeat":"no-repeat",
+                    "shadow":false,
+                    "size": 9
+                  },
+                  "scales": "scale-x, scale-y",
+                  "tooltip":{
+                      "text":"%data-activePicks<br>%data-username",
+                      "font-size":"20px",
+                      "border-radius":"6px",
+                      "background-color":"#fff",
+                      "shadow":true,
+                      "padding":"10px"
+                  },
+              }
             ]
         }
         // {
