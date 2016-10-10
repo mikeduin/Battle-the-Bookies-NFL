@@ -42,6 +42,7 @@ function GameController ($stateParams, gameService) {
   vm.underUsers = [];
   vm.underActivePicks = [];
   vm.dateRangeLow;
+  vm.message = 'hello';
 
   vm.checkDST = function() {
     if (moment().isDST() === true){
@@ -57,110 +58,30 @@ function GameController ($stateParams, gameService) {
     return Math.min.apply(Math, array)
   };
 
-  vm.getPickArrays = function() {
-    gameService.getPickArrays(vm.EventID).then(function(result){
-
-      vm.dogMLPicks = result[0].DogMLPickArray;
-      vm.dogSpreadPicks = result[0].DogSpreadPickArray;
-      vm.favMLPicks = result[0].FavMLPickArray;
-      vm.favSpreadPicks = result[0].FavSpreadPickArray;
-      vm.overPicks = result[0].OverPickArray;
-      vm.underPicks = result[0].UnderPickArray;
-      vm.noPicks = result[0].NoPickArray;
-
-      for (i=0; i<vm.favSpreadPicks.length; i++) {
-        var unixTime = moment(vm.favSpreadPicks[i].submittedAt).valueOf();
-        var favAbbrev = vm.favSpreadPicks[i].activePick.substr(0, vm.favSpreadPicks[i].activePick.indexOf(' '));
-
-        vm.favSpreadChartValues.push([unixTime, vm.favSpreadPicks[i].relevantLine]);
-        vm.favSpreadJuices.push(vm.favSpreadPicks[i].activeLine);
-        vm.favSpreadUsers.push(vm.favSpreadPicks[i].username);
-        vm.favSpreadAbbrevs.push(favAbbrev);
-      };
-
-      for (i=0; i<vm.dogSpreadPicks.length; i++) {
-        var unixTime = moment(vm.dogSpreadPicks[i].submittedAt).valueOf();
-        var dogAbbrev = vm.dogSpreadPicks[i].activePick.substr(0, vm.dogSpreadPicks[i].activePick.indexOf(' '));
-
-        vm.dogSpreadChartValues.push([unixTime, vm.dogSpreadPicks[i].relevantLine]);
-        vm.dogSpreadJuices.push(vm.dogSpreadPicks[i].activeLine);
-        vm.dogSpreadUsers.push(vm.dogSpreadPicks[i].username);
-        vm.dogSpreadAbbrevs.push(dogAbbrev);
-      };
-
-      console.log(vm.overPicks);
-
-      for (i=0; i<vm.favMLPicks.length; i++){
-        var unixTime = moment(vm.favMLPicks[i].submittedAt).valueOf();
-
-        vm.favMLChartValues.push([unixTime, vm.favMLPicks[i].relevantLine]);
-        vm.favMLActivePicks.push(vm.favMLPicks[i].activePick);
-        vm.favMLUsers.push(vm.favMLPicks[i].username);
-      };
-
-      for (i=0; i<vm.dogMLPicks.length; i++){
-        var unixTime = moment(vm.dogMLPicks[i].submittedAt).valueOf();
-
-        vm.dogMLChartValues.push([unixTime, vm.dogMLPicks[i].relevantLine]);
-        vm.dogMLActivePicks.push(vm.dogMLPicks[i].activePick);
-        vm.dogMLUsers.push(vm.dogMLPicks[i].username);
-      };
-
-      for (i=0; i<vm.overPicks.length; i++){
-        var unixTime = moment(vm.overPicks[i].submittedAt).valueOf();
-
-        vm.overChartValues.push([unixTime, vm.overPicks[i].relevantLine]);
-        vm.overActivePicks.push(vm.overPicks[i].activePick);
-        vm.overJuices.push(vm.overPicks[i].activeLine);
-        vm.overUsers.push(vm.overPicks[i].username);
-      };
-
-      for (i=0; i<vm.underPicks.length; i++){
-        var unixTime = moment(vm.underPicks[i].submittedAt).valueOf();
-
-        vm.underChartValues.push([unixTime, vm.underPicks[i].relevantLine]);
-        vm.underActivePicks.push(vm.underPicks[i].activePick);
-        vm.underJuices.push(vm.underPicks[i].activeLine);
-        vm.underUsers.push(vm.underPicks[i].username);
-      };
-
-
-
-    })
-  }
-
   vm.getLineData = function(){
     gameService.getLineData(vm.EventID).then(function(result){
       vm.game = result[0];
-      console.log(vm.game);
-      console.log(moment(vm.game.MatchTime).day());
       vm.awayColor = vm.game.AwayColor;
       vm.homeColor = vm.game.HomeColor;
-      console.log(vm.awayColor);
-      console.log(vm.game.AwayAbbrev);
 
       if(vm.game.PointSpreadAway < 0) {
         vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.awayColor;
         vm.myConfig.graphset[2].series[0].tooltip.fontColor = vm.awayColor;
         vm.myConfig.graphset[4].series[0].marker.backgroundColor = vm.awayColor;
         vm.myConfig.graphset[4].series[0].tooltip.fontColor = vm.awayColor;
-        // vm.favColor = vm.awayColor;
         vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.homeColor;
         vm.myConfig.graphset[2].series[1].tooltip.fontColor = vm.homeColor;
         vm.myConfig.graphset[4].series[1].marker.backgroundColor = vm.homeColor;
         vm.myConfig.graphset[4].series[1].tooltip.fontColor = vm.homeColor;
-        // vm.dogColor = vm.homeColor;
       } else {
         vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.homeColor;
         vm.myConfig.graphset[2].series[0].tooltip.fontColor = vm.homeColor;
         vm.myConfig.graphset[4].series[0].marker.backgroundColor = vm.homeColor;
         vm.myConfig.graphset[4].series[0].tooltip.fontColor = vm.homeColor;
-        // vm.favColor = vm.homeColor;
         vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.awayColor;
         vm.myConfig.graphset[2].series[1].tooltip.fontColor = vm.awayColor;
         vm.myConfig.graphset[4].series[1].marker.backgroundColor = vm.awayColor;
         vm.myConfig.graphset[4].series[1].tooltip.fontColor = vm.awayColor;
-        // vm.dogColor = vm.awayColor;
       };
 
       if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
@@ -211,93 +132,96 @@ function GameController ($stateParams, gameService) {
         vm.totalRangeRev.unshift(i);
       };
 
-      // vm.totalRangeRev = vm.totalRange.reverse();
-      // console.log('reversed is', vm.totalRangeRev);
+    }).then(function(){
+      console.log('vm.game is', vm.game)
 
+      gameService.getPickArrays(vm.EventID).then(function(result){
 
-      // vm.pickDistribution.scaleX.labels.push(vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Under', vm.game.AwayAbbrev + '/' + vm.game.HomeAbbrev + ' Over', vm.game.HomeAbbrev + ' ML', vm.game.AwayAbbrev + ' ML', vm.game.HomeAbbrev + ' Spread', vm.game.AwayAbbrev + ' Spread');
-      //
-      // vm.pickDistribution.series[0].values.push(vm.game.UnderPicks, vm.game.OverPicks, vm.game.MLHomePicks, vm.game.MLAwayPicks, vm.game.SpreadHomePicks, vm.game.SpreadAwayPicks);
-      //
-      // vm.pickDistribution.series[0].rules.push(
-      //   {
-      //       "rule":"%i==0",
-      //       "background-color": "#838383"
-      //   },
-      //   {
-      //       "rule":"%i==1",
-      //       "background-color": "#2D2D2D"
-      //   },
-      //   {
-      //       "rule":"%i==2",
-      //       "background-color": vm.game.HomeColor
-      //   },
-      //   {
-      //       "rule":"%i==3",
-      //       "background-color": vm.game.AwayColor
-      //   },
-      //   {
-      //       "rule":"%i==4",
-      //       "background-color": vm.game.HomeColor
-      //   },
-      //   {
-      //       "rule":"%i==5",
-      //       "background-color": vm.game.AwayColor
-      //   }
-      // )
+        vm.dogMLPicks = result[0].DogMLPickArray;
+        vm.dogSpreadPicks = result[0].DogSpreadPickArray;
+        vm.favMLPicks = result[0].FavMLPickArray;
+        vm.favSpreadPicks = result[0].FavSpreadPickArray;
+        vm.overPicks = result[0].OverPickArray;
+        vm.underPicks = result[0].UnderPickArray;
+        vm.noPicks = result[0].NoPickArray;
+
+        vm.dogMLPickPct = (vm.dogMLPicks.length/38)*100;
+        vm.dogSpreadPickPct = (vm.dogSpreadPicks.length/38)*100;
+        vm.favMLPickPct = (vm.favMLPicks.length/38)*100;
+        vm.favSpreadPickPct = (vm.favSpreadPicks.length/38)*100;
+        vm.overPickPct = (vm.overPicks.length/38)*100;
+        vm.underPickPct = (vm.underPicks.length/38)*100;
+
+        vm.favAbbrev = vm.favSpreadPicks[0].activePick.substr(0, vm.favSpreadPicks[0].activePick.indexOf(' '));
+
+        vm.dogAbbrev = vm.dogSpreadPicks[0].activePick.substr(0, vm.dogSpreadPicks[0].activePick.indexOf(' '));
+
+        vm.myConfig.graphset[1].subtitle.text= "<div style='height: 50%'>76 <br>"+vm.message+"</div><div style='height: 50%'> hi </div>'"
+
+        console.log(vm.favAbbrev);
+        console.log(vm.dogAbbrev);
+
+        console.log(vm.dogMLPickPct)
+
+        for (i=0; i<vm.favSpreadPicks.length; i++) {
+          var unixTime = moment(vm.favSpreadPicks[i].submittedAt).valueOf();
+          var favAbbrev = vm.favSpreadPicks[i].activePick.substr(0, vm.favSpreadPicks[i].activePick.indexOf(' '));
+
+          vm.favSpreadChartValues.push([unixTime, vm.favSpreadPicks[i].relevantLine]);
+          vm.favSpreadJuices.push(vm.favSpreadPicks[i].activeLine);
+          vm.favSpreadUsers.push(vm.favSpreadPicks[i].username);
+          vm.favSpreadAbbrevs.push(favAbbrev);
+        };
+
+        for (i=0; i<vm.dogSpreadPicks.length; i++) {
+          var unixTime = moment(vm.dogSpreadPicks[i].submittedAt).valueOf();
+          var dogAbbrev = vm.dogSpreadPicks[i].activePick.substr(0, vm.dogSpreadPicks[i].activePick.indexOf(' '));
+
+          vm.dogSpreadChartValues.push([unixTime, vm.dogSpreadPicks[i].relevantLine]);
+          vm.dogSpreadJuices.push(vm.dogSpreadPicks[i].activeLine);
+          vm.dogSpreadUsers.push(vm.dogSpreadPicks[i].username);
+          vm.dogSpreadAbbrevs.push(dogAbbrev);
+        };
+
+        for (i=0; i<vm.favMLPicks.length; i++){
+          var unixTime = moment(vm.favMLPicks[i].submittedAt).valueOf();
+
+          vm.favMLChartValues.push([unixTime, vm.favMLPicks[i].relevantLine]);
+          vm.favMLActivePicks.push(vm.favMLPicks[i].activePick);
+          vm.favMLUsers.push(vm.favMLPicks[i].username);
+        };
+
+        for (i=0; i<vm.dogMLPicks.length; i++){
+          var unixTime = moment(vm.dogMLPicks[i].submittedAt).valueOf();
+
+          vm.dogMLChartValues.push([unixTime, vm.dogMLPicks[i].relevantLine]);
+          vm.dogMLActivePicks.push(vm.dogMLPicks[i].activePick);
+          vm.dogMLUsers.push(vm.dogMLPicks[i].username);
+        };
+
+        for (i=0; i<vm.overPicks.length; i++){
+          var unixTime = moment(vm.overPicks[i].submittedAt).valueOf();
+
+          vm.overChartValues.push([unixTime, vm.overPicks[i].relevantLine]);
+          vm.overActivePicks.push(vm.overPicks[i].activePick);
+          vm.overJuices.push(vm.overPicks[i].activeLine);
+          vm.overUsers.push(vm.overPicks[i].username);
+        };
+
+        for (i=0; i<vm.underPicks.length; i++){
+          var unixTime = moment(vm.underPicks[i].submittedAt).valueOf();
+
+          vm.underChartValues.push([unixTime, vm.underPicks[i].relevantLine]);
+          vm.underActivePicks.push(vm.underPicks[i].activePick);
+          vm.underJuices.push(vm.underPicks[i].activeLine);
+          vm.underUsers.push(vm.underPicks[i].username);
+        };
+
+      })
     })
   }
 
-  // vm.pickDistribution = {
-  //   "globals": {
-  //     "font-family" : "Raleway"
-  //   },
-  //   "type": "hbar",
-  //   "plotarea": {
-  //     "adjust-layout":true
-  //   },
-  //   "scaleX": {
-  //     "label":{ /* Scale Title */
-  //     },
-  //     "labels":[] /* Scale Labels */
-  //   },
-  //   "scaleY": {
-  //     "label":{ /* Scale Title */
-  //       "text":"Total Pool Selections",
-  //     },
-  //     "values": "0:40:5",
-  //     "labels":[] /* Scale Labels */
-  //   },
-  //   "tooltip": {
-  //     "text": "<b>%kl</b><br>%v Picks",
-  //     "shadow": false,
-  //     "font-color": "#e5ebeb",
-  //     "border-color": "#ffffff",
-  //     "border-width": "2px",
-  //     "border-radius": "10px",
-  //     "padding": "8px 15px"
-  //   },
-  //   "series": [
-  //     {"values": [],
-  //     "value-box": {
-  //               "placement":"top-out",
-  //               "text":"%v Picks",
-  //               "decimals":0,
-  //               "font-color":"#5E5E5E",
-  //               "font-size":"14px",
-  //               "alpha":0.6
-  //           },
-  //       "animation": {
-  //           "delay": 100,
-  //           "effect": "ANIMATION_EXPAND_BOTTOM",
-  //           "speed": "1600",
-  //           "method": "0",
-  //           "sequence": "1"
-  //       },
-  //       "rules":[ ]
-  //     }
-  //     ]
-  // }
+
 
   // zingchart.THEME="classic";
   vm.myConfig = {
@@ -337,13 +261,14 @@ function GameController ($stateParams, gameService) {
                 "padding-left":"40px"
             },
             "subtitle":{
-                "height":"160px",
+                "html-mode": "true",
+                "height":"100%",
                 "offset-y":"10px",
                 "background-color":"#f75b48",
+                "border": "2px solid black",
                 "font-color":"#f0f0f0",
-                "font-size":"60px",
-                "text-align":"center",
-                "text":"76"
+                // "font-size":"60px",
+                "text-align":"center"
             }
         },
         {
