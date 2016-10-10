@@ -561,63 +561,66 @@ setInterval(function(){
   })
 }, 600000)
 
-// setInterval(function(){
-//   var now = moment();
-//   Pick.find({
-//     MatchTime: {
-//       $lt: now
-//     },
-//     capperGraded: {
-//       $in: [false, null]
-//     }
-//   }, function(err, picks){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(picks){
-//     picks.forEach(function(pick){
-//       var capperGrade = 10;
-//       var bestLineAvail;
-//       var pickID = pick._id;
-//       Line.find({EventID: pick.EventID}, function(err, line){
-//         if (err) {console.log(err)}
-//
-//         if(pick.betType === "Fav Spread") {
-//           capperGrade -= (-line[0].SpreadLow - pick.activeSpread);
-//           bestLineAvail = -line[0].SpreadLow;
-//         } else if (pick.betType === "Dog Spread") {
-//           capperGrade -= (line[0].SpreadHigh - pick.activeSpread);
-//           bestLineAvail = line[0].SpreadHigh;
-//         } else if (pick.betType === "Fav ML") {
-//           capperGrade -= ((line[0].FavMLBest - pick.activeLine)*0.025);
-//           bestLineAvail = line[0].FavMLBest;
-//         } else if (pick.betType === "Dog ML") {
-//           capperGrade -= ((line[0].DogMLBest - pick.activeLine)*0.025);
-//           bestLineAvail = line[0].DogMLBest;
-//         } else if (pick.betType === "Total Over"){
-//           capperGrade -= (pick.activeTotal - line[0].TotalLow);
-//           bestLineAvail = line[0].TotalLow;
-//         } else if (pick.betType === "Total Under"){
-//           capperGrade -= (line[0].TotalHigh - pick.activeTotal);
-//           bestLineAvail = line[0].TotalHigh;
-//         } else {
-//           return
-//         }
-//
-//         Pick.findOneAndUpdate({_id: pickID}, {
-//           $set: {
-//             capperGrade: capperGrade,
-//             capperGraded: true,
-//             bestLineAvail: bestLineAvail
-//           }
-//         }, {upsert: true}, function(err, pick){
-//           if (err) {console.log(err)}
-//
-//           console.log(pick._id, " has been updated")
-//         })
-//       })
-//     })
-//   })
-// }, 600000)
+setInterval(function(){
+  var now = moment();
+  Pick.find({
+    MatchTime: {
+      $lt: now
+    },
+    capperGraded: {
+      $in: [false, null]
+    }
+  }, function(err, picks){
+    if (err) {console.log(err)}
+
+  }).then(function(picks){
+    picks.forEach(function(pick){
+      console.log('pick._id is', pick._id);
+      var capperGrade = 10;
+      var bestLineAvail;
+      var pickID = pick._id;
+      Line.find({EventID: pick.EventID}, function(err, line){
+        if (err) {console.log(err)}
+
+        if(pick.betType === "Fav Spread") {
+          capperGrade -= (-line[0].SpreadLow - pick.activeSpread);
+          bestLineAvail = -line[0].SpreadLow;
+        } else if (pick.betType === "Dog Spread") {
+          capperGrade -= (line[0].SpreadHigh - pick.activeSpread);
+          bestLineAvail = line[0].SpreadHigh;
+        } else if (pick.betType === "Fav ML") {
+          capperGrade -= ((line[0].FavMLBest - pick.activeLine)*0.025);
+          bestLineAvail = line[0].FavMLBest;
+        } else if (pick.betType === "Dog ML") {
+          capperGrade -= ((line[0].DogMLBest - pick.activeLine)*0.025);
+          bestLineAvail = line[0].DogMLBest;
+        } else if (pick.betType === "Total Over"){
+          capperGrade -= (pick.activeTotal - line[0].TotalLow);
+          bestLineAvail = line[0].TotalLow;
+        } else if (pick.betType === "Total Under"){
+          capperGrade -= (line[0].TotalHigh - pick.activeTotal);
+          bestLineAvail = line[0].TotalHigh;
+        } else {
+          return
+        }
+
+        Pick.findOneAndUpdate({_id: pickID}, {
+          $set: {
+            capperGrade: capperGrade,
+            capperGraded: true,
+            bestLineAvail: bestLineAvail
+          }
+        }, {upsert: true}, function(err, newPick){
+          if (err) {console.log(err)}
+
+          console.log('pick is', newPick);
+
+          console.log(newPick._id, " has been updated")
+        })
+      })
+    })
+  })
+}, 600000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });

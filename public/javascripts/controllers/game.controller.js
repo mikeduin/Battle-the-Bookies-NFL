@@ -21,12 +21,13 @@ function GameController ($stateParams, gameService) {
   vm.favSpreadChartValues = [];
   vm.favSpreadJuices = [];
   vm.favSpreadUsers = [];
+  vm.favAbbrevs = [];
   vm.dogSpreadChartValues = [];
   vm.dogSpreadJuices = [];
   vm.dogSpreadUsers = [];
+  vm.dogAbbrevs = [];
   vm.dateRangeLow;
-  vm.awayColor;
-  vm.homeColor;
+
   vm.checkDST = function() {
     if (moment().isDST() === true){
       vm.utcAdjust = -7
@@ -43,6 +44,7 @@ function GameController ($stateParams, gameService) {
 
   vm.getPickArrays = function() {
     gameService.getPickArrays(vm.EventID).then(function(result){
+
       vm.dogMLPicks = result[0].DogMLPickArray;
       vm.dogSpreadPicks = result[0].DogSpreadPickArray;
       vm.favMLPicks = result[0].FavMLPickArray;
@@ -51,23 +53,28 @@ function GameController ($stateParams, gameService) {
       vm.underPicks = result[0].UnderPickArray;
       vm.noPicks = result[0].NoPickArray;
 
+      console.log(vm.favSpreadPicks);
+
       for (i=0; i<vm.favSpreadPicks.length; i++) {
         var unixTime = moment(vm.favSpreadPicks[i].submittedAt).valueOf();
+        var favAbbrev = vm.favSpreadPicks[i].activePick.substr(0, vm.favSpreadPicks[i].activePick.indexOf(' '));
+        console.log(favAbbrev);
 
         vm.favSpreadChartValues.push([unixTime, vm.favSpreadPicks[i].relevantLine]);
         vm.favSpreadJuices.push(vm.favSpreadPicks[i].activeLine);
         vm.favSpreadUsers.push(vm.favSpreadPicks[i].username);
+        vm.favAbbrevs.push(favAbbrev);
       }
 
       for (i=0; i<vm.dogSpreadPicks.length; i++) {
         var unixTime = moment(vm.dogSpreadPicks[i].submittedAt).valueOf();
+        var dogAbbrev = vm.dogSpreadPicks[i].activePick.substr(0, vm.dogSpreadPicks[i].activePick.indexOf(' '));
 
         vm.dogSpreadChartValues.push([unixTime, vm.dogSpreadPicks[i].relevantLine]);
         vm.dogSpreadJuices.push(vm.dogSpreadPicks[i].activeLine);
         vm.dogSpreadUsers.push(vm.dogSpreadPicks[i].username);
+        vm.dogAbbrevs.push(dogAbbrev);
       }
-
-      console.log(vm.dogSpreadChartValues);
 
     })
   }
@@ -80,14 +87,23 @@ function GameController ($stateParams, gameService) {
       vm.awayColor = vm.game.AwayColor;
       vm.homeColor = vm.game.HomeColor;
       console.log(vm.awayColor);
+      console.log(vm.game.AwayAbbrev);
 
       if(vm.game.PointSpreadAway < 0) {
         vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[2].series[0].tooltip.fontColor = vm.awayColor;
+        vm.favColor = vm.awayColor;
         vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[2].series[1].tooltip.fontColor = vm.homeColor;
+        vm.dogColor = vm.homeColor;
       } else {
         vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[2].series[0].tooltip.fontColor = vm.homeColor;
+        vm.favColor = vm.homeColor;
         vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.awayColor;
-      }
+        vm.myConfig.graphset[2].series[1].tooltip.fontColor = vm.awayColor;
+        vm.dogColor = vm.awayColor;
+      };
 
       if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
         vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(19).valueOf()
@@ -250,14 +266,7 @@ function GameController ($stateParams, gameService) {
             "y":"13.33%",
             "width":"15%",
             "height": "26.67%",
-            "background-color":"#d44434",
-            "images":[
-                {
-                    "src":"http://www.zingchart.com/resources/heart.png",
-                    "x":"10px",
-                    "y":"12px"
-                }
-            ],
+            "background-color":"#f75b48",
             "title":
             {
                 "height":"40px",
@@ -346,7 +355,12 @@ function GameController ($stateParams, gameService) {
                 },
                 "item":{
                     "font-color":"#75251d",
-                    "offset-x":"-10px"
+                    "offset-x":"0px"
+                },
+                "label":{
+                  "text": "Underdog Spread",
+                  "font-color": vm.dogColor,
+                  "offset-x": "-2 px"
                 }
             },
             "scale-y-2":{
@@ -360,42 +374,58 @@ function GameController ($stateParams, gameService) {
                 },
                 "item":{
                     "font-color":"#75251d",
-                    "offset-x":"10px"
+                    "offset-x":"-8 px"
+                },
+                "label":{
+                  "text": "Favorite Spread",
+                  "font-color": vm.favColor,
+                  "offset-x": "-15 px"
                 }
-            },
-            "tooltip":{
-                "text":"%v",
-                "font-color":"#d44434",
-                "font-size":"20px",
-                "border-radius":"6px",
-                "background-color":"#fff",
-                "shadow":true,
-                "padding":"10px"
             },
             "series":[
                 {
                     "values": vm.favSpreadChartValues,
-                    "usernames": vm.favSpreadUsers,
-                    "submitted": vm.favSpreadTimes,
+                    "data-username": vm.favSpreadUsers,
+                    "data-submitted": vm.favSpreadTimes,
+                    "data-juice": vm.favSpreadJuices,
+                    "data-favAbbrev": vm.favAbbrevs,
                     "marker":{
                       "border-color":"white",
                       "background-repeat":"no-repeat",
                       "shadow":false,
                       "size": 8
                     },
-                    "scales": "scale-x, scale-y-2"
+                    "scales": "scale-x, scale-y-2",
+                    "tooltip":{
+                        "text": "%data-favAbbrev %v (%data-juice)<br>%data-username",
+                        "font-size":"20px",
+                        "border-radius":"6px",
+                        "background-color":"#fff",
+                        "shadow":true,
+                        "padding":"10px"
+                    },
                 },
                 {
                     "values": vm.dogSpreadChartValues,
-                    "usernames": vm.dogSpreadUsers,
-                    "submitted": vm.dogSpreadTimes,
+                    "data-username": vm.dogSpreadUsers,
+                    "data-submitted": vm.dogSpreadTimes,
+                    "data-juice": vm.dogSpreadJuices,
+                    "data-dogAbbrev": vm.dogAbbrevs,
                     "marker":{
                       "border-color":"white",
                       "background-repeat":"no-repeat",
                       "shadow":false,
                       "size": 8
                     },
-                    "scales": "scale-x, scale-y"
+                    "scales": "scale-x, scale-y",
+                    "tooltip":{
+                        "text": "%data-dogAbbrev +%v (%data-juice)<br>%data-username",
+                        "font-size":"20px",
+                        "border-radius":"6px",
+                        "background-color":"#fff",
+                        "shadow":true,
+                        "padding":"10px"
+                    },
                 }
             ]
         },
