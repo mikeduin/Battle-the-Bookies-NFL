@@ -367,30 +367,14 @@ function GameController ($stateParams, gameService) {
                     "font-color":"#fff"
                 },
                 "line-width":1,
-                "line-color":"#d44434",
+                "line-color":"#fff",
                 "guide":{
                     "visible":true,
                     "line-style":"solid",
                     "line-width":1
-                }
-            },
-            "scale-y-2":{
-                "values": vm.dogSpreadRange,
-                "guide":{
-                    "visible":false
                 },
-                "line-color":"#d44434",
                 "tick":{
-                    "line-color":"none"
-                },
-                "item":{
-                    "font-color":"#75251d",
-                    "offset-x":"0px"
-                },
-                "label":{
-                  "text": "Underdog Spread",
-                  // "font-color": vm.dogColor,
-                  "offset-x": "-2 px"
+                    "visible":false
                 }
             },
             "scale-y":{
@@ -404,12 +388,31 @@ function GameController ($stateParams, gameService) {
                 },
                 "item":{
                     "font-color":"#75251d",
-                    "offset-x":"-8 px"
+                    "offset-x":"5px"
                 },
                 "label":{
                   "text": "Favorite Spread",
-                  // "font-color": vm.favColor,
-                  "offset-x": "-15 px"
+                  "font-color": "black",
+                  "offset-x": "5px"
+                }
+            },
+            "scale-y-2":{
+                "values": vm.dogSpreadRange,
+                "guide":{
+                    "visible":false
+                },
+                "line-color":"none",
+                "tick":{
+                    "line-color":"none"
+                },
+                "item":{
+                    "font-color":"#75251d",
+                    "offset-x":"-10px"
+                },
+                "label":{
+                  "text": "Underdog Spread",
+                  "font-color": "black",
+                  "offset-x": "-10px"
                 }
             },
             "series":[
@@ -512,7 +515,7 @@ function GameController ($stateParams, gameService) {
                 "padding-left":"30px"
             },
             "plotarea":{
-                "margin":"60 40 40 50",
+                "margin":"60 40 40 20",
                 "background-color":"#969191"
             },
             "plot":{
@@ -543,7 +546,7 @@ function GameController ($stateParams, gameService) {
                     "font-color":"#fff"
                 },
                 "line-width":1,
-                "line-color":"#969191",
+                "line-color":"#fff",
                 "guide":{
                     "visible":true,
                     "line-style":"solid",
@@ -564,7 +567,12 @@ function GameController ($stateParams, gameService) {
                 },
                 "item":{
                     "font-color":"#4d4645",
-                    "offset-x":"-20px"
+                    "offset-x":"5px"
+                },
+                "label":{
+                  "text": "Favorite ML",
+                  "font-color": "black",
+                  "offset-x": "5px"
                 }
             },
             "scale-y-2":{
@@ -578,7 +586,12 @@ function GameController ($stateParams, gameService) {
                 },
                 "item":{
                     "font-color":"#4d4645",
-                    "offset-x":"10px"
+                    "offset-x":"-10px"
+                },
+                "label":{
+                  "text": "Underdog ML",
+                  "font-color": "black",
+                  "offset-x": "-12px"
                 }
             },
             "tooltip":{
@@ -600,7 +613,7 @@ function GameController ($stateParams, gameService) {
                     "border-color":"black",
                     "background-repeat":"no-repeat",
                     "shadow":false,
-                    "size": 8
+                    "size": 9
                   },
                   "scales": "scale-x, scale-y",
                   "tooltip":{
@@ -621,7 +634,7 @@ function GameController ($stateParams, gameService) {
                     "border-color":"white",
                     "background-repeat":"no-repeat",
                     "shadow":false,
-                    "size": 8
+                    "size": 9
                   },
                   "scales": "scale-x, scale-y-2",
                   "tooltip":{
@@ -687,7 +700,7 @@ function GameController ($stateParams, gameService) {
                 "padding-left":"30px"
             },
             "plotarea":{
-                "margin":"60 40 40 50",
+                "margin":"60 40 40 20",
                 "background-color":"#7BA7F5"
             },
             "plot":{
