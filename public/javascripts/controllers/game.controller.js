@@ -67,23 +67,23 @@ function GameController ($stateParams, gameService) {
       if(vm.game.PointSpreadAway < 0) {
         vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.awayColor;
         vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.awayColor;
-        vm.myConfig.graphset[7].series[0].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[7].series[0].tooltip.fontColor = vm.awayColor;
+        vm.myConfig.graphset[10].series[0].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[10].series[0].tooltip.fontColor = vm.awayColor;
         vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.homeColor;
         vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.homeColor;
-        vm.myConfig.graphset[7].series[1].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[7].series[1].tooltip.fontColor = vm.homeColor;
+        vm.myConfig.graphset[10].series[1].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[10].series[1].tooltip.fontColor = vm.homeColor;
         vm.favColor = vm.awayColor;
         vm.dogColor = vm.homeColor;
       } else {
         vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.homeColor;
         vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.homeColor;
-        vm.myConfig.graphset[7].series[0].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[7].series[0].tooltip.fontColor = vm.homeColor;
+        vm.myConfig.graphset[10].series[0].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[10].series[0].tooltip.fontColor = vm.homeColor;
         vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.awayColor;
         vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.awayColor;
-        vm.myConfig.graphset[7].series[1].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[7].series[1].tooltip.fontColor = vm.awayColor;
+        vm.myConfig.graphset[10].series[1].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[10].series[1].tooltip.fontColor = vm.awayColor;
         vm.favColor = vm.homeColor;
         vm.dogColor = vm.awayColor;
       };
@@ -275,9 +275,7 @@ function GameController ($stateParams, gameService) {
                 "html-mode": true,
                 "offset-y":"10px",
                 "background-color":"#f75b48",
-                // "border": "2px solid black",
                 "font-size":"60px",
-                // "text-align":"center",
                 "padding":"10 0 0 0",
                 "alpha": 1
             }
@@ -291,11 +289,9 @@ function GameController ($stateParams, gameService) {
             "background-color":"#f75b48",
             "title":{
                 "html-mode": true,
-                // "height":"100px",
                 "offset-y":"-18px",
                 "background-color":"#f75b48",
                 "font-color":"black",
-                // "font-size":"60px",
                 "text-align":"center",
                 "padding":"5 0 0 0"
             }
@@ -312,7 +308,6 @@ function GameController ($stateParams, gameService) {
                 "height":"100%",
                 "offset-y":"-45px",
                 "background-color":"#f75b48",
-                // "font-color":"#f0f0f0",
                 "font-size":"60px",
                 "text-align":"center",
                 "padding":"0 0 0 0"
@@ -489,6 +484,7 @@ function GameController ($stateParams, gameService) {
             "x":"2%",
             "y":"40%",
             "width":"15%",
+            "height": "13.33%",
             "background-color":"#969191",
             "title":{
                 "height":"40px",
@@ -508,6 +504,57 @@ function GameController ($stateParams, gameService) {
                 "font-size":"60px",
                 "text-align":"center",
                 "text":"98.7"
+            }
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"53.33%",
+            "width":"15%",
+            "height": "3.335%",
+            "background-color":"#969191",
+            "title":{
+                "html-mode": true,
+                "offset-y":"-18px",
+                "background-color":"#969191",
+                "font-color":"black",
+                "text-align":"center",
+                "padding":"5 0 0 0"
+            }
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"57.7%",
+            "width":"15%",
+            "height": "10%",
+            "background-color":"#969191",
+            "subtitle":{
+                "html-mode": true,
+                "height":"100%",
+                "offset-y":"-45px",
+                "background-color":"#969191",
+                "font-size":"60px",
+                "text-align":"center",
+                "padding":"0 0 0 0"
+            }
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"67.7%",
+            "width":"15%",
+            "height": "3.335%",
+            "background-color":"#969191",
+            "title":{
+                "html-mode": true,
+                "height":"100%",
+                "offset-y":"-18px",
+                "background-color":"#969191",
+                "font-color":"white",
+                // "font-size":"60px",
+                "text-align":"center",
+                "padding":"0 0 0 0"
             }
         },
         {
