@@ -162,7 +162,9 @@ function GameController ($stateParams, gameService) {
         vm.dogAbbrev = vm.dogSpreadPicks[0].activePick.substr(0, vm.dogSpreadPicks[0].activePick.indexOf(' '));
 
         vm.myConfig.graphset[1].subtitle.fontColor = vm.favColor;
+        vm.myConfig.graphset[6].subtitle.fontColor = vm.favColor;
         vm.myConfig.graphset[3].subtitle.fontColor = vm.dogColor;
+        vm.myConfig.graphset[8].subtitle.fontColor = vm.dogColor;
 
         vm.myConfig.graphset[1].subtitle.text= "<div>" + vm.favSpreadPickPct +"%</div>";
         vm.myConfig.graphset[2].title.text= "<div>" + vm.favAbbrev +" SPREAD</div>";
@@ -330,7 +332,6 @@ function GameController ($stateParams, gameService) {
                 "offset-y":"-18px",
                 "background-color":"#f75b48",
                 "font-color":"white",
-                // "font-size":"60px",
                 "text-align":"center",
                 "padding":"0 0 0 0"
             }
@@ -502,7 +503,7 @@ function GameController ($stateParams, gameService) {
             },
             "subtitle":{
                 "height":"145px",
-                "offset-y":"10px",
+                "offset-y":"15px",
                 "background-color":"#969191",
                 "font-color":"#f0f0f0",
                 "font-size":"60px",
@@ -518,7 +519,7 @@ function GameController ($stateParams, gameService) {
             "background-color":"#969191",
             "title":{
                 "html-mode": true,
-                "offset-y":"-18px",
+                "offset-y":"-22px",
                 "background-color":"#969191",
                 "font-color":"black",
                 "text-align":"center",
@@ -535,7 +536,7 @@ function GameController ($stateParams, gameService) {
             "subtitle":{
                 "html-mode": true,
                 "height":"100%",
-                "offset-y":"-45px",
+                "offset-y":"-55px",
                 "background-color":"#969191",
                 "font-size":"60px",
                 "text-align":"center",
@@ -552,10 +553,9 @@ function GameController ($stateParams, gameService) {
             "title":{
                 "html-mode": true,
                 "height":"100%",
-                "offset-y":"-18px",
+                "offset-y":"-60px",
                 "background-color":"#969191",
                 "font-color":"white",
-                // "font-size":"60px",
                 "text-align":"center",
                 "padding":"0 0 0 0"
             }
