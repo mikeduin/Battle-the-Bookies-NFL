@@ -168,6 +168,10 @@ function GameController ($stateParams, gameService) {
         vm.myConfig.graphset[2].title.text= "<div>" + vm.favAbbrev +" SPREAD</div>";
         vm.myConfig.graphset[3].subtitle.text= "<div>" + vm.dogSpreadPickPct +"%</div>";
         vm.myConfig.graphset[4].title.text= "<div>" + vm.dogAbbrev +" SPREAD</div>";
+        vm.myConfig.graphset[6].subtitle.text= "<div>" + vm.favMLPickPct +"%</div>";
+        vm.myConfig.graphset[7].title.text= "<div>" + vm.favAbbrev +" ML</div>";
+        vm.myConfig.graphset[8].subtitle.text= "<div>" + vm.dogMLPickPct +"%</div>";
+        vm.myConfig.graphset[9].title.text= "<div>" + vm.dogAbbrev +" ML</div>";
 
         console.log(vm.favAbbrev);
         console.log(vm.dogAbbrev);
@@ -503,7 +507,6 @@ function GameController ($stateParams, gameService) {
                 "font-color":"#f0f0f0",
                 "font-size":"60px",
                 "text-align":"center",
-                "text":"98.7"
             }
         },
         {
