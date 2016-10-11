@@ -278,39 +278,39 @@ function GameController ($stateParams, gameService) {
                 // "border": "2px solid black",
                 "font-size":"60px",
                 // "text-align":"center",
-                "padding":"0 0 0 0",
+                "padding":"10 0 0 0",
                 "alpha": 1
             }
         },
         {
             "type":"null",
             "x":"2%",
-            "y":"23.37%",
+            "y":"26.33%",
             "width":"15%",
             "height": "3.335%",
             "background-color":"#f75b48",
             "title":{
                 "html-mode": true,
-                // "height":"100%",
-                "offset-y":"10px",
+                // "height":"100px",
+                "offset-y":"-18px",
                 "background-color":"#f75b48",
                 "font-color":"black",
                 // "font-size":"60px",
                 "text-align":"center",
-                "padding":"0 0 0 0"
+                "padding":"5 0 0 0"
             }
         },
         {
             "type":"null",
             "x":"2%",
-            "y":"26.67%",
+            "y":"29.6%",
             "width":"15%",
             "height": "10%",
             "background-color":"#f75b48",
             "subtitle":{
                 "html-mode": true,
                 "height":"100%",
-                "offset-y":"-10px",
+                "offset-y":"-45px",
                 "background-color":"#f75b48",
                 // "font-color":"#f0f0f0",
                 "font-size":"60px",
@@ -328,7 +328,7 @@ function GameController ($stateParams, gameService) {
             "title":{
                 "html-mode": true,
                 "height":"100%",
-                "offset-y":"-10px",
+                "offset-y":"-18px",
                 "background-color":"#f75b48",
                 "font-color":"white",
                 // "font-size":"60px",
