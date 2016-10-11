@@ -65,23 +65,27 @@ function GameController ($stateParams, gameService) {
       vm.homeColor = vm.game.HomeColor;
 
       if(vm.game.PointSpreadAway < 0) {
-        vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[2].series[0].tooltip.fontColor = vm.awayColor;
-        vm.myConfig.graphset[4].series[0].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[4].series[0].tooltip.fontColor = vm.awayColor;
-        vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[2].series[1].tooltip.fontColor = vm.homeColor;
-        vm.myConfig.graphset[4].series[1].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[4].series[1].tooltip.fontColor = vm.homeColor;
+        vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.awayColor;
+        vm.myConfig.graphset[7].series[0].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[7].series[0].tooltip.fontColor = vm.awayColor;
+        vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.homeColor;
+        vm.myConfig.graphset[7].series[1].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[7].series[1].tooltip.fontColor = vm.homeColor;
+        vm.favColor = vm.awayColor;
+        vm.dogColor = vm.homeColor;
       } else {
-        vm.myConfig.graphset[2].series[0].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[2].series[0].tooltip.fontColor = vm.homeColor;
-        vm.myConfig.graphset[4].series[0].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[4].series[0].tooltip.fontColor = vm.homeColor;
-        vm.myConfig.graphset[2].series[1].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[2].series[1].tooltip.fontColor = vm.awayColor;
-        vm.myConfig.graphset[4].series[1].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[4].series[1].tooltip.fontColor = vm.awayColor;
+        vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.homeColor;
+        vm.myConfig.graphset[7].series[0].marker.backgroundColor = vm.homeColor;
+        vm.myConfig.graphset[7].series[0].tooltip.fontColor = vm.homeColor;
+        vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.awayColor;
+        vm.myConfig.graphset[7].series[1].marker.backgroundColor = vm.awayColor;
+        vm.myConfig.graphset[7].series[1].tooltip.fontColor = vm.awayColor;
+        vm.favColor = vm.homeColor;
+        vm.dogColor = vm.awayColor;
       };
 
       if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
@@ -133,7 +137,8 @@ function GameController ($stateParams, gameService) {
       };
 
     }).then(function(){
-      console.log('vm.game is', vm.game)
+      console.log('vm.game is', vm.game);
+      console.log('vm.homeColor is', vm.homeColor);
 
       gameService.getPickArrays(vm.EventID).then(function(result){
 
@@ -145,18 +150,24 @@ function GameController ($stateParams, gameService) {
         vm.underPicks = result[0].UnderPickArray;
         vm.noPicks = result[0].NoPickArray;
 
-        vm.dogMLPickPct = (vm.dogMLPicks.length/38)*100;
-        vm.dogSpreadPickPct = (vm.dogSpreadPicks.length/38)*100;
-        vm.favMLPickPct = (vm.favMLPicks.length/38)*100;
-        vm.favSpreadPickPct = (vm.favSpreadPicks.length/38)*100;
-        vm.overPickPct = (vm.overPicks.length/38)*100;
-        vm.underPickPct = (vm.underPicks.length/38)*100;
+        vm.dogMLPickPct = Math.round((vm.dogMLPicks.length/38)*100);
+        vm.dogSpreadPickPct = Math.round((vm.dogSpreadPicks.length/38)*100);
+        vm.favMLPickPct = Math.round((vm.favMLPicks.length/38)*100);
+        vm.favSpreadPickPct = Math.round((vm.favSpreadPicks.length/38)*100);
+        vm.overPickPct = Math.round((vm.overPicks.length/38)*100);
+        vm.underPickPct = Math.round((vm.underPicks.length/38)*100);
 
         vm.favAbbrev = vm.favSpreadPicks[0].activePick.substr(0, vm.favSpreadPicks[0].activePick.indexOf(' '));
 
         vm.dogAbbrev = vm.dogSpreadPicks[0].activePick.substr(0, vm.dogSpreadPicks[0].activePick.indexOf(' '));
 
-        vm.myConfig.graphset[1].subtitle.text= "<div style='height: 50%'>76 <br>"+vm.message+"</div><div style='height: 50%'> hi </div>'"
+        vm.myConfig.graphset[1].subtitle.fontColor = vm.favColor;
+        vm.myConfig.graphset[3].subtitle.fontColor = vm.dogColor;
+
+        vm.myConfig.graphset[1].subtitle.text= "<div>" + vm.favSpreadPickPct +"%</div>";
+        vm.myConfig.graphset[2].title.text= "<div>" + vm.favAbbrev +" SPREAD</div>";
+        vm.myConfig.graphset[3].subtitle.text= "<div>" + vm.dogSpreadPickPct +"%</div>";
+        vm.myConfig.graphset[4].title.text= "<div>" + vm.dogAbbrev +" SPREAD</div>";
 
         console.log(vm.favAbbrev);
         console.log(vm.dogAbbrev);
@@ -247,7 +258,7 @@ function GameController ($stateParams, gameService) {
             "x":"2%",
             "y":"13.33%",
             "width":"15%",
-            "height": "26.67%",
+            "height": "13%",
             "background-color":"#f75b48",
             "title":
             {
@@ -261,14 +272,68 @@ function GameController ($stateParams, gameService) {
                 "padding-left":"40px"
             },
             "subtitle":{
-                "html-mode": "true",
-                "height":"100%",
+                "html-mode": true,
                 "offset-y":"10px",
                 "background-color":"#f75b48",
-                "border": "2px solid black",
-                "font-color":"#f0f0f0",
+                // "border": "2px solid black",
+                "font-size":"60px",
+                // "text-align":"center",
+                "padding":"0 0 0 0",
+                "alpha": 1
+            }
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"23.37%",
+            "width":"15%",
+            "height": "3.335%",
+            "background-color":"#f75b48",
+            "title":{
+                "html-mode": true,
+                // "height":"100%",
+                "offset-y":"10px",
+                "background-color":"#f75b48",
+                "font-color":"black",
                 // "font-size":"60px",
-                "text-align":"center"
+                "text-align":"center",
+                "padding":"0 0 0 0"
+            }
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"26.67%",
+            "width":"15%",
+            "height": "10%",
+            "background-color":"#f75b48",
+            "subtitle":{
+                "html-mode": true,
+                "height":"100%",
+                "offset-y":"-10px",
+                "background-color":"#f75b48",
+                // "font-color":"#f0f0f0",
+                "font-size":"60px",
+                "text-align":"center",
+                "padding":"0 0 0 0"
+            }
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"36.67%",
+            "width":"15%",
+            "height": "3.335%",
+            "background-color":"#f75b48",
+            "title":{
+                "html-mode": true,
+                "height":"100%",
+                "offset-y":"-10px",
+                "background-color":"#f75b48",
+                "font-color":"white",
+                // "font-size":"60px",
+                "text-align":"center",
+                "padding":"0 0 0 0"
             }
         },
         {
@@ -614,13 +679,6 @@ function GameController ($stateParams, gameService) {
                 "border-bottom":"1px solid #d6d6d6",
                 "padding-left":"40px"
             },
-            "images":[
-                {
-                    "src":"http://www.zingchart.com/resources/thermo.png",
-                    "x":"10px",
-                    "y":"12px"
-                }
-            ],
             "subtitle":{
                 "height":"145px",
                 "offset-y":"10px",
