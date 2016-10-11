@@ -174,11 +174,10 @@ function GameController ($stateParams, gameService) {
         vm.myConfig.graphset[7].title.text= "<div>" + vm.favAbbrev +" ML</div>";
         vm.myConfig.graphset[8].subtitle.text= "<div>" + vm.dogMLPickPct +"%</div>";
         vm.myConfig.graphset[9].title.text= "<div>" + vm.dogAbbrev +" ML</div>";
-
-        console.log(vm.favAbbrev);
-        console.log(vm.dogAbbrev);
-
-        console.log(vm.dogMLPickPct)
+        vm.myConfig.graphset[11].subtitle.text= "<div>" + vm.overPickPct +"%</div>";
+        vm.myConfig.graphset[12].title.text= "<div>OVER TOTAL</div>";
+        vm.myConfig.graphset[13].subtitle.text= "<div>" + vm.underPickPct +"%</div>";
+        vm.myConfig.graphset[14].title.text= "<div>UNDER TOTAL</div>";
 
         for (i=0; i<vm.favSpreadPicks.length; i++) {
           var unixTime = moment(vm.favSpreadPicks[i].submittedAt).valueOf();
@@ -238,9 +237,6 @@ function GameController ($stateParams, gameService) {
     })
   }
 
-
-
-  // zingchart.THEME="classic";
   vm.myConfig = {
     "background-color":"#d6d6d6",
     "graphset":[
@@ -253,7 +249,7 @@ function GameController ($stateParams, gameService) {
             "title":{
                 "text":":: CHRONOLOGICAL SELECTION CHARTING",
                 "font-size":"16px",
-                "color":"#605958",
+                "color":"#6D6D6D",
                 "background-color":"#f9f9f9",
                 "border-bottom":"1px solid #d6d6d6",
                 "padding":"26 30 28 30"
@@ -265,7 +261,7 @@ function GameController ($stateParams, gameService) {
             "y":"13.33%",
             "width":"15%",
             "height": "13%",
-            "background-color":"#f75b48",
+            "background-color":"#6D6D6D",
             "title":
             {
                 "height":"40px",
@@ -273,14 +269,14 @@ function GameController ($stateParams, gameService) {
                 "font-size":"12px",
                 "text-align":"left",
                 "color":"#fff",
-                "background-color":"#d44434",
+                "background-color":"#2D2D2D",
                 "border-bottom":"1px solid #d6d6d6",
                 "padding-left":"40px"
             },
             "subtitle":{
                 "html-mode": true,
                 "offset-y":"10px",
-                "background-color":"#f75b48",
+                "background-color":"#6D6D6D",
                 "font-size":"60px",
                 "padding":"10 0 0 0",
                 "alpha": 1
@@ -292,12 +288,13 @@ function GameController ($stateParams, gameService) {
             "y":"26.33%",
             "width":"15%",
             "height": "3.335%",
-            "background-color":"#f75b48",
+            "background-color":"#6D6D6D",
             "title":{
                 "html-mode": true,
                 "offset-y":"-18px",
-                "background-color":"#f75b48",
+                "background-color":"#6D6D6D",
                 "font-color":"black",
+                "font-size": "18px",
                 "text-align":"center",
                 "padding":"5 0 0 0"
             }
@@ -308,12 +305,12 @@ function GameController ($stateParams, gameService) {
             "y":"29.6%",
             "width":"15%",
             "height": "10%",
-            "background-color":"#f75b48",
+            "background-color":"#6D6D6D",
             "subtitle":{
                 "html-mode": true,
                 "height":"100%",
                 "offset-y":"-45px",
-                "background-color":"#f75b48",
+                "background-color":"#6D6D6D",
                 "font-size":"60px",
                 "text-align":"center",
                 "padding":"0 0 0 0"
@@ -325,13 +322,14 @@ function GameController ($stateParams, gameService) {
             "y":"36.67%",
             "width":"15%",
             "height": "3.335%",
-            "background-color":"#f75b48",
+            "background-color":"#6D6D6D",
             "title":{
                 "html-mode": true,
                 "height":"100%",
                 "offset-y":"-18px",
-                "background-color":"#f75b48",
+                "background-color":"#6D6D6D",
                 "font-color":"white",
+                "font-size": "18px",
                 "text-align":"center",
                 "padding":"0 0 0 0"
             }
@@ -342,14 +340,14 @@ function GameController ($stateParams, gameService) {
             "y":"13.33%",
             "height":"26.67%",
             "width":"48%",
-            "background-color":"#f75b48",
+            "background-color":"#6D6D6D",
             "title":{
                 "height":"40px",
                 "text":"",
                 "font-size":"10px",
                 "text-align":"left",
                 "color":"#fff",
-                "background-color":"#d44434",
+                "background-color":"#2D2D2D",
                 "border-bottom":"1px solid #d6d6d6",
                 "padding-left":"30px"
             },
@@ -360,7 +358,7 @@ function GameController ($stateParams, gameService) {
                 "line-color":"#fff",
                 "marker":{
                     "type":"circle",
-                    "background-color":"#f75b48",
+                    "background-color":"#6D6D6D",
                     "border-width":2,
                     "size":4,
                     "shadow":0,
@@ -383,15 +381,15 @@ function GameController ($stateParams, gameService) {
                   "all":"%D<br>%m/%d/%y"
                 },
                 "item":{
-                    "font-color":"#C13D2F"
+                    "font-color":"#2D2D2D"
                 },
                 "line-width":1,
-                "line-color":"#D44434",
+                "line-color":"#2D2D2D",
                 "guide":{
                     "visible":true,
                     "line-style":"solid",
                     "line-width":1,
-                    "line-color": "#D44434"
+                    "line-color": "#2D2D2D"
                 },
                 "tick":{
                     "visible":false
@@ -408,12 +406,12 @@ function GameController ($stateParams, gameService) {
                 },
                 "item":{
                     "font-color":"black",
-                    "offset-x":"5px"
+                    "offset-x":"12px"
                 },
                 "label":{
                   "text": "Favorite Spread",
                   "font-color": "black",
-                  "offset-x": "7px"
+                  "offset-x": "20px"
                 }
             },
             "scale-y-2":{
@@ -497,7 +495,7 @@ function GameController ($stateParams, gameService) {
                 "font-size":"12px",
                 "text-align":"left",
                 "color":"#fff",
-                "background-color":"#605958",
+                "background-color":"#444444",
                 "border-bottom":"1px solid #d6d6d6",
                 "padding-left":"40px"
             },
@@ -522,6 +520,7 @@ function GameController ($stateParams, gameService) {
                 "offset-y":"-22px",
                 "background-color":"#969191",
                 "font-color":"black",
+                "font-size": "18px",
                 "text-align":"center",
                 "padding":"5 0 0 0"
             }
@@ -556,6 +555,7 @@ function GameController ($stateParams, gameService) {
                 "offset-y":"-60px",
                 "background-color":"#969191",
                 "font-color":"white",
+                "font-size": "18px",
                 "text-align":"center",
                 "padding":"0 0 0 0"
             }
@@ -573,7 +573,7 @@ function GameController ($stateParams, gameService) {
                 "font-size":"10px",
                 "text-align":"left",
                 "color":"#fff",
-                "background-color":"#605958",
+                "background-color":"#444444",
                 "border-bottom":"1px solid #d6d6d6",
                 "padding-left":"30px"
             },
@@ -609,12 +609,12 @@ function GameController ($stateParams, gameService) {
                     "font-color":"#726F6E"
                 },
                 "line-width":1,
-                "line-color":"#827E7E",
+                "line-color":"#6D6D6D",
                 "guide":{
                     "visible":true,
                     "line-style":"solid",
                     "line-width":1,
-                    "line-color": "#827E7E"
+                    "line-color": "#6D6D6D"
                 },
                 "tick":{
                     "visible":false
@@ -636,7 +636,7 @@ function GameController ($stateParams, gameService) {
                 "label":{
                   "text": "Favorite ML",
                   "font-color": "black",
-                  "offset-x": "7px"
+                  "offset-x": "50px"
                 }
             },
             "scale-y-2":{
@@ -660,7 +660,7 @@ function GameController ($stateParams, gameService) {
             },
             "tooltip":{
                 "text":"%v",
-                "font-color":"#605958",
+                "font-color":"#6D6D6D",
                 "font-size":"20px",
                 "border-radius":"6px",
                 "background-color":"#fff",
@@ -717,7 +717,7 @@ function GameController ($stateParams, gameService) {
             "x":"2%",
             "y":"66.67%",
             "width":"15%",
-            "height": "26.67%",
+            "height": "10%",
             "background-color":"#7BA7F5",
             "title":{
                 "height":"40px",
@@ -731,12 +731,62 @@ function GameController ($stateParams, gameService) {
             },
             "subtitle":{
                 "height":"145px",
-                "offset-y":"10px",
+                "offset-y":"15px",
                 "background-color":"#7BA7F5",
                 "font-color":"#f0f0f0",
                 "font-size":"60px",
+                "text-align":"center"
+            }
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"80%",
+            "width":"15%",
+            "height": "3.335%",
+            "background-color":"#7BA7F5",
+            "title":{
+                "html-mode": true,
+                "offset-y":"-20px",
+                "background-color":"#7BA7F5",
+                "font-color":"#E8E8E8",
+                "font-size": "18px",
                 "text-align":"center",
-                "text":"98.7"
+                "padding":"5 0 0 0"
+            }
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"83.335%",
+            "width":"15%",
+            "height": "10%",
+            "background-color":"#7BA7F5",
+            "subtitle":{
+                "html-mode": true,
+                "offset-y":"-40px",
+                "background-color":"#7BA7F5",
+                "font-color":"black",
+                "font-size":"60px",
+                "text-align":"center",
+                "padding":"0 0 0 0"
+            }
+        },
+        {
+            "type":"null",
+            "x":"2%",
+            "y":"93.335%",
+            "width":"15%",
+            "height": "0.1%",
+            "background-color":"#7BA7F5",
+            "title":{
+                "html-mode": true,
+                "offset-y":"-45px",
+                "background-color":"#7BA7F5",
+                "font-color":"#2D2D2D",
+                "font-size": "18px",
+                "text-align":"center",
+                "padding":"0 0 0 0"
             }
         },
         {
@@ -810,12 +860,12 @@ function GameController ($stateParams, gameService) {
                 },
                 "item":{
                     "font-color":"black",
-                    "offset-x":"10px"
+                    "offset-x":"5px"
                 },
                 "label":{
                   "text": "Total Under",
                   "font-color": "black",
-                  "offset-x": "14px"
+                  "offset-x": "50px"
                 }
             },
             "scale-y-2":{
@@ -839,7 +889,7 @@ function GameController ($stateParams, gameService) {
             },
             "tooltip":{
                 "text":"%v",
-                "font-color":"#605958",
+                "font-color":"#6D6D6D",
                 "font-size":"20px",
                 "border-radius":"6px",
                 "background-color":"#fff",
@@ -901,7 +951,7 @@ function GameController ($stateParams, gameService) {
         //     "title":{
         //         "text":":: DEMOGRAPHICS",
         //         "font-size":"12px",
-        //         "color":"#605958",
+        //         "color":"#6D6D6D",
         //         "background-color":"#f9f9f9",
         //         "border-bottom":"1px solid #d6d6d6",
         //         "padding":"26 30 28 30"
@@ -969,12 +1019,5 @@ function GameController ($stateParams, gameService) {
         // }
     ]
 };
-
-// zingchart.render({
-// 	id : 'myChart',
-// 	data : myConfig,
-// 	height: 750,
-// 	width: '75%'
-// });
 
 }
