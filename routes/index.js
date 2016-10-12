@@ -562,7 +562,7 @@ setInterval(function(){
   })
 }, 600000)
 
-// The function below runs once an hour and updates the LineMove arrays to track each game's line movement over the course of the week.
+// The function below runs once every 30 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 
 setInterval(function(){
   var now = moment();
@@ -627,7 +627,7 @@ setInterval(function(){
       })
     })
   })
-}, 10000);
+}, 1800000);
 
 setInterval(function(){
   var now = moment();
