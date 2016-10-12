@@ -19,7 +19,8 @@ require('./models/Lines');
 require('./models/Results');
 require('./models/Picks');
 require('./models/PickArrays');
-require('./config/passport')
+require('./models/LineMoves');
+require('./config/passport');
 
 var db = mongoose.connection;
 

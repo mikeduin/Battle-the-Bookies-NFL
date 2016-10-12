@@ -17,6 +17,7 @@ var Line = mongoose.model('Line');
 var Result = mongoose.model('Result');
 var Pick = mongoose.model('Pick');
 var PickArray = mongoose.model('PickArray');
+var LineMove = mongoose.model('LineMove');
 var abbrevs = require('../modules/abbrevs.js');
 var helmets = require('../modules/helmets.js');
 var colors = require('../modules/colors.js');
