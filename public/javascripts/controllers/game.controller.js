@@ -718,21 +718,21 @@ function GameController ($stateParams, gameService) {
             "y":"66.67%",
             "width":"15%",
             "height": "10%",
-            "background-color":"#7BA7F5",
+            "background-color":"#68A870",
             "title":{
                 "height":"40px",
                 "text":"TOTAL",
                 "font-size":"12px",
                 "text-align":"left",
                 "color":"#fff",
-                "background-color":"#5B7DB9",
+                "background-color":"#2F5032",
                 "border-bottom":"1px solid #d6d6d6",
                 "padding-left":"40px"
             },
             "subtitle":{
                 "height":"145px",
                 "offset-y":"15px",
-                "background-color":"#7BA7F5",
+                "background-color":"#68A870",
                 "font-color":"#f0f0f0",
                 "font-size":"60px",
                 "text-align":"center"
@@ -744,11 +744,11 @@ function GameController ($stateParams, gameService) {
             "y":"80%",
             "width":"15%",
             "height": "3.335%",
-            "background-color":"#7BA7F5",
+            "background-color":"#68A870",
             "title":{
                 "html-mode": true,
                 "offset-y":"-20px",
-                "background-color":"#7BA7F5",
+                "background-color":"#68A870",
                 "font-color":"#E8E8E8",
                 "font-size": "18px",
                 "text-align":"center",
@@ -761,11 +761,11 @@ function GameController ($stateParams, gameService) {
             "y":"83.335%",
             "width":"15%",
             "height": "10%",
-            "background-color":"#7BA7F5",
+            "background-color":"#68A870",
             "subtitle":{
                 "html-mode": true,
                 "offset-y":"-40px",
-                "background-color":"#7BA7F5",
+                "background-color":"#68A870",
                 "font-color":"black",
                 "font-size":"60px",
                 "text-align":"center",
@@ -778,11 +778,11 @@ function GameController ($stateParams, gameService) {
             "y":"93.335%",
             "width":"15%",
             "height": "0.1%",
-            "background-color":"#7BA7F5",
+            "background-color":"#68A870",
             "title":{
                 "html-mode": true,
                 "offset-y":"-45px",
-                "background-color":"#7BA7F5",
+                "background-color":"#68A870",
                 "font-color":"#2D2D2D",
                 "font-size": "18px",
                 "text-align":"center",
@@ -795,26 +795,26 @@ function GameController ($stateParams, gameService) {
             "y":"66.67%",
             "height":"26.67%",
             "width":"48%",
-            "background-color":"#7BA7F5",
+            "background-color":"#68A870",
             "title":{
                 "height":"40px",
                 "text":"",
                 "font-size":"10px",
                 "text-align":"left",
                 "color":"#fff",
-                "background-color":"#5B7DB9",
+                "background-color":"#2F5032",
                 "border-bottom":"1px solid #d6d6d6",
                 "padding-left":"30px"
             },
             "plotarea":{
                 "margin":"60 40 40 20",
-                "background-color":"#7BA7F5"
+                "background-color":"#68A870"
             },
             "plot":{
                 "line-color":"#fff",
                 "marker":{
                     "type":"circle",
-                    "background-color":"#7BA7F5",
+                    "background-color":"#68A870",
                     "border-width":2,
                     "size":4,
                     "shadow":0,
@@ -835,15 +835,15 @@ function GameController ($stateParams, gameService) {
                   "all":"%D<br>%m/%d/%y"
                 },
                 "item":{
-                    "font-color":"#5B7DB9"
+                    "font-color":"#2F5032"
                 },
                 "line-width":1,
-                "line-color":"#5B7DB9",
+                "line-color":"#2F5032",
                 "guide":{
                     "visible":true,
                     "line-style":"solid",
                     "line-width":1,
-                    "line-color": "#7099E2"
+                    "line-color": "#2F5032"
                 },
                 "tick":{
                     "visible":false
@@ -902,6 +902,7 @@ function GameController ($stateParams, gameService) {
                   "data-username": vm.overUsers,
                   "data-submitted": vm.overTimes,
                   "data-activePicks": vm.overActivePicks,
+                  "data-juice": vm.overJuices,
                   "marker":{
                     "border-color":"white",
                     "background-color": "#E8E8E8",
@@ -911,7 +912,7 @@ function GameController ($stateParams, gameService) {
                   },
                   "scales": "scale-x, scale-y-2",
                   "tooltip":{
-                      "text": "%data-activePicks<br>%data-username",
+                      "text": "%data-activePicks (%data-juice)<br>%data-username",
                       "font-size":"20px",
                       "border-radius":"6px",
                       "background-color":"#fff",
@@ -924,6 +925,7 @@ function GameController ($stateParams, gameService) {
                 "data-username": vm.underUsers,
                 "data-submitted": vm.underTimes,
                 "data-activePicks": vm.underActivePicks,
+                "data-juice": vm.underJuices,
                   "marker":{
                     "border-color":"black",
                     "background-color": "#2D2D2D",
@@ -933,7 +935,7 @@ function GameController ($stateParams, gameService) {
                   },
                   "scales": "scale-x, scale-y",
                   "tooltip":{
-                      "text":"%data-activePicks<br>%data-username",
+                      "text":"%data-activePicks (%data-juice)<br>%data-username",
                       "font-size":"20px",
                       "border-radius":"6px",
                       "background-color":"#fff",
