@@ -174,7 +174,7 @@ setInterval(function(){
       })
     })
   console.log('picks updated at ' + new Date())
-}, 60000)
+}, 105000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
@@ -273,6 +273,8 @@ router.get('/lines/:week', function(req, res, next){
   })
 })
 
+// This function runs every 4 minutes and, if a line does not currently have pick counters associated with it, adds them to the line's base data
+
 setInterval(function(){
   Line.find({
     MLHomePicks: {
@@ -296,9 +298,9 @@ setInterval(function(){
 
     console.log("pick counters updated")
   })
-}, 10000)
+}, 240000)
 
-// This function checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
+// This function runs every 1.5 minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 
 setInterval(function(){
   Line.find({
@@ -329,7 +331,7 @@ setInterval(function(){
       })
     })
   })
-}, 60000)
+}, 90000)
 
 // END LINE ROUTES
 // BEGIN RESULTS ROUTES
@@ -352,7 +354,7 @@ router.get('/pullGame/:gameID', function(req, res, next){
   })
 })
 
-// The function below runs every ten minutes and checks to see if a game has started and has not yet had its pick arrays built. In that case, it constructs the pick arrays and then marks ArraysBuilt as 'true' so as not to needlessly reproduce the update in the future.
+// The function below runs every 9 minutes and checks to see if a game has started and has not yet had its pick arrays built. In that case, it constructs the pick arrays and then marks ArraysBuilt as 'true' so as not to needlessly reproduce the update in the future.
 
 setInterval(function(){
   var now = moment();
@@ -453,9 +455,9 @@ setInterval(function(){
       })
     })
   })
-}, 600000)
+}, 540000)
 
-// This function below runs every ten minutes and checks to see whether a game's pick ranges have been added to the original line data.
+// This function below runs every 14 minutes and checks to see whether a game's pick ranges have been added to the original line data.
 
 setInterval(function(){
   var now = moment();
@@ -560,9 +562,9 @@ setInterval(function(){
       })
     })
   })
-}, 600000)
+}, 840000)
 
-// The function below runs once every 30 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
+// The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 
 setInterval(function(){
   var now = moment();
@@ -627,7 +629,9 @@ setInterval(function(){
       })
     })
   })
-}, 1800000);
+}, 2100000);
+
+// This function runs every 10 minutes and sets a pick's CapperGrades score if the game has started and the CapperGrades have not previously been set
 
 setInterval(function(){
   var now = moment();
@@ -723,7 +727,7 @@ router.get('/picks/:week', function (req, res, next){
   })
 })
 
-// The function below checks every ten minutes to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page.
+// The function below checks every 23 minutes to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page.
 
 setInterval(function(){
   Line.find({
@@ -748,7 +752,7 @@ setInterval(function(){
     })
   })
   console.log("matchtimes have been updated")
-}, 600000)
+}, 1380000)
 
 // This function below checks every five minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 
