@@ -14,9 +14,8 @@ var LineMoveSchema = new mongoose.Schema({
   AwaySpreadJuices: Array,
   HomeMLs: Array,
   AwayMLs: Array,
-  TotalOvers: Array,
+  Totals: Array,
   TotalOverJuices: Array,
-  TotalUnders: Array,
   TotalUnderJuices: Array,
   TimeLogged: Array
 });
