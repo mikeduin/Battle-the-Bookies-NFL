@@ -421,7 +421,6 @@ setInterval(function(){
           };
         });
 
-        console.log('dogSpreadPickArray is', dogSpreadPickArray)
       }).then(function(){
         PickArray.findOneAndUpdate({EventID: game.EventID}, {
           $set: {
@@ -437,20 +436,18 @@ setInterval(function(){
         }, {upsert: true}, function(err, result){
           if(err) {console.log(err)}
 
-          console.log("arrays have been built for", result)
+          console.log("arrays have been built for", result.EventID)
 
+        })
+      }).then(function(){
+        Line.findOneAndUpdate({EventID: game.EventID}, {$set:
+          {
+            ArraysBuilt: true
+          }
+        }, function(err, updatedLine){
+          if (err) {console.log(err)}
 
-        }).then(function(){
-          console.log('game EVENTID is', game.EventID)
-          Line.findOneAndUpdate({EventID: game.EventID}, {$set:
-            {
-              ArraysBuilt: true
-            }
-          }, function(err, updatedLine){
-            if (err) {console.log(err)}
-
-            console.log('arrays built set to true for', updatedLine.EventID)
-          })
+          console.log('arrays built set to true for', updatedLine.EventID)
         })
       })
     })

@@ -635,7 +635,7 @@ function GameController ($stateParams, gameService) {
                 "label":{
                   "text": "Favorite ML",
                   "font-color": "black",
-                  "offset-x": "50px"
+                  "offset-x": "12px"
                 }
             },
             "scale-y-2":{
@@ -864,7 +864,7 @@ function GameController ($stateParams, gameService) {
                 "label":{
                   "text": "Total Under",
                   "font-color": "black",
-                  "offset-x": "50px"
+                  "offset-x": "12px"
                 }
             },
             "scale-y-2":{
