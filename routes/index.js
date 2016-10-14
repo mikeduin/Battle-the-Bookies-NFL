@@ -456,36 +456,75 @@ setInterval(function(){
 
 // This function below runs every 14 minutes and checks to see whether a game's pick ranges have been added to the original line data.
 
-// setInterval(function(){
-//   var now = moment();
-//   Line.find({
-//     MatchTime: {
-//       $lt: now
-//     },
-//     RangesSet: {
-//       $in: [false, null]
-//     }
-//   }, function(err, games){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(games){
-//     games.forEach(function(game){
-//       LineMove.find({EventID: game.EventID}, function(err, gameArrays){
-//         if(err) {console.log(err)}
-//
-//       }).then(function(gameArrays){
-//         var homeSpreads = gameArrays[0].HomeSpreads;
-//         var homeSpreadJuices = gameArrays[0].HomeSpreadJuices;
-//         var awaySpreads = gameArrays[0].AwaySpreads;
-//         var awaySpreadJuices = gameArrays[0].AwaySpreadJuices;
-//         var homeMLs = gameArrays[0].HomeMLs;
-//         var awayMLs = gameArrays[0].AwayMLs;
-//
-//
-//       })
-//     })
-//   }
-// }, 840000)
+setInterval(function(){
+  var now = moment();
+  Line.find({
+    MatchTime: {
+      $lt: now
+    }
+    // RangesSet: {
+    //   $in: [false, null]
+    // }
+  }, function(err, games){
+    if (err) {console.log(err)}
+
+  }).then(function(games){
+    games.forEach(function(game){
+      LineMove.find({EventID: game.EventID}, function(err, gameArrays){
+        // This is only going to return a match for games from Week 6 on, since I was not tracking line moves before then
+        if(err) {console.log(err)}
+
+      }).then(function(gameArrays){
+        // if (gameArrays.length === 0) {
+        //   console.log('no line moves were charted for ', game.EventID)
+        // }
+
+        var homeSpreads = gameArrays[0].HomeSpreads;
+        var homeSpreadJuices = gameArrays[0].HomeSpreadJuices;
+        var awaySpreads = gameArrays[0].AwaySpreads;
+        var awaySpreadJuices = gameArrays[0].AwaySpreadJuices;
+        var homeMLs = gameArrays[0].HomeMLs;
+        var awayMLs = gameArrays[0].AwayMLs;
+        var totals = gameArrays[0].Totals;
+        var totalOverJuices = gameArrays[0].TotalOverJuices;
+        var totalUnderJuices = gameArrays[0].TotalUnderJuices;
+
+        console.log('awaySpreads are', awaySpreads);
+        console.log('awaySpreadJuices are', awaySpreadJuices);
+
+        var awayMLLow = Array.min(awayMLs);
+        var awayMLHigh = Array.max(awayMLs);
+        var homeMLLow = Array.min(homeMLs);
+        var homeMLHigh = Array.max(homeMLs);
+        var homeSpreadLow = Array.min(homeSpreads);
+        var homeSpreadHigh = Array.max(homeSpreads);
+        var awaySpreadLow = Array.min(awaySpreads);
+        var awaySpreadHigh = Array.max(awaySpreads);
+        var totalHigh = Array.max(totals);
+        var totalLow = Array.min(totals);
+
+        console.log('awaySpreadLow is', awaySpreadLow);
+        console.log('awaySpreadHigh is', awaySpreadHigh);
+
+        var awaySpreadOptJuices = [];
+        var homeSpreadOptJuices = [];
+        var totalLowOptJuices = [];
+        var totalHighOptJuices = [];
+
+        // The for loop below looks through the awaySpreads array for all positions in the array where the spread is at its highest. When found, it then pushes the juice value from the awaySpreadJuices array into an array which will eventually hold all the juices from when the spread was at that value. The best possible juice will then be derived from this array to form a pick's maximum capperGrade.
+
+        for (var i=0; i<awaySpreads.length; i++) {
+          if (awaySpreads[i] === awaySpreadHigh) {
+            awaySpreadOptJuices.push(awaySpreadJuices[i])
+          }
+        };
+
+        console.log('awaySpreadHighJuices are', awaySpreadOptJuices);
+
+      })
+    })
+  })
+}, 10000)
 
 setInterval(function(){
   var now = moment();
@@ -661,66 +700,66 @@ setInterval(function(){
 
 // This function runs every 10 minutes and sets a pick's CapperGrades score if the game has started and the CapperGrades have not previously been set
 
-// setInterval(function(){
-//   var now = moment();
-//   Pick.find({
-//     MatchTime: {
-//       $lt: now
-//     },
-//     capperGraded: {
-//       $in: [false, null]
-//     }
-//   }, function(err, picks){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(picks){
-//     picks.forEach(function(pick){
-//       console.log('pick._id is', pick._id);
-//       var capperGrade = 10;
-//       var bestLineAvail;
-//       var pickID = pick._id;
-//       Line.find({EventID: pick.EventID}, function(err, line){
-//         if (err) {console.log(err)}
-//
-//         if(pick.betType === "Fav Spread") {
-//           capperGrade -= (-line[0].SpreadLow - pick.activeSpread);
-//           bestLineAvail = -line[0].SpreadLow;
-//         } else if (pick.betType === "Dog Spread") {
-//           capperGrade -= (line[0].SpreadHigh - pick.activeSpread);
-//           bestLineAvail = line[0].SpreadHigh;
-//         } else if (pick.betType === "Fav ML") {
-//           capperGrade -= ((line[0].FavMLBest - pick.activeLine)*0.025);
-//           bestLineAvail = line[0].FavMLBest;
-//         } else if (pick.betType === "Dog ML") {
-//           capperGrade -= ((line[0].DogMLBest - pick.activeLine)*0.025);
-//           bestLineAvail = line[0].DogMLBest;
-//         } else if (pick.betType === "Total Over"){
-//           capperGrade -= (pick.activeTotal - line[0].TotalLow);
-//           bestLineAvail = line[0].TotalLow;
-//         } else if (pick.betType === "Total Under"){
-//           capperGrade -= (line[0].TotalHigh - pick.activeTotal);
-//           bestLineAvail = line[0].TotalHigh;
-//         } else {
-//           return
-//         }
-//
-//         Pick.findOneAndUpdate({_id: pickID}, {
-//           $set: {
-//             capperGrade: capperGrade,
-//             capperGraded: true,
-//             bestLineAvail: bestLineAvail
-//           }
-//         }, {upsert: true}, function(err, newPick){
-//           if (err) {console.log(err)}
-//
-//           console.log('pick is', newPick);
-//
-//           console.log(newPick._id, " has been updated")
-//         })
-//       })
-//     })
-//   })
-// }, 600000)
+setInterval(function(){
+  var now = moment();
+  Pick.find({
+    MatchTime: {
+      $lt: now
+    },
+    capperGraded: {
+      $in: [false, null]
+    }
+  }, function(err, picks){
+    if (err) {console.log(err)}
+
+  }).then(function(picks){
+    picks.forEach(function(pick){
+      console.log('pick._id is', pick._id);
+      var capperGrade = 10;
+      var bestLineAvail;
+      var pickID = pick._id;
+      Line.find({EventID: pick.EventID}, function(err, line){
+        if (err) {console.log(err)}
+
+        if(pick.betType === "Fav Spread") {
+          capperGrade -= (-line[0].SpreadLow - pick.activeSpread);
+          bestLineAvail = -line[0].SpreadLow;
+        } else if (pick.betType === "Dog Spread") {
+          capperGrade -= (line[0].SpreadHigh - pick.activeSpread);
+          bestLineAvail = line[0].SpreadHigh;
+        } else if (pick.betType === "Fav ML") {
+          capperGrade -= ((line[0].FavMLBest - pick.activeLine)*0.025);
+          bestLineAvail = line[0].FavMLBest;
+        } else if (pick.betType === "Dog ML") {
+          capperGrade -= ((line[0].DogMLBest - pick.activeLine)*0.025);
+          bestLineAvail = line[0].DogMLBest;
+        } else if (pick.betType === "Total Over"){
+          capperGrade -= (pick.activeTotal - line[0].TotalLow);
+          bestLineAvail = line[0].TotalLow;
+        } else if (pick.betType === "Total Under"){
+          capperGrade -= (line[0].TotalHigh - pick.activeTotal);
+          bestLineAvail = line[0].TotalHigh;
+        } else {
+          return
+        }
+
+        // Pick.findOneAndUpdate({_id: pickID}, {
+        //   $set: {
+        //     capperGrade: capperGrade,
+        //     capperGraded: true,
+        //     bestLineAvail: bestLineAvail
+        //   }
+        // }, {upsert: true}, function(err, newPick){
+        //   if (err) {console.log(err)}
+        //
+        //   console.log('pick is', newPick);
+        //
+        //   console.log(newPick._id, " has been updated")
+        // })
+      })
+    })
+  })
+}, 600000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });
