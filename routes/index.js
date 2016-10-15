@@ -489,8 +489,8 @@ setInterval(function(){
         var totalOverJuices = gameArrays[0].TotalOverJuices;
         var totalUnderJuices = gameArrays[0].TotalUnderJuices;
 
-        console.log('awaySpreads are', awaySpreads);
-        console.log('awaySpreadJuices are', awaySpreadJuices);
+        console.log('totals are', totals);
+        console.log('totalUnderJuices are', totalUnderJuices);
 
         var awayMLLow = Array.min(awayMLs);
         var awayMLHigh = Array.max(awayMLs);
@@ -503,16 +503,19 @@ setInterval(function(){
         var totalHigh = Array.max(totals);
         var totalLow = Array.min(totals);
 
-        console.log('awaySpreadLow is', awaySpreadLow);
-        console.log('awaySpreadHigh is', awaySpreadHigh);
+        console.log('totalLow is', totalLow);
+        console.log('totalHigh is', totalHigh);
 
 
         var awaySpreadValues = [];
         var awaySpreadObject = {};
 
-        var totalLowOptJuices = [];
-        var totalHighOptJuices = [];
+        var homeSpreadValues = [];
+        var homeSpreadObject = {};
 
+        var totalValues = [];
+        var totalOverObject = {};
+        var totalUnderObject = {};
 
         // This loops through the timelog of AwaySpreads and pushes each unique spread into the awaySpreadValues array
 
@@ -522,7 +525,7 @@ setInterval(function(){
           }
         };
 
-        // This loops through each spread value and finds the best juice that was ever available for that spread
+        // This loops through each spread value and finds the best juice that was ever available for that spread, then writes the values to the awaySpreadObject
 
         for (var i=0; i<awaySpreadValues.length; i++) {
           var juicesArray = [];
@@ -532,10 +535,58 @@ setInterval(function(){
             };
           };
           var bestJuice = Array.max(juicesArray);
-          console.log('the spread is ', awaySpreadValues[i], ' and the best juice is ', bestJuice);
+          awaySpreadObject[awaySpreadValues[i]] = bestJuice;
         }
 
-        console.log('awaySpreadValues are ', awaySpreadValues);
+        for (var i=0; i<homeSpreads.length; i++) {
+          if (homeSpreadValues.indexOf(homeSpreads[i]) === -1) {
+            homeSpreadValues.push(homeSpreads[i])
+          }
+        };
+
+        for (var i=0; i<homeSpreadValues.length; i++) {
+          var juicesArray = [];
+          for (var j=0; j<homeSpreads.length; j++) {
+            if (homeSpreads[j] === homeSpreadValues[i]) {
+              juicesArray.push(homeSpreadJuices[j])
+            };
+          };
+          var bestJuice = Array.max(juicesArray);
+          homeSpreadObject[homeSpreadValues[i]] = bestJuice;
+        }
+
+        for (var i=0; i<totals.length; i++) {
+          if (totalValues.indexOf(totals[i]) === -1) {
+            totalValues.push(totals[i])
+          }
+        };
+
+        for (var i=0; i<totalValues.length; i++) {
+          var juicesArray = [];
+          for (var j=0; j<totals.length; j++) {
+            if (totals[j] === totalValues[i]) {
+              juicesArray.push(totalOverJuices[j])
+            };
+          };
+          var bestJuice = Array.max(juicesArray);
+          totalOverObject[totalValues[i]] = bestJuice;
+        }
+
+        for (var i=0; i<totalValues.length; i++) {
+          var juicesArray = [];
+          for (var j=0; j<totals.length; j++) {
+            if (totals[j] === totalValues[i]) {
+              juicesArray.push(totalUnderJuices[j])
+            };
+          };
+          var bestJuice = Array.max(juicesArray);
+          totalUnderObject[totalValues[i]] = bestJuice;
+        }
+
+        console.log('totalValues are ', totalValues);
+        console.log(totalUnderObject);
+
+
 
       })
     })
