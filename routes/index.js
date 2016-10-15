@@ -506,20 +506,36 @@ setInterval(function(){
         console.log('awaySpreadLow is', awaySpreadLow);
         console.log('awaySpreadHigh is', awaySpreadHigh);
 
-        var awaySpreadOptJuices = [];
-        var homeSpreadOptJuices = [];
+
+        var awaySpreadValues = [];
+        var awaySpreadObject = {};
+
         var totalLowOptJuices = [];
         var totalHighOptJuices = [];
 
-        // The for loop below looks through the awaySpreads array for all positions in the array where the spread is at its highest. When found, it then pushes the juice value from the awaySpreadJuices array into an array which will eventually hold all the juices from when the spread was at that value. The best possible juice will then be derived from this array to form a pick's maximum capperGrade.
+
+        // This loops through the timelog of AwaySpreads and pushes each unique spread into the awaySpreadValues array
 
         for (var i=0; i<awaySpreads.length; i++) {
-          if (awaySpreads[i] === awaySpreadHigh) {
-            awaySpreadOptJuices.push(awaySpreadJuices[i])
+          if (awaySpreadValues.indexOf(awaySpreads[i]) === -1) {
+            awaySpreadValues.push(awaySpreads[i])
           }
         };
 
-        console.log('awaySpreadHighJuices are', awaySpreadOptJuices);
+        // This loops through each spread value and finds the best juice that was ever available for that spread
+
+        for (var i=0; i<awaySpreadValues.length; i++) {
+          var juicesArray = [];
+          for (var j=0; j<awaySpreads.length; j++) {
+            if (awaySpreads[j] === awaySpreadValues[i]) {
+              juicesArray.push(awaySpreadJuices[j])
+            };
+          };
+          var bestJuice = Array.max(juicesArray);
+          console.log('the spread is ', awaySpreadValues[i], ' and the best juice is ', bestJuice);
+        }
+
+        console.log('awaySpreadValues are ', awaySpreadValues);
 
       })
     })
