@@ -356,103 +356,103 @@ router.get('/pullGame/:gameID', function(req, res, next){
 
 // The function below runs every 9 minutes and checks to see if a game has started and has not yet had its pick arrays built. In that case, it constructs the pick arrays and then marks ArraysBuilt as 'true' so as not to needlessly reproduce the update in the future.
 
-setInterval(function(){
-  var now = moment();
-  Line.find({
-    MatchTime: {
-      $lt: now
-    },
-    ArraysBuilt: {
-      $in: [false, null]
-    }
-  }, function(err, games){
-    if(err) {console.log(err)}
-
-  }).then(function(games){
-    games.forEach(function(game){
-      var overPickArray = [];
-      var underPickArray = [];
-      var homeSpreadPickArray = [];
-      var awaySpreadPickArray = [];
-      var homeMLPickArray = [];
-      var awayMLPickArray = [];
-      var noPickArray = [];
-      Pick.find({EventID: game.EventID}, function(err, picks){
-        if(err) {console.log(err)}
-
-      }).then(function(picks){
-        picks.forEach(function(pick){
-          var relevantLine;
-          if (pick.pickType === "Total Over" || pick.pickType === "Total Under") {
-            relevantLine = pick.activeTotal
-          } else if (pick.pickType === "Home Spread" || pick.pickType === "Away Spread") {
-            relevantLine = pick.activeSpread
-          } else {
-            relevantLine = pick.activeLine
-          };
-          var pickObject = {
-            id: pick.id,
-            username: pick.username,
-            submittedAt: pick.submittedAt,
-            pickType: pick.pickType,
-            geoType: pick.geoType,
-            betType: pick.betType,
-            favType: pick.favType,
-            activePayout: pick.activePayout,
-            activePick: pick.activePick,
-            activeLine: pick.activeLine,
-            capperGrade: pick.capperGrade,
-            relevantLine: relevantLine
-          };
-          if (pick.pickType === "Total Over") {
-            overPickArray.push(pickObject)
-          } else if (pick.pickType === "Total Under") {
-            underPickArray.push(pickObject)
-          } else if (pick.pickType === "Away Spread") {
-            awaySpreadPickArray.push(pickObject)
-          } else if (pick.pickType === "Home Spread") {
-            homeSpreadPickArray.push(pickObject)
-          } else if (pick.pickType === "Away Moneyline") {
-            awayMLPickArray.push(pickObject)
-          } else if (pick.pickType === "Home Moneyline") {
-            homeMLPickArray.push(pickObject)
-          } else {
-            noPickArray.push(pickObject)
-          };
-        });
-
-      }).then(function(){
-        PickArray.findOneAndUpdate({EventID: game.EventID}, {
-          $set: {
-            EventID: game.EventID,
-            OverPickArray: overPickArray,
-            UnderPickArray: underPickArray,
-            AwaySpreadPickArray: awaySpreadPickArray,
-            HomeSpreadPickArray: homeSpreadPickArray,
-            AwayMLPickArray: awayMLPickArray,
-            HomeMLPickArray: homeMLPickArray,
-            NoPickArray: noPickArray
-          }
-        }, {upsert: true}, function(err){
-          if(err) {console.log(err)}
-
-          console.log("arrays have been built for", game.EventID)
-
-        })
-      }).then(function(){
-        Line.findOneAndUpdate({EventID: game.EventID}, {$set:
-          {
-            ArraysBuilt: true
-          }
-        }, function(err, updatedLine){
-          if (err) {console.log(err)}
-
-          console.log('arrays built set to true for', updatedLine.EventID)
-        })
-      })
-    })
-  })
-}, 10000)
+// setInterval(function(){
+//   var now = moment();
+//   Line.find({
+//     MatchTime: {
+//       $lt: now
+//     },
+//     ArraysBuilt: {
+//       $in: [false, null]
+//     }
+//   }, function(err, games){
+//     if(err) {console.log(err)}
+//
+//   }).then(function(games){
+//     games.forEach(function(game){
+//       var overPickArray = [];
+//       var underPickArray = [];
+//       var homeSpreadPickArray = [];
+//       var awaySpreadPickArray = [];
+//       var homeMLPickArray = [];
+//       var awayMLPickArray = [];
+//       var noPickArray = [];
+//       Pick.find({EventID: game.EventID}, function(err, picks){
+//         if(err) {console.log(err)}
+//
+//       }).then(function(picks){
+//         picks.forEach(function(pick){
+//           var relevantLine;
+//           if (pick.pickType === "Total Over" || pick.pickType === "Total Under") {
+//             relevantLine = pick.activeTotal
+//           } else if (pick.pickType === "Home Spread" || pick.pickType === "Away Spread") {
+//             relevantLine = pick.activeSpread
+//           } else {
+//             relevantLine = pick.activeLine
+//           };
+//           var pickObject = {
+//             id: pick.id,
+//             username: pick.username,
+//             submittedAt: pick.submittedAt,
+//             pickType: pick.pickType,
+//             geoType: pick.geoType,
+//             betType: pick.betType,
+//             favType: pick.favType,
+//             activePayout: pick.activePayout,
+//             activePick: pick.activePick,
+//             activeLine: pick.activeLine,
+//             capperGrade: pick.capperGrade,
+//             relevantLine: relevantLine
+//           };
+//           if (pick.pickType === "Total Over") {
+//             overPickArray.push(pickObject)
+//           } else if (pick.pickType === "Total Under") {
+//             underPickArray.push(pickObject)
+//           } else if (pick.pickType === "Away Spread") {
+//             awaySpreadPickArray.push(pickObject)
+//           } else if (pick.pickType === "Home Spread") {
+//             homeSpreadPickArray.push(pickObject)
+//           } else if (pick.pickType === "Away Moneyline") {
+//             awayMLPickArray.push(pickObject)
+//           } else if (pick.pickType === "Home Moneyline") {
+//             homeMLPickArray.push(pickObject)
+//           } else {
+//             noPickArray.push(pickObject)
+//           };
+//         });
+//
+//       }).then(function(){
+//         PickArray.findOneAndUpdate({EventID: game.EventID}, {
+//           $set: {
+//             EventID: game.EventID,
+//             OverPickArray: overPickArray,
+//             UnderPickArray: underPickArray,
+//             AwaySpreadPickArray: awaySpreadPickArray,
+//             HomeSpreadPickArray: homeSpreadPickArray,
+//             AwayMLPickArray: awayMLPickArray,
+//             HomeMLPickArray: homeMLPickArray,
+//             NoPickArray: noPickArray
+//           }
+//         }, {upsert: true}, function(err){
+//           if(err) {console.log(err)}
+//
+//           console.log("arrays have been built for", game.EventID)
+//
+//         })
+//       }).then(function(){
+//         Line.findOneAndUpdate({EventID: game.EventID}, {$set:
+//           {
+//             ArraysBuilt: true
+//           }
+//         }, function(err, updatedLine){
+//           if (err) {console.log(err)}
+//
+//           console.log('arrays built set to true for', updatedLine.EventID)
+//         })
+//       })
+//     })
+//   })
+// }, 10000)
 
 // This function below runs every 14 minutes and checks to see whether a game's pick ranges have been added to the original line data.
 
@@ -584,14 +584,16 @@ setInterval(function(){
 //         //
 //         // Line.findOneAndUpdate({EventID: gameArrays.EventID}, {
 //         //   $set: {
-//         //     DogMLBest: ,
-//         //     DogMLWorst: ,
-//         //     FavMLBest: ,
-//         //     FavMLWorst: ,
+//         //     AwayMLBest: ,
+//         //     AwayMLWorst: ,
+//         //     HomeMLBest: ,
+//         //     HomeMLWorst: ,
 //         //     TotalHigh: totalHigh,
 //         //     TotalLow: totalLow,
-//         //     SpreadHigh: Math.max(homeSpreadHigh, awaySpreadHigh),
-//         //     SpreadLow: Math.max(homeSpreadLow, awaySpreadLow),
+//         //     HomeSpreadBest: homeSpreadhigh,
+//         //     HomeSpreadWorst: homeSpreadLow,
+//         //     AwaySpreadBest: awaySpreadhigh,
+//         //     AwaySpreadWorst: awaySpreadLow,
 //         //     RangesSet: true
 //         //   }
 //         // })
@@ -603,110 +605,110 @@ setInterval(function(){
 
 // ALL THE FUNCTION BELOW DOES IS UPDATE THE LINE DATA WITH THE RANGES. DO YOU EVEN NEED TO DO THAT ANYMORE NOW THAT YOU ARE TRACKING LINE MOVEMENT?
 
-setInterval(function(){
-  var now = moment();
-  Line.find({
-    MatchTime: {
-      $lt: now
-    },
-    RangesSet: {
-      $in: [false, null]
-    }
-  }, function(err, games){
-    if (err) {console.log(err)}
-
-  }).then(function(games){
-    games.forEach(function(game){
-      PickArray.find({EventID: game.EventID}, function(err, gameArrays){
-        if (err) {console.log(err)}
-
-      }).then(function(gameArrays){
-        var dogMLPicks = gameArrays[0].DogMLPickArray;
-        var dogSpreadPicks = gameArrays[0].DogSpreadPickArray;
-        var favMLPicks = gameArrays[0].FavMLPickArray;
-        var favSpreadPicks = gameArrays[0].FavSpreadPickArray;
-        var overPicks = gameArrays[0].OverPickArray;
-        var underPicks = gameArrays[0].UnderPickArray;
-        var noPicks = gameArrays[0].NoPickArray;
-        var EventID = gameArrays[0].EventID;
-
-        var dogMLs = [];
-        var favMLs = [];
-        var dogSpreads = [];
-        var favSpreads = [];
-        var overs = [];
-        var unders = [];
-
-        for (i=0; i<dogMLPicks.length; i++){
-          dogMLs.push(dogMLPicks[i].relevantLine)
-        };
-
-        for (i=0; i<favMLPicks.length; i++){
-          favMLs.push(favMLPicks[i].relevantLine)
-        };
-
-        for (i=0; i<dogSpreadPicks.length; i++){
-          dogSpreads.push(dogSpreadPicks[i].relevantLine)
-        };
-
-        for (i=0; i<favSpreadPicks.length; i++){
-          favSpreads.push(favSpreadPicks[i].relevantLine)
-        };
-
-        for (i=0; i<overPicks.length; i++){
-          overs.push(overPicks[i].relevantLine)
-        };
-
-        for (i=0; i<underPicks.length; i++){
-          unders.push(underPicks[i].relevantLine)
-        };
-
-        var dogMLBest = Array.max(dogMLs);
-        var dogMLWorst = Array.min(dogMLs);
-        var favMLBest = Array.max(favMLs);
-        var favMLWorst = Array.min(favMLs);
-        var spreadHigh = Math.max(Array.max(dogSpreads), Math.abs(Array.min(favSpreads)));
-        var spreadLow = Math.min(Array.min(dogSpreads), Math.abs(Array.max(favSpreads)));
-        var totalHigh = Math.max(Array.max(overs), Array.max(unders));
-        var totalLow = Math.min(Array.min(overs), Array.min(unders));
-
-        if (spreadHigh === "Infinity") {
-          spreadHigh = spreadLow
-        };
-
-        if (spreadLow === "Infinity") {
-          spreadLow = spreadHigh
-        };
-
-        if (totalHigh === "Infinity") {
-          totalHigh = totalLow
-        };
-
-        if (totalLow === "Infinity") {
-          totalLow = totalHigh
-        };
-
-        Line.findOneAndUpdate({EventID: EventID}, {
-          $set: {
-            DogMLBest: dogMLBest,
-            DogMLWorst: dogMLWorst,
-            FavMLBest: favMLBest,
-            FavMLWorst: favMLWorst,
-            TotalHigh: totalHigh,
-            TotalLow: totalLow,
-            SpreadHigh: spreadHigh,
-            SpreadLow: spreadLow,
-            RangesSet: true
-          }
-        }, {upsert: true}, function(err, updatedLine){
-          if (err) {console.log(err)}
-
-          console.log('spread ranges have been set for ', updatedLine.EventID)
-        })
-      })
-    })
-  })
-}, 480000)
+// setInterval(function(){
+//   var now = moment();
+//   Line.find({
+//     MatchTime: {
+//       $lt: now
+//     },
+//     RangesSet: {
+//       $in: [false, null]
+//     }
+//   }, function(err, games){
+//     if (err) {console.log(err)}
+//
+//   }).then(function(games){
+//     games.forEach(function(game){
+//       PickArray.find({EventID: game.EventID}, function(err, gameArrays){
+//         if (err) {console.log(err)}
+//
+//       }).then(function(gameArrays){
+//         var dogMLPicks = gameArrays[0].DogMLPickArray;
+//         var dogSpreadPicks = gameArrays[0].DogSpreadPickArray;
+//         var favMLPicks = gameArrays[0].FavMLPickArray;
+//         var favSpreadPicks = gameArrays[0].FavSpreadPickArray;
+//         var overPicks = gameArrays[0].OverPickArray;
+//         var underPicks = gameArrays[0].UnderPickArray;
+//         var noPicks = gameArrays[0].NoPickArray;
+//         var EventID = gameArrays[0].EventID;
+//
+//         var dogMLs = [];
+//         var favMLs = [];
+//         var dogSpreads = [];
+//         var favSpreads = [];
+//         var overs = [];
+//         var unders = [];
+//
+//         for (i=0; i<dogMLPicks.length; i++){
+//           dogMLs.push(dogMLPicks[i].relevantLine)
+//         };
+//
+//         for (i=0; i<favMLPicks.length; i++){
+//           favMLs.push(favMLPicks[i].relevantLine)
+//         };
+//
+//         for (i=0; i<dogSpreadPicks.length; i++){
+//           dogSpreads.push(dogSpreadPicks[i].relevantLine)
+//         };
+//
+//         for (i=0; i<favSpreadPicks.length; i++){
+//           favSpreads.push(favSpreadPicks[i].relevantLine)
+//         };
+//
+//         for (i=0; i<overPicks.length; i++){
+//           overs.push(overPicks[i].relevantLine)
+//         };
+//
+//         for (i=0; i<underPicks.length; i++){
+//           unders.push(underPicks[i].relevantLine)
+//         };
+//
+//         var dogMLBest = Array.max(dogMLs);
+//         var dogMLWorst = Array.min(dogMLs);
+//         var favMLBest = Array.max(favMLs);
+//         var favMLWorst = Array.min(favMLs);
+//         var spreadHigh = Math.max(Array.max(dogSpreads), Math.abs(Array.min(favSpreads)));
+//         var spreadLow = Math.min(Array.min(dogSpreads), Math.abs(Array.max(favSpreads)));
+//         var totalHigh = Math.max(Array.max(overs), Array.max(unders));
+//         var totalLow = Math.min(Array.min(overs), Array.min(unders));
+//
+//         if (spreadHigh === "Infinity") {
+//           spreadHigh = spreadLow
+//         };
+//
+//         if (spreadLow === "Infinity") {
+//           spreadLow = spreadHigh
+//         };
+//
+//         if (totalHigh === "Infinity") {
+//           totalHigh = totalLow
+//         };
+//
+//         if (totalLow === "Infinity") {
+//           totalLow = totalHigh
+//         };
+//
+//         Line.findOneAndUpdate({EventID: EventID}, {
+//           $set: {
+//             DogMLBest: dogMLBest,
+//             DogMLWorst: dogMLWorst,
+//             FavMLBest: favMLBest,
+//             FavMLWorst: favMLWorst,
+//             TotalHigh: totalHigh,
+//             TotalLow: totalLow,
+//             SpreadHigh: spreadHigh,
+//             SpreadLow: spreadLow,
+//             RangesSet: true
+//           }
+//         }, {upsert: true}, function(err, updatedLine){
+//           if (err) {console.log(err)}
+//
+//           console.log('spread ranges have been set for ', updatedLine.EventID)
+//         })
+//       })
+//     })
+//   })
+// }, 480000)
 
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 

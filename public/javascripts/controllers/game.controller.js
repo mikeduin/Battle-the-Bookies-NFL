@@ -6,33 +6,33 @@ function GameController ($stateParams, gameService) {
   var vm = this;
   vm.EventID = $stateParams.EventID;
   vm.utcAdjust;
-  vm.dogMLs = [];
-  vm.favMLs = [];
-  vm.dogSpreads = [];
-  vm.favSpreads = [];
+  vm.awayMLs = [];
+  vm.homeMLs = [];
+  vm.awaySpreads = [];
+  vm.homeSpreads = [];
   vm.overs = [];
   vm.unders = [];
-  vm.dogSpreadRange = [];
-  vm.favSpreadRange = [];
-  vm.dogMLRange = [];
-  vm.favMLRange = [];
+  vm.awaySpreadRange = [];
+  vm.homeSpreadRange = [];
+  vm.awayMLRange = [];
+  vm.homeMLRange = [];
   vm.totalRange = [];
   vm.totalRangeRev = [];
   vm.timeValues = [];
-  vm.favSpreadChartValues = [];
-  vm.favSpreadJuices = [];
-  vm.favSpreadUsers = [];
-  vm.favSpreadAbbrevs = [];
-  vm.dogSpreadChartValues = [];
-  vm.dogSpreadJuices = [];
-  vm.dogSpreadUsers = [];
-  vm.dogSpreadAbbrevs = [];
-  vm.favMLChartValues = [];
-  vm.favMLActivePicks = [];
-  vm.favMLUsers = [];
-  vm.dogMLChartValues = [];
-  vm.dogMLActivePicks = [];
-  vm.dogMLUsers = [];
+  vm.homeSpreadChartValues = [];
+  vm.homeSpreadJuices = [];
+  vm.homeSpreadUsers = [];
+  vm.homeSpreadAbbrevs = [];
+  vm.awaySpreadChartValues = [];
+  vm.awaySpreadJuices = [];
+  vm.awaySpreadUsers = [];
+  vm.awaySpreadAbbrevs = [];
+  vm.homeMLChartValues = [];
+  vm.homeMLActivePicks = [];
+  vm.homeMLUsers = [];
+  vm.awayMLChartValues = [];
+  vm.awayMLActivePicks = [];
+  vm.awayMLUsers = [];
   vm.overChartValues = [];
   vm.overJuices = [];
   vm.overUsers = [];
@@ -64,29 +64,14 @@ function GameController ($stateParams, gameService) {
       vm.awayColor = vm.game.AwayColor;
       vm.homeColor = vm.game.HomeColor;
 
-      if(vm.game.PointSpreadAway < 0) {
-        vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.awayColor;
-        vm.myConfig.graphset[10].series[0].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[10].series[0].tooltip.fontColor = vm.awayColor;
-        vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.homeColor;
-        vm.myConfig.graphset[10].series[1].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[10].series[1].tooltip.fontColor = vm.homeColor;
-        vm.favColor = vm.awayColor;
-        vm.dogColor = vm.homeColor;
-      } else {
-        vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.homeColor;
-        vm.myConfig.graphset[10].series[0].marker.backgroundColor = vm.homeColor;
-        vm.myConfig.graphset[10].series[0].tooltip.fontColor = vm.homeColor;
-        vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.awayColor;
-        vm.myConfig.graphset[10].series[1].marker.backgroundColor = vm.awayColor;
-        vm.myConfig.graphset[10].series[1].tooltip.fontColor = vm.awayColor;
-        vm.favColor = vm.homeColor;
-        vm.dogColor = vm.awayColor;
-      };
+      vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.homeColor;
+      vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.homeColor;
+      vm.myConfig.graphset[10].series[0].marker.backgroundColor = vm.homeColor;
+      vm.myConfig.graphset[10].series[0].tooltip.fontColor = vm.homeColor;
+      vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.awayColor;
+      vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.awayColor;
+      vm.myConfig.graphset[10].series[1].marker.backgroundColor = vm.awayColor;
+      vm.myConfig.graphset[10].series[1].tooltip.fontColor = vm.awayColor;
 
       if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
         vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(19).valueOf()
@@ -106,26 +91,26 @@ function GameController ($stateParams, gameService) {
       var spreadRange = [];
 
       for (i=spreadRangeMin; i<spreadRangeLoopMax; i+=0.5){
-        vm.dogSpreadRange.push(i)
+        vm.awaySpreadRange.push(i)
       };
 
-      for (i=0; i<vm.dogSpreadRange.length; i++){
-        vm.favSpreadRange.push(-vm.dogSpreadRange[i]);
+      for (i=0; i<vm.awaySpreadRange.length; i++){
+        vm.homeSpreadRange.push(-vm.awaySpreadRange[i]);
       };
-      vm.favSpreadRange.reverse();
+      vm.homeSpreadRange.reverse();
 
       var dogMLRangeMin = (vm.game.DogMLWorst) - 15;
       var dogMLRangeMax = (vm.game.DogMLBest) + 30;
 
       for (i=dogMLRangeMin; i<dogMLRangeMax; i+=15){
-        vm.dogMLRange.push(i)
+        vm.awayMLRange.push(i)
       };
 
       var favMLRangeMin = (vm.game.FavMLWorst) - 15;
       var favMLRangeMax = (vm.game.FavMLBest) + 30;
 
       for (i=favMLRangeMin; i<favMLRangeMax; i+=15){
-        vm.favMLRange.push(i)
+        vm.homeMLRange.push(i)
       };
 
       var totalRangeMin = (vm.game.TotalLow) - 0.5;
@@ -141,77 +126,77 @@ function GameController ($stateParams, gameService) {
 
       gameService.getPickArrays(vm.EventID).then(function(result){
 
-        vm.dogMLPicks = result[0].DogMLPickArray;
-        vm.dogSpreadPicks = result[0].DogSpreadPickArray;
-        vm.favMLPicks = result[0].FavMLPickArray;
-        vm.favSpreadPicks = result[0].FavSpreadPickArray;
+        vm.awayMLPicks = result[0].DogMLPickArray;
+        vm.awaySpreadPicks = result[0].DogSpreadPickArray;
+        vm.homeMLPicks = result[0].FavMLPickArray;
+        vm.homeSpreadPicks = result[0].FavSpreadPickArray;
         vm.overPicks = result[0].OverPickArray;
         vm.underPicks = result[0].UnderPickArray;
         vm.noPicks = result[0].NoPickArray;
 
-        vm.dogMLPickPct = Math.round((vm.dogMLPicks.length/38)*100);
-        vm.dogSpreadPickPct = Math.round((vm.dogSpreadPicks.length/38)*100);
-        vm.favMLPickPct = Math.round((vm.favMLPicks.length/38)*100);
-        vm.favSpreadPickPct = Math.round((vm.favSpreadPicks.length/38)*100);
+        vm.awayMLPickPct = Math.round((vm.awayMLPicks.length/38)*100);
+        vm.awaySpreadPickPct = Math.round((vm.awaySpreadPicks.length/38)*100);
+        vm.homeMLPickPct = Math.round((vm.homeMLPicks.length/38)*100);
+        vm.homeSpreadPickPct = Math.round((vm.homeSpreadPicks.length/38)*100);
         vm.overPickPct = Math.round((vm.overPicks.length/38)*100);
         vm.underPickPct = Math.round((vm.underPicks.length/38)*100);
 
-        vm.favAbbrev = vm.favSpreadPicks[0].activePick.substr(0, vm.favSpreadPicks[0].activePick.indexOf(' '));
+        vm.homeAbbrev = vm.homeSpreadPicks[0].activePick.substr(0, vm.homeSpreadPicks[0].activePick.indexOf(' '));
 
-        vm.dogAbbrev = vm.dogSpreadPicks[0].activePick.substr(0, vm.dogSpreadPicks[0].activePick.indexOf(' '));
+        vm.awayAbbrev = vm.awaySpreadPicks[0].activePick.substr(0, vm.awaySpreadPicks[0].activePick.indexOf(' '));
 
-        vm.myConfig.graphset[1].subtitle.fontColor = vm.favColor;
-        vm.myConfig.graphset[6].subtitle.fontColor = vm.favColor;
-        vm.myConfig.graphset[3].subtitle.fontColor = vm.dogColor;
-        vm.myConfig.graphset[8].subtitle.fontColor = vm.dogColor;
+        vm.myConfig.graphset[1].subtitle.fontColor = vm.homeColor;
+        vm.myConfig.graphset[6].subtitle.fontColor = vm.homeColor;
+        vm.myConfig.graphset[3].subtitle.fontColor = vm.awayColor;
+        vm.myConfig.graphset[8].subtitle.fontColor = vm.awayColor;
 
-        vm.myConfig.graphset[1].subtitle.text= "<div>" + vm.favSpreadPickPct +"%</div>";
-        vm.myConfig.graphset[2].title.text= "<div>" + vm.favAbbrev +" SPREAD</div>";
-        vm.myConfig.graphset[3].subtitle.text= "<div>" + vm.dogSpreadPickPct +"%</div>";
-        vm.myConfig.graphset[4].title.text= "<div>" + vm.dogAbbrev +" SPREAD</div>";
-        vm.myConfig.graphset[6].subtitle.text= "<div>" + vm.favMLPickPct +"%</div>";
-        vm.myConfig.graphset[7].title.text= "<div>" + vm.favAbbrev +" ML</div>";
-        vm.myConfig.graphset[8].subtitle.text= "<div>" + vm.dogMLPickPct +"%</div>";
-        vm.myConfig.graphset[9].title.text= "<div>" + vm.dogAbbrev +" ML</div>";
+        vm.myConfig.graphset[1].subtitle.text= "<div>" + vm.homeSpreadPickPct +"%</div>";
+        vm.myConfig.graphset[2].title.text= "<div>" + vm.homeAbbrev +" SPREAD</div>";
+        vm.myConfig.graphset[3].subtitle.text= "<div>" + vm.awaySpreadPickPct +"%</div>";
+        vm.myConfig.graphset[4].title.text= "<div>" + vm.awayAbbrev +" SPREAD</div>";
+        vm.myConfig.graphset[6].subtitle.text= "<div>" + vm.homeMLPickPct +"%</div>";
+        vm.myConfig.graphset[7].title.text= "<div>" + vm.homeAbbrev +" ML</div>";
+        vm.myConfig.graphset[8].subtitle.text= "<div>" + vm.awayMLPickPct +"%</div>";
+        vm.myConfig.graphset[9].title.text= "<div>" + vm.awayAbbrev +" ML</div>";
         vm.myConfig.graphset[11].subtitle.text= "<div>" + vm.overPickPct +"%</div>";
         vm.myConfig.graphset[12].title.text= "<div>OVER TOTAL</div>";
         vm.myConfig.graphset[13].subtitle.text= "<div>" + vm.underPickPct +"%</div>";
         vm.myConfig.graphset[14].title.text= "<div>UNDER TOTAL</div>";
 
-        for (i=0; i<vm.favSpreadPicks.length; i++) {
-          var unixTime = moment(vm.favSpreadPicks[i].submittedAt).valueOf();
-          var favAbbrev = vm.favSpreadPicks[i].activePick.substr(0, vm.favSpreadPicks[i].activePick.indexOf(' '));
+        for (i=0; i<vm.homeSpreadPicks.length; i++) {
+          var unixTime = moment(vm.homeSpreadPicks[i].submittedAt).valueOf();
+          var favAbbrev = vm.homeSpreadPicks[i].activePick.substr(0, vm.homeSpreadPicks[i].activePick.indexOf(' '));
 
-          vm.favSpreadChartValues.push([unixTime, vm.favSpreadPicks[i].relevantLine]);
-          vm.favSpreadJuices.push(vm.favSpreadPicks[i].activeLine);
-          vm.favSpreadUsers.push(vm.favSpreadPicks[i].username);
-          vm.favSpreadAbbrevs.push(favAbbrev);
+          vm.homeSpreadChartValues.push([unixTime, vm.homeSpreadPicks[i].relevantLine]);
+          vm.homeSpreadJuices.push(vm.homeSpreadPicks[i].activeLine);
+          vm.homeSpreadUsers.push(vm.homeSpreadPicks[i].username);
+          vm.homeSpreadAbbrevs.push(favAbbrev);
         };
 
-        for (i=0; i<vm.dogSpreadPicks.length; i++) {
-          var unixTime = moment(vm.dogSpreadPicks[i].submittedAt).valueOf();
-          var dogAbbrev = vm.dogSpreadPicks[i].activePick.substr(0, vm.dogSpreadPicks[i].activePick.indexOf(' '));
+        for (i=0; i<vm.awaySpreadPicks.length; i++) {
+          var unixTime = moment(vm.awaySpreadPicks[i].submittedAt).valueOf();
+          var dogAbbrev = vm.awaySpreadPicks[i].activePick.substr(0, vm.awaySpreadPicks[i].activePick.indexOf(' '));
 
-          vm.dogSpreadChartValues.push([unixTime, vm.dogSpreadPicks[i].relevantLine]);
-          vm.dogSpreadJuices.push(vm.dogSpreadPicks[i].activeLine);
-          vm.dogSpreadUsers.push(vm.dogSpreadPicks[i].username);
-          vm.dogSpreadAbbrevs.push(dogAbbrev);
+          vm.awaySpreadChartValues.push([unixTime, vm.awaySpreadPicks[i].relevantLine]);
+          vm.awaySpreadJuices.push(vm.awaySpreadPicks[i].activeLine);
+          vm.awaySpreadUsers.push(vm.awaySpreadPicks[i].username);
+          vm.awaySpreadAbbrevs.push(dogAbbrev);
         };
 
-        for (i=0; i<vm.favMLPicks.length; i++){
-          var unixTime = moment(vm.favMLPicks[i].submittedAt).valueOf();
+        for (i=0; i<vm.homeMLPicks.length; i++){
+          var unixTime = moment(vm.homeMLPicks[i].submittedAt).valueOf();
 
-          vm.favMLChartValues.push([unixTime, vm.favMLPicks[i].relevantLine]);
-          vm.favMLActivePicks.push(vm.favMLPicks[i].activePick);
-          vm.favMLUsers.push(vm.favMLPicks[i].username);
+          vm.homeMLChartValues.push([unixTime, vm.homeMLPicks[i].relevantLine]);
+          vm.homeMLActivePicks.push(vm.homeMLPicks[i].activePick);
+          vm.homeMLUsers.push(vm.homeMLPicks[i].username);
         };
 
-        for (i=0; i<vm.dogMLPicks.length; i++){
-          var unixTime = moment(vm.dogMLPicks[i].submittedAt).valueOf();
+        for (i=0; i<vm.awayMLPicks.length; i++){
+          var unixTime = moment(vm.awayMLPicks[i].submittedAt).valueOf();
 
-          vm.dogMLChartValues.push([unixTime, vm.dogMLPicks[i].relevantLine]);
-          vm.dogMLActivePicks.push(vm.dogMLPicks[i].activePick);
-          vm.dogMLUsers.push(vm.dogMLPicks[i].username);
+          vm.awayMLChartValues.push([unixTime, vm.awayMLPicks[i].relevantLine]);
+          vm.awayMLActivePicks.push(vm.awayMLPicks[i].activePick);
+          vm.awayMLUsers.push(vm.awayMLPicks[i].username);
         };
 
         for (i=0; i<vm.overPicks.length; i++){
@@ -395,7 +380,7 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-y":{
-                "values": vm.favSpreadRange,
+                "values": vm.homeSpreadRange,
                 "guide":{
                     "visible":false
                 },
@@ -414,7 +399,7 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-y-2":{
-                "values": vm.dogSpreadRange,
+                "values": vm.awaySpreadRange,
                 "guide":{
                     "visible":false
                 },
@@ -434,11 +419,11 @@ function GameController ($stateParams, gameService) {
             },
             "series":[
                 {
-                    "values": vm.favSpreadChartValues,
-                    "data-username": vm.favSpreadUsers,
-                    "data-submitted": vm.favSpreadTimes,
-                    "data-juice": vm.favSpreadJuices,
-                    "data-favAbbrev": vm.favSpreadAbbrevs,
+                    "values": vm.homeSpreadChartValues,
+                    "data-username": vm.homeSpreadUsers,
+                    "data-submitted": vm.homeSpreadTimes,
+                    "data-juice": vm.homeSpreadJuices,
+                    "data-favAbbrev": vm.homeSpreadAbbrevs,
                     "marker":{
                       "border-color":"black",
                       "border-width": 2,
@@ -457,11 +442,11 @@ function GameController ($stateParams, gameService) {
                     },
                 },
                 {
-                    "values": vm.dogSpreadChartValues,
-                    "data-username": vm.dogSpreadUsers,
-                    "data-submitted": vm.dogSpreadTimes,
-                    "data-juice": vm.dogSpreadJuices,
-                    "data-dogAbbrev": vm.dogSpreadAbbrevs,
+                    "values": vm.awaySpreadChartValues,
+                    "data-username": vm.awaySpreadUsers,
+                    "data-submitted": vm.awaySpreadTimes,
+                    "data-juice": vm.awaySpreadJuices,
+                    "data-dogAbbrev": vm.awaySpreadAbbrevs,
                     "marker":{
                       "border-color":"white",
                       "background-repeat":"no-repeat",
@@ -620,7 +605,7 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-y":{
-                "values": vm.favMLRange,
+                "values": vm.homeMLRange,
                 "guide":{
                     "visible":false
                 },
@@ -639,7 +624,7 @@ function GameController ($stateParams, gameService) {
                 }
             },
             "scale-y-2":{
-                "values": vm.dogMLRange,
+                "values": vm.awayMLRange,
                 "guide":{
                     "visible":false
                 },
@@ -668,10 +653,10 @@ function GameController ($stateParams, gameService) {
             },
             "series":[
               {
-                  "values": vm.favMLChartValues,
-                  "data-username": vm.favMLUsers,
-                  "data-submitted": vm.favMLTimes,
-                  "data-activePicks": vm.favMLActivePicks,
+                  "values": vm.homeMLChartValues,
+                  "data-username": vm.homeMLUsers,
+                  "data-submitted": vm.homeMLTimes,
+                  "data-activePicks": vm.homeMLActivePicks,
                   "marker":{
                     "border-color":"black",
                     "background-repeat":"no-repeat",
@@ -689,10 +674,10 @@ function GameController ($stateParams, gameService) {
                   },
               },
               {
-                "values": vm.dogMLChartValues,
-                "data-username": vm.dogMLUsers,
-                "data-submitted": vm.dogMLTimes,
-                "data-activePicks": vm.dogMLActivePicks,
+                "values": vm.awayMLChartValues,
+                "data-username": vm.awayMLUsers,
+                "data-submitted": vm.awayMLTimes,
+                "data-activePicks": vm.awayMLActivePicks,
                   "marker":{
                     "border-color":"white",
                     "background-repeat":"no-repeat",
