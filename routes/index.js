@@ -488,30 +488,8 @@ setInterval(function(){
         var totalOverJuices = gameArrays[0].TotalOverJuices;
         var totalUnderJuices = gameArrays[0].TotalUnderJuices;
 
-        var awayMLLow = Array.min(awayMLs);
-        var awayMLHigh = Array.max(awayMLs);
-        var homeMLLow = Array.min(homeMLs);
-        var homeMLHigh = Array.max(homeMLs);
-        var homeSpreadLow = Array.min(homeSpreads);
-        var homeSpreadHigh = Array.max(homeSpreads);
-        var awaySpreadLow = Array.min(awaySpreads);
-        var awaySpreadHigh = Array.max(awaySpreads);
-        var totalHigh = Array.max(totals);
-        var totalLow = Array.min(totals);
-
-        var rangeObject = {
-          EventID: game.EventID,
-          awayMLLow: awayMLLow,
-          awayMLHigh: awayMLHigh,
-          homeMLLow: homeMLLow,
-          homeMLHigh: homeMLHigh,
-          homeSpreadLow: homeSpreadLow,
-          homeSpreadHigh: homeSpreadHigh,
-          awaySpreadLow: awaySpreadLow,
-          awaySpreadHigh: awaySpreadHigh,
-          totalHigh: totalHigh,
-          totalLow: totalLow
-        };
+        var awayMLValues = [];
+        var homeMLValues = [];
 
         var awaySpreadValues = [];
         var awaySpreadBestJuices = [];
@@ -520,7 +498,6 @@ setInterval(function(){
         var homeSpreadValues = [];
         var homeSpreadBestJuices = [];
         var homeSpreadObject = {};
-        // var homeOrigSpreadObject = {};
 
         var totalValues = [];
         var totalOverBestJuices = [];
@@ -528,10 +505,22 @@ setInterval(function(){
         var totalUnderBestJuices = [];
         var totalUnderObject = {};
 
+        for (var i=0; i<awayMLs.length; i++){
+          if (awayMLValues.indexOf(awayMLs[i]) === -1 && awayMLs[i] !== null) {
+            awayMLValues.push(awayMLs[i])
+          }
+        };
+
+        for (var i=0; i<homeMLs.length; i++){
+          if (homeMLValues.indexOf(homeMLs[i]) === -1 && homeMLs[i] !== null) {
+            homeMLValues.push(homeMLs[i])
+          }
+        };
+
         // This loops through the timelog of AwaySpreads and pushes each unique spread into the awaySpreadValues array
 
         for (var i=0; i<awaySpreads.length; i++) {
-          if (awaySpreadValues.indexOf(awaySpreads[i]) === -1) {
+          if (awaySpreadValues.indexOf(awaySpreads[i]) === -1 && awaySpreads[i] !== null) {
             awaySpreadValues.push(awaySpreads[i])
           }
         };
@@ -554,7 +543,7 @@ setInterval(function(){
         awaySpreadObject['juices'] = awaySpreadBestJuices;
 
         for (var i=0; i<homeSpreads.length; i++) {
-          if (homeSpreadValues.indexOf(homeSpreads[i]) === -1) {
+          if (homeSpreadValues.indexOf(homeSpreads[i]) === -1 && homeSpreads[i] !== null) {
             homeSpreadValues.push(homeSpreads[i])
           }
         };
@@ -568,7 +557,6 @@ setInterval(function(){
             };
           };
           var bestJuice = Array.max(juicesArray);
-          // homeOrigSpreadObject[homeSpreadValues[i]] = bestJuice;
           homeSpreadBestJuices.push(bestJuice);
         };
 
@@ -576,7 +564,7 @@ setInterval(function(){
         homeSpreadObject['juices'] = homeSpreadBestJuices;
 
         for (var i=0; i<totals.length; i++) {
-          if (totalValues.indexOf(totals[i]) === -1) {
+          if (totalValues.indexOf(totals[i]) === -1 && totals[i] !== null) {
             totalValues.push(totals[i])
           }
         };
@@ -590,11 +578,10 @@ setInterval(function(){
             };
           };
           var bestJuice = Array.max(juicesArray);
-          // totalOverObject[totalValues[i]] = bestJuice;
           totalOverBestJuices.push(bestJuice);
         };
 
-        totalOverObject['spreads'] = totalValues;
+        totalOverObject['totals'] = totalValues;
         totalOverObject['juices'] = totalOverBestJuices;
 
         for (var i=0; i<totalValues.length; i++) {
@@ -605,12 +592,36 @@ setInterval(function(){
             };
           };
           var bestJuice = Array.max(juicesArray);
-          // totalUnderObject[totalValues[i]] = bestJuice;
           totalUnderBestJuices.push(bestJuice);
         };
 
-        totalUnderObject['spreads'] = totalValues;
+        totalUnderObject['totals'] = totalValues;
         totalUnderObject['juices'] = totalUnderBestJuices;
+
+        var awayMLLow = Array.min(awayMLValues);
+        var awayMLHigh = Array.max(awayMLValues);
+        var homeMLLow = Array.min(homeMLValues);
+        var homeMLHigh = Array.max(homeMLValues);
+        var homeSpreadLow = Array.min(homeSpreadValues);
+        var homeSpreadHigh = Array.max(homeSpreadValues);
+        var awaySpreadLow = Array.min(awaySpreadValues);
+        var awaySpreadHigh = Array.max(awaySpreadValues);
+        var totalHigh = Array.max(totalValues);
+        var totalLow = Array.min(totalValues);
+
+        var rangeObject = {
+          EventID: game.EventID,
+          awayMLLow: awayMLLow,
+          awayMLHigh: awayMLHigh,
+          homeMLLow: homeMLLow,
+          homeMLHigh: homeMLHigh,
+          homeSpreadLow: homeSpreadLow,
+          homeSpreadHigh: homeSpreadHigh,
+          awaySpreadLow: awaySpreadLow,
+          awaySpreadHigh: awaySpreadHigh,
+          totalHigh: totalHigh,
+          totalLow: totalLow
+        };
 
         LineMove.findOneAndUpdate({EventID: game.EventID}, {
           $set: {
@@ -623,34 +634,30 @@ setInterval(function(){
           if (err) {console.log(err)};
 
           console.log("line move objects have been set for ", game.EventID);
-
-        })
+        });
 
         return rangeObject
       }).then(function(rangeObject){
-        console.log('hello');
 
-        console.log(rangeObject);
+        Line.findOneAndUpdate({EventID: game.EventID}, {
+          $set: {
+            AwayMLBest: rangeObject.awayMLHigh,
+            AwayMLWorst: rangeObject.awayMLLow,
+            HomeMLBest: rangeObject.homeMLHigh,
+            HomeMLWorst: rangeObject.homeMLLow,
+            TotalHigh: rangeObject.totalHigh,
+            TotalLow: rangeObject.totalLow,
+            HomeSpreadBest: rangeObject.homeSpreadHigh,
+            HomeSpreadWorst: rangeObject.homeSpreadLow,
+            AwaySpreadBest: rangeObject.awaySpreadHigh,
+            AwaySpreadWorst: rangeObject.awaySpreadLow,
+            RangesSet: true
+          }
+        }, function(err){
+          if (err) {console.log(err)};
 
-        // Line.findOneAndUpdate({EventID: game.EventID}, {
-        //   $set: {
-        //     AwayMLBest: randawayMLHigh,
-        //     AwayMLWorst: awayMLLow,
-        //     HomeMLBest: homeMLHigh,
-        //     HomeMLWorst: homeMLLow,
-        //     TotalHigh: totalHigh,
-        //     TotalLow: totalLow,
-        //     HomeSpreadBest: homeSpreadhigh,
-        //     HomeSpreadWorst: homeSpreadLow,
-        //     AwaySpreadBest: awaySpreadhigh,
-        //     AwaySpreadWorst: awaySpreadLow,
-        //     RangesSet: true
-        //   }
-        // }, function(err){
-        //   if (err) {console.log(err)};
-        //
-        //   console.log("new pick ranges have been set for ", game.EventID)
-        // });
+          console.log("new pick ranges have been set for ", game.EventID)
+        });
       })
     })
   })
@@ -663,6 +670,9 @@ setInterval(function(){
 //   Line.find({
 //     MatchTime: {
 //       $lt: now
+//     },
+//     Week: {
+//       $in: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
 //     },
 //     RangesSet: {
 //       $in: [false, null]
@@ -853,24 +863,18 @@ setInterval(function(){
       Line.find({EventID: pick.EventID}, function(err, line){
         if (err) {console.log(err)}
 
-        if(pick.betType === "Fav Spread") {
-          capperGrade -= (-line[0].SpreadLow - pick.activeSpread);
-          bestLineAvail = -line[0].SpreadLow;
-        } else if (pick.betType === "Dog Spread") {
-          capperGrade -= (line[0].SpreadHigh - pick.activeSpread);
-          bestLineAvail = line[0].SpreadHigh;
-        } else if (pick.betType === "Fav ML") {
-          capperGrade -= ((line[0].FavMLBest - pick.activeLine)*0.025);
-          bestLineAvail = line[0].FavMLBest;
-        } else if (pick.betType === "Dog ML") {
-          capperGrade -= ((line[0].DogMLBest - pick.activeLine)*0.025);
-          bestLineAvail = line[0].DogMLBest;
-        } else if (pick.betType === "Total Over"){
-          capperGrade -= (pick.activeTotal - line[0].TotalLow);
-          bestLineAvail = line[0].TotalLow;
-        } else if (pick.betType === "Total Under"){
-          capperGrade -= (line[0].TotalHigh - pick.activeTotal);
-          bestLineAvail = line[0].TotalHigh;
+        if (pick.pickType === "Away Spread") {
+
+        } else if (pick.pickType === "Home Spread") {
+
+        } else if (pick.pickType === "Away ML") {
+
+        } else if (pick.pickType === "Home ML") {
+
+        } else if (pick.pickType === "Total Over"){
+
+        } else if (pick.pickType === "Total Under"){
+
         } else {
           return
         }
