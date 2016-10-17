@@ -356,242 +356,252 @@ router.get('/pullGame/:gameID', function(req, res, next){
 
 // The function below runs every 9 minutes and checks to see if a game has started and has not yet had its pick arrays built. In that case, it constructs the pick arrays and then marks ArraysBuilt as 'true' so as not to needlessly reproduce the update in the future.
 
-setInterval(function(){
-  var now = moment();
-  Line.find({
-    MatchTime: {
-      $lt: now
-    },
-    ArraysBuilt: {
-      $in: [false, null]
-    }
-  }, function(err, games){
-    if(err) {console.log(err)}
-
-  }).then(function(games){
-    games.forEach(function(game){
-      var overPickArray = [];
-      var underPickArray = [];
-      var favSpreadPickArray = [];
-      var dogSpreadPickArray = [];
-      var favMLPickArray = [];
-      var dogMLPickArray = [];
-      var noPickArray = [];
-      Pick.find({EventID: game.EventID}, function(err, picks){
-        if(err) {console.log(err)}
-
-      }).then(function(picks){
-        picks.forEach(function(pick){
-          var relevantLine;
-          if (pick.pickType === "Total Over" || pick.pickType === "Total Under") {
-            relevantLine = pick.activeTotal
-          } else if (pick.pickType === "Home Spread" || pick.pickType === "Away Spread") {
-            relevantLine = pick.activeSpread
-          } else {
-            relevantLine = pick.activeLine
-          };
-          var pickObject = {
-            id: pick.id,
-            username: pick.username,
-            submittedAt: pick.submittedAt,
-            pickType: pick.pickType,
-            geoType: pick.geoType,
-            betType: pick.betType,
-            favType: pick.favType,
-            activePayout: pick.activePayout,
-            activePick: pick.activePick,
-            activeLine: pick.activeLine,
-            capperGrade: pick.capperGrade,
-            relevantLine: relevantLine
-          };
-          if (pick.betType === "Total Over") {
-            overPickArray.push(pickObject)
-          } else if (pick.betType === "Total Under") {
-            underPickArray.push(pickObject)
-          } else if (pick.betType === "Fav Spread") {
-            favSpreadPickArray.push(pickObject)
-          } else if (pick.betType === "Dog Spread") {
-            dogSpreadPickArray.push(pickObject)
-          } else if (pick.betType === "Fav ML") {
-            favMLPickArray.push(pickObject)
-          } else if (pick.betType === "Dog ML") {
-            dogMLPickArray.push(pickObject)
-          } else {
-            noPickArray.push(pickObject)
-          };
-        });
-
-      }).then(function(){
-        PickArray.findOneAndUpdate({EventID: game.EventID}, {
-          $set: {
-            EventID: game.EventID,
-            OverPickArray: overPickArray,
-            UnderPickArray: underPickArray,
-            FavSpreadPickArray: favSpreadPickArray,
-            DogSpreadPickArray: dogSpreadPickArray,
-            FavMLPickArray: favMLPickArray,
-            DogMLPickArray: dogMLPickArray,
-            NoPickArray: noPickArray
-          }
-        }, {upsert: true}, function(err, result){
-          if(err) {console.log(err)}
-
-          console.log("arrays have been built for", result.EventID)
-
-        })
-      }).then(function(){
-        Line.findOneAndUpdate({EventID: game.EventID}, {$set:
-          {
-            ArraysBuilt: true
-          }
-        }, function(err, updatedLine){
-          if (err) {console.log(err)}
-
-          console.log('arrays built set to true for', updatedLine.EventID)
-        })
-      })
-    })
-  })
-}, 540000)
+// setInterval(function(){
+//   var now = moment();
+//   Line.find({
+//     MatchTime: {
+//       $lt: now
+//     },
+//     ArraysBuilt: {
+//       $in: [false, null]
+//     }
+//   }, function(err, games){
+//     if(err) {console.log(err)}
+//
+//   }).then(function(games){
+//     games.forEach(function(game){
+//       var overPickArray = [];
+//       var underPickArray = [];
+//       var homeSpreadPickArray = [];
+//       var awaySpreadPickArray = [];
+//       var homeMLPickArray = [];
+//       var awayMLPickArray = [];
+//       var noPickArray = [];
+//       Pick.find({EventID: game.EventID}, function(err, picks){
+//         if(err) {console.log(err)}
+//
+//       }).then(function(picks){
+//         picks.forEach(function(pick){
+//           var relevantLine;
+//           if (pick.pickType === "Total Over" || pick.pickType === "Total Under") {
+//             relevantLine = pick.activeTotal
+//           } else if (pick.pickType === "Home Spread" || pick.pickType === "Away Spread") {
+//             relevantLine = pick.activeSpread
+//           } else {
+//             relevantLine = pick.activeLine
+//           };
+//           var pickObject = {
+//             id: pick.id,
+//             username: pick.username,
+//             submittedAt: pick.submittedAt,
+//             pickType: pick.pickType,
+//             geoType: pick.geoType,
+//             betType: pick.betType,
+//             favType: pick.favType,
+//             activePayout: pick.activePayout,
+//             activePick: pick.activePick,
+//             activeLine: pick.activeLine,
+//             capperGrade: pick.capperGrade,
+//             relevantLine: relevantLine
+//           };
+//           if (pick.pickType === "Total Over") {
+//             overPickArray.push(pickObject)
+//           } else if (pick.pickType === "Total Under") {
+//             underPickArray.push(pickObject)
+//           } else if (pick.pickType === "Away Spread") {
+//             awaySpreadPickArray.push(pickObject)
+//           } else if (pick.pickType === "Home Spread") {
+//             homeSpreadPickArray.push(pickObject)
+//           } else if (pick.pickType === "Away ML") {
+//             awayMLPickArray.push(pickObject)
+//           } else if (pick.pickType === "Home ML") {
+//             homeMLPickArray.push(pickObject)
+//           } else {
+//             noPickArray.push(pickObject)
+//           };
+//         });
+//
+//       }).then(function(){
+//         PickArray.findOneAndUpdate({EventID: game.EventID}, {
+//           $set: {
+//             EventID: game.EventID,
+//             OverPickArray: overPickArray,
+//             UnderPickArray: underPickArray,
+//             AwaySpreadPickArray: awaySpreadPickArray,
+//             HomeSpreadPickArray: homeSpreadPickArray,
+//             AwayMLPickArray: awayMLPickArray,
+//             HomeMLPickArray: homeMLPickArray,
+//             NoPickArray: noPickArray
+//           }
+//         }, {upsert: true}, function(err, result){
+//           if(err) {console.log(err)}
+//
+//           console.log("arrays have been built for", result.EventID)
+//
+//         })
+//       }).then(function(){
+//         Line.findOneAndUpdate({EventID: game.EventID}, {$set:
+//           {
+//             ArraysBuilt: true
+//           }
+//         }, function(err, updatedLine){
+//           if (err) {console.log(err)}
+//
+//           console.log('arrays built set to true for', updatedLine.EventID)
+//         })
+//       })
+//     })
+//   })
+// }, 540000)
 
 // This function below runs every 14 minutes and checks to see whether a game's pick ranges have been added to the original line data.
 
-setInterval(function(){
-  var now = moment();
-  Line.find({
-    MatchTime: {
-      $lt: now
-    }
-    // RangesSet: {
-    //   $in: [false, null]
-    // }
-  }, function(err, games){
-    if (err) {console.log(err)}
+// setInterval(function(){
+//   var now = moment();
+//   Line.find({
+//     MatchTime: {
+//       $lt: now
+//     }
+//     // RangesSet: {
+//     //   $in: [false, null]
+//     // }
+//   }, function(err, games){
+//     if (err) {console.log(err)}
+//
+//   }).then(function(games){
+//     games.forEach(function(game){
+//       LineMove.find({EventID: game.EventID}, function(err, gameArrays){
+//         // This is only going to return a match for games from Week 6 on, since I was not tracking line moves before then
+//         if(err) {console.log(err)}
+//
+//       }).then(function(gameArrays){
+//         // if (gameArrays.length === 0) {
+//         //   console.log('no line moves were charted for ', game.EventID)
+//         // }
+//
+//         var homeSpreads = gameArrays[0].HomeSpreads;
+//         var homeSpreadJuices = gameArrays[0].HomeSpreadJuices;
+//         var awaySpreads = gameArrays[0].AwaySpreads;
+//         var awaySpreadJuices = gameArrays[0].AwaySpreadJuices;
+//         var homeMLs = gameArrays[0].HomeMLs;
+//         var awayMLs = gameArrays[0].AwayMLs;
+//         var totals = gameArrays[0].Totals;
+//         var totalOverJuices = gameArrays[0].TotalOverJuices;
+//         var totalUnderJuices = gameArrays[0].TotalUnderJuices;
+//
+//         var awayMLLow = Array.min(awayMLs);
+//         var awayMLHigh = Array.max(awayMLs);
+//         var homeMLLow = Array.min(homeMLs);
+//         var homeMLHigh = Array.max(homeMLs);
+//         var homeSpreadLow = Array.min(homeSpreads);
+//         var homeSpreadHigh = Array.max(homeSpreads);
+//         var awaySpreadLow = Array.min(awaySpreads);
+//         var awaySpreadHigh = Array.max(awaySpreads);
+//         var totalHigh = Array.max(totals);
+//         var totalLow = Array.min(totals);
+//
+//         var awaySpreadValues = [];
+//         var awaySpreadObject = {};
+//
+//         var homeSpreadValues = [];
+//         var homeSpreadObject = {};
+//
+//         var totalValues = [];
+//         var totalOverObject = {};
+//         var totalUnderObject = {};
+//
+//         // This loops through the timelog of AwaySpreads and pushes each unique spread into the awaySpreadValues array
+//
+//         for (var i=0; i<awaySpreads.length; i++) {
+//           if (awaySpreadValues.indexOf(awaySpreads[i]) === -1) {
+//             awaySpreadValues.push(awaySpreads[i])
+//           }
+//         };
+//
+//         // This loops through each spread value and finds the best juice that was ever available for that spread, then writes the values to the awaySpreadObject
+//
+//         for (var i=0; i<awaySpreadValues.length; i++) {
+//           var juicesArray = [];
+//           for (var j=0; j<awaySpreads.length; j++) {
+//             if (awaySpreads[j] === awaySpreadValues[i]) {
+//               juicesArray.push(awaySpreadJuices[j])
+//             };
+//           };
+//           var bestJuice = Array.max(juicesArray);
+//           awaySpreadObject[awaySpreadValues[i]] = bestJuice;
+//         }
+//
+//         for (var i=0; i<homeSpreads.length; i++) {
+//           if (homeSpreadValues.indexOf(homeSpreads[i]) === -1) {
+//             homeSpreadValues.push(homeSpreads[i])
+//           }
+//         };
+//
+//         for (var i=0; i<homeSpreadValues.length; i++) {
+//           var juicesArray = [];
+//           for (var j=0; j<homeSpreads.length; j++) {
+//             if (homeSpreads[j] === homeSpreadValues[i]) {
+//               juicesArray.push(homeSpreadJuices[j])
+//             };
+//           };
+//           var bestJuice = Array.max(juicesArray);
+//           homeSpreadObject[homeSpreadValues[i]] = bestJuice;
+//         }
+//
+//         for (var i=0; i<totals.length; i++) {
+//           if (totalValues.indexOf(totals[i]) === -1) {
+//             totalValues.push(totals[i])
+//           }
+//         };
+//
+//         for (var i=0; i<totalValues.length; i++) {
+//           var juicesArray = [];
+//           for (var j=0; j<totals.length; j++) {
+//             if (totals[j] === totalValues[i]) {
+//               juicesArray.push(totalOverJuices[j])
+//             };
+//           };
+//           var bestJuice = Array.max(juicesArray);
+//           totalOverObject[totalValues[i]] = bestJuice;
+//         }
+//
+//         for (var i=0; i<totalValues.length; i++) {
+//           var juicesArray = [];
+//           for (var j=0; j<totals.length; j++) {
+//             if (totals[j] === totalValues[i]) {
+//               juicesArray.push(totalUnderJuices[j])
+//             };
+//           };
+//           var bestJuice = Array.max(juicesArray);
+//           totalUnderObject[totalValues[i]] = bestJuice;
+//         }
+//
+//         // LineMove.findOneAndUpdate({EventID: gameArrays.EventID}, {
+//         //   $set: {
+//         //
+//         //   }
+//         // });
+//         //
+//         // Line.findOneAndUpdate({EventID: gameArrays.EventID}, {
+//         //   $set: {
+//         //     DogMLBest: ,
+//         //     DogMLWorst: ,
+//         //     FavMLBest: ,
+//         //     FavMLWorst: ,
+//         //     TotalHigh: totalHigh,
+//         //     TotalLow: totalLow,
+//         //     SpreadHigh: Math.max(homeSpreadHigh, awaySpreadHigh),
+//         //     SpreadLow: Math.max(homeSpreadLow, awaySpreadLow),
+//         //     RangesSet: true
+//         //   }
+//         // })
+//
+//       })
+//     })
+//   })
+// }, 10000)
 
-  }).then(function(games){
-    games.forEach(function(game){
-      LineMove.find({EventID: game.EventID}, function(err, gameArrays){
-        // This is only going to return a match for games from Week 6 on, since I was not tracking line moves before then
-        if(err) {console.log(err)}
-
-      }).then(function(gameArrays){
-        // if (gameArrays.length === 0) {
-        //   console.log('no line moves were charted for ', game.EventID)
-        // }
-
-        var homeSpreads = gameArrays[0].HomeSpreads;
-        var homeSpreadJuices = gameArrays[0].HomeSpreadJuices;
-        var awaySpreads = gameArrays[0].AwaySpreads;
-        var awaySpreadJuices = gameArrays[0].AwaySpreadJuices;
-        var homeMLs = gameArrays[0].HomeMLs;
-        var awayMLs = gameArrays[0].AwayMLs;
-        var totals = gameArrays[0].Totals;
-        var totalOverJuices = gameArrays[0].TotalOverJuices;
-        var totalUnderJuices = gameArrays[0].TotalUnderJuices;
-
-        console.log('totals are', totals);
-        console.log('totalUnderJuices are', totalUnderJuices);
-
-        var awayMLLow = Array.min(awayMLs);
-        var awayMLHigh = Array.max(awayMLs);
-        var homeMLLow = Array.min(homeMLs);
-        var homeMLHigh = Array.max(homeMLs);
-        var homeSpreadLow = Array.min(homeSpreads);
-        var homeSpreadHigh = Array.max(homeSpreads);
-        var awaySpreadLow = Array.min(awaySpreads);
-        var awaySpreadHigh = Array.max(awaySpreads);
-        var totalHigh = Array.max(totals);
-        var totalLow = Array.min(totals);
-
-        console.log('totalLow is', totalLow);
-        console.log('totalHigh is', totalHigh);
-
-
-        var awaySpreadValues = [];
-        var awaySpreadObject = {};
-
-        var homeSpreadValues = [];
-        var homeSpreadObject = {};
-
-        var totalValues = [];
-        var totalOverObject = {};
-        var totalUnderObject = {};
-
-        // This loops through the timelog of AwaySpreads and pushes each unique spread into the awaySpreadValues array
-
-        for (var i=0; i<awaySpreads.length; i++) {
-          if (awaySpreadValues.indexOf(awaySpreads[i]) === -1) {
-            awaySpreadValues.push(awaySpreads[i])
-          }
-        };
-
-        // This loops through each spread value and finds the best juice that was ever available for that spread, then writes the values to the awaySpreadObject
-
-        for (var i=0; i<awaySpreadValues.length; i++) {
-          var juicesArray = [];
-          for (var j=0; j<awaySpreads.length; j++) {
-            if (awaySpreads[j] === awaySpreadValues[i]) {
-              juicesArray.push(awaySpreadJuices[j])
-            };
-          };
-          var bestJuice = Array.max(juicesArray);
-          awaySpreadObject[awaySpreadValues[i]] = bestJuice;
-        }
-
-        for (var i=0; i<homeSpreads.length; i++) {
-          if (homeSpreadValues.indexOf(homeSpreads[i]) === -1) {
-            homeSpreadValues.push(homeSpreads[i])
-          }
-        };
-
-        for (var i=0; i<homeSpreadValues.length; i++) {
-          var juicesArray = [];
-          for (var j=0; j<homeSpreads.length; j++) {
-            if (homeSpreads[j] === homeSpreadValues[i]) {
-              juicesArray.push(homeSpreadJuices[j])
-            };
-          };
-          var bestJuice = Array.max(juicesArray);
-          homeSpreadObject[homeSpreadValues[i]] = bestJuice;
-        }
-
-        for (var i=0; i<totals.length; i++) {
-          if (totalValues.indexOf(totals[i]) === -1) {
-            totalValues.push(totals[i])
-          }
-        };
-
-        for (var i=0; i<totalValues.length; i++) {
-          var juicesArray = [];
-          for (var j=0; j<totals.length; j++) {
-            if (totals[j] === totalValues[i]) {
-              juicesArray.push(totalOverJuices[j])
-            };
-          };
-          var bestJuice = Array.max(juicesArray);
-          totalOverObject[totalValues[i]] = bestJuice;
-        }
-
-        for (var i=0; i<totalValues.length; i++) {
-          var juicesArray = [];
-          for (var j=0; j<totals.length; j++) {
-            if (totals[j] === totalValues[i]) {
-              juicesArray.push(totalUnderJuices[j])
-            };
-          };
-          var bestJuice = Array.max(juicesArray);
-          totalUnderObject[totalValues[i]] = bestJuice;
-        }
-
-        console.log('totalValues are ', totalValues);
-        console.log(totalUnderObject);
-
-
-
-      })
-    })
-  })
-}, 10000)
+// ALL THE FUNCTION BELOW DOES IS UPDATE THE LINE DATA WITH THE RANGES. DO YOU EVEN NEED TO DO THAT ANYMORE NOW THAT YOU ARE TRACKING LINE MOVEMENT?
 
 setInterval(function(){
   var now = moment();

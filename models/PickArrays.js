@@ -8,10 +8,10 @@ var PickArraySchema = new mongoose.Schema({
   },
   OverPickArray: Array,
   UnderPickArray: Array,
-  FavSpreadPickArray: Array,
-  DogSpreadPickArray: Array,
-  FavMLPickArray: Array,
-  DogMLPickArray: Array,
+  AwaySpreadPickArray: Array,
+  HomeSpreadPickArray: Array,
+  AwayMLPickArray: Array,
+  HomeMLPickArray: Array,
   NoPickArray: Array
 });
 
