@@ -86,30 +86,33 @@ function GameController ($stateParams, gameService) {
         vm.timeValues.push(i)
       };
 
-      var spreadRangeMin = (vm.game.SpreadLow)-0.5;
-      var spreadRangeLoopMax = (vm.game.SpreadHigh)+1;
-      var spreadRange = [];
+      var awaySpreadRangeMin = (vm.game.AwaySpreadWorst)-0.5;
+      var awaySpreadRangeLoopMax = (vm.game.AwaySpreadBest)+1;
+      var awaySpreadRange = [];
 
-      for (i=spreadRangeMin; i<spreadRangeLoopMax; i+=0.5){
+      for (i=awaySpreadRangeMin; i<awaySpreadRangeLoopMax; i+=0.5){
         vm.awaySpreadRange.push(i)
       };
 
-      for (i=0; i<vm.awaySpreadRange.length; i++){
-        vm.homeSpreadRange.push(-vm.awaySpreadRange[i]);
+      var homeSpreadRangeMin = (vm.game.HomeSpreadWorst)-0.5;
+      var homeSpreadRangeLoopMax = (vm.game.HomeSpreadBest)+1;
+      var homeSpreadRange = [];
+
+      for (i=homeSpreadRangeMin; i<homeSpreadRangeLoopMax; i+=0.5){
+        vm.homeSpreadRange.push(i)
       };
-      vm.homeSpreadRange.reverse();
 
-      var dogMLRangeMin = (vm.game.DogMLWorst) - 15;
-      var dogMLRangeMax = (vm.game.DogMLBest) + 30;
+      var awayMLRangeMin = (vm.game.AwayMLWorst) - 15;
+      var awayMLRangeMax = (vm.game.AwayMLBest) + 30;
 
-      for (i=dogMLRangeMin; i<dogMLRangeMax; i+=15){
+      for (i=awayMLRangeMin; i<awayMLRangeMax; i+=15){
         vm.awayMLRange.push(i)
       };
 
-      var favMLRangeMin = (vm.game.FavMLWorst) - 15;
-      var favMLRangeMax = (vm.game.FavMLBest) + 30;
+      var homeMLRangeMin = (vm.game.HomeMLWorst) - 15;
+      var homeMLRangeMax = (vm.game.HomeMLBest) + 30;
 
-      for (i=favMLRangeMin; i<favMLRangeMax; i+=15){
+      for (i=homeMLRangeMin; i<homeMLRangeMax; i+=15){
         vm.homeMLRange.push(i)
       };
 
@@ -126,10 +129,10 @@ function GameController ($stateParams, gameService) {
 
       gameService.getPickArrays(vm.EventID).then(function(result){
 
-        vm.awayMLPicks = result[0].DogMLPickArray;
-        vm.awaySpreadPicks = result[0].DogSpreadPickArray;
-        vm.homeMLPicks = result[0].FavMLPickArray;
-        vm.homeSpreadPicks = result[0].FavSpreadPickArray;
+        vm.awayMLPicks = result[0].AwayMLPickArray;
+        vm.awaySpreadPicks = result[0].AwaySpreadPickArray;
+        vm.homeMLPicks = result[0].HomeMLPickArray;
+        vm.homeSpreadPicks = result[0].HomeSpreadPickArray;
         vm.overPicks = result[0].OverPickArray;
         vm.underPicks = result[0].UnderPickArray;
         vm.noPicks = result[0].NoPickArray;
@@ -165,22 +168,22 @@ function GameController ($stateParams, gameService) {
 
         for (i=0; i<vm.homeSpreadPicks.length; i++) {
           var unixTime = moment(vm.homeSpreadPicks[i].submittedAt).valueOf();
-          var favAbbrev = vm.homeSpreadPicks[i].activePick.substr(0, vm.homeSpreadPicks[i].activePick.indexOf(' '));
+          var homeAbbrev = vm.homeSpreadPicks[i].activePick.substr(0, vm.homeSpreadPicks[i].activePick.indexOf(' '));
 
           vm.homeSpreadChartValues.push([unixTime, vm.homeSpreadPicks[i].relevantLine]);
           vm.homeSpreadJuices.push(vm.homeSpreadPicks[i].activeLine);
           vm.homeSpreadUsers.push(vm.homeSpreadPicks[i].username);
-          vm.homeSpreadAbbrevs.push(favAbbrev);
+          vm.homeSpreadAbbrevs.push(homeAbbrev);
         };
 
         for (i=0; i<vm.awaySpreadPicks.length; i++) {
           var unixTime = moment(vm.awaySpreadPicks[i].submittedAt).valueOf();
-          var dogAbbrev = vm.awaySpreadPicks[i].activePick.substr(0, vm.awaySpreadPicks[i].activePick.indexOf(' '));
+          var awayAbbrev = vm.awaySpreadPicks[i].activePick.substr(0, vm.awaySpreadPicks[i].activePick.indexOf(' '));
 
           vm.awaySpreadChartValues.push([unixTime, vm.awaySpreadPicks[i].relevantLine]);
           vm.awaySpreadJuices.push(vm.awaySpreadPicks[i].activeLine);
           vm.awaySpreadUsers.push(vm.awaySpreadPicks[i].username);
-          vm.awaySpreadAbbrevs.push(dogAbbrev);
+          vm.awaySpreadAbbrevs.push(awayAbbrev);
         };
 
         for (i=0; i<vm.homeMLPicks.length; i++){
@@ -393,7 +396,7 @@ function GameController ($stateParams, gameService) {
                     "offset-x":"12px"
                 },
                 "label":{
-                  "text": "Favorite Spread",
+                  "text": "Home Spread",
                   "font-color": "black",
                   "offset-x": "20px"
                 }
@@ -412,7 +415,7 @@ function GameController ($stateParams, gameService) {
                     "offset-x":"-10px"
                 },
                 "label":{
-                  "text": "Underdog Spread",
+                  "text": "Away Spread",
                   "font-color": "white",
                   "offset-x": "-10px"
                 }
@@ -423,7 +426,7 @@ function GameController ($stateParams, gameService) {
                     "data-username": vm.homeSpreadUsers,
                     "data-submitted": vm.homeSpreadTimes,
                     "data-juice": vm.homeSpreadJuices,
-                    "data-favAbbrev": vm.homeSpreadAbbrevs,
+                    "data-homeAbbrev": vm.homeSpreadAbbrevs,
                     "marker":{
                       "border-color":"black",
                       "border-width": 2,
@@ -433,7 +436,7 @@ function GameController ($stateParams, gameService) {
                     },
                     "scales": "scale-x, scale-y",
                     "tooltip":{
-                        "text": "%data-favAbbrev %v (%data-juice)<br>%data-username",
+                        "text": "%data-homeAbbrev %v (%data-juice)<br>%data-username",
                         "font-size":"20px",
                         "border-radius":"6px",
                         "background-color":"#fff",
@@ -446,7 +449,7 @@ function GameController ($stateParams, gameService) {
                     "data-username": vm.awaySpreadUsers,
                     "data-submitted": vm.awaySpreadTimes,
                     "data-juice": vm.awaySpreadJuices,
-                    "data-dogAbbrev": vm.awaySpreadAbbrevs,
+                    "data-awayAbbrev": vm.awaySpreadAbbrevs,
                     "marker":{
                       "border-color":"white",
                       "background-repeat":"no-repeat",
@@ -456,7 +459,7 @@ function GameController ($stateParams, gameService) {
                     },
                     "scales": "scale-x, scale-y-2",
                     "tooltip":{
-                        "text": "%data-dogAbbrev +%v (%data-juice)<br>%data-username",
+                        "text": "%data-awayAbbrev +%v (%data-juice)<br>%data-username",
                         "font-size":"20px",
                         "border-radius":"6px",
                         "background-color":"#fff",
@@ -618,7 +621,7 @@ function GameController ($stateParams, gameService) {
                     "offset-x":"5px"
                 },
                 "label":{
-                  "text": "Favorite ML",
+                  "text": "Home ML",
                   "font-color": "black",
                   "offset-x": "12px"
                 }
@@ -637,7 +640,7 @@ function GameController ($stateParams, gameService) {
                     "offset-x":"-10px"
                 },
                 "label":{
-                  "text": "Underdog ML",
+                  "text": "Away ML",
                   "font-color": "white",
                   "offset-x": "-12px"
                 }
