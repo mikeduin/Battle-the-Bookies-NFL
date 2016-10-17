@@ -499,6 +499,20 @@ setInterval(function(){
         var totalHigh = Array.max(totals);
         var totalLow = Array.min(totals);
 
+        var rangeObject = {
+          EventID: game.EventID,
+          awayMLLow: awayMLLow,
+          awayMLHigh: awayMLHigh,
+          homeMLLow: homeMLLow,
+          homeMLHigh: homeMLHigh,
+          homeSpreadLow: homeSpreadLow,
+          homeSpreadHigh: homeSpreadHigh,
+          awaySpreadLow: awaySpreadLow,
+          awaySpreadHigh: awaySpreadHigh,
+          totalHigh: totalHigh,
+          totalLow: totalLow
+        };
+
         var awaySpreadValues = [];
         var awaySpreadBestJuices = [];
         var awaySpreadObject = {};
@@ -576,7 +590,7 @@ setInterval(function(){
             };
           };
           var bestJuice = Array.max(juicesArray);
-          totalOverObject[totalValues[i]] = bestJuice;
+          // totalOverObject[totalValues[i]] = bestJuice;
           totalOverBestJuices.push(bestJuice);
         };
 
@@ -591,49 +605,52 @@ setInterval(function(){
             };
           };
           var bestJuice = Array.max(juicesArray);
-          totalUnderObject[totalValues[i]] = bestJuice;
+          // totalUnderObject[totalValues[i]] = bestJuice;
           totalUnderBestJuices.push(bestJuice);
         };
 
         totalUnderObject['spreads'] = totalValues;
         totalUnderObject['juices'] = totalUnderBestJuices;
 
-        console.log(totalUnderObject);
+        LineMove.findOneAndUpdate({EventID: game.EventID}, {
+          $set: {
+            AwaySpreadIndex: awaySpreadObject,
+            HomeSpreadIndex: homeSpreadObject,
+            TotalOverIndex: totalOverObject,
+            TotalUnderIndex: totalUnderObject
+          }
+        }, function(err){
+          if (err) {console.log(err)};
 
-        // LineMove.findOneAndUpdate({EventID: game.EventID}, {
+          console.log("line move objects have been set for ", game.EventID);
+
+        })
+
+        return rangeObject
+      }).then(function(rangeObject){
+        console.log('hello');
+
+        console.log(rangeObject);
+
+        // Line.findOneAndUpdate({EventID: game.EventID}, {
         //   $set: {
-        //     AwaySpreadIndex: awaySpreadObject,
-        //     HomeSpreadIndex: homeSpreadObject,
-        //     TotalOverIndex: totalOverObject,
-        //     TotalUnderIndex: totalUnderObject
+        //     AwayMLBest: randawayMLHigh,
+        //     AwayMLWorst: awayMLLow,
+        //     HomeMLBest: homeMLHigh,
+        //     HomeMLWorst: homeMLLow,
+        //     TotalHigh: totalHigh,
+        //     TotalLow: totalLow,
+        //     HomeSpreadBest: homeSpreadhigh,
+        //     HomeSpreadWorst: homeSpreadLow,
+        //     AwaySpreadBest: awaySpreadhigh,
+        //     AwaySpreadWorst: awaySpreadLow,
+        //     RangesSet: true
         //   }
-        // }, function(err, result){
+        // }, function(err){
         //   if (err) {console.log(err)};
         //
-        //   console.log("line move objects have been set for ", result.EventID)
-        // }).then(function(result){
-        //   console.log('hello');
-        //
-        //   Line.findOneAndUpdate({EventID: game.EventID}, {
-        //     $set: {
-        //       AwayMLBest: awayMLHigh,
-        //       AwayMLWorst: awayMLLow,
-        //       HomeMLBest: homeMLHigh,
-        //       HomeMLWorst: homeMLLow,
-        //       TotalHigh: totalHigh,
-        //       TotalLow: totalLow,
-        //       HomeSpreadBest: homeSpreadhigh,
-        //       HomeSpreadWorst: homeSpreadLow,
-        //       AwaySpreadBest: awaySpreadhigh,
-        //       AwaySpreadWorst: awaySpreadLow,
-        //       RangesSet: true
-        //     }
-        //   }, function(err){
-        //     if (err) {console.log(err)};
-        //
-        //     console.log("new pick ranges have been set for ", game.EventID)
-        //   });
-        // })
+        //   console.log("new pick ranges have been set for ", game.EventID)
+        // });
       })
     })
   })
