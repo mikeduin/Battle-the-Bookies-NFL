@@ -17,11 +17,7 @@ var LineMoveSchema = new mongoose.Schema({
   Totals: Array,
   TotalOverJuices: Array,
   TotalUnderJuices: Array,
-  TimeLogged: Array,
-  AwaySpreadIndex: Object,
-  HomeSpreadIndex: Object,
-  TotalOverIndex: Object,
-  TotalUnderIndex: Object
+  TimeLogged: Array
 });
 
 mongoose.model('LineMove', LineMoveSchema)

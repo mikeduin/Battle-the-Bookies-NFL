@@ -462,9 +462,9 @@ setInterval(function(){
     MatchTime: {
       $lt: now
     },
-    // RangesSet: {
-    //   $in: [false, null]
-    // },
+    RangesSet: {
+      $in: [false, null]
+    },
     Week: {
       $nin: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
     }
@@ -609,59 +609,33 @@ setInterval(function(){
         var totalHigh = Array.max(totalValues);
         var totalLow = Array.min(totalValues);
 
-        var rangeObject = {
-          EventID: game.EventID,
-          awayMLLow: awayMLLow,
-          awayMLHigh: awayMLHigh,
-          homeMLLow: homeMLLow,
-          homeMLHigh: homeMLHigh,
-          homeSpreadLow: homeSpreadLow,
-          homeSpreadHigh: homeSpreadHigh,
-          awaySpreadLow: awaySpreadLow,
-          awaySpreadHigh: awaySpreadHigh,
-          totalHigh: totalHigh,
-          totalLow: totalLow
-        };
-
-        LineMove.findOneAndUpdate({EventID: game.EventID}, {
+        Line.findOneAndUpdate({EventID: game.EventID}, {
           $set: {
             AwaySpreadIndex: awaySpreadObject,
             HomeSpreadIndex: homeSpreadObject,
             TotalOverIndex: totalOverObject,
-            TotalUnderIndex: totalUnderObject
+            TotalUnderIndex: totalUnderObject,
+            AwayMLBest: awayMLHigh,
+            AwayMLWorst: awayMLLow,
+            HomeMLBest: homeMLHigh,
+            HomeMLWorst: homeMLLow,
+            TotalHigh: totalHigh,
+            TotalLow: totalLow,
+            HomeSpreadBest: homeSpreadHigh,
+            HomeSpreadWorst: homeSpreadLow,
+            AwaySpreadBest: awaySpreadHigh,
+            AwaySpreadWorst: awaySpreadLow,
+            RangesSet: true
           }
         }, function(err){
           if (err) {console.log(err)};
 
           console.log("line move objects have been set for ", game.EventID);
         });
-
-        return rangeObject
-      }).then(function(rangeObject){
-
-        Line.findOneAndUpdate({EventID: game.EventID}, {
-          $set: {
-            AwayMLBest: rangeObject.awayMLHigh,
-            AwayMLWorst: rangeObject.awayMLLow,
-            HomeMLBest: rangeObject.homeMLHigh,
-            HomeMLWorst: rangeObject.homeMLLow,
-            TotalHigh: rangeObject.totalHigh,
-            TotalLow: rangeObject.totalLow,
-            HomeSpreadBest: rangeObject.homeSpreadHigh,
-            HomeSpreadWorst: rangeObject.homeSpreadLow,
-            AwaySpreadBest: rangeObject.awaySpreadHigh,
-            AwaySpreadWorst: rangeObject.awaySpreadLow,
-            RangesSet: true
-          }
-        }, function(err){
-          if (err) {console.log(err)};
-
-          console.log("new pick ranges have been set for ", game.EventID)
-        });
       })
     })
   })
-}, 10000)
+}, 840000)
 
 // ALL THE FUNCTION BELOW DOES IS UPDATE THE LINE DATA WITH THE RANGES. DO YOU EVEN NEED TO DO THAT ANYMORE NOW THAT YOU ARE TRACKING LINE MOVEMENT?
 
@@ -848,6 +822,9 @@ setInterval(function(){
     MatchTime: {
       $lt: now
     },
+    Week: {
+      $in: ["Week 6"]
+    },
     capperGraded: {
       $in: [false, null]
     }
@@ -857,27 +834,57 @@ setInterval(function(){
   }).then(function(picks){
     picks.forEach(function(pick){
       console.log('pick._id is', pick._id);
-      var capperGrade = 10;
+      var startGrade = 10;
+      var capperGrade;
       var bestLineAvail;
       var pickID = pick._id;
       Line.find({EventID: pick.EventID}, function(err, line){
         if (err) {console.log(err)}
 
         if (pick.pickType === "Away Spread") {
-
+          startGrade -= (line[0].AwaySpreadBest - pick.activeSpread);
+          var sprIndex = line[0].AwaySpreadIndex.spreads.indexOf(pick.activeSpread);
+          var bestJuice = line[0].AwaySpreadIndex.juices[sprIndex];
+          if (bestJuice < 1) {
+            capperGrade = startGrade - (((bestJuice - pick.activeLine)/5)*0.1)
+          } else {
+            if (pick.activeLine < 1) {
+              capperGrade = startGrade - (((bestJuice - (pick.activeLine+200))/5)*0.1)
+            } else {
+              capperGrade = startGrade - (((bestJuice - pick.activeLine)/5)*0.1)
+            }
+          };
         } else if (pick.pickType === "Home Spread") {
-
-        } else if (pick.pickType === "Away ML") {
-
-        } else if (pick.pickType === "Home ML") {
-
-        } else if (pick.pickType === "Total Over"){
-
-        } else if (pick.pickType === "Total Under"){
-
-        } else {
-          return
+          console.log('pick is ', pick);
+          console.log('activeSpread is ', pick.activeSpread);
+          startGrade -= (line[0].HomeSpreadBest - pick.activeSpread);
+          console.log("startGrade after pick subtraction is ", startGrade);
+          var sprIndex = line[0].HomeSpreadIndex.spreads.indexOf(pick.activeSpread);
+          var bestJuice = line[0].HomeSpreadIndex.juices[sprIndex];
+          console.log('bestjuice is ', bestJuice);
+          console.log('pickJuice is ', pick.activeLine);
+          if (bestJuice < 1) {
+            capperGrade = startGrade - (((bestJuice - pick.activeLine)/5)*0.1)
+          } else {
+            if (pick.activeLine < 1) {
+              capperGrade = startGrade - (((bestJuice - (pick.activeLine+200))/5)*0.1)
+            } else {
+              capperGrade = startGrade - (((bestJuice - pick.activeLine)/5)*0.1)
+            }
+          };
+          console.log("final capperGrade is ", capperGrade);
         }
+        // else if (pick.pickType === "Away ML") {
+        //
+        // } else if (pick.pickType === "Home ML") {
+        //
+        // } else if (pick.pickType === "Total Over"){
+        //
+        // } else if (pick.pickType === "Total Under"){
+        //
+        // } else {
+        //   return
+        // }
 
         // Pick.findOneAndUpdate({_id: pickID}, {
         //   $set: {
@@ -895,7 +902,7 @@ setInterval(function(){
       })
     })
   })
-}, 600000)
+}, 10000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });

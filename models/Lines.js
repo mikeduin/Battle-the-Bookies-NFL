@@ -60,7 +60,11 @@ var LineSchema = new mongoose.Schema({
   TotalHigh: Number,
   TotalLow: Number,
   ArraysBuilt: Boolean,
-  RangesSet: Boolean
+  RangesSet: Boolean,
+  AwaySpreadIndex: Object,
+  HomeSpreadIndex: Object,
+  TotalOverIndex: Object,
+  TotalUnderIndex: Object
 })
 
 mongoose.model('Line', LineSchema);
