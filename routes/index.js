@@ -855,14 +855,11 @@ setInterval(function(){
             }
           };
         } else if (pick.pickType === "Home Spread") {
-          console.log('pick is ', pick);
-          console.log('activeSpread is ', pick.activeSpread);
           startGrade -= (line[0].HomeSpreadBest - pick.activeSpread);
-          console.log("startGrade after pick subtraction is ", startGrade);
           var sprIndex = line[0].HomeSpreadIndex.spreads.indexOf(pick.activeSpread);
           var bestJuice = line[0].HomeSpreadIndex.juices[sprIndex];
-          console.log('bestjuice is ', bestJuice);
-          console.log('pickJuice is ', pick.activeLine);
+          // console.log('bestjuice is ', bestJuice);
+          // console.log('pickJuice is ', pick.activeLine);
           if (bestJuice < 1) {
             capperGrade = startGrade - (((bestJuice - pick.activeLine)/5)*0.1)
           } else {
@@ -871,13 +868,41 @@ setInterval(function(){
             } else {
               capperGrade = startGrade - (((bestJuice - pick.activeLine)/5)*0.1)
             }
-          };
+          }
+        }
+        else if (pick.pickType === "Away Moneyline") {
+          var bestLine = line[0].AwayMLBest;
+          console.log('pick is ', pick);
+          console.log('activeLine is ', pick.activeLine);
+          console.log('bestML is ', bestLine);
+          if (bestLine < 1) {
+            startGrade -= (((bestLine - pick.activeLine)/20)*0.5)
+          } else {
+            if (pick.activeLine < 1) {
+              startGrade -= (((bestLine - (pick.activeLine+200))/20)*0.5)
+            } else {
+              startGrade -= (((bestLine - pick.activeLine)/20)*0.5)
+            }
+          }
+          capperGrade = startGrade;
+          console.log("final capperGrade is ", capperGrade);
+        } else if (pick.pickType === "Home Moneyline") {
+          var bestLine = line[0].HomeMLBest;
+          console.log('pick is ', pick);
+          console.log('activeLine is ', pick.activeLine);
+          console.log('bestML is ', bestLine);
+          if (bestLine < 1) {
+            startGrade -= (((bestLine - pick.activeLine)/20)*0.5)
+          } else {
+            if (pick.activeLine < 1) {
+              startGrade -= (((bestLine - (pick.activeLine+200))/20)*0.5)
+            } else {
+              startGrade -= (((bestLine - pick.activeLine)/20)*0.5)
+            }
+          }
+          capperGrade = startGrade;
           console.log("final capperGrade is ", capperGrade);
         }
-        // else if (pick.pickType === "Away ML") {
-        //
-        // } else if (pick.pickType === "Home ML") {
-        //
         // } else if (pick.pickType === "Total Over"){
         //
         // } else if (pick.pickType === "Total Under"){
