@@ -61,6 +61,7 @@ var LineSchema = new mongoose.Schema({
   TotalLow: Number,
   ArraysBuilt: Boolean,
   RangesSet: Boolean,
+  CapperGraded: Boolean,
   AwaySpreadIndex: Object,
   HomeSpreadIndex: Object,
   TotalOverIndex: Object,

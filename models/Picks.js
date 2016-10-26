@@ -33,7 +33,8 @@ var PickSchema = new mongoose.Schema({
   finalPayout: Number,
   capperGraded: Boolean,
   capperGrade: Number,
-  bestLineAvail: Number
+  bestLineAvail: Number,
+  bestJuiceAvail: Number
 })
 
 mongoose.model('Pick', PickSchema);
