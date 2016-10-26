@@ -42,7 +42,11 @@ function GameController ($stateParams, gameService) {
   vm.underUsers = [];
   vm.underActivePicks = [];
   vm.dateRangeLow;
-  vm.message = 'hello';
+  vm.homeSpreadProg = [];
+  vm.awaySpreadProg = [];
+  vm.homeMLProg = [];
+  vm.awayMLProg = [];
+  vm.totalProg = [];
 
   vm.checkDST = function() {
     if (moment().isDST() === true){
@@ -66,12 +70,16 @@ function GameController ($stateParams, gameService) {
 
       vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.homeColor;
       vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.homeColor;
+      vm.myConfig.graphset[5].series[2].lineColor = vm.homeColor;
       vm.myConfig.graphset[10].series[0].marker.backgroundColor = vm.homeColor;
       vm.myConfig.graphset[10].series[0].tooltip.fontColor = vm.homeColor;
+      vm.myConfig.graphset[10].series[2].lineColor = vm.homeColor;
       vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.awayColor;
       vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.awayColor;
+      vm.myConfig.graphset[5].series[3].lineColor = vm.awayColor;
       vm.myConfig.graphset[10].series[1].marker.backgroundColor = vm.awayColor;
       vm.myConfig.graphset[10].series[1].tooltip.fontColor = vm.awayColor;
+      vm.myConfig.graphset[10].series[3].lineColor = vm.awayColor;
 
       if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
         vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(19).valueOf()
@@ -221,6 +229,37 @@ function GameController ($stateParams, gameService) {
         };
 
       })
+    }).then(function(){
+      gameService.getLineMoves(vm.EventID).then(function(result){
+        vm.lineMoves = result[0];
+
+        console.log(vm.lineMoves);
+
+        for (var i=0; i<vm.lineMoves.TimeLogged.length; i++){
+          var unixTime = moment(vm.lineMoves.TimeLogged[i]).valueOf();
+
+          vm.homeSpreadProg.push([unixTime, vm.lineMoves.HomeSpreads[i]]);
+
+          vm.awaySpreadProg.push([unixTime, vm.lineMoves.AwaySpreads[i]]);
+
+          vm.awayMLProg.push([unixTime, vm.lineMoves.AwayMLs[i]]);
+
+          vm.homeMLProg.push([unixTime, vm.lineMoves.HomeMLs[i]]);
+
+          vm.totalProg.push([unixTime, vm.lineMoves.Totals[i]]);
+
+        };
+
+        vm.homeSpreadProgJuices = vm.lineMoves.HomeSpreadJuices;
+
+        vm.awaySpreadProgJuices = vm.lineMoves.AwaySpreadJuices;
+
+        vm.totalProgOverJuices = vm.lineMoves.TotalOverJuices;
+        vm.totalProgUnderJuices = vm.lineMoves.TotalUnderJuices;
+
+      })
+      console.log('vm.homeSpreadProg is ', vm.homeSpreadProg);
+      console.log('vm.homeSpreadChartValues are ', vm.homeSpreadChartValues);
     })
   }
 
@@ -322,7 +361,7 @@ function GameController ($stateParams, gameService) {
             }
         },
         {
-            "type":"scatter",
+            "type":"mixed",
             "x":"16%",
             "y":"12.33%",
             "height":"26.67%",
@@ -387,18 +426,21 @@ function GameController ($stateParams, gameService) {
                 "guide":{
                     "visible":false
                 },
+                "ref-line": {
+                  "visible": false
+                },
                 "line-color":"none",
                 "tick":{
                     "line-color":"none"
                 },
                 "item":{
                     "font-color":"black",
-                    "offset-x":"12px"
+                    "offset-x":"5px"
                 },
                 "label":{
                   "text": "Home Spread",
                   "font-color": "black",
-                  "offset-x": "20px"
+                  "offset-x": "10px"
                 }
             },
             "scale-y-2":{
@@ -406,13 +448,16 @@ function GameController ($stateParams, gameService) {
                 "guide":{
                     "visible":false
                 },
+                "ref-line": {
+                  "visible": false
+                },
                 "line-color":"none",
                 "tick":{
                     "line-color":"none"
                 },
                 "item":{
                     "font-color":"white",
-                    "offset-x":"-10px"
+                    "offset-x":"-5px"
                 },
                 "label":{
                   "text": "Away Spread",
@@ -423,6 +468,7 @@ function GameController ($stateParams, gameService) {
             "series":[
                 {
                     "values": vm.homeSpreadChartValues,
+                    "type": "scatter",
                     "data-username": vm.homeSpreadUsers,
                     "data-submitted": vm.homeSpreadTimes,
                     "data-juice": vm.homeSpreadJuices,
@@ -446,6 +492,7 @@ function GameController ($stateParams, gameService) {
                 },
                 {
                     "values": vm.awaySpreadChartValues,
+                    "type": "scatter",
                     "data-username": vm.awaySpreadUsers,
                     "data-submitted": vm.awaySpreadTimes,
                     "data-juice": vm.awaySpreadJuices,
@@ -466,6 +513,21 @@ function GameController ($stateParams, gameService) {
                         "shadow":true,
                         "padding":"10px"
                     },
+                },
+                {
+                    "values": vm.homeSpreadProg,
+                    "type": "line",
+                    // "data-username": vm.awaySpreadUsers,
+                    // "data-submitted": vm.awaySpreadTimes,
+                    // "data-juice": vm.awaySpreadJuices,
+                    // "data-awayAbbrev": vm.awaySpreadAbbrevs,
+                    "marker":{
+                      "border-color":"#fff",
+                      "border-width": 1,
+                      "size": 4
+                    },
+                    "aspect": "spline",
+                    "scales": "scale-x, scale-y"
                 }
             ]
         },
@@ -548,7 +610,7 @@ function GameController ($stateParams, gameService) {
             }
         },
         {
-            "type":"scatter",
+            "type":"mixed",
             "x":"16%",
             "y":"39%",
             "height":"26.67%",
@@ -612,6 +674,9 @@ function GameController ($stateParams, gameService) {
                 "guide":{
                     "visible":false
                 },
+                "ref-line": {
+                  "visible": false
+                },
                 "line-color":"none",
                 "tick":{
                     "line-color":"none"
@@ -623,7 +688,7 @@ function GameController ($stateParams, gameService) {
                 "label":{
                   "text": "Home ML",
                   "font-color": "black",
-                  "offset-x": "12px"
+                  "offset-x": "10px"
                 }
             },
             "scale-y-2":{
@@ -631,18 +696,21 @@ function GameController ($stateParams, gameService) {
                 "guide":{
                     "visible":false
                 },
+                "ref-line": {
+                  "visible": false
+                },
                 "line-color":"none",
                 "tick":{
                     "line-color":"none"
                 },
                 "item":{
                     "font-color":"white",
-                    "offset-x":"-10px"
+                    "offset-x":"-5px"
                 },
                 "label":{
                   "text": "Away ML",
                   "font-color": "white",
-                  "offset-x": "-12px"
+                  "offset-x": "-10px"
                 }
             },
             "tooltip":{
@@ -657,6 +725,7 @@ function GameController ($stateParams, gameService) {
             "series":[
               {
                   "values": vm.homeMLChartValues,
+                  "type": "scatter",
                   "data-username": vm.homeMLUsers,
                   "data-submitted": vm.homeMLTimes,
                   "data-activePicks": vm.homeMLActivePicks,
@@ -678,6 +747,7 @@ function GameController ($stateParams, gameService) {
               },
               {
                 "values": vm.awayMLChartValues,
+                "type": "scatter",
                 "data-username": vm.awayMLUsers,
                 "data-submitted": vm.awayMLTimes,
                 "data-activePicks": vm.awayMLActivePicks,
@@ -777,7 +847,7 @@ function GameController ($stateParams, gameService) {
             }
         },
         {
-            "type":"scatter",
+            "type":"mixed",
             "x":"16%",
             "y":"65.67%",
             "height":"26.67%",
@@ -841,6 +911,9 @@ function GameController ($stateParams, gameService) {
                 "guide":{
                     "visible":false
                 },
+                "ref-line": {
+                  "visible": false
+                },
                 "line-color":"none",
                 "tick":{
                     "line-color":"none"
@@ -852,7 +925,7 @@ function GameController ($stateParams, gameService) {
                 "label":{
                   "text": "Total Under",
                   "font-color": "black",
-                  "offset-x": "12px"
+                  "offset-x": "10px"
                 }
             },
             "scale-y-2":{
@@ -860,18 +933,21 @@ function GameController ($stateParams, gameService) {
                 "guide":{
                     "visible":false
                 },
+                "ref-line": {
+                  "visible": false
+                },
                 "line-color":"none",
                 "tick":{
                     "line-color":"none"
                 },
                 "item":{
                     "font-color":"white",
-                    "offset-x":"-12px"
+                    "offset-x":"-5px"
                 },
                 "label":{
                   "text": "Total Over",
                   "font-color": "white",
-                  "offset-x": "-17px"
+                  "offset-x": "-10px"
                 }
             },
             "tooltip":{
@@ -886,6 +962,7 @@ function GameController ($stateParams, gameService) {
             "series":[
               {
                   "values": vm.overChartValues,
+                  "type": "scatter",
                   "data-username": vm.overUsers,
                   "data-submitted": vm.overTimes,
                   "data-activePicks": vm.overActivePicks,
@@ -909,6 +986,7 @@ function GameController ($stateParams, gameService) {
               },
               {
                 "values": vm.underChartValues,
+                "type": "scatter",
                 "data-username": vm.underUsers,
                 "data-submitted": vm.underTimes,
                 "data-activePicks": vm.underActivePicks,

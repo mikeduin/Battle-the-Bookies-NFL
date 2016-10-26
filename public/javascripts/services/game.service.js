@@ -13,6 +13,11 @@ function gameService ($http) {
       return $http.get('/line/' + EventID).then(function(result){
         return result.data
       })
+    },
+    getLineMoves: function(EventID){
+      return $http.get('/linemove/' + EventID).then(function(result){
+        return result.data
+      })
     }
   }
 }

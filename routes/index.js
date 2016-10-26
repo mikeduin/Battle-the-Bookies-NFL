@@ -251,6 +251,14 @@ router.get('/line/:gameID', function(req, res, next){
   })
 });
 
+router.get('/linemove/:gameID', function(req, res, next){
+  LineMove.find({EventID: req.params.gameID}, function(err, result){
+    if (err) {console.log(err)}
+
+    res.json(result)
+  })
+});
+
 router.get('/lines', function(req, res, next){
   Line.find({
     Week: {
