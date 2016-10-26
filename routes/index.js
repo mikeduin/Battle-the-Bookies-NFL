@@ -377,6 +377,10 @@ setInterval(function(){
     if(err) {console.log(err)}
 
   }).then(function(games){
+    if (!games) {
+      return
+    };
+
     games.forEach(function(game){
       var overPickArray = [];
       var underPickArray = [];
