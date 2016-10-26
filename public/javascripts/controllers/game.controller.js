@@ -47,6 +47,10 @@ function GameController ($stateParams, gameService) {
   vm.homeMLProg = [];
   vm.awayMLProg = [];
   vm.totalProg = [];
+  vm.homeSpreadProgJuices = [];
+  vm.awaySpreadProgJuices = [];
+  vm.totalProgOverJuices = [];
+  vm.totalProgUnderJuices = [];
 
   vm.checkDST = function() {
     if (moment().isDST() === true){
@@ -70,16 +74,12 @@ function GameController ($stateParams, gameService) {
 
       vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.homeColor;
       vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.homeColor;
-      vm.myConfig.graphset[5].series[2].lineColor = vm.homeColor;
       vm.myConfig.graphset[10].series[0].marker.backgroundColor = vm.homeColor;
       vm.myConfig.graphset[10].series[0].tooltip.fontColor = vm.homeColor;
-      vm.myConfig.graphset[10].series[2].lineColor = vm.homeColor;
       vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.awayColor;
       vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.awayColor;
-      vm.myConfig.graphset[5].series[3].lineColor = vm.awayColor;
       vm.myConfig.graphset[10].series[1].marker.backgroundColor = vm.awayColor;
       vm.myConfig.graphset[10].series[1].tooltip.fontColor = vm.awayColor;
-      vm.myConfig.graphset[10].series[3].lineColor = vm.awayColor;
 
       if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
         vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(19).valueOf()
@@ -239,27 +239,23 @@ function GameController ($stateParams, gameService) {
           var unixTime = moment(vm.lineMoves.TimeLogged[i]).valueOf();
 
           vm.homeSpreadProg.push([unixTime, vm.lineMoves.HomeSpreads[i]]);
+          vm.homeSpreadProgJuices.push(vm.lineMoves.HomeSpreadJuices[i]);
 
           vm.awaySpreadProg.push([unixTime, vm.lineMoves.AwaySpreads[i]]);
+          vm.awaySpreadProgJuices.push(vm.lineMoves.AwaySpreadJuices[i]);
 
           vm.awayMLProg.push([unixTime, vm.lineMoves.AwayMLs[i]]);
 
           vm.homeMLProg.push([unixTime, vm.lineMoves.HomeMLs[i]]);
 
           vm.totalProg.push([unixTime, vm.lineMoves.Totals[i]]);
+          vm.totalProgOverJuices.push(vm.lineMoves.TotalOverJuices[i]);
+          vm.totalProgUnderJuices.push(vm.lineMoves.TotalUnderJuices[i]);
 
         };
 
-        vm.homeSpreadProgJuices = vm.lineMoves.HomeSpreadJuices;
-
-        vm.awaySpreadProgJuices = vm.lineMoves.AwaySpreadJuices;
-
-        vm.totalProgOverJuices = vm.lineMoves.TotalOverJuices;
-        vm.totalProgUnderJuices = vm.lineMoves.TotalUnderJuices;
-
       })
-      console.log('vm.homeSpreadProg is ', vm.homeSpreadProg);
-      console.log('vm.homeSpreadChartValues are ', vm.homeSpreadChartValues);
+      console.log('vm.homeSpreadProgJuices is ', vm.homeSpreadProgJuices);
     })
   }
 
@@ -437,6 +433,8 @@ function GameController ($stateParams, gameService) {
                     "font-color":"black",
                     "offset-x":"5px"
                 },
+                "line-color": "black",
+                "line-width": 2,
                 "label":{
                   "text": "Home Spread",
                   "font-color": "black",
@@ -459,6 +457,8 @@ function GameController ($stateParams, gameService) {
                     "font-color":"white",
                     "offset-x":"-5px"
                 },
+                "line-color": "white",
+                "line-width": 2,
                 "label":{
                   "text": "Away Spread",
                   "font-color": "white",
@@ -480,6 +480,7 @@ function GameController ($stateParams, gameService) {
                       "shadow":false,
                       "size": 9
                     },
+                    "z-index": 2,
                     "scales": "scale-x, scale-y",
                     "tooltip":{
                         "text": "%data-homeAbbrev %v (%data-juice)<br>%data-username",
@@ -504,6 +505,7 @@ function GameController ($stateParams, gameService) {
                       "shadow":false,
                       "size": 9
                     },
+                    "z-index": 2,
                     "scales": "scale-x, scale-y-2",
                     "tooltip":{
                         "text": "%data-awayAbbrev +%v (%data-juice)<br>%data-username",
@@ -517,17 +519,28 @@ function GameController ($stateParams, gameService) {
                 {
                     "values": vm.homeSpreadProg,
                     "type": "line",
-                    // "data-username": vm.awaySpreadUsers,
-                    // "data-submitted": vm.awaySpreadTimes,
-                    // "data-juice": vm.awaySpreadJuices,
-                    // "data-awayAbbrev": vm.awaySpreadAbbrevs,
-                    "marker":{
+                    "line-color": "black",
+                    "marker": {
                       "border-color":"#fff",
+                      "background-color": "black",
                       "border-width": 1,
-                      "size": 4
+                      "size": 10
                     },
                     "aspect": "spline",
                     "scales": "scale-x, scale-y"
+                },
+                {
+                    "values": vm.awaySpreadProg,
+                    "type": "line",
+                    "line-color": "white",
+                    "marker": {
+                      "border-color":"#fff",
+                      "background-color": "black",
+                      "border-width": 1,
+                      "size": 10
+                    },
+                    "aspect": "spline",
+                    "scales": "scale-x, scale-y-2"
                 }
             ]
         },
@@ -659,6 +672,7 @@ function GameController ($stateParams, gameService) {
                 },
                 "line-width":1,
                 "line-color":"#6D6D6D",
+                "line-width": 2,
                 "guide":{
                     "visible":true,
                     "line-style":"solid",
@@ -677,7 +691,8 @@ function GameController ($stateParams, gameService) {
                 "ref-line": {
                   "visible": false
                 },
-                "line-color":"none",
+                "line-color":"black",
+                "line-width": 2,
                 "tick":{
                     "line-color":"none"
                 },
@@ -699,7 +714,8 @@ function GameController ($stateParams, gameService) {
                 "ref-line": {
                   "visible": false
                 },
-                "line-color":"none",
+                "line-color":"white",
+                "line-width": 2,
                 "tick":{
                     "line-color":"none"
                 },
@@ -735,6 +751,7 @@ function GameController ($stateParams, gameService) {
                     "shadow":false,
                     "size": 9
                   },
+                  "z-index": 2,
                   "scales": "scale-x, scale-y",
                   "tooltip":{
                       "text": "%data-activePicks<br>%data-username",
@@ -757,6 +774,7 @@ function GameController ($stateParams, gameService) {
                     "shadow":false,
                     "size": 9
                   },
+                  "z-index": 2,
                   "scales": "scale-x, scale-y-2",
                   "tooltip":{
                       "text":"%data-activePicks<br>%data-username",
@@ -766,6 +784,32 @@ function GameController ($stateParams, gameService) {
                       "shadow":true,
                       "padding":"10px"
                   },
+              },
+              {
+                  "values": vm.homeMLProg,
+                  "type": "line",
+                  "line-color": "black",
+                  "marker": {
+                    "border-color":"#fff",
+                    "background-color": "black",
+                    "border-width": 1,
+                    "size": 10
+                  },
+                  "aspect": "spline",
+                  "scales": "scale-x, scale-y"
+              },
+              {
+                  "values": vm.awayMLProg,
+                  "type": "line",
+                  "line-color": "white",
+                  "marker": {
+                    "border-color":"#fff",
+                    "background-color": "black",
+                    "border-width": 1,
+                    "size": 10
+                  },
+                  "aspect": "spline",
+                  "scales": "scale-x, scale-y-2"
               }
             ]
         },
@@ -894,7 +938,7 @@ function GameController ($stateParams, gameService) {
                 "item":{
                     "font-color":"#2F5032"
                 },
-                "line-width":1,
+                "line-width":2,
                 "line-color":"#2F5032",
                 "guide":{
                     "visible":true,
@@ -914,7 +958,8 @@ function GameController ($stateParams, gameService) {
                 "ref-line": {
                   "visible": false
                 },
-                "line-color":"none",
+                "line-color":"black",
+                "line-width": 2,
                 "tick":{
                     "line-color":"none"
                 },
@@ -936,7 +981,8 @@ function GameController ($stateParams, gameService) {
                 "ref-line": {
                   "visible": false
                 },
-                "line-color":"none",
+                "line-color":"white",
+                "line-width": 2,
                 "tick":{
                     "line-color":"none"
                 },
@@ -974,6 +1020,7 @@ function GameController ($stateParams, gameService) {
                     "shadow":false,
                     "size": 9
                   },
+                  "z-index": 2,
                   "scales": "scale-x, scale-y-2",
                   "tooltip":{
                       "text": "%data-activePicks (%data-juice)<br>%data-username",
@@ -991,22 +1038,49 @@ function GameController ($stateParams, gameService) {
                 "data-submitted": vm.underTimes,
                 "data-activePicks": vm.underActivePicks,
                 "data-juice": vm.underJuices,
-                  "marker":{
-                    "border-color":"black",
-                    "background-color": "#2D2D2D",
-                    "background-repeat":"no-repeat",
-                    "shadow":false,
-                    "size": 9
+                "marker":{
+                  "border-color":"black",
+                  "background-color": "#2D2D2D",
+                  "background-repeat":"no-repeat",
+                  "shadow":false,
+                  "size": 9
+                },
+                "z-index": 2,
+                "scales": "scale-x, scale-y",
+                "tooltip":{
+                    "text":"%data-activePicks (%data-juice)<br>%data-username",
+                    "font-size":"20px",
+                    "border-radius":"6px",
+                    "background-color":"#fff",
+                    "shadow":true,
+                    "padding":"10px"
+                },
+              },
+              {
+                  "values": vm.totalProg,
+                  "type": "line",
+                  "line-color": "black",
+                  "marker": {
+                    "border-color":"#fff",
+                    "background-color": "black",
+                    "border-width": 1,
+                    "size": 10
                   },
-                  "scales": "scale-x, scale-y",
-                  "tooltip":{
-                      "text":"%data-activePicks (%data-juice)<br>%data-username",
-                      "font-size":"20px",
-                      "border-radius":"6px",
-                      "background-color":"#fff",
-                      "shadow":true,
-                      "padding":"10px"
+                  "aspect": "spline",
+                  "scales": "scale-x, scale-y"
+              },
+              {
+                  "values": vm.totalProg,
+                  "type": "line",
+                  "line-color": "white",
+                  "marker": {
+                    "border-color":"#fff",
+                    "background-color": "black",
+                    "border-width": 1,
+                    "size": 10
                   },
+                  "aspect": "spline",
+                  "scales": "scale-x, scale-y-2"
               }
             ]
         },
