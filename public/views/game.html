@@ -1,5 +1,5 @@
 <gameHead class="row" ng-init="vm.getLineData(); vm.checkDST()">
-  <div class="col s12 result-head z-depth-1">
+  <div class="col s12 result-head">
     <div class="col s6 left-align">
       <div class="gameHead"> Game Selection Analysis </div>
       <div class="game-details"> {{vm.game.Week}}: <span style="color: {{vm.game.AwayColor}}">{{vm.game.AwayTeam}}</span> @ <span style="color: {{vm.game.HomeColor}}">{{vm.game.HomeTeam}}<span></div>
@@ -34,11 +34,15 @@
 </gameHead>
 
 <div class="row">
-  <div class="col s8 zingDiv">
+  <div class="col s8" style="padding: 0; margin: 0">
     <div zingchart id="myChart" zc-json="vm.myConfig" zc-width="100%" zc-height="1000px"></div>
   </div>
-  <div class="col s4">
-    hello
+  <div class="col s4 chartInfo">
+    <div class="bestLines">
+      <div class="bestLinesHead">
+        :: BEST LINES AVAILABLE
+      </div>
+    </div>
   </div>
 
 </div>
