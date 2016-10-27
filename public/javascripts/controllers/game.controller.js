@@ -335,8 +335,6 @@ function GameController ($stateParams, gameService) {
     })
   }
 
-  1.587
-
   vm.myConfig = {
     "background-color":"#d6d6d6",
     "graphset":[
@@ -377,7 +375,7 @@ function GameController ($stateParams, gameService) {
                 "html-mode": true,
                 "offset-y":"10px",
                 "background-color":"#6D6D6D",
-                "font-size":"60px",
+                "font-size":"60",
                 "text-align": "left",
                 "padding":"10 0 0 10",
                 "alpha": 1
@@ -530,7 +528,7 @@ function GameController ($stateParams, gameService) {
                   "data-submitted": vm.homeSpreadTimes,
                   "data-juice": vm.homeSpreadJuices,
                   "data-homeAbbrev": vm.homeSpreadAbbrevs,
-                  "data-dogInd": vm.homeSpreadInd,
+                  "data-dogInd": vm.homeProgInd,
                   "marker":{
                     "border-color":"black",
                     "border-width": 2,
@@ -556,7 +554,7 @@ function GameController ($stateParams, gameService) {
                   "data-submitted": vm.awaySpreadTimes,
                   "data-juice": vm.awaySpreadJuices,
                   "data-awayAbbrev": vm.awaySpreadAbbrevs,
-                  "data-dogInd": vm.awaySpreadInd,
+                  "data-dogInd": vm.awayProgInd,
                   "marker":{
                     "border-color":"white",
                     "background-repeat":"no-repeat",
@@ -578,7 +576,8 @@ function GameController ($stateParams, gameService) {
                 {
                     "values": vm.homeSpreadProg,
                     "data-abbrev": vm.homeProgAbbrevs,
-                    "data-dogInd": vm.homeDogInd,
+                    "data-juices": vm.homeSpreadProgJuices,
+                    "data-dogInd": vm.homeProgInd,
                     "type": "line",
                     "line-color": "black",
                     "z-index": 1,
@@ -588,7 +587,7 @@ function GameController ($stateParams, gameService) {
                     "aspect": "spline",
                     "scales": "scale-x, scale-y",
                     "tooltip":{
-                        "text":"%data-abbrev %data-dogInd%v",
+                        "text":"%data-abbrev %data-dogInd%v (%data-juices)",
                         "font-color":"#6D6D6D",
                         "font-size":"14px",
                         "border-radius":"6px",
@@ -599,10 +598,26 @@ function GameController ($stateParams, gameService) {
                 },
                 {
                     "values": vm.awaySpreadProg,
+                    "data-abbrev": vm.awayProgAbbrevs,
+                    "data-juices": vm.awaySpreadProgJuices,
+                    "data-dogInd": vm.awayProgInd,
                     "type": "line",
                     "line-color": "white",
+                    "z-index": 1,
+                    "marker": {
+                      "visible": false
+                    },
                     "aspect": "spline",
-                    "scales": "scale-x, scale-y-2"
+                    "scales": "scale-x, scale-y-2",
+                    "tooltip":{
+                        "text":"%data-abbrev %data-dogInd%v (%data-juices)",
+                        "font-color":"#6D6D6D",
+                        "font-size":"14px",
+                        "border-radius":"6px",
+                        "background-color":"#fff",
+                        "shadow":true,
+                        "padding":"5px"
+                    },
                 }
             ]
         },
@@ -1115,29 +1130,43 @@ function GameController ($stateParams, gameService) {
               },
               {
                   "values": vm.totalProg,
+                  "data-juices": vm.totalProgUnderJuices,
                   "type": "line",
                   "line-color": "black",
                   "marker": {
-                    "border-color":"#fff",
-                    "background-color": "black",
-                    "border-width": 1,
-                    "size": 10
+                    "visible": false
                   },
                   "aspect": "spline",
-                  "scales": "scale-x, scale-y"
+                  "scales": "scale-x, scale-y",
+                  "tooltip":{
+                      "text":"U%v (%data-juices)",
+                      "font-color":"#6D6D6D",
+                      "font-size":"14px",
+                      "border-radius":"6px",
+                      "background-color":"#fff",
+                      "shadow":true,
+                      "padding":"5px"
+                  },
               },
               {
                   "values": vm.totalProg,
+                  "data-juices": vm.totalProgOverJuices,
                   "type": "line",
                   "line-color": "white",
                   "marker": {
-                    "border-color":"#fff",
-                    "background-color": "black",
-                    "border-width": 1,
-                    "size": 10
+                    "visible": false
                   },
                   "aspect": "spline",
-                  "scales": "scale-x, scale-y-2"
+                  "scales": "scale-x, scale-y-2",
+                  "tooltip":{
+                      "text":"O%v (%data-juices)",
+                      "font-color":"#6D6D6D",
+                      "font-size":"14px",
+                      "border-radius":"6px",
+                      "background-color":"#fff",
+                      "shadow":true,
+                      "padding":"5px"
+                  },
               }
             ]
         }
