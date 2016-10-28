@@ -285,10 +285,7 @@ function GameController ($stateParams, gameService) {
         for (var i=0; i<loopLength; i++){
           var min = Array.min(CGranks);
           var minIndex = CGranks.indexOf(min);
-          console.log('minindex is ', minIndex);
           var color;
-
-          console.log('mindex pick type is ', masterPickArray[minIndex].pickType);
 
           if (masterPickArray[minIndex].pickType === "Home Spread" || masterPickArray[minIndex].pickType === "Home Moneyline") {
             color = vm.game.HomeColor
@@ -301,8 +298,6 @@ function GameController ($stateParams, gameService) {
           } else {
             return
           };
-
-          console.log(color);
 
           vm.capperRanks.push({
             "ranking": min,
@@ -320,13 +315,12 @@ function GameController ($stateParams, gameService) {
           masterPickArray.splice(minIndex, 1);
         };
 
-        console.log(vm.capperRanks)
       })
     }).then(function(){
       gameService.getLineMoves(vm.EventID).then(function(result){
         vm.lineMoves = result[0];
 
-        for (var i=0; i<vm.lineMoves.TimeLogged.length; i++){
+        for (var i=0; i<vm.lineMoves.TimeLogged.length; i+=2){
           var unixTime = moment(vm.lineMoves.TimeLogged[i]).valueOf();
 
           var awayDogInd;
@@ -360,9 +354,7 @@ function GameController ($stateParams, gameService) {
           vm.totalProg.push([unixTime, vm.lineMoves.Totals[i]]);
           vm.totalProgOverJuices.push(vm.lineMoves.TotalOverJuices[i]);
           vm.totalProgUnderJuices.push(vm.lineMoves.TotalUnderJuices[i]);
-
         };
-
       })
     })
   }
@@ -393,10 +385,9 @@ function GameController ($stateParams, gameService) {
             "x":"1%",
             "y":"8%",
             "width":"98%",
-            // "height": "10%",
             "background-color":"#f9f9f9",
             "title":{
-                "text":"Picks are charted based on value relative to the best line ever available for each pick; the higher on the chart a pick bubble appears, the more relative value that had pick had. Home and Under picks are charted against the left axis, while Away and Over picks are charted against the right axis. Each side's line graph displays line movement over the course of the week. Hover over each pick bubble for details.",
+                "text":"Picks are charted based on value relative to the best line ever available for each pick; the higher on the chart a pick bubble appears, the more relative value that had pick had. Home and Under picks are charted against the left axis, while Away and Over picks are charted against the right axis. Each side's line graph charts line movement over the course of the week. Hover over each pick bubble for details.",
                 "wrap-text": true,
                 "font-size":"11px",
                 "color":"#6D6D6D",
@@ -510,7 +501,7 @@ function GameController ($stateParams, gameService) {
                 "values": vm.timeValues,
                 "transform":{
                   "type":"date",
-                  "all":"%D<br>%m/%d/%y"
+                  "all":"%D, %m/%d <br> %g:%i PM"
                 },
                 "item":{
                     "font-color":"#2D2D2D"
@@ -778,7 +769,7 @@ function GameController ($stateParams, gameService) {
                 "values": vm.timeValues,
                 "transform":{
                   "type":"date",
-                  "all":"%D<br>%m/%d/%y"
+                  "all":"%D, %m/%d <br> %g:%i PM"
                 },
                 "item":{
                     "font-color":"#726F6E"
@@ -1058,7 +1049,7 @@ function GameController ($stateParams, gameService) {
                 "values": vm.timeValues,
                 "transform":{
                   "type":"date",
-                  "all":"%D<br>%m/%d/%y"
+                  "all":"%D, %m/%d <br> %g:%i PM"
                 },
                 "item":{
                     "font-color":"#2F5032"
