@@ -1045,11 +1045,11 @@ prizeIntro div {
 
 .bestLinesHead2 {
   padding: 16px 0px 12px 3px;
-  text-align: center;
   color: #6D6D6D;
   font-size: 16px;
   font-weight: 800;
   border-bottom: 1px solid #d6d6d6;
+  text-align: center;
 }
 
 .optLineTm {
@@ -1076,8 +1076,8 @@ capLead {
 }
 
 .capperBox {
-  height: 300px;
-  /*overflow: scroll;*/
+  height: 650px;
+  overflow: scroll;
 }
 
 .pickSubmit {

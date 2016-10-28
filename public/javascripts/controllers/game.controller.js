@@ -92,14 +92,14 @@ function GameController ($stateParams, gameService) {
 
       vm.totUnderOptJuice = vm.game.TotalUnderIndex.juices[vm.game.TotalUnderIndex.totals.indexOf(vm.game.TotalHigh)];
 
-      vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.homeColor;
-      vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.homeColor;
-      vm.myConfig.graphset[10].series[0].marker.backgroundColor = vm.homeColor;
-      vm.myConfig.graphset[10].series[0].tooltip.fontColor = vm.homeColor;
-      vm.myConfig.graphset[5].series[1].marker.backgroundColor = vm.awayColor;
-      vm.myConfig.graphset[5].series[1].tooltip.fontColor = vm.awayColor;
-      vm.myConfig.graphset[10].series[1].marker.backgroundColor = vm.awayColor;
-      vm.myConfig.graphset[10].series[1].tooltip.fontColor = vm.awayColor;
+      vm.myConfig.graphset[6].series[0].marker.backgroundColor = vm.homeColor;
+      vm.myConfig.graphset[6].series[0].tooltip.fontColor = vm.homeColor;
+      vm.myConfig.graphset[11].series[0].marker.backgroundColor = vm.homeColor;
+      vm.myConfig.graphset[11].series[0].tooltip.fontColor = vm.homeColor;
+      vm.myConfig.graphset[6].series[1].marker.backgroundColor = vm.awayColor;
+      vm.myConfig.graphset[6].series[1].tooltip.fontColor = vm.awayColor;
+      vm.myConfig.graphset[11].series[1].marker.backgroundColor = vm.awayColor;
+      vm.myConfig.graphset[11].series[1].tooltip.fontColor = vm.awayColor;
 
       if (moment(vm.game.MatchTime).day() !== 0 && moment(vm.game.MatchTime).day() !== 1) {
         vm.dateRangeLow = moment(vm.game.MatchTime).day(0).hour(14).valueOf()
@@ -174,23 +174,23 @@ function GameController ($stateParams, gameService) {
 
         vm.awayAbbrev = vm.awaySpreadPicks[0].activePick.substr(0, vm.awaySpreadPicks[0].activePick.indexOf(' '));
 
-        vm.myConfig.graphset[1].subtitle.fontColor = vm.homeColor;
-        vm.myConfig.graphset[6].subtitle.fontColor = vm.homeColor;
-        vm.myConfig.graphset[3].subtitle.fontColor = vm.awayColor;
-        vm.myConfig.graphset[8].subtitle.fontColor = vm.awayColor;
+        vm.myConfig.graphset[2].subtitle.fontColor = vm.homeColor;
+        vm.myConfig.graphset[7].subtitle.fontColor = vm.homeColor;
+        vm.myConfig.graphset[4].subtitle.fontColor = vm.awayColor;
+        vm.myConfig.graphset[9].subtitle.fontColor = vm.awayColor;
 
-        vm.myConfig.graphset[1].subtitle.text= "<div>" + vm.homeSpreadPickPct +"%</div>";
-        vm.myConfig.graphset[2].title.text= "<div>" + vm.homeAbbrev +" SPREAD</div>";
-        vm.myConfig.graphset[3].subtitle.text= "<div>" + vm.awaySpreadPickPct +"%</div>";
-        vm.myConfig.graphset[4].title.text= "<div>" + vm.awayAbbrev +" SPREAD</div>";
-        vm.myConfig.graphset[6].subtitle.text= "<div>" + vm.homeMLPickPct +"%</div>";
-        vm.myConfig.graphset[7].title.text= "<div>" + vm.homeAbbrev +" ML</div>";
-        vm.myConfig.graphset[8].subtitle.text= "<div>" + vm.awayMLPickPct +"%</div>";
-        vm.myConfig.graphset[9].title.text= "<div>" + vm.awayAbbrev +" ML</div>";
-        vm.myConfig.graphset[11].subtitle.text= "<div>" + vm.overPickPct +"%</div>";
-        vm.myConfig.graphset[12].title.text= "<div>OVER TOTAL</div>";
-        vm.myConfig.graphset[13].subtitle.text= "<div>" + vm.underPickPct +"%</div>";
-        vm.myConfig.graphset[14].title.text= "<div>UNDER TOTAL</div>";
+        vm.myConfig.graphset[2].subtitle.text= "<div>" + vm.homeSpreadPickPct +"%</div>";
+        vm.myConfig.graphset[3].title.text= "<div>" + vm.homeAbbrev +" SPREAD</div>";
+        vm.myConfig.graphset[4].subtitle.text= "<div>" + vm.awaySpreadPickPct +"%</div>";
+        vm.myConfig.graphset[5].title.text= "<div>" + vm.awayAbbrev +" SPREAD</div>";
+        vm.myConfig.graphset[7].subtitle.text= "<div>" + vm.homeMLPickPct +"%</div>";
+        vm.myConfig.graphset[8].title.text= "<div>" + vm.homeAbbrev +" ML</div>";
+        vm.myConfig.graphset[9].subtitle.text= "<div>" + vm.awayMLPickPct +"%</div>";
+        vm.myConfig.graphset[10].title.text= "<div>" + vm.awayAbbrev +" ML</div>";
+        vm.myConfig.graphset[12].subtitle.text= "<div>" + vm.overPickPct +"%</div>";
+        vm.myConfig.graphset[13].title.text= "<div>OVER TOTAL</div>";
+        vm.myConfig.graphset[14].subtitle.text= "<div>" + vm.underPickPct +"%</div>";
+        vm.myConfig.graphset[15].title.text= "<div>UNDER TOTAL</div>";
 
         for (i=0; i<vm.homeSpreadPicks.length; i++) {
           var unixTime = moment(vm.homeSpreadPicks[i].submittedAt).valueOf();
@@ -386,6 +386,23 @@ function GameController ($stateParams, gameService) {
                 "background-color":"#f9f9f9",
                 "border-bottom":"1px solid #d6d6d6",
                 "padding":"16 30 16 30"
+            }
+        },
+        {
+            "type":"null",
+            "x":"1%",
+            "y":"8%",
+            "width":"98%",
+            // "height": "10%",
+            "background-color":"#f9f9f9",
+            "title":{
+                "text":"Picks are charted based on value relative to the best line ever available for each pick; the higher on the chart a pick bubble appears, the more relative value that had pick had. Home and Under picks are charted against the left axis, while Away and Over picks are charted against the right axis. Each side's line graph displays line movement over the course of the week. Hover over each pick bubble for details.",
+                "wrap-text": true,
+                "font-size":"11px",
+                "color":"#6D6D6D",
+                "background-color":"#f9f9f9",
+                "text-align": "left",
+                "padding":"-5 0 0 10"
             }
         },
         {
