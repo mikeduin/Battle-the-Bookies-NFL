@@ -1037,3 +1037,9 @@ prizeIntro div {
   font-weight: 800;
   border-bottom: 1px solid #d6d6d6;
 }
+
+.optLine {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: right;
+}

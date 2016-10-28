@@ -466,7 +466,7 @@ setInterval(function(){
   })
 }, 660000)
 
-// This function below runs every 9 minutes and checks to see whether a game's pick ranges have been added to the original line data.
+// This function below runs every 4 minutes and checks to see whether a game's pick ranges have been added to the original line data.
 
 setInterval(function(){
   var now = moment();
@@ -647,7 +647,7 @@ setInterval(function(){
       })
     })
   })
-}, 540000)
+}, 240000)
 
 // ALL THE FUNCTION BELOW DOES IS UPDATE THE LINE DATA WITH THE RANGES. DO YOU EVEN NEED TO DO THAT ANYMORE NOW THAT YOU ARE TRACKING LINE MOVEMENT?
 

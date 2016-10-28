@@ -82,6 +82,10 @@ function GameController ($stateParams, gameService) {
       vm.awayColor = vm.game.AwayColor;
       vm.homeColor = vm.game.HomeColor;
 
+      console.log(vm.game);
+
+      if (vm.game.Home)
+
       vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.homeColor;
       vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.homeColor;
       vm.myConfig.graphset[10].series[0].marker.backgroundColor = vm.homeColor;
