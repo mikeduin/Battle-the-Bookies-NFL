@@ -362,111 +362,7 @@ router.get('/pullGame/:gameID', function(req, res, next){
   })
 })
 
-// The function below runs every 11 minutes and checks to see if a game has started and has not yet had its pick arrays built. In that case, it constructs the pick arrays and then marks ArraysBuilt as 'true' so as not to needlessly reproduce the update in the future.
-
-setInterval(function(){
-  var now = moment();
-  Line.find({
-    MatchTime: {
-      $lt: now
-    },
-    ArraysBuilt: {
-      $in: [false, null]
-    }
-  }, function(err, games){
-    if(err) {console.log(err)}
-
-  }).then(function(games){
-    if (!games) {
-      return
-    };
-
-    games.forEach(function(game){
-      var overPickArray = [];
-      var underPickArray = [];
-      var homeSpreadPickArray = [];
-      var awaySpreadPickArray = [];
-      var homeMLPickArray = [];
-      var awayMLPickArray = [];
-      var noPickArray = [];
-      Pick.find({EventID: game.EventID}, function(err, picks){
-        if(err) {console.log(err)}
-
-      }).then(function(picks){
-        picks.forEach(function(pick){
-          var relevantLine;
-          if (pick.pickType === "Total Over" || pick.pickType === "Total Under") {
-            relevantLine = pick.activeTotal
-          } else if (pick.pickType === "Home Spread" || pick.pickType === "Away Spread") {
-            relevantLine = pick.activeSpread
-          } else {
-            relevantLine = pick.activeLine
-          };
-          var pickObject = {
-            id: pick.id,
-            username: pick.username,
-            submittedAt: pick.submittedAt,
-            pickType: pick.pickType,
-            geoType: pick.geoType,
-            betType: pick.betType,
-            favType: pick.favType,
-            activePayout: pick.activePayout,
-            activePick: pick.activePick,
-            activeLine: pick.activeLine,
-            capperGrade: pick.capperGrade,
-            relevantLine: relevantLine
-          };
-          if (pick.pickType === "Total Over") {
-            overPickArray.push(pickObject)
-          } else if (pick.pickType === "Total Under") {
-            underPickArray.push(pickObject)
-          } else if (pick.pickType === "Away Spread") {
-            awaySpreadPickArray.push(pickObject)
-          } else if (pick.pickType === "Home Spread") {
-            homeSpreadPickArray.push(pickObject)
-          } else if (pick.pickType === "Away Moneyline") {
-            awayMLPickArray.push(pickObject)
-          } else if (pick.pickType === "Home Moneyline") {
-            homeMLPickArray.push(pickObject)
-          } else {
-            noPickArray.push(pickObject)
-          };
-        })
-
-      }).then(function(){
-        PickArray.findOneAndUpdate({EventID: game.EventID}, {
-          $set: {
-            EventID: game.EventID,
-            OverPickArray: overPickArray,
-            UnderPickArray: underPickArray,
-            AwaySpreadPickArray: awaySpreadPickArray,
-            HomeSpreadPickArray: homeSpreadPickArray,
-            AwayMLPickArray: awayMLPickArray,
-            HomeMLPickArray: homeMLPickArray,
-            NoPickArray: noPickArray
-          }
-        }, {upsert: true}, function(err){
-          if(err) {console.log(err)}
-
-          console.log("arrays have been built for", game.EventID)
-
-        })
-      }).then(function(){
-        Line.findOneAndUpdate({EventID: game.EventID}, {$set:
-          {
-            ArraysBuilt: true
-          }
-        }, function(err, updatedLine){
-          if (err) {console.log(err)}
-
-          console.log('arrays built set to true for', updatedLine.EventID)
-        })
-      })
-    })
-  })
-}, 660000)
-
-// This function below runs every 4 minutes and checks to see whether a game's pick ranges have been added to the original line data.
+// This massive function below runs every 5 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrads for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
 
 setInterval(function(){
   var now = moment();
@@ -646,118 +542,271 @@ setInterval(function(){
         });
       })
     })
+  }).then(function(){
+    var now = moment();
+    // This upcoming chain of functions sets a pick's CapperGrades score if the game has started and the CapperGrades have not previously been set
+    Pick.find({
+      MatchTime: {
+        $lt: now
+      },
+      Week: {
+        $nin: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
+      },
+      capperGraded: {
+        $in: [false, null]
+      }
+    }, function(err, picks){
+      if (err) {console.log(err)}
+
+    }).then(function(picks){
+      picks.forEach(function(pick){
+        if (!pick.activePick) {
+          return
+        };
+
+        var startGrade = 10;
+        var capperGrade;
+        var bestLineAvail;
+        var bestJuiceAvail;
+        var pickID = pick._id;
+        Line.find({EventID: pick.EventID}, function(err, line){
+          console.log('pick is ', pick);
+          if (err) {console.log(err)}
+
+          if (pick.pickType === "Away Spread") {
+            bestLineAvail = line[0].AwaySpreadBest;
+            if (pick.activeSpread > bestLineAvail) {
+              bestLineAvail = pick.activeSpread
+            };
+            startGrade -= (bestLineAvail - pick.activeSpread);
+            var sprIndex = line[0].AwaySpreadIndex.spreads.indexOf(pick.activeSpread);
+            bestJuiceAvail = line[0].AwaySpreadIndex.juices[sprIndex];
+            if (pick.activeLine > bestJuiceAvail) {
+              bestJuiceAvail = pick.activeLine
+            };
+            if (bestJuiceAvail < 1) {
+              capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
+            } else {
+              if (pick.activeLine < 1) {
+                capperGrade = startGrade - (((bestJuiceAvail - (pick.activeLine+200))/5)*0.1)
+              } else {
+                capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
+              }
+            }
+          } else if (pick.pickType === "Home Spread") {
+            bestLineAvail = line[0].HomeSpreadBest;
+            if (pick.activeSpread > bestLineAvail) {
+              bestLineAvail = pick.activeSpread
+            };
+            startGrade -= (bestLineAvail - pick.activeSpread);
+            var sprIndex = line[0].HomeSpreadIndex.spreads.indexOf(pick.activeSpread);
+            bestJuiceAvail = line[0].HomeSpreadIndex.juices[sprIndex];
+            if (pick.activeLine > bestJuiceAvail) {
+              bestJuiceAvail = pick.activeLine
+            };
+            if (bestJuiceAvail < 1) {
+              capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
+            } else {
+              if (pick.activeLine < 1) {
+                capperGrade = startGrade - (((bestJuiceAvail - (pick.activeLine+200))/5)*0.1)
+              } else {
+                capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
+              }
+            }
+          } else if (pick.pickType === "Away Moneyline") {
+            bestLineAvail = line[0].AwayMLBest;
+            bestJuiceAvail = 0;
+            if (pick.activeLine > bestLineAvail) {
+              bestLineAvail = pick.activeLine
+            };
+            if (bestLineAvail < 1) {
+              startGrade -= (((bestLineAvail - pick.activeLine)/20)*0.5)
+            } else {
+              if (pick.activeLine < 1) {
+                startGrade -= (((bestLineAvail - (pick.activeLine+200))/20)*0.5)
+              } else {
+                startGrade -= (((bestLineAvail - pick.activeLine)/20)*0.5)
+              }
+            }
+            capperGrade = startGrade;
+          } else if (pick.pickType === "Home Moneyline") {
+            bestLineAvail = line[0].HomeMLBest;
+            bestJuiceAvail = 0;
+            if (pick.activeLine > bestLineAvail) {
+              bestLineAvail = pick.activeLine
+            };
+            if (bestLineAvail < 1) {
+              startGrade -= (((bestLineAvail - pick.activeLine)/20)*0.5)
+            } else {
+              if (pick.activeLine < 1) {
+                startGrade -= (((bestLineAvail - (pick.activeLine+200))/20)*0.5)
+              } else {
+                startGrade -= (((bestLineAvail - pick.activeLine)/20)*0.5)
+              }
+            }
+            capperGrade = startGrade;
+          } else if (pick.pickType === "Total Over") {
+            bestLineAvail = line[0].TotalLow;
+            if (pick.activeTotal < bestLineAvail) {
+              bestLineAvail = pick.activeTotal
+            };
+            startGrade -= (pick.activeTotal - bestLineAvail);
+            var totIndex = line[0].TotalOverIndex.totals.indexOf(pick.activeTotal);
+            bestJuiceAvail = line[0].TotalOverIndex.juices[totIndex];
+            if (pick.activeLine > bestJuiceAvail) {
+              bestJuiceAvail = pick.activeLine
+            };
+            if (bestJuiceAvail < 1) {
+              capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
+            } else {
+              if (pick.activeLine < 1) {
+                capperGrade = startGrade - (((bestJuiceAvail - (pick.activeLine+200))/5)*0.1)
+              } else {
+                capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
+              }
+            }
+          } else if (pick.pickType === "Total Under"){
+            bestLineAvail = line[0].TotalHigh;
+            if (pick.activeTotal > bestLineAvail) {
+              bestLineAvail = pick.activeTotal
+            };
+            startGrade -= (bestLineAvail - pick.activeTotal);
+            var totIndex = line[0].TotalUnderIndex.totals.indexOf(pick.activeTotal);
+            bestJuiceAvail = line[0].TotalUnderIndex.juices[totIndex];
+            if (pick.activeLine > bestJuiceAvail) {
+              bestJuiceAvail = pick.activeLine
+            };
+            if (bestJuiceAvail < 1) {
+              capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
+            } else {
+              if (pick.activeLine < 1) {
+                capperGrade = startGrade - (((bestJuiceAvail - (pick.activeLine+200))/5)*0.1)
+              } else {
+                capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
+              }
+            }
+          } else {
+            return
+          };
+
+          Pick.findOneAndUpdate({_id: pickID}, {
+            $set: {
+              capperGrade: capperGrade,
+              capperGraded: true,
+              bestLineAvail: bestLineAvail,
+              bestJuiceAvail: bestJuiceAvail
+            }
+          }, {upsert: true}, function(err){
+            if (err) {console.log(err)}
+
+            console.log(pickID, " has been updated")
+          });
+        })
+      })
+    })
+  }).then(function(){
+    var now = moment();
+    console.log('function has made it to last part')
+    Line.find({
+      MatchTime: {
+        $lt: now
+      },
+      ArraysBuilt: {
+        $in: [false, null]
+      }
+    }, function(err, games){
+      if(err) {console.log(err)}
+
+    }).then(function(games){
+      if (!games) {
+        return
+      };
+
+      games.forEach(function(game){
+        var overPickArray = [];
+        var underPickArray = [];
+        var homeSpreadPickArray = [];
+        var awaySpreadPickArray = [];
+        var homeMLPickArray = [];
+        var awayMLPickArray = [];
+        var noPickArray = [];
+        Pick.find({EventID: game.EventID}, function(err, picks){
+          if(err) {console.log(err)}
+
+        }).then(function(picks){
+          picks.forEach(function(pick){
+            var relevantLine;
+            if (pick.pickType === "Total Over" || pick.pickType === "Total Under") {
+              relevantLine = pick.activeTotal
+            } else if (pick.pickType === "Home Spread" || pick.pickType === "Away Spread") {
+              relevantLine = pick.activeSpread
+            } else {
+              relevantLine = pick.activeLine
+            };
+            var pickObject = {
+              id: pick.id,
+              username: pick.username,
+              submittedAt: pick.submittedAt,
+              pickType: pick.pickType,
+              geoType: pick.geoType,
+              betType: pick.betType,
+              favType: pick.favType,
+              activePayout: pick.activePayout,
+              activePick: pick.activePick,
+              activeLine: pick.activeLine,
+              capperGrade: pick.capperGrade,
+              relevantLine: relevantLine
+            };
+            if (pick.pickType === "Total Over") {
+              overPickArray.push(pickObject)
+            } else if (pick.pickType === "Total Under") {
+              underPickArray.push(pickObject)
+            } else if (pick.pickType === "Away Spread") {
+              awaySpreadPickArray.push(pickObject)
+            } else if (pick.pickType === "Home Spread") {
+              homeSpreadPickArray.push(pickObject)
+            } else if (pick.pickType === "Away Moneyline") {
+              awayMLPickArray.push(pickObject)
+            } else if (pick.pickType === "Home Moneyline") {
+              homeMLPickArray.push(pickObject)
+            } else {
+              noPickArray.push(pickObject)
+            };
+          })
+
+        }).then(function(){
+          PickArray.findOneAndUpdate({EventID: game.EventID}, {
+            $set: {
+              EventID: game.EventID,
+              OverPickArray: overPickArray,
+              UnderPickArray: underPickArray,
+              AwaySpreadPickArray: awaySpreadPickArray,
+              HomeSpreadPickArray: homeSpreadPickArray,
+              AwayMLPickArray: awayMLPickArray,
+              HomeMLPickArray: homeMLPickArray,
+              NoPickArray: noPickArray
+            }
+          }, {upsert: true}, function(err){
+            if(err) {console.log(err)}
+
+            console.log("arrays have been built for", game.EventID)
+
+          })
+        }).then(function(){
+          Line.findOneAndUpdate({EventID: game.EventID}, {$set:
+            {
+              ArraysBuilt: true
+            }
+          }, function(err, updatedLine){
+            if (err) {console.log(err)}
+
+            console.log('arrays built set to true for', updatedLine.EventID)
+          })
+        })
+      })
+    })
   })
-}, 240000)
-
-// ALL THE FUNCTION BELOW DOES IS UPDATE THE LINE DATA WITH THE RANGES. DO YOU EVEN NEED TO DO THAT ANYMORE NOW THAT YOU ARE TRACKING LINE MOVEMENT?
-
-// setInterval(function(){
-//   var now = moment();
-//   Line.find({
-//     MatchTime: {
-//       $lt: now
-//     },
-//     Week: {
-//       $in: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
-//     },
-//     RangesSet: {
-//       $in: [false, null]
-//     }
-//   }, function(err, games){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(games){
-//     games.forEach(function(game){
-//       PickArray.find({EventID: game.EventID}, function(err, gameArrays){
-//         if (err) {console.log(err)}
-//
-//       }).then(function(gameArrays){
-//         var dogMLPicks = gameArrays[0].DogMLPickArray;
-//         var dogSpreadPicks = gameArrays[0].DogSpreadPickArray;
-//         var favMLPicks = gameArrays[0].FavMLPickArray;
-//         var favSpreadPicks = gameArrays[0].FavSpreadPickArray;
-//         var overPicks = gameArrays[0].OverPickArray;
-//         var underPicks = gameArrays[0].UnderPickArray;
-//         var noPicks = gameArrays[0].NoPickArray;
-//         var EventID = gameArrays[0].EventID;
-//
-//         var dogMLs = [];
-//         var favMLs = [];
-//         var dogSpreads = [];
-//         var favSpreads = [];
-//         var overs = [];
-//         var unders = [];
-//
-//         for (i=0; i<dogMLPicks.length; i++){
-//           dogMLs.push(dogMLPicks[i].relevantLine)
-//         };
-//
-//         for (i=0; i<favMLPicks.length; i++){
-//           favMLs.push(favMLPicks[i].relevantLine)
-//         };
-//
-//         for (i=0; i<dogSpreadPicks.length; i++){
-//           dogSpreads.push(dogSpreadPicks[i].relevantLine)
-//         };
-//
-//         for (i=0; i<favSpreadPicks.length; i++){
-//           favSpreads.push(favSpreadPicks[i].relevantLine)
-//         };
-//
-//         for (i=0; i<overPicks.length; i++){
-//           overs.push(overPicks[i].relevantLine)
-//         };
-//
-//         for (i=0; i<underPicks.length; i++){
-//           unders.push(underPicks[i].relevantLine)
-//         };
-//
-//         var dogMLBest = Array.max(dogMLs);
-//         var dogMLWorst = Array.min(dogMLs);
-//         var favMLBest = Array.max(favMLs);
-//         var favMLWorst = Array.min(favMLs);
-//         var spreadHigh = Math.max(Array.max(dogSpreads), Math.abs(Array.min(favSpreads)));
-//         var spreadLow = Math.min(Array.min(dogSpreads), Math.abs(Array.max(favSpreads)));
-//         var totalHigh = Math.max(Array.max(overs), Array.max(unders));
-//         var totalLow = Math.min(Array.min(overs), Array.min(unders));
-//
-//         if (spreadHigh === "Infinity") {
-//           spreadHigh = spreadLow
-//         };
-//
-//         if (spreadLow === "Infinity") {
-//           spreadLow = spreadHigh
-//         };
-//
-//         if (totalHigh === "Infinity") {
-//           totalHigh = totalLow
-//         };
-//
-//         if (totalLow === "Infinity") {
-//           totalLow = totalHigh
-//         };
-//
-//         Line.findOneAndUpdate({EventID: EventID}, {
-//           $set: {
-//             DogMLBest: dogMLBest,
-//             DogMLWorst: dogMLWorst,
-//             FavMLBest: favMLBest,
-//             FavMLWorst: favMLWorst,
-//             TotalHigh: totalHigh,
-//             TotalLow: totalLow,
-//             SpreadHigh: spreadHigh,
-//             SpreadLow: spreadLow,
-//             RangesSet: true
-//           }
-//         }, {upsert: true}, function(err, updatedLine){
-//           if (err) {console.log(err)}
-//
-//           console.log('spread ranges have been set for ', updatedLine.EventID)
-//         })
-//       })
-//     })
-//   })
-// }, 480000)
+}, 300000)
 
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 
@@ -826,192 +875,6 @@ setInterval(function(){
   })
 }, 2100000);
 
-// This function runs every 5 minutes and sets a pick's CapperGrades score if the game has started and the CapperGrades have not previously been set
-
-setInterval(function(){
-  var now = moment();
-  Pick.find({
-    MatchTime: {
-      $lt: now
-    },
-    Week: {
-      $nin: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
-    },
-    capperGraded: {
-      $in: [false, null]
-    }
-  }, function(err, picks){
-    if (err) {console.log(err)}
-
-  }).then(function(picks){
-    picks.forEach(function(pick){
-      if (!pick.activePick) {
-        return
-      };
-
-      var startGrade = 10;
-      var capperGrade;
-      var bestLineAvail;
-      var bestJuiceAvail;
-      var pickID = pick._id;
-      Line.find({EventID: pick.EventID}, function(err, line){
-        console.log('pick is ', pick);
-        if (err) {console.log(err)}
-
-        if (pick.pickType === "Away Spread") {
-          bestLineAvail = line[0].AwaySpreadBest;
-          if (pick.activeSpread > bestLineAvail) {
-            bestLineAvail = pick.activeSpread
-          };
-          startGrade -= (bestLineAvail - pick.activeSpread);
-          var sprIndex = line[0].AwaySpreadIndex.spreads.indexOf(pick.activeSpread);
-          bestJuiceAvail = line[0].AwaySpreadIndex.juices[sprIndex];
-          if (pick.activeLine > bestJuiceAvail) {
-            bestJuiceAvail = pick.activeLine
-          };
-          if (bestJuiceAvail < 1) {
-            capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
-          } else {
-            if (pick.activeLine < 1) {
-              capperGrade = startGrade - (((bestJuiceAvail - (pick.activeLine+200))/5)*0.1)
-            } else {
-              capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
-            }
-          }
-        } else if (pick.pickType === "Home Spread") {
-          bestLineAvail = line[0].HomeSpreadBest;
-          if (pick.activeSpread > bestLineAvail) {
-            bestLineAvail = pick.activeSpread
-          };
-          startGrade -= (bestLineAvail - pick.activeSpread);
-          var sprIndex = line[0].HomeSpreadIndex.spreads.indexOf(pick.activeSpread);
-          bestJuiceAvail = line[0].HomeSpreadIndex.juices[sprIndex];
-          if (pick.activeLine > bestJuiceAvail) {
-            bestJuiceAvail = pick.activeLine
-          };
-          if (bestJuiceAvail < 1) {
-            capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
-          } else {
-            if (pick.activeLine < 1) {
-              capperGrade = startGrade - (((bestJuiceAvail - (pick.activeLine+200))/5)*0.1)
-            } else {
-              capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
-            }
-          }
-        } else if (pick.pickType === "Away Moneyline") {
-          bestLineAvail = line[0].AwayMLBest;
-          bestJuiceAvail = 0;
-          if (pick.activeLine > bestLineAvail) {
-            bestLineAvail = pick.activeLine
-          };
-          if (bestLineAvail < 1) {
-            startGrade -= (((bestLineAvail - pick.activeLine)/20)*0.5)
-          } else {
-            if (pick.activeLine < 1) {
-              startGrade -= (((bestLineAvail - (pick.activeLine+200))/20)*0.5)
-            } else {
-              startGrade -= (((bestLineAvail - pick.activeLine)/20)*0.5)
-            }
-          }
-          capperGrade = startGrade;
-        } else if (pick.pickType === "Home Moneyline") {
-          bestLineAvail = line[0].HomeMLBest;
-          bestJuiceAvail = 0;
-          if (pick.activeLine > bestLineAvail) {
-            bestLineAvail = pick.activeLine
-          };
-          if (bestLineAvail < 1) {
-            startGrade -= (((bestLineAvail - pick.activeLine)/20)*0.5)
-          } else {
-            if (pick.activeLine < 1) {
-              startGrade -= (((bestLineAvail - (pick.activeLine+200))/20)*0.5)
-            } else {
-              startGrade -= (((bestLineAvail - pick.activeLine)/20)*0.5)
-            }
-          }
-          capperGrade = startGrade;
-        } else if (pick.pickType === "Total Over") {
-          bestLineAvail = line[0].TotalLow;
-          if (pick.activeTotal < bestLineAvail) {
-            bestLineAvail = pick.activeTotal
-          };
-          startGrade -= (pick.activeTotal - bestLineAvail);
-          var totIndex = line[0].TotalOverIndex.totals.indexOf(pick.activeTotal);
-          bestJuiceAvail = line[0].TotalOverIndex.juices[totIndex];
-          if (pick.activeLine > bestJuiceAvail) {
-            bestJuiceAvail = pick.activeLine
-          };
-          if (bestJuiceAvail < 1) {
-            capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
-          } else {
-            if (pick.activeLine < 1) {
-              capperGrade = startGrade - (((bestJuiceAvail - (pick.activeLine+200))/5)*0.1)
-            } else {
-              capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
-            }
-          }
-        } else if (pick.pickType === "Total Under"){
-          bestLineAvail = line[0].TotalHigh;
-          if (pick.activeTotal > bestLineAvail) {
-            bestLineAvail = pick.activeTotal
-          };
-          startGrade -= (bestLineAvail - pick.activeTotal);
-          var totIndex = line[0].TotalUnderIndex.totals.indexOf(pick.activeTotal);
-          bestJuiceAvail = line[0].TotalUnderIndex.juices[totIndex];
-          if (pick.activeLine > bestJuiceAvail) {
-            bestJuiceAvail = pick.activeLine
-          };
-          if (bestJuiceAvail < 1) {
-            capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
-          } else {
-            if (pick.activeLine < 1) {
-              capperGrade = startGrade - (((bestJuiceAvail - (pick.activeLine+200))/5)*0.1)
-            } else {
-              capperGrade = startGrade - (((bestJuiceAvail - pick.activeLine)/5)*0.1)
-            }
-          }
-        } else {
-          return
-        };
-
-        Pick.findOneAndUpdate({_id: pickID}, {
-          $set: {
-            capperGrade: capperGrade,
-            capperGraded: true,
-            bestLineAvail: bestLineAvail,
-            bestJuiceAvail: bestJuiceAvail
-          }
-        }, {upsert: true}, function(err){
-          if (err) {console.log(err)}
-
-          console.log(pickID, " has been updated")
-        });
-      })
-    })
-  })
-  // .then(function(){
-  //   Line.findOneAndUpdate({
-  //     MatchTime: {
-  //       $lt: now
-  //     },
-  //     Week: {
-  //       $in: ["Week 7", "Week 6"]
-  //     },
-  //     CapperGraded: {
-  //       $in: [false, null]
-  //     }
-  //   }, {
-  //     $set: {
-  //       CapperGraded: true
-  //     }
-  //   }, function(err, line){
-  //     if (err) {console.log(err)}
-  //
-  //     console.log('capperGrade has been set to true for line ', line.eventID)
-  //   })
-  // })
-}, 300000)
-
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });
 
@@ -1070,7 +933,7 @@ setInterval(function(){
     })
   })
   console.log("matchtimes have been updated")
-}, 1380000)
+}, 3600000)
 
 // This function below checks every five minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 
