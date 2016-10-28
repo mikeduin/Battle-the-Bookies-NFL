@@ -60,7 +60,7 @@ function GameController ($stateParams, gameService) {
   var masterPickArray = [];
   var capperGrades = [];
   var CGranks;
-  var capperRanks = [];
+  vm.capperRanks = [];
 
   vm.checkDST = function() {
     if (moment().isDST() === true){
@@ -84,7 +84,13 @@ function GameController ($stateParams, gameService) {
 
       console.log(vm.game);
 
-      if (vm.game.Home)
+      vm.homeOptJuice =  vm.game.HomeSpreadIndex.juices[vm.game.HomeSpreadIndex.spreads.indexOf(vm.game.HomeSpreadBest)];
+
+      vm.awayOptJuice = vm.game.AwaySpreadIndex.juices[vm.game.AwaySpreadIndex.spreads.indexOf(vm.game.AwaySpreadBest)];
+
+      vm.totOverOptJuice = vm.game.TotalOverIndex.juices[vm.game.TotalOverIndex.totals.indexOf(vm.game.TotalLow)];
+
+      vm.totUnderOptJuice = vm.game.TotalUnderIndex.juices[vm.game.TotalUnderIndex.totals.indexOf(vm.game.TotalHigh)];
 
       vm.myConfig.graphset[5].series[0].marker.backgroundColor = vm.homeColor;
       vm.myConfig.graphset[5].series[0].tooltip.fontColor = vm.homeColor;
@@ -279,20 +285,42 @@ function GameController ($stateParams, gameService) {
         for (var i=0; i<loopLength; i++){
           var min = Array.min(CGranks);
           var minIndex = CGranks.indexOf(min);
+          console.log('minindex is ', minIndex);
+          var color;
 
-          capperRanks.push({
+          console.log('mindex pick type is ', masterPickArray[minIndex].pickType);
+
+          if (masterPickArray[minIndex].pickType === "Home Spread" || masterPickArray[minIndex].pickType === "Home Moneyline") {
+            color = vm.game.HomeColor
+          } else if (masterPickArray[minIndex].pickType === "Away Spread" || masterPickArray[minIndex].pickType === "Away Moneyline") {
+            color = vm.game.AwayColor
+          } else if (masterPickArray[minIndex].pickType === "Total Over") {
+            color = "#D6D6D6"
+          } else if (masterPickArray[minIndex].pickType === "Total Under") {
+            color = "black"
+          } else {
+            return
+          };
+
+          console.log(color);
+
+          vm.capperRanks.push({
             "ranking": min,
             "capperGrade": capperGrades[minIndex],
             "username": masterPickArray[minIndex].username,
             "activePick": masterPickArray[minIndex].activePick,
             "activeLine": masterPickArray[minIndex].activeLine,
-            "pickType": masterPickArray[minIndex].pickType
+            "pickType": masterPickArray[minIndex].pickType,
+            "color": color,
+            "submittedAt": masterPickArray[minIndex].submittedAt
           });
 
           capperGrades.splice(minIndex, 1);
           CGranks.splice(minIndex, 1);
           masterPickArray.splice(minIndex, 1);
         };
+
+        console.log(vm.capperRanks)
       })
     }).then(function(){
       gameService.getLineMoves(vm.EventID).then(function(result){

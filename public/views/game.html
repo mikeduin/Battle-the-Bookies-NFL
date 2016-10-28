@@ -42,7 +42,7 @@
       <div class="bestLinesHead">
         :: BEST LINES AVAILABLE
       </div>
-      <div class="col s6 optLine">
+      <div class="col s6 optLineTm">
         <div class="col s12" style="color: {{vm.game.AwayColor}}">
           {{vm.game.AwayAbbrev}} SPREAD
         </div>
@@ -61,6 +61,48 @@
         <div class="col s12" style="color: black">
           TOTAL UNDER
         </div>
+      </div>
+      <div class="col s6 optLine">
+        <div class="col s12" style="color: {{vm.game.AwayColor}}">
+          {{vm.game.AwaySpreadBest | mlFormat}} ({{vm.awayOptJuice | mlFormat}})
+        </div>
+        <div class="col s12" style="color: {{vm.game.HomeColor}}">
+          {{vm.game.HomeSpreadBest | mlFormat}} ({{vm.homeOptJuice | mlFormat}})
+        </div>
+        <div class="col s12" style="color: {{vm.game.AwayColor}}">
+          {{vm.game.AwayMLBest | mlFormat}}
+        </div>
+        <div class="col s12" style="color: {{vm.game.HomeColor}}">
+          {{vm.game.HomeMLBest | mlFormat}}
+        </div>
+        <div class="col s12" style="color: #D6D6D6">
+          {{vm.game.TotalLow}} ({{vm.totOverOptJuice}})
+        </div>
+        <div class="col s12" style="color: black">
+          {{vm.game.TotalHigh}} ({{vm.totUnderOptJuice}})
+        </div>
+      </div>
+    </div>
+    <div class="bestLines2">
+      <div class="bestLinesHead2">
+        :: CAPPER RANKINGS
+      </div>
+      <div class="capperBox">
+        <capperDiv class="col s12" ng-repeat="pick in vm.capperRanks">
+          <div class="col s9">
+            <capLead>{{pick.ranking}}. <a ui-sref="home.user({username: pick.username})">{{pick.username}}</a></capLead>
+          </div>
+          <div class="col s3">
+            <capLead>{{pick.capperGrade}}</capLead>
+          </div>
+          <div class="col s12 pickActive" style="color: {{pick.color}}">
+            {{pick.activePick}} <span ng-hide="pick.pickType === 'Home Moneyline' || pick.pickType === 'Away Moneyline'"> ({{pick.activeLine | mlFormat}}) </span>
+          </div>
+          <div class="col s12 pickSubmit">
+            {{pick.submittedAt | date:'EEE, MMM d @ h:mma'}}
+          </div>
+          <hr class="col s8 offset-s2" style="background-color: #D6D6D6">
+        </capperDiv>
       </div>
     </div>
   </div>

@@ -1024,13 +1024,13 @@ prizeIntro div {
 }
 
 .bestLines {
-  height: 300px;
   margin-top: 5%;
   background-color: #F9F9F9;
+  display: inline-block;
 }
 
 .bestLinesHead {
-  padding: 16px 0px 12px 0px;
+  padding: 16px 0px 12px 3px;
   text-align: center;
   color: #6D6D6D;
   font-size: 16px;
@@ -1038,8 +1038,56 @@ prizeIntro div {
   border-bottom: 1px solid #d6d6d6;
 }
 
-.optLine {
+.bestLines2 {
+  margin-top: 5%;
+  background-color: #F9F9F9;
+}
+
+.bestLinesHead2 {
+  padding: 16px 0px 12px 3px;
+  text-align: center;
+  color: #6D6D6D;
+  font-size: 16px;
+  font-weight: 800;
+  border-bottom: 1px solid #d6d6d6;
+}
+
+.optLineTm {
   font-size: 22px;
   font-weight: 600;
   text-align: right;
+  border-right: 1px solid #d6d6d6;
+}
+
+.optLine {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: left;
+}
+
+capperDiv {
+  background-color: #F9F9F9;
+  padding-top: 5px;
+}
+
+capLead {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.capperBox {
+  height: 300px;
+  /*overflow: scroll;*/
+}
+
+.pickSubmit {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.pickActive {
+  font-size: 16px;
+  font-weight: 800;
 }
