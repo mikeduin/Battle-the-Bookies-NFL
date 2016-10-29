@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('UserController', ['$stateParams', 'picksService', 'usersService', 'oddsService', 'authService','$state',  UserController])
+  .controller('UserController', ['$stateParams', 'picksService', 'usersService', 'oddsService', 'authService','$state', '$scope', UserController])
 
-function UserController ($stateParams, picksService, usersService, oddsService, authService, $state) {
+function UserController ($stateParams, picksService, usersService, oddsService, authService, $state, $scope) {
   var vm = this;
   vm.user = {};
   vm.userFilter;
@@ -13,8 +13,13 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.weeksOfGames = [];
   vm.picks;
   vm.abbrev;
+  vm.weekNumb;
 
   var now = moment();
+
+  vm.checkWeekNumb = function(){
+    vm.weekNumb = parseInt(vm.gameWeekFilter.substring(4));
+  };
 
   vm.getMatchups = function(){
     usersService.getMatchups().then(function(result){
@@ -156,7 +161,8 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
         vm.gameWeekFilter = "Week 17"
       } else {
         vm.gameWeekFilter = currentWeek
-      }
+      };
+      vm.weekNumb = parseInt(vm.gameWeekFilter.substring(4))
     })
   };
 

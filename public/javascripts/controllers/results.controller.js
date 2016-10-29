@@ -58,6 +58,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     vm.week = parseInt(vm.weekNumb);
   };
   vm.checkWeekNumb();
+  console.log('vm.weekNumb is ', vm.weekNumb);
 
   vm.weekConfig = function(week){
     var newWeek = week.toString();
