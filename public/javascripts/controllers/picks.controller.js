@@ -202,7 +202,6 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.pickType = "Away Spread";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
-    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.PointSpreadAwayLine);
   }
@@ -232,7 +231,6 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.pickType = "Home Spread";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
-    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.PointSpreadHomeLine);
   }
@@ -261,7 +259,6 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.pickType = "Away Moneyline";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
-    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.MoneyLineAway);
   }
@@ -290,7 +287,6 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.pickType = "Home Moneyline";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
-    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.MoneyLineHome);
   }
@@ -307,7 +303,6 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.favType = "Neither";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
-    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.OverLine);
   }
@@ -324,7 +319,6 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.favType = "Neither";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
-    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.UnderLine);
   }

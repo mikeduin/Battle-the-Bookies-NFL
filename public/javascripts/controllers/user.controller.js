@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('UserController', ['$stateParams', 'picksService', 'usersService', 'oddsService', '$state',  UserController])
+  .controller('UserController', ['$stateParams', 'picksService', 'usersService', 'oddsService', 'authService','$state',  UserController])
 
-function UserController ($stateParams, picksService, usersService, oddsService, $state) {
+function UserController ($stateParams, picksService, usersService, oddsService, authService, $state) {
   var vm = this;
   vm.user = {};
   vm.userFilter;
@@ -14,10 +14,32 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.picks;
   vm.abbrev;
 
+  var now = moment();
+
   vm.getMatchups = function(){
     usersService.getMatchups().then(function(result){
       vm.matchups = result;
     })
+  };
+
+  vm.currentUser = function(){
+    return authService.currentUser();
+  };
+
+  vm.checkDisplay = function(game){
+    if (moment(game.MatchTime).isBefore(now) || vm.currentUser() === vm.userFilter) {
+      return true
+    } else {
+      return false
+    }
+  };
+
+  vm.checkTime = function(game){
+    if (moment(game.MatchTime).isBefore(now)) {
+      return true
+    } else {
+      return false
+    }
   };
 
   vm.userChange = function(){

@@ -987,6 +987,7 @@ setInterval(function(){
                 Week: line.Week,
                 DateNumb: line.DateNumb,
                 WeekNumb: line.WeekNumb,
+                matchup: line.HomeAbbrev + ' @ ' + line.AwayAbbrev,
                 finalPayout: 0
               });
 

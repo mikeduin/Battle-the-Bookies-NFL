@@ -65,30 +65,40 @@
   </div>
 </pieCharts>
 
-<!-- <div class="row">
-  <div class="col s6">
-    User Picks
+<div class="row pickSection">
+  <div class="col s9 userPicks">
+    {{vm.userFilter}}'s Picks
   </div>
-  <div class="col s6">
+  <div class="col s3 userWkSelect">
     <label> Select a Week </label>
     <select class="browser-default" ng-model="vm.gameWeekFilter">
       <option value="" > (all Weeks) </option>
       <option ng-repeat = "day in vm.weeksOfGames" value="{{day}}"> {{day}} </option>
     </select>
   </div>
-  <table>
+  <table class="bordered striped">
     <thead>
       <tr>
-        <th>
-
-        </th>
+        <th> Week </th>
+        <th> Date </th>
+        <th> Game </th>
+        <th> Pick </th>
+        <th> Result </th>
+        <th> Best Line </th>
+        <th> CapperGrade </th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="game in vm.picks | orderBy: 'MatchTime' | filter: { Week: vm.gameWeekFilter }">
-        <td> {{game.activePick}} </td>
-        <td ng-init="vm.pullAbbrevs(game.EventID)"> {{vm.abbrev}}</td>
+        <td> {{game.Week}} </td>
+        <td> {{game.MatchTime | date:'MM/dd/yyyy'}} <br> {{game.MatchTime | date:'h:mm a'}} </td>
+        <td> <b>{{game.matchup}}</b> <span class="stat-button" ng-show="vm.checkTime(game)"><a class="btn-floating float-color" ui-sref="home.game({EventID: game.EventID})"><i class="fa fa-bar-chart" aria-hidden="true"></i></a></span></td>
+        <td ng-show="vm.checkDisplay(game)" style="font-size: 20px"> <b>{{game.activePick}}</b> <span ng-hide="!game.activeLine || (game.pickType === 'Home Moneyline' || game.pickType === 'Away Moneyline')">({{game.activeLine | mlFormat}})</span></td>
+        <td ng-show="!vm.checkDisplay(game)"> <i>hidden</i></td>
+        <td ng-show="game.finalPayout !== 0" ng-class="{pickWin: game.pickResult === 'win', pickLoss: game.pickResult === 'loss', pickPush: game.pickResult === 'push'}"> <span style="font-size: 20px">{{game.finalPayout | currency:$:2}} </span></td>
+        <td ng-show="game.bestLineAvail"> {{game.bestLineAvail | mlFormat}} <span ng-hide="game.pickType === 'Home Moneyline' || game.pickType === 'Away Moneyline'">({{game.bestJuiceAvail | mlFormat}})</span></td>
+        <td ng-show="game.capperGrade"> {{game.capperGrade}}</td>
       </tr>
     </tbody>
   </table>
-</div> -->
+</div>

@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .factory('usersService', ['$http', 'picksService', usersService])
+  .factory('usersService', ['$http', usersService])
 
-function usersService ($http, picksService) {
+function usersService ($http) {
   return {
     getAllUsers: function () {
       return $http.get('/users').then(function(users){
