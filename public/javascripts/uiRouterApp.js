@@ -10,6 +10,11 @@ angular
   .config(['$locationProvider', function($locationProvider) {
     $locationProvider.html5Mode(true);
   }])
+  .run(['$rootScope', '$document', function($rootScope, $document){
+    $rootScope.$on('$stateChangeSuccess', function(){
+      $document[0].body.scrollTop = $document[0].documentElement.scrollTop = 0
+    })
+  }])
 
 function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
   $urlRouterProvider.otherwise('/');
