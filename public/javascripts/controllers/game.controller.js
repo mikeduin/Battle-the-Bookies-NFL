@@ -387,7 +387,7 @@ function GameController ($stateParams, gameService) {
             "width":"98%",
             "background-color":"#f9f9f9",
             "title":{
-                "text":"Picks are charted based on value relative to the best line ever available for each pick; the higher on the chart a pick bubble appears, the more relative value that had pick had. Home and Under picks are charted against the left axis, while Away and Over picks are charted against the right axis. Each side's line graph charts line movement over the course of the week. Hover over each pick bubble for details.",
+                "text":"Picks are charted based on value relative to the best number ever available for each line; the higher on the chart a pick bubble appears, the more relative value that had pick had. Home and Under picks are charted against the left axis, while Away and Over picks are charted against the right axis. Line graphs chart line movement over the course of the week. Hover over each pick bubble for details.",
                 "wrap-text": true,
                 "font-size":"11px",
                 "color":"#6D6D6D",

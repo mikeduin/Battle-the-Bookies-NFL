@@ -13,6 +13,16 @@ function usersService ($http, picksService) {
       return $http.get('/users/' + username).then(function(user){
         return user.data
       })
+    },
+    getUserPicks: function(username){
+      return $http.get('picks/' + username + '/all').then(function(result){
+        return result.data
+      })
+    },
+    getMatchups: function(){
+      return $http.get('/matchups').then(function(result){
+        return result.data
+      })
     }
   }
 

@@ -281,6 +281,25 @@ router.get('/lines/:week', function(req, res, next){
   })
 })
 
+router.get('/matchups', function(req, res, next){
+  Line.find(function(err, games){
+    if (err) {console.log(err)}
+
+    var matchups = {};
+    for (var i=0; i<games.length; i++){
+      var id = games[i].EventID;
+      var obj = {}
+
+      matchups[id] = {
+        "HomeAbbrev": games[i].HomeAbbrev,
+        "AwayAbbrev": games[i].AwayAbbrev
+      }
+    }
+
+    res.json(matchups);
+  })
+})
+
 // This function runs every 4 minutes and, if a line does not currently have pick counters associated with it, adds them to the line's base data
 
 setInterval(function(){

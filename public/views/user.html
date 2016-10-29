@@ -1,4 +1,4 @@
-<userHead class="row" ng-init="vm.getUser()">
+<userHead class="row" ng-init="vm.getUser(); vm.getDates(); vm.getMatchups()">
   <userInfo class="col m4">
     <section class="col m12">
       <selectDiv class="col m8">
@@ -64,3 +64,31 @@
     <div zingchart id="tendency-chart" zc-json="vm.tendencyData" zc-width="100%" zc-height="350px"></div>
   </div>
 </pieCharts>
+
+<div class="row">
+  <div class="col s6">
+    User Picks
+  </div>
+  <div class="col s6">
+    <label> Select a Week </label>
+    <select class="browser-default" ng-model="vm.gameWeekFilter">
+      <option value="" > (all Weeks) </option>
+      <option ng-repeat = "day in vm.weeksOfGames" value="{{day}}"> {{day}} </option>
+    </select>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>
+
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="game in vm.picks | orderBy: 'MatchTime' | filter: { Week: vm.gameWeekFilter }">
+        <td> {{game.activePick}} </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

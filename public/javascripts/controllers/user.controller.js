@@ -1,13 +1,23 @@
 angular
   .module('battleBookies')
-  .controller('UserController', ['$stateParams', 'picksService', 'usersService', '$state',  UserController])
+  .controller('UserController', ['$stateParams', 'picksService', 'usersService', 'oddsService', '$state',  UserController])
 
-function UserController ($stateParams, picksService, usersService, $state) {
+function UserController ($stateParams, picksService, usersService, oddsService, $state) {
   var vm = this;
   vm.user = {};
   vm.userFilter;
   vm.username;
   vm.users = [];
+  vm.getDates = getDates;
+  vm.gameWeekFilter;
+  vm.weeksOfGames = [];
+  vm.picks;
+
+  vm.getMatchups = function(){
+    usersService.getMatchups().then(function(result){
+      console.log('matchups are ', result)
+    })
+  };
 
   vm.userChange = function(){
     $state.go('home.user', {username: vm.userFilter});
@@ -24,15 +34,22 @@ function UserController ($stateParams, picksService, usersService, $state) {
     usersService.getUser($stateParams.username).then(function(user){
       vm.user = user[0];
       vm.userFilter = user[0].username;
+      vm.getUserPicks(user[0].username);
       vm.sumAllPicks(user[0].username);
       vm.getPickStats(user[0].username);
       vm.getWeeklyStats(user[0].username);
     })
   }
 
+  vm.getUserPicks = function(username){
+    usersService.getUserPicks(username).then(function(result){
+      vm.picks = result;
+      console.log(vm.picks);
+    })
+  }
+
   vm.sumAllPicks = function(username) {
     picksService.sumAllPicks(username).then(function(result){
-      console.log(result);
       vm.user.sumYtd = result.totalDollars;
       vm.user.ytdW = result.totalW;
       vm.user.ytdL = result.totalG - result.totalW;
@@ -42,7 +59,6 @@ function UserController ($stateParams, picksService, usersService, $state) {
 
   vm.getWeeklyStats = function(username){
     picksService.getWeeklyStats(username).then(function(result){
-      console.log('stats are', result.data);
       stats = result.data;
 
       var ytdDollars = 0
@@ -64,7 +80,6 @@ function UserController ($stateParams, picksService, usersService, $state) {
   vm.getPickStats = function(username) {
     picksService.getPickStats(username).then(function(stats){
       stats = stats.data;
-      console.log(stats);
       vm.user.awayMlPicks = stats.awayMlPicks;
       vm.tendencyData.series[0].values.push(stats.awayMlPicks);
       vm.user.homeMlPicks = stats.homeMlPicks;
@@ -87,8 +102,74 @@ function UserController ($stateParams, picksService, usersService, $state) {
       vm.favData.series[0].values.push(stats.favPicks);
       vm.user.dogPicks = stats.dogPicks;
       vm.favData.series[1].values.push(stats.dogPicks);
-      console.log(vm.user)
     })
+  };
+
+  function getDates () {
+    oddsService.getDates().then(function(dates){
+      var weekNumbers = [];
+      for (i=0; i<dates.length; i++) {
+        var weekNumber = parseInt(dates[i].substring(5));
+        weekNumbers.push(weekNumber)
+      }
+      weekNumbers.sort();
+      for (i=0; i<weekNumbers.length; i++) {
+        var newWeek = "Week " + weekNumbers[i];
+        vm.weeksOfGames.push(newWeek)
+      }
+      var currentWeek = vm.weekSetter(moment().format());
+      if (currentWeek === "Preseason") {
+        vm.gameWeekFilter = "Week 1"
+      } else if (
+        currentWeek === "Postseason"
+      ) {
+        vm.gameWeekFilter = "Week 17"
+      } else {
+        vm.gameWeekFilter = currentWeek
+      }
+    })
+  };
+
+  vm.weekSetter = function(MatchTime) {
+    if (moment(MatchTime).isBetween('2016-06-23', '2016-09-06')) {
+      return "Preseason"
+    } else if (moment(MatchTime).isBetween('2016-09-06', '2016-09-13')) {
+      return "Week 1"
+    } else if (moment(MatchTime).isBetween('2016-09-13', '2016-09-20')) {
+      return "Week 2"
+    } else if (moment(MatchTime).isBetween('2016-09-20', '2016-09-27')) {
+      return "Week 3"
+    } else if (moment(MatchTime).isBetween('2016-09-27', '2016-10-04')) {
+      return "Week 4"
+    } else if (moment(MatchTime).isBetween('2016-10-04', '2016-10-11')) {
+      return "Week 5"
+    } else if (moment(MatchTime).isBetween('2016-10-11', '2016-10-18')) {
+      return "Week 6"
+    } else if (moment(MatchTime).isBetween('2016-10-18', '2016-10-25')) {
+      return "Week 7"
+    } else if (moment(MatchTime).isBetween('2016-10-25', '2016-11-01')) {
+      return "Week 8"
+    } else if (moment(MatchTime).isBetween('2016-11-01', '2016-11-08')) {
+      return "Week 9"
+    } else if (moment(MatchTime).isBetween('2016-11-08', '2016-11-15')) {
+      return "Week 10"
+    } else if (moment(MatchTime).isBetween('2016-11-15', '2016-11-22')) {
+      return "Week 11"
+    } else if (moment(MatchTime).isBetween('2016-11-22', '2016-11-29')) {
+      return "Week 12"
+    } else if (moment(MatchTime).isBetween('2016-11-29', '2016-12-06')) {
+      return "Week 13"
+    } else if (moment(MatchTime).isBetween('2016-12-06', '2016-12-13')) {
+      return "Week 14"
+    } else if (moment(MatchTime).isBetween('2016-12-13', '2016-12-20')) {
+      return "Week 15"
+    } else if (moment(MatchTime).isBetween('2016-12-20', '2016-12-27')) {
+      return "Week 16"
+    } else if (moment(MatchTime).isBetween('2016-12-27', '2017-01-03')) {
+      return "Week 17"
+    } else {
+      return "Postseason"
+    }
   }
 
   vm.dailyData = {
