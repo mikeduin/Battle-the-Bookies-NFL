@@ -183,10 +183,18 @@ function GameController ($stateParams, gameService) {
         vm.myConfig.graphset[3].title.text= "<div>" + vm.homeAbbrev +" SPREAD</div>";
         vm.myConfig.graphset[4].subtitle.text= "<div>" + vm.awaySpreadPickPct +"%</div>";
         vm.myConfig.graphset[5].title.text= "<div>" + vm.awayAbbrev +" SPREAD</div>";
+        vm.myConfig.graphset[6].series[0].legendText = vm.homeAbbrev;
+        vm.myConfig.graphset[6].series[1].legendText = vm.awayAbbrev;
+        vm.myConfig.graphset[6].series[2].legendText = vm.homeAbbrev;
+        vm.myConfig.graphset[6].series[3].legendText = vm.awayAbbrev;
         vm.myConfig.graphset[7].subtitle.text= "<div>" + vm.homeMLPickPct +"%</div>";
         vm.myConfig.graphset[8].title.text= "<div>" + vm.homeAbbrev +" ML</div>";
         vm.myConfig.graphset[9].subtitle.text= "<div>" + vm.awayMLPickPct +"%</div>";
         vm.myConfig.graphset[10].title.text= "<div>" + vm.awayAbbrev +" ML</div>";
+        vm.myConfig.graphset[11].series[0].legendText = vm.homeAbbrev;
+        vm.myConfig.graphset[11].series[1].legendText = vm.awayAbbrev;
+        vm.myConfig.graphset[11].series[2].legendText = vm.homeAbbrev;
+        vm.myConfig.graphset[11].series[3].legendText = vm.awayAbbrev;
         vm.myConfig.graphset[12].subtitle.text= "<div>" + vm.overPickPct +"%</div>";
         vm.myConfig.graphset[13].title.text= "<div>OVER TOTAL</div>";
         vm.myConfig.graphset[14].subtitle.text= "<div>" + vm.underPickPct +"%</div>";
@@ -434,7 +442,7 @@ function GameController ($stateParams, gameService) {
             "background-color":"#6D6D6D",
             "title":{
                 "html-mode": true,
-                "offset-y":"-18px",
+                "offset-y":"-16px",
                 "background-color":"#6D6D6D",
                 "font-color":"black",
                 "font-size": "18px",
@@ -484,6 +492,14 @@ function GameController ($stateParams, gameService) {
             "height":"26.67%",
             "width":"79%",
             "background-color":"#6D6D6D",
+            "legend": {
+              "layout": "1x4",
+              "background-color": "#6D6D6D",
+              "border-color": "#D6D6D6",
+              "border-width": 1,
+              "x": "50%",
+              "y": "9%"
+            },
             "title":{
                 "height":"40px",
                 "text":"",
@@ -573,6 +589,11 @@ function GameController ($stateParams, gameService) {
                   "data-juice": vm.homeSpreadJuices,
                   "data-homeAbbrev": vm.homeSpreadAbbrevs,
                   "data-dogInd": vm.homeProgInd,
+                  "legend-marker": {
+                    "border-color": "black",
+                    "type": "circle",
+                    "border-width": 2
+                  },
                   "marker":{
                     "border-color":"black",
                     "border-width": 2,
@@ -599,6 +620,11 @@ function GameController ($stateParams, gameService) {
                   "data-juice": vm.awaySpreadJuices,
                   "data-awayAbbrev": vm.awaySpreadAbbrevs,
                   "data-dogInd": vm.awayProgInd,
+                  "legend-marker": {
+                    "border-color": "white",
+                    "type": "circle",
+                    "border-width": 2
+                  },
                   "marker":{
                     "border-color":"white",
                     "background-repeat":"no-repeat",
@@ -628,6 +654,9 @@ function GameController ($stateParams, gameService) {
                     "marker": {
                       "visible": false
                     },
+                    "legend-marker": {
+                      "type": "line"
+                    },
                     "aspect": "spline",
                     "scales": "scale-x, scale-y",
                     "tooltip":{
@@ -650,6 +679,9 @@ function GameController ($stateParams, gameService) {
                     "z-index": 1,
                     "marker": {
                       "visible": false
+                    },
+                    "legend-marker": {
+                      "type": "line"
                     },
                     "aspect": "spline",
                     "scales": "scale-x, scale-y-2",
@@ -702,7 +734,7 @@ function GameController ($stateParams, gameService) {
             "background-color":"#969191",
             "title":{
                 "html-mode": true,
-                "offset-y":"-26px",
+                "offset-y":"-19px",
                 "background-color":"#969191",
                 "font-color":"black",
                 "font-size": "18px",
@@ -752,6 +784,14 @@ function GameController ($stateParams, gameService) {
             "height":"26.67%",
             "width":"79%",
             "background-color":"#969191",
+            "legend": {
+              "layout": "1x4",
+              "background-color": "#969191",
+              "border-color": "#D6D6D6",
+              "border-width": 1,
+              "x": "50%",
+              "y": "9%"
+            },
             "title":{
                 "height":"40px",
                 "font-size":"10px",
@@ -839,6 +879,11 @@ function GameController ($stateParams, gameService) {
                   "data-username": vm.homeMLUsers,
                   "data-submitted": vm.homeMLTimes,
                   "data-activePicks": vm.homeMLActivePicks,
+                  "legend-marker": {
+                    "border-color": "black",
+                    "type": "circle",
+                    "border-width": 2
+                  },
                   "marker":{
                     "border-color":"black",
                     "background-repeat":"no-repeat",
@@ -863,6 +908,11 @@ function GameController ($stateParams, gameService) {
                 "data-username": vm.awayMLUsers,
                 "data-submitted": vm.awayMLTimes,
                 "data-activePicks": vm.awayMLActivePicks,
+                "legend-marker": {
+                  "border-color": "white",
+                  "type": "circle",
+                  "border-width": 2
+                },
                 "marker":{
                   "border-color":"white",
                   "background-repeat":"no-repeat",
@@ -891,6 +941,9 @@ function GameController ($stateParams, gameService) {
                 "marker": {
                   "visible": false
                 },
+                "legend-marker": {
+                  "type": "line"
+                },
                 "aspect": "spline",
                 "scales": "scale-x, scale-y",
                 "tooltip":{
@@ -912,6 +965,9 @@ function GameController ($stateParams, gameService) {
                   "z-index": 1,
                   "marker": {
                     "visible": false
+                  },
+                  "legend-marker": {
+                    "type": "line"
                   },
                   "aspect": "spline",
                   "scales": "scale-x, scale-y-2",
@@ -1013,6 +1069,14 @@ function GameController ($stateParams, gameService) {
             "height":"26.67%",
             "width":"79%",
             "background-color":"#68A870",
+            "legend": {
+              "layout": "1x4",
+              "background-color": "#68A870",
+              "border-color": "#D6D6D6",
+              "border-width": 1,
+              "x": "47%",
+              "y": "9%"
+            },
             "title":{
                 "height":"40px",
                 "text":"",
@@ -1129,6 +1193,13 @@ function GameController ($stateParams, gameService) {
                   "data-submitted": vm.overTimes,
                   "data-activePicks": vm.overActivePicks,
                   "data-juice": vm.overJuices,
+                  "legend-marker": {
+                    "border-color": "black",
+                    "background-color": "#2D2D2D",
+                    "type": "circle",
+                    "border-width": 2
+                  },
+                  "legend-text": "Under",
                   "marker":{
                     "border-color":"white",
                     "background-color": "#E8E8E8",
@@ -1154,6 +1225,13 @@ function GameController ($stateParams, gameService) {
                 "data-submitted": vm.underTimes,
                 "data-activePicks": vm.underActivePicks,
                 "data-juice": vm.underJuices,
+                "legend-marker": {
+                  "border-color": "white",
+                  "background-color": "#E8E8E8",
+                  "type": "circle",
+                  "border-width": 2
+                },
+                "legend-text": "Over",
                 "marker":{
                   "border-color":"black",
                   "background-color": "#2D2D2D",
@@ -1180,6 +1258,10 @@ function GameController ($stateParams, gameService) {
                   "marker": {
                     "visible": false
                   },
+                  "legend-marker": {
+                    "type": "line"
+                  },
+                  "legend-text": "Under",
                   "aspect": "spline",
                   "scales": "scale-x, scale-y",
                   "tooltip":{
@@ -1200,6 +1282,10 @@ function GameController ($stateParams, gameService) {
                   "marker": {
                     "visible": false
                   },
+                  "legend-marker": {
+                    "type": "line"
+                  },
+                  "legend-text": "Over",
                   "aspect": "spline",
                   "scales": "scale-x, scale-y-2",
                   "tooltip":{

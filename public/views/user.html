@@ -114,7 +114,7 @@
           U{{game.bestLineAvail}}
           <span ng-hide="vm.weekNumb < 6">({{game.bestJuiceAvail | mlFormat}})</span>
         </td>
-        <td ng-show="game.capperGrade"> {{game.capperGrade}}</td>
+        <td ng-show="game.capperGrade" ng-class="{capperHigh: game.capperGrade >= 9, capperMed: game.capperGrade < 9 && game.capperGrade > 7.5, capperLow: game.capperGrade <= 7.5}"> {{game.capperGrade}}</td>
       </tr>
     </tbody>
   </table>

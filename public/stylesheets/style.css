@@ -1119,3 +1119,21 @@ capLead {
 .bestLn {
   font-size: 16px;
 }
+
+.capperHigh {
+  font-weight: 600;
+  color: #008000;
+  font-size: 16px
+}
+
+.capperMed {
+  font-weight: 600;
+  color: #DAC131;
+  font-size: 16px
+}
+
+.capperLow {
+  font-weight: 600;
+  color: #DB251F;
+  font-size: 16px
+}
