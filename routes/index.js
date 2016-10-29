@@ -1449,6 +1449,7 @@ router.put('/picks', auth, function(req, res, next){
     favType: req.body.favType,
     betType: req.body.betType,
     geoType: req.body.geoType,
+    matchup: req.body.matchup,
     submittedAt: new Date()
   }, {new: true}, function(err, pick) {
     if (err) {console.log(err)}

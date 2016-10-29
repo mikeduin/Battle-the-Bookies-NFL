@@ -65,7 +65,7 @@
   </div>
 </pieCharts>
 
-<div class="row">
+<!-- <div class="row">
   <div class="col s6">
     User Picks
   </div>
@@ -87,8 +87,8 @@
     <tbody>
       <tr ng-repeat="game in vm.picks | orderBy: 'MatchTime' | filter: { Week: vm.gameWeekFilter }">
         <td> {{game.activePick}} </td>
+        <td ng-init="vm.pullAbbrevs(game.EventID)"> {{vm.abbrev}}</td>
       </tr>
     </tbody>
   </table>
-
-</div>
+</div> -->

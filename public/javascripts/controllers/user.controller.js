@@ -12,10 +12,11 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.gameWeekFilter;
   vm.weeksOfGames = [];
   vm.picks;
+  vm.abbrev;
 
   vm.getMatchups = function(){
     usersService.getMatchups().then(function(result){
-      console.log('matchups are ', result)
+      vm.matchups = result;
     })
   };
 
@@ -26,8 +27,15 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
 
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
-      vm.users = result
+      vm.users = result;
     })
+  }
+
+  vm.pullAbbrevs = function(EventID){
+    var home = vm.matchups[EventID].HomeAbbrev;
+    var away = vm.matchups[EventID].AwayAbbrev;
+
+    vm.abbrev = "" + away + "@" + home + "";
   }
 
   vm.getUser = function(){

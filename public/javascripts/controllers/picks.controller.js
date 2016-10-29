@@ -192,9 +192,7 @@ function PickController (oddsService, picksService, resultsService, authService,
       vm.pick.geoType = "Away +0";
       vm.pick.betType = "Spread +0"
     };
-    // if (vm.pick.favType === "Underdog") {
-    //   vm.pick.favPickType === ""
-    // }
+
     vm.pick.activeGame = game.EventID;
     console.log('vm.pick.activeGame is', vm.pick.activeGame);
     vm.pick.activeSpread = game.PointSpreadAway;
@@ -204,6 +202,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.pickType = "Away Spread";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
+    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.PointSpreadAwayLine);
   }
@@ -233,6 +232,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.pickType = "Home Spread";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
+    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.PointSpreadHomeLine);
   }
@@ -261,6 +261,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.pickType = "Away Moneyline";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
+    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.MoneyLineAway);
   }
@@ -289,6 +290,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.pickType = "Home Moneyline";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
+    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.MoneyLineHome);
   }
@@ -305,6 +307,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.favType = "Neither";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
+    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.OverLine);
   }
@@ -321,6 +324,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.pick.favType = "Neither";
     vm.pick.MatchDay = game.MatchDay;
     vm.pick.MatchTime = game.MatchTime;
+    vm.pick.matchup = game.AwayAbbrev + " @ " + game.HomeAbbrev;
     game.pick = vm.pick.activePick;
     game.displayPayout = vm.displayPayCalc(game.UnderLine);
   }
