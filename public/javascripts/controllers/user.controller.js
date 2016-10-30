@@ -40,7 +40,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   };
 
   vm.checkTime = function(game){
-    if (moment(game.MatchTime).isBefore(now)) {
+    if (moment(game.MatchTime).isBefore(now) && vm.weekNumb > 5) {
       return true
     } else {
       return false
