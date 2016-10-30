@@ -34,7 +34,6 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
     username = user.username;
     picksService.getWeeklyStats(username).then(function(result){
       user.dailyStats = result.data;
-      console.log('user daily stats are', user.dailyStats)
     })
   }
 
@@ -78,7 +77,6 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
 
   function getDateNumbs () {
     oddsService.getDateNumbs().then(function(dates){
-      console.log("datenumbs are: " + dates);
       vm.dateNumbs = dates;
     })
   };

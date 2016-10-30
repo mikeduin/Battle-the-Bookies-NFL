@@ -63,9 +63,8 @@
     </thead>
     <tbody ng-repeat="game in vm.nflLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter }" on-finish-render="ngRepeatFinished">
       <tr ng-init="vm.timeCheck(game); vm.checkSubmission(game, vm.currentUser())">
-        <td rowspan="2"> <b>{{game.Week}}</b> <br> {{game.MatchTime | date:'MM/dd/yyyy'}} <br> {{game.MatchTime | date:'h:mm a'}} </td>
-        <td> <b>(A)</b> {{game.AwayTeam}}
-        </td>
+        <td rowspan="2"> <b>{{game.Week}}</b> <br> {{game.MatchTime | date:'MM/dd/yyyy'}} <br> {{game.MatchTime | date:'h:mm a'}} <br> <span ng-show="vm.checkDisplay(game)"> <a class="btn-floating float-color" ui-sref="home.game({EventID: game.EventID})"><i class="fa fa-bar-chart" aria-hidden="true"></i></a> </span> </td>
+        <td> <b>(A)</b> {{game.AwayTeam}}</td>
         <td> <button ng-class="{disabled: game.locked}" class="btn btn-spread" ng-click="game.locked || vm.awaySpread(game)"> {{game.PointSpreadAway | mlFormat}} ({{game.PointSpreadAwayLine | mlFormat}})</button> </td>
         <td class="spreadMoney"> {{game.PointSpreadAwayLine | payoutFilter}} </td>
         <td> <button ng-class="{disabled: game.locked}" class="btn btn-ml" ng-click="game.locked || vm.awayML(game)"> {{game.MoneyLineAway | mlFormat}} </button> </td>

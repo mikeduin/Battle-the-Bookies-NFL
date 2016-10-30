@@ -5,7 +5,7 @@
         <tbody>
           <tr>
             <td class="center-align no-sp"> <img src="{{game.AwayHelmet}}" alt="" class="helmet-size"/> <div class="h-a"><i>Away</i></td>
-            <td class="center-align" style="font-size: 22px"> <b>GAME {{$index + 1}}</b></td>
+            <td class="center-align" style="font-size: 22px"> <b>GAME {{$index + 1}}</b><br><span ng-hide="vm.weekNumb < 6"> <a class="btn-floating float-color" ui-sref="home.game({EventID: game.EventID})"><i class="fa fa-bar-chart" aria-hidden="true"></i></a> </span></td>
             <td class="center-align no-sp"> <img src="{{game.HomeHelmet}}" alt="" class="helmet-size"/> <div class="h-a"><i>Home</i></td>
           </tr>
           <tr>

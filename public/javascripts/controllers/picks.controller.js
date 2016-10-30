@@ -82,6 +82,16 @@ function PickController (oddsService, picksService, resultsService, authService,
     }
   }
 
+  var now = moment();
+
+  vm.checkDisplay = function(game){
+    if (moment(game.MatchTime).isBefore(now)) {
+      return true
+    } else {
+      return false
+    }
+  };
+
   vm.checkGametimes = function() {
     picksService.checkGametimes().then(function(result){
       return result
@@ -171,7 +181,6 @@ function PickController (oddsService, picksService, resultsService, authService,
   function timeCheck (game) {
     if(moment(game.MatchTime).isBefore(moment())) {
       game.locked = true;
-      console.log('hello');
     }
   }
 
@@ -194,7 +203,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     };
 
     vm.pick.activeGame = game.EventID;
-    console.log('vm.pick.activeGame is', vm.pick.activeGame);
+    // console.log('vm.pick.activeGame is', vm.pick.activeGame);
     vm.pick.activeSpread = game.PointSpreadAway;
     vm.pick.activeLine = game.PointSpreadAwayLine;
     vm.pick.activePick = (game.AwayAbbrev + ' ' + vm.mlFormat(game.PointSpreadAway));
@@ -326,8 +335,6 @@ function PickController (oddsService, picksService, resultsService, authService,
   function checkSubmission (game) {
     picksService.checkSubmission(game).then(function(foundPick){
       if(!foundPick[0]) {
-        console.log('following pick is not found, should be added as template');
-        console.log(game);
         picksService.addTemplate(game);
       } else {
         if(foundPick[0].activePick) {
@@ -335,7 +342,7 @@ function PickController (oddsService, picksService, resultsService, authService,
           game.pick = foundPick[0].activePick;
           game.displayPayout = displayPayCalc(foundPick[0].activePayout);
         } else {
-          console.log('pick not found')
+          return
         }
       }
     })
