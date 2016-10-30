@@ -85,7 +85,9 @@ function PickController (oddsService, picksService, resultsService, authService,
   var now = moment();
 
   vm.checkDisplay = function(game){
-    if (moment(game.MatchTime).isBefore(now)) {
+    var week = parseInt(vm.gameWeekFilter.substring(4));
+
+    if (moment(game.MatchTime).isBefore(now) && week > 5) {
       return true
     } else {
       return false

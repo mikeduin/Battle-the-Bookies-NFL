@@ -18,7 +18,7 @@ function updateLines ($interval) {
 
     refresh = $interval(function() {
       refreshLines();
-    }, 30000)
+    }, 120000)
   };
 
   return {
