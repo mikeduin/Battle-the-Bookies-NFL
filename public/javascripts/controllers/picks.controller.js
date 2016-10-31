@@ -84,6 +84,10 @@ function PickController (oddsService, picksService, resultsService, authService,
 
   var now = moment();
 
+  function sortNumber(a, b) {
+    return a - b
+  };
+
   vm.checkDisplay = function(game){
     var week = parseInt(vm.gameWeekFilter.substring(4));
 
@@ -124,7 +128,7 @@ function PickController (oddsService, picksService, resultsService, authService,
         var weekNumber = parseInt(dates[i].substring(5));
         weekNumbers.push(weekNumber)
       }
-      weekNumbers.sort();
+      weekNumbers.sort(sortNumber);
       for (i=0; i<weekNumbers.length; i++) {
         var newWeek = "Week " + weekNumbers[i];
         vm.weeksOfGames.push(newWeek)
@@ -159,7 +163,6 @@ function PickController (oddsService, picksService, resultsService, authService,
 
   function updateOdds () {
     oddsService.updateOdds().then(function(){
-      console.log("odds updated")
       vm.pick.activeGame = {};
     })
   };

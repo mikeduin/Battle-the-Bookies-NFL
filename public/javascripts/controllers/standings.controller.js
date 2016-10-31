@@ -24,6 +24,10 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   //   vm.showSpinner = false
   // }, 6000)
 
+  function sortNumber(a, b) {
+    return a - b
+  };
+
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
       vm.users = result
@@ -65,7 +69,7 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
         var weekNumber = parseInt(dates[i].substring(5));
         weekNumbers.push(weekNumber)
       }
-      weekNumbers.sort();
+      weekNumbers.sort(sortNumber);
       for (i=0; i<weekNumbers.length; i++) {
         var newWeek = "Week " + weekNumbers[i];
         vm.weeksOfGames.push(newWeek)

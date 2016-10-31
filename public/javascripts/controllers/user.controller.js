@@ -17,6 +17,10 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
 
   var now = moment();
 
+  function sortNumber(a, b) {
+    return a - b
+  };
+
   vm.checkWeekNumb = function(){
     vm.weekNumb = parseInt(vm.gameWeekFilter.substring(4));
   };
@@ -103,7 +107,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
         var lastDate = vm.dailyData.scaleX.values[vm.dailyData.scaleX.values.length - 1]
         var date = stats[i].week;
         ytdDollars += dayDollars;
-        if (date !== lastDate){
+        if (date !== lastDate && date !== undefined){
           vm.dailyData.scaleX.values.push(date);
           vm.dailyData.series[0].values.push(dayDollars);
           vm.dailyData.series[1].values.push(ytdDollars);
@@ -147,7 +151,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
         var weekNumber = parseInt(dates[i].substring(5));
         weekNumbers.push(weekNumber)
       }
-      weekNumbers.sort();
+      weekNumbers.sort(sortNumber);
       for (i=0; i<weekNumbers.length; i++) {
         var newWeek = "Week " + weekNumbers[i];
         vm.weeksOfGames.push(newWeek)

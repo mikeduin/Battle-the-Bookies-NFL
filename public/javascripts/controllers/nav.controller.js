@@ -5,6 +5,10 @@ angular
 function NavController (authService, oddsService, $state) {
   var vm = this;
 
+  function sortNumber(a, b) {
+    return a - b
+  };
+
   vm.getDates = function () {
     oddsService.getDates().then(function(dates){
       var weekNumbers = [];
@@ -12,7 +16,7 @@ function NavController (authService, oddsService, $state) {
         var weekNumber = parseInt(dates[i].substring(5));
         weekNumbers.push(weekNumber)
       }
-      weekNumbers.sort().reverse();
+      weekNumbers.sort(sortNumber).reverse();
       vm.weeksOfGames = [];
       for (i=0; i<weekNumbers.length; i++) {
         var newWeek = "Week " + weekNumbers[i];

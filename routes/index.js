@@ -33,6 +33,10 @@ Array.min = function(array){
   return Math.min.apply(Math, array)
 };
 
+function sortNumber(a, b) {
+  return a - b
+};
+
 // BEGIN ROUTES TO AUTO-UPDATE ODDS + RESULTS (FROM API) AND USER PICKS (FROM DB)
 
 // This first function updates game results.
@@ -1303,7 +1307,20 @@ router.get('/weeklyStats/:username', function(req, res, next){
     weeks = weekArray.sort();
     return weeks
   }).then(function(weeks){
-    Promise.all(weeks.sort().map(function(week){
+
+    var weekNumbers = [];
+    var newWeeks = [];
+    for (i=0; i<weeks.length; i++) {
+      var weekNumber = parseInt(weeks[i].substring(5));
+      weekNumbers.push(weekNumber)
+    }
+    weekNumbers.sort(sortNumber);
+    for (i=0; i<weekNumbers.length; i++) {
+      var newWeek = "Week " + weekNumbers[i];
+      newWeeks.push(newWeek)
+    }
+
+    Promise.all(newWeeks.map(function(week){
       return Pick.find({username: username, Week: week}).then(function(results){
 
         var totalDollars = 0;
