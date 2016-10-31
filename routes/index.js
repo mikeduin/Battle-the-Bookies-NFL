@@ -736,11 +736,10 @@ setInterval(function(){
     }, function(err, games){
       if(err) {console.log(err)}
 
-    }).then(function(games){
+    }).then(setTimeout(function(games){
       if (!games) {
         return
       };
-
       games.forEach(function(game){
         var overPickArray = [];
         var underPickArray = [];
@@ -823,7 +822,7 @@ setInterval(function(){
           })
         })
       })
-    })
+    }, 120000))
   })
 }, 300000)
 
