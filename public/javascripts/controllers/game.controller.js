@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('GameController', ['$stateParams', 'gameService', GameController])
+  .controller('GameController', ['$stateParams', '$scope', 'gameService', GameController])
 
-function GameController ($stateParams, gameService) {
+function GameController ($stateParams, $scope, gameService) {
   var vm = this;
   vm.EventID = $stateParams.EventID;
   vm.utcAdjust;
@@ -62,6 +62,10 @@ function GameController ($stateParams, gameService) {
   var CGranks;
   vm.capperRanks = [];
 
+  $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
+    vm.showSpinner = false;
+  })
+
   vm.checkDST = function() {
     if (moment().isDST() === true){
       vm.utcAdjust = -7
@@ -77,6 +81,7 @@ function GameController ($stateParams, gameService) {
   };
 
   vm.getLineData = function(){
+    vm.showSpinner = true;
     gameService.getLineData(vm.EventID).then(function(result){
       vm.game = result[0];
       vm.awayColor = vm.game.AwayColor;

@@ -38,6 +38,7 @@
     </div>
   </div>
 </gameHead>
+<chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
 
 <div class="row">
   <div class="col s8" style="padding: 0; margin: 0">
@@ -96,7 +97,7 @@
         </div>
       </div>
       <div class="capperBox">
-        <capperDiv class="col s12" ng-repeat="pick in vm.capperRanks">
+        <capperDiv class="col s12" ng-repeat="pick in vm.capperRanks" on-finish-render="ngRepeatFinished">
           <div class="col s9">
             <capLead>{{pick.ranking}}. <a ui-sref="home.user({username: pick.username})">{{pick.username}}</a></capLead>
           </div>

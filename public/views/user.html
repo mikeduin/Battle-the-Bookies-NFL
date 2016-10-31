@@ -53,6 +53,8 @@
   </lineChart>
 </userHead>
 
+<chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
+
 <pieCharts class="row">
   <div class="col m4 .favData">
     <div zingchart id="fav-chart" zc-json="vm.favData" zc-width="100%" zc-height="350px"></div>
@@ -89,7 +91,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="game in vm.picks | orderBy: 'MatchTime' | filter: { Week: vm.gameWeekFilter }">
+      <tr ng-repeat="game in vm.picks | orderBy: 'MatchTime' | filter: { Week: vm.gameWeekFilter }" on-finish-render="ngRepeatFinished">
         <td> {{game.Week}} </td>
         <td> {{game.MatchTime | date:'MM/dd/yyyy'}} <br> {{game.MatchTime | date:'h:mm a'}} </td>
         <td class="gameMatchup">

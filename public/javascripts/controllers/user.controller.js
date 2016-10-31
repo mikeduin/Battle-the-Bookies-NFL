@@ -15,6 +15,11 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.abbrev;
   vm.weekNumb;
 
+
+  $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
+    vm.showSpinner = false;
+  })
+
   var now = moment();
 
   function sortNumber(a, b) {
@@ -81,6 +86,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   }
 
   vm.getUserPicks = function(username){
+    vm.showSpinner = true;
     usersService.getUserPicks(username).then(function(result){
       vm.picks = result;
       console.log(vm.picks);
