@@ -723,7 +723,8 @@ setInterval(function(){
         })
       })
     })
-  }).then(function(){
+  }).
+  then(function(){
     var now = moment();
     console.log('function has made it to last part')
     Line.find({
@@ -736,10 +737,11 @@ setInterval(function(){
     }, function(err, games){
       if(err) {console.log(err)}
 
-    }).then(setTimeout(function(games){
+    }).then(function(games){
       if (!games) {
         return
       };
+
       games.forEach(function(game){
         var overPickArray = [];
         var underPickArray = [];
@@ -822,7 +824,7 @@ setInterval(function(){
           })
         })
       })
-    }, 120000))
+    })
   })
 }, 300000)
 
