@@ -727,8 +727,8 @@ setInterval(function(){
         })
       })
     })
-  }).
-  then(function(){
+  })
+  .then(setTimeout(function(){
     var now = moment();
     console.log('function has made it to last part')
     Line.find({
@@ -829,7 +829,7 @@ setInterval(function(){
         })
       })
     })
-  })
+  }, 120000))
 }, 300000)
 
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
