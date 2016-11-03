@@ -992,7 +992,7 @@ setInterval(function(){
                 Week: line.Week,
                 DateNumb: line.DateNumb,
                 WeekNumb: line.WeekNumb,
-                matchup: line.HomeAbbrev + ' @ ' + line.AwayAbbrev,
+                matchup: line.AwayAbbrev + ' @ ' + line.HomeAbbrev,
                 finalPayout: 0
               });
 
