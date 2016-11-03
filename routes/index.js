@@ -829,7 +829,7 @@ setInterval(function(){
         })
       })
     })
-  }, 120000))
+  }, 60000))
 }, 300000)
 
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
