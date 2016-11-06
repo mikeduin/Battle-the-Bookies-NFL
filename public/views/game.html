@@ -2,7 +2,7 @@
   <div class="col s12 result-head">
     <div class="col s6 left-align">
       <div class="gameHead"> Game Selection Analysis </div>
-      <div class="game-details"> {{vm.game.Week}}: <span style="color: {{vm.game.AwayColor}}">{{vm.game.AwayTeam}}</span> @ <span style="color: {{vm.game.HomeColor}}">{{vm.game.HomeTeam}}<span></div>
+      <div class="game-details" ng-show="vm.game.AwayTeam"> {{vm.game.Week}}: <span style="color: {{vm.game.AwayColor}}">{{vm.game.AwayTeam}}</span> @ <span style="color: {{vm.game.HomeColor}}">{{vm.game.HomeTeam}}<span></div>
       <div ng-show="vm.game.GameStatus === 'Final' && vm.game.HomeScore > vm.game.AwayScore">
         <b>FINAL SCORE: <span style='color: {{vm.game.HomeColor}}'>{{vm.game.HomeAbbrev}} </span> {{vm.game.HomeScore}}, <span style='color: {{vm.game.AwayColor}}'>{{vm.game.AwayAbbrev}}</span> {{vm.game.AwayScore}} </b>
       </div>
@@ -22,16 +22,16 @@
         </thead>
         <tbody>
           <tr>
-            <td class="center-align no-sp" style="color: {{vm.game.AwayColor}}; margin-top: -2%"> <b><img class="selection-image" src="{{vm.game.AwayHelmet}}" alt=""/>{{vm.game.AwayAbbrev}}</b></td>
-            <td class="center-align no-sp"> {{vm.game.PointSpreadAway | mlFormat}} ({{vm.game.PointSpreadAwayLine | mlFormat}}) </td>
-            <td class="center-align no-sp"> {{vm.game.MoneyLineAway | mlFormat}}  </td>
-            <td class="center-align no-sp"> Over {{vm.game.TotalNumber}} ({{vm.game.OverLine | mlFormat}}) </td>
+            <td class="center-align no-sp" style="color: {{vm.game.AwayColor}}; margin-top: -2%" ng-show="vm.game.AwayAbbrev"> <b><img class="selection-image" src="{{vm.game.AwayHelmet}}"/>{{vm.game.AwayAbbrev}}</b></td>
+            <td class="center-align no-sp" ng-show="vm.game.PointSpreadAway"> {{vm.game.PointSpreadAway | mlFormat}} ({{vm.game.PointSpreadAwayLine | mlFormat}}) </td>
+            <td class="center-align no-sp" ng-show="vm.game.MoneyLineAway"> {{vm.game.MoneyLineAway | mlFormat}}  </td>
+            <td class="center-align no-sp" ng-show="vm.game.TotalNumber"> Over {{vm.game.TotalNumber}} ({{vm.game.OverLine | mlFormat}}) </td>
           </tr>
           <tr>
-            <td class="center-align no-sp" style="color: {{vm.game.HomeColor}}"> <b><img class="selection-image" src="{{vm.game.HomeHelmet}}" alt=""/>{{vm.game.HomeAbbrev}}</b></td>
-            <td class="center-align no-sp"> {{vm.game.PointSpreadHome | mlFormat}} ({{vm.game.PointSpreadHomeLine | mlFormat}}) </td>
-            <td class="center-align no-sp"> {{vm.game.MoneyLineHome | mlFormat}} </td>
-            <td class="center-align no-sp"> Under {{vm.game.TotalNumber}} ({{vm.game.UnderLine | mlFormat}}) </td>
+            <td class="center-align no-sp" style="color: {{vm.game.HomeColor}}" ng-show="vm.game.HomeAbbrev"> <b><img class="selection-image" src="{{vm.game.HomeHelmet}}" />{{vm.game.HomeAbbrev}}</b></td>
+            <td class="center-align no-sp" ng-show="vm.game.PointSpreadHome"> {{vm.game.PointSpreadHome | mlFormat}} ({{vm.game.PointSpreadHomeLine | mlFormat}}) </td>
+            <td class="center-align no-sp" ng-show="vm.game.MoneyLineHome"> {{vm.game.MoneyLineHome | mlFormat}} </td>
+            <td class="center-align no-sp" ng-show="vm.game.TotalNumber"> Under {{vm.game.TotalNumber}} ({{vm.game.UnderLine | mlFormat}}) </td>
           </tr>
         </tbody>
       </table>
@@ -62,14 +62,14 @@
         <div class="col s12" style="color: {{vm.game.HomeColor}}">
           {{vm.game.HomeAbbrev}} ML
         </div>
-        <div class="col s12" style="color: #D6D6D6">
+        <div class="col s12" style="color: #D6D6D6; font-size: 21px; padding-top: 2px">
           TOTAL OVER
         </div>
-        <div class="col s12" style="color: black">
+        <div class="col s12" style="color: black; font-size: 21px; padding-top: 2px">
           TOTAL UNDER
         </div>
       </div>
-      <div class="col s6 optLine">
+      <div class="col s6 optLine" ng-show="vm.game.AwaySpreadBest">
         <div class="col s12" style="color: {{vm.game.AwayColor}}">
           {{vm.game.AwaySpreadBest | mlFormat}} ({{vm.awayOptJuice | mlFormat}})
         </div>
