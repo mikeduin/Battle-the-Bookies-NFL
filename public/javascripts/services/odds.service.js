@@ -30,7 +30,7 @@ function oddsService ($http) {
       })
     },
     getDates: function() {
-      return $http.get('/lines/allweeks')
+      return $http.get('/lines')
       .then(function(lines) {
         var dates = [];
         var games = lines.data;

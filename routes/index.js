@@ -264,10 +264,6 @@ router.get('/linemove/:gameID', function(req, res, next){
 });
 
 router.get('/lines', function(req, res, next){
-  // var now = moment();
-  var week = setWeek.weekSetter(moment());
-  var week2 = setWeek.weekSetter(moment().add(1, 'w'));
-  
   Line.find({
     Week: {
       $nin: ["Preseason", "Postseason"]
