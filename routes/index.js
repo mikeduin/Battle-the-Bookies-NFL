@@ -267,12 +267,10 @@ router.get('/lines', function(req, res, next){
   // var now = moment();
   var week = setWeek.weekSetter(moment());
   var week2 = setWeek.weekSetter(moment().add(1, 'w'));
-
-  console.log('week is ', week, ' week 2 is ', week2);
+  
   Line.find({
     Week: {
-      $nin: ["Preseason", "Postseason"],
-      $in: [week, week2]
+      $nin: ["Preseason", "Postseason"]
     }
   }, function(err, games) {
     if (err) { next(err) };

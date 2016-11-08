@@ -15,7 +15,6 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.abbrev;
   vm.weekNumb;
 
-
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
   })
