@@ -5,9 +5,7 @@ angular
 function StandingsController (picksService, oddsService, usersService, $scope, $timeout) {
   var vm = this;
   vm.getDates = getDates;
-  vm.getDateNumbs = getDateNumbs;
   vm.weeksOfGames = [];
-  vm.dateNumbs = [];
   vm.dayArrayLength;
   vm.pageArray = [1];
   vm.activePage = 1;
@@ -76,12 +74,6 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
       }
     }).then(function(){
       getPageArray(vm.weeksOfGames)
-    })
-  };
-
-  function getDateNumbs () {
-    oddsService.getDateNumbs().then(function(dates){
-      vm.dateNumbs = dates;
     })
   };
 

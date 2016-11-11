@@ -41,21 +41,6 @@ function oddsService ($http) {
         }
         return dates;
       })
-    },
-    getDateNumbs: function() {
-      return $http.get('/lines')
-      .then(function(lines) {
-        console.log(lines.data)
-        var dateNumbs = [];
-        var games = lines.data;
-        for (var i in games) {
-          if (dateNumbs.indexOf(games[i].DateNumb) === -1) {
-            dateNumbs.push(games[i].DateNumb)
-          }
-        }
-        console.log("datenumbs are: " + dateNumbs);
-        return dateNumbs;
-      })
     }
   }
 }
