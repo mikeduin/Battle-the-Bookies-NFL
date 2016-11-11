@@ -103,8 +103,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     oddsService.getWeeklyNflLines($stateParams.weekNumb).then(function(games){
       vm.nflLines = games;
       for (i=0; i<vm.nflLines.length; i++){
-        // var nflLine = vm.nflLines[i].AwayAbbrev + 'v' + vm.nflLines[i].HomeAbbrev;
-        // $scope[nflLine] = vm.nflLines[i];
         vm.nflLines[i].homeColor = "#B68708";
         $scope.nflLines[vm.nflLines[i].AwayAbbrev] =
           {

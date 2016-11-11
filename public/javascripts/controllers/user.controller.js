@@ -151,16 +151,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
 
   function getDates () {
     oddsService.getDates().then(function(dates){
-      var weekNumbers = [];
-      for (i=0; i<dates.length; i++) {
-        var weekNumber = parseInt(dates[i].substring(5));
-        weekNumbers.push(weekNumber)
-      }
-      weekNumbers.sort(sortNumber);
-      for (i=0; i<weekNumbers.length; i++) {
-        var newWeek = "Week " + weekNumbers[i];
-        vm.weeksOfGames.push(newWeek)
-      }
+      vm.weeksOfGames = dates;
       var currentWeek = vm.weekSetter(moment().format());
       if (currentWeek === "Preseason") {
         vm.gameWeekFilter = "Week 1"

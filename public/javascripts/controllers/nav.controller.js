@@ -11,22 +11,9 @@ function NavController (authService, oddsService, $state) {
 
   vm.getDates = function () {
     oddsService.getDates().then(function(dates){
-      var weekNumbers = [];
       var currentWeek = vm.weekSetter(moment().format());
       var currentWeekNumb = parseInt(currentWeek.substring(5));
-      console.log(currentWeekNumb);
-      for (i=0; i<dates.length; i++) {
-        var weekNumber = parseInt(dates[i].substring(5));
-        if (weekNumber <= currentWeekNumb) {
-          weekNumbers.push(weekNumber)
-        };
-      };
-      weekNumbers.sort(sortNumber).reverse();
-      vm.weeksOfGames = [];
-      for (i=0; i<weekNumbers.length; i++) {
-        var newWeek = "Week " + weekNumbers[i];
-        vm.weeksOfGames.push(newWeek)
-      }
+      vm.weeksOfGames = dates.reverse();
     })
   };
 

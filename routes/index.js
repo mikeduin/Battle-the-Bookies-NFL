@@ -275,6 +275,48 @@ router.get('/lines', function(req, res, next){
   })
 })
 
+setTimeout(function(){
+  Line.find().distinct('Week', function(err, weeks){
+    if (err) {console.log (err)}
+
+    console.log('weeks are ', weeks)
+
+    var weekNumbers = [];
+    var newWeeks = [];
+    for (i=0; i<weeks.length; i++) {
+      var weekNumber = parseInt(weeks[i].substring(5));
+      weekNumbers.push(weekNumber)
+    }
+    weekNumbers.sort(sortNumber);
+    for (i=0; i<weekNumbers.length; i++) {
+      var newWeek = "Week " + weekNumbers[i];
+      newWeeks.push(newWeek)
+    }
+
+    console.log('newWeeks are ', newWeeks);
+  })
+}, 5000)
+
+router.get('/weeks', function(req, res, next){
+  Line.find().distinct('Week', function(err, weeks){
+    if (err) {console.log (err)}
+
+    var weekNumbers = [];
+    var newWeeks = [];
+    for (i=0; i<weeks.length; i++) {
+      var weekNumber = parseInt(weeks[i].substring(5));
+      weekNumbers.push(weekNumber)
+    }
+    weekNumbers.sort(sortNumber);
+    for (i=0; i<weekNumbers.length; i++) {
+      var newWeek = "Week " + weekNumbers[i];
+      newWeeks.push(newWeek)
+    }
+
+    res.json(newWeeks)
+  })
+})
+
 router.get('/lines/:week', function(req, res, next){
   Line.find({
     WeekNumb: req.params.week
