@@ -122,19 +122,20 @@ function PickController (oddsService, picksService, resultsService, authService,
   }
 
   function getDates () {
-    oddsService.getDates().then(function(dates){
-      vm.weeksOfGames = dates;
-      var currentWeek = vm.weekSetter(moment().format());
-      if (currentWeek === "Preseason") {
-        vm.gameWeekFilter = "Week 1"
-      } else if (
-        currentWeek === "Postseason"
-      ) {
-        vm.gameWeekFilter = "Week 17"
-      } else {
-        vm.gameWeekFilter = currentWeek
-      }
-    })
+    var week = vm.weekSetter(moment());
+    var week2 = vm.weekSetter(moment().add(1, 'w'));
+    var week3 = vm.weekSetter(moment().subtract(1, 'w'));
+    vm.weeksOfGames = [week3, week, week2];
+    var currentWeek = vm.weekSetter(moment().format());
+    if (currentWeek === "Preseason") {
+      vm.gameWeekFilter = "Week 1"
+    } else if (
+      currentWeek === "Postseason"
+    ) {
+      vm.gameWeekFilter = "Week 17"
+    } else {
+      vm.gameWeekFilter = currentWeek
+    }
   };
 
   function getResult (game) {

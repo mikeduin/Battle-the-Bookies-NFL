@@ -264,9 +264,14 @@ router.get('/linemove/:gameID', function(req, res, next){
 });
 
 router.get('/lines', function(req, res, next){
+  var week = setWeek.weekSetter(moment());
+  var week2 = setWeek.weekSetter(moment().add(1, 'w'));
+  var week3 = setWeek.weekSetter(moment().subtract(1, 'w'));
+
   Line.find({
     Week: {
-      $nin: ["Preseason", "Postseason"]
+      $nin: ["Preseason", "Postseason"],
+      $in: [week, week2, week3]
     }
   }, function(err, games) {
     if (err) { next(err) };
@@ -274,28 +279,6 @@ router.get('/lines', function(req, res, next){
     res.json(games);
   })
 })
-
-setTimeout(function(){
-  Line.find().distinct('Week', function(err, weeks){
-    if (err) {console.log (err)}
-
-    console.log('weeks are ', weeks)
-
-    var weekNumbers = [];
-    var newWeeks = [];
-    for (i=0; i<weeks.length; i++) {
-      var weekNumber = parseInt(weeks[i].substring(5));
-      weekNumbers.push(weekNumber)
-    }
-    weekNumbers.sort(sortNumber);
-    for (i=0; i<weekNumbers.length; i++) {
-      var newWeek = "Week " + weekNumbers[i];
-      newWeeks.push(newWeek)
-    }
-
-    console.log('newWeeks are ', newWeeks);
-  })
-}, 5000)
 
 router.get('/weeks', function(req, res, next){
   Line.find().distinct('Week', function(err, weeks){
