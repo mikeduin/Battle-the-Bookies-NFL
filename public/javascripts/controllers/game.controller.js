@@ -61,6 +61,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
   var capperGrades = [];
   var CGranks;
   vm.capperRanks = [];
+  vm.gameSelect;
 
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
@@ -383,7 +384,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         for (var i=0; i<games.length; i++) {
           // console.log(vm.game.AwayAbbrev);
           // console.log(games[i].AwayAbbrev);
-          if (games[i].AwayAbbrev !== vm.game.AwayAbbrev) {
+          if (games[i].AwayAbbrev !== vm.game.AwayAbbrev && moment(games[i].MatchTime).isBefore(moment())) {
             vm.weeklyGames.push(
               {
                 "Abbrev": games[i].AwayAbbrev + " @ " + games[i].HomeAbbrev,
