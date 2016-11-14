@@ -31,6 +31,10 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     vm.showSpinner = false
   }, 6000);
 
+  function sortNumber(a, b) {
+    return a - b
+  };
+
   vm.weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
   vm.weekValues = [
@@ -217,7 +221,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
         var weekNumber = parseInt(dates[i].substring(5));
         weekNumbers.push(weekNumber)
       }
-      weekNumbers.sort();
+      weekNumbers.sort(sortNumber);
       vm.lastWeekNumb = weekNumbers[weekNumbers.length-1]
     })
   };

@@ -1037,6 +1037,14 @@ prizeIntro div {
 /*END PRIZE STYLES*/
 /*BEGIN GAME CHART STYLES*/
 
+.gameSelect {
+  width: 140px;
+}
+
+.gameSelector {
+  margin-top: 20px
+}
+
 .chartInfo {
   height: 1000px;
   /*border: solid 1px black;*/

@@ -1,6 +1,6 @@
 <gameHead class="row" ng-init="vm.getLineData(); vm.checkDST()">
   <div class="col s12 result-head">
-    <div class="col s6 left-align">
+    <div class="col s5 left-align">
       <div class="gameHead"> Game Selection Analysis </div>
       <div class="game-details" ng-show="vm.game.AwayTeam"> {{vm.game.Week}}: <span style="color: {{vm.game.AwayColor}}">{{vm.game.AwayTeam}}</span> @ <span style="color: {{vm.game.HomeColor}}">{{vm.game.HomeTeam}}<span></div>
       <div ng-show="vm.game.GameStatus === 'Final' && vm.game.HomeScore > vm.game.AwayScore">
@@ -10,7 +10,18 @@
         <b>FINAL SCORE: <span style='color: {{vm.game.AwayColor}}'>{{vm.game.AwayAbbrev}} </span> {{vm.game.AwayScore}}, <span style='color: {{vm.game.HomeColor}}'>{{vm.game.HomeAbbrev}}</span> {{vm.game.HomeScore}} </b>
       </div>
     </div>
-    <div class="col s6">
+    <div class="col s2">
+      <div class="gameSelector">
+        <label><i>Go to another {{vm.game.Week}} game</i></label>
+          <select class="browser-default gameSelect inline" ng-model="vm.gameSelect" ng-change="vm.goToGame()" ng-options="game.ID as game.Abbrev for game in vm.weeklyGames">
+            <!-- <option selected> {{vm.gameSelect}} </option>
+            <option ng-repeat="game in vm.weeklyGames" value="{{game.ID}}">
+              {{game.Abbrev}}
+            </option> -->
+          </select>
+      </div>
+    </div>
+    <div class="col s5">
       <table class="bordered">
         <thead>
           <tr>
@@ -63,10 +74,10 @@
           {{vm.game.HomeAbbrev}} ML
         </div>
         <div class="col s12" style="color: #D6D6D6; font-size: 21px; padding-top: 2px">
-          TOTAL OVER
+          TOT OVER
         </div>
         <div class="col s12" style="color: black; font-size: 21px; padding-top: 2px">
-          TOTAL UNDER
+          TOT UNDER
         </div>
       </div>
       <div class="col s6 optLine" ng-show="vm.game.AwaySpreadBest">

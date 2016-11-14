@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('GameController', ['$stateParams', '$scope', 'gameService', GameController])
+  .controller('GameController', ['$stateParams', '$scope', '$location', 'gameService', 'oddsService', GameController])
 
-function GameController ($stateParams, $scope, gameService) {
+function GameController ($stateParams, $scope, $location, gameService, oddsService) {
   var vm = this;
   vm.EventID = $stateParams.EventID;
   vm.utcAdjust;
@@ -73,11 +73,16 @@ function GameController ($stateParams, $scope, gameService) {
       vm.utcAdjust = -8
     }
   };
+
   Array.max = function(array){
     return Math.max.apply(Math, array)
   };
   Array.min = function(array){
     return Math.min.apply(Math, array)
+  };
+
+  vm.goToGame = function(){
+    $location.path('/game/' + vm.gameSelect)
   };
 
   vm.getLineData = function(){
@@ -88,6 +93,8 @@ function GameController ($stateParams, $scope, gameService) {
       vm.homeColor = vm.game.HomeColor;
 
       console.log(vm.game);
+
+      vm.gameSelect = vm.game.AwayAbbrev + " @ " + vm.game.HomeAbbrev;
 
       vm.homeOptJuice =  vm.game.HomeSpreadIndex.juices[vm.game.HomeSpreadIndex.spreads.indexOf(vm.game.HomeSpreadBest)];
 
@@ -367,6 +374,23 @@ function GameController ($stateParams, $scope, gameService) {
           vm.totalProg.push([unixTime, vm.lineMoves.Totals[i]]);
           vm.totalProgOverJuices.push(vm.lineMoves.TotalOverJuices[i]);
           vm.totalProgUnderJuices.push(vm.lineMoves.TotalUnderJuices[i]);
+        };
+      })
+    }).then(function(){
+      var weekNumb = parseInt(vm.game.Week.substring(5));
+      oddsService.getWeeklyNflLines(weekNumb).then(function(games){
+        vm.weeklyGames = [];
+        for (var i=0; i<games.length; i++) {
+          // console.log(vm.game.AwayAbbrev);
+          // console.log(games[i].AwayAbbrev);
+          if (games[i].AwayAbbrev !== vm.game.AwayAbbrev) {
+            vm.weeklyGames.push(
+              {
+                "Abbrev": games[i].AwayAbbrev + " @ " + games[i].HomeAbbrev,
+                "ID": games[i].EventID
+              }
+            )
+          }
         };
       })
     })
