@@ -39,7 +39,7 @@ function sortNumber(a, b) {
 
 // BEGIN ROUTES TO AUTO-UPDATE ODDS + RESULTS (FROM API) AND USER PICKS (FROM DB)
 
-// This first function updates game results.
+// This first function updates game results every ten minutes.
 
 setInterval(function(){
   fetch('https://jsonodds.com/api/results/nfl?oddType=Game', {
@@ -80,7 +80,7 @@ setInterval(function(){
         });
     // res.json(odds);
   })
-}, 60000)
+}, 300000)
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
@@ -356,7 +356,7 @@ setInterval(function(){
   })
 }, 240000)
 
-// This function runs every 1.5 minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
+// This function runs every 10 minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 
 setInterval(function(){
   Line.find({
@@ -387,7 +387,7 @@ setInterval(function(){
       })
     })
   })
-}, 90000)
+}, 600000)
 
 // END LINE ROUTES
 // BEGIN RESULTS ROUTES
@@ -957,7 +957,7 @@ router.get('/picks/:week', function (req, res, next){
   })
 })
 
-// The function below checks every 23 minutes to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page.
+// The function below checks every hour to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page.
 
 setInterval(function(){
   Line.find({
