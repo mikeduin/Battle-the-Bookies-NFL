@@ -41,7 +41,7 @@ function sortNumber(a, b) {
 
 // This first function updates game results every ten minutes.
 
-setInterval(function(){
+setInterval(function updateGameResults(){
   fetch('https://jsonodds.com/api/results/nfl?oddType=Game', {
     method: 'GET',
     headers: {
@@ -84,7 +84,7 @@ setInterval(function(){
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
-setInterval(function(){
+setInterval(function updatePickResults(){
   Pick.find({finalPayout: 0}, function (err, picks){
     if (err) {console.log(err)}
 
@@ -178,7 +178,7 @@ setInterval(function(){
       })
     })
   console.log('picks updated at ' + new Date())
-}, 105000)
+}, 600000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
@@ -301,8 +301,15 @@ router.get('/weeks', function(req, res, next){
 })
 
 router.get('/lines/:week', function(req, res, next){
+  var week;
+  if (req.params.week.length === 1) {
+    week = "0"+req.params.week
+  } else {
+    week = req.params.week
+  };
+  
   Line.find({
-    WeekNumb: req.params.week
+    WeekNumb: week
   }, function(err, games) {
     if (err) { next(err) };
 
@@ -331,7 +338,7 @@ router.get('/matchups', function(req, res, next){
 
 // This function runs every 4 minutes and, if a line does not currently have pick counters associated with it, adds them to the line's base data
 
-setInterval(function(){
+setInterval(function addPickCounters(){
   Line.find({
     MLHomePicks: {
       $exists: false
@@ -358,7 +365,7 @@ setInterval(function(){
 
 // This function runs every 10 minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 
-setInterval(function(){
+setInterval(function updateFinalScores(){
   Line.find({
     GameStatus: {
       $ne: "Final"
@@ -412,7 +419,7 @@ router.get('/pullGame/:gameID', function(req, res, next){
 
 // This massive function below runs every 5 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrads for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
 
-setInterval(function(){
+setInterval(function addPickRanges(){
   var now = moment();
   Line.find({
     MatchTime: {
@@ -590,7 +597,7 @@ setInterval(function(){
         });
       })
     })
-  }).then(function(){
+  }).then(function setCapperGrades(){
     var now = moment();
     // This upcoming chain of functions sets a pick's CapperGrades score if the game has started and the CapperGrades have not previously been set
     Pick.find({
@@ -618,7 +625,6 @@ setInterval(function(){
         var bestJuiceAvail;
         var pickID = pick._id;
         Line.find({EventID: pick.EventID}, function(err, line){
-          console.log('pick is ', pick);
           if (err) {console.log(err)}
 
           if (pick.pickType === "Away Spread") {
@@ -753,9 +759,8 @@ setInterval(function(){
       })
     })
   })
-  .then(setTimeout(function(){
+  .then(setTimeout(function createPickObjects(){
     var now = moment();
-    console.log('function has made it to last part')
     Line.find({
       MatchTime: {
         $lt: now
@@ -823,7 +828,7 @@ setInterval(function(){
             };
           })
 
-        }).then(function(){
+        }).then(function buildPickArrays(){
           PickArray.findOneAndUpdate({EventID: game.EventID}, {
             $set: {
               EventID: game.EventID,
@@ -859,7 +864,7 @@ setInterval(function(){
 
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 
-setInterval(function(){
+setInterval(function logLineMoves(){
   var now = moment();
   Line.find({
     MatchTime: {
@@ -918,7 +923,7 @@ setInterval(function(){
       }, {upsert: true}, function(err, line){
         if (err) {console.log(err)}
 
-        console.log('linemoves have been added for ', line)
+        console.log('linemoves have been added for ', line.EventID)
       })
     })
   })
@@ -959,7 +964,7 @@ router.get('/picks/:week', function (req, res, next){
 
 // The function below checks every hour to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page.
 
-setInterval(function(){
+setInterval(function checkStartTimes(){
   Line.find({
     GameStatus: {
       $ne: "Final"
@@ -986,7 +991,7 @@ setInterval(function(){
 
 // This function below checks every five minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 
-setInterval(function(){
+setInterval(function addPickTemplates(){
   User.find(function(err, users){
     if (err) {console.log(err)}
 
@@ -1037,7 +1042,7 @@ setInterval(function(){
 
 // The function below runs every hour and calculates a user's weekly totals in terms of picks won, picks lost, and net profits.
 
-setInterval(function(){
+setInterval(function calculateProfits(){
   User.find(function(err, users){
     if(err) {console.log(err)}
 
@@ -1432,7 +1437,6 @@ router.get('/picks/:username/stats', function (req, res, next){
 })
 
 router.get('/picks/:username/:weeknumb', function (req, res, next) {
-  console.log("this is the server weeknumb", req.params.weeknumb);
   Pick.find({
     username: req.params.username,
     WeekNumb: req.params.weeknumb
@@ -1460,7 +1464,6 @@ router.post('/picks/addTemp', auth, function (req, res, next){
     if (err) {console.log(err)}
 
     res.json(pick);
-    console.log(pick + 'has been saved as a template!')
   })
 })
 
@@ -1561,7 +1564,6 @@ router.put('/picks', auth, function(req, res, next){
       console.log("no pick type was found")
     }
 
-    console.log(pick + ' has been updated with pick submission info!');
     res.json(pick);
   })
 })
@@ -1591,7 +1593,6 @@ router.get('/users/:username', function (req, res, next){
 // BEGIN AUTH ROUTES
 
 router.post('/register', function(req, res, next){
-  console.log(req.body);
   if(!req.body.username || !req.body.password || !req.body.nameFirst || !req.body.nameLast || !req.body.email || !req.body.buyin
   ){
     return res.status(400).json({message: 'You left something blank!'});
@@ -1630,10 +1631,7 @@ router.post('/login', function(req, res, next){
     return res.status(400).json({message: 'You forgot to include either your username or your password!'});
   }
 
-  console.log(req.body);
-
   passport.authenticate('local', function(err, user, info){
-    console.log(user);
     if(err){ return next(err); }
 
     if(user){
