@@ -61,7 +61,6 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
   var capperGrades = [];
   var CGranks;
   vm.capperRanks = [];
-  vm.gameSelect;
 
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
@@ -95,7 +94,10 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
 
       console.log(vm.game);
 
-      vm.gameSelect = vm.game.AwayAbbrev + " @ " + vm.game.HomeAbbrev;
+      vm.gameSelect = {
+        "Abbrev": vm.game.AwayAbbrev + " @ " + vm.game.HomeAbbrev,
+        "ID": vm.game.EventID
+      };
 
       vm.homeOptJuice =  vm.game.HomeSpreadIndex.juices[vm.game.HomeSpreadIndex.spreads.indexOf(vm.game.HomeSpreadBest)];
 
@@ -382,8 +384,6 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
       oddsService.getWeeklyNflLines(weekNumb).then(function(games){
         vm.weeklyGames = [];
         for (var i=0; i<games.length; i++) {
-          // console.log(vm.game.AwayAbbrev);
-          // console.log(games[i].AwayAbbrev);
           if (games[i].AwayAbbrev !== vm.game.AwayAbbrev && moment(games[i].MatchTime).isBefore(moment())) {
             vm.weeklyGames.push(
               {
@@ -393,6 +393,11 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
             )
           }
         };
+        vm.weeklyGames.unshift({
+          "Abbrev": vm.game.AwayAbbrev + " @ " + vm.game.HomeAbbrev,
+          "ID": vm.game.EventID
+        });
+        vm.gameSelect = vm.weeklyGames[0].ID;
       })
     })
   }
@@ -422,7 +427,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
             "type":"null",
             "x":"1%",
             "y":"8%",
-            "width":"95%",
+            "width":"93%",
             "background-color":"#f9f9f9",
             "title":{
                 "text":"Picks are charted based on value relative to the best number ever available for each line; the higher on the chart a pick bubble appears, the more relative value that had pick had. Home and Under picks are charted against the left axis, while Away and Over picks are charted against the right axis. Line graphs chart line movement over the course of the week. Hover over each pick bubble for details.",

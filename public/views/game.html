@@ -14,10 +14,6 @@
       <div class="gameSelector">
         <label><i>Go to another {{vm.game.Week}} game</i></label>
           <select class="browser-default gameSelect inline" ng-model="vm.gameSelect" ng-change="vm.goToGame()" ng-options="game.ID as game.Abbrev for game in vm.weeklyGames">
-            <!-- <option selected> {{vm.gameSelect}} </option>
-            <option ng-repeat="game in vm.weeklyGames" value="{{game.ID}}">
-              {{game.Abbrev}}
-            </option> -->
           </select>
       </div>
     </div>
