@@ -80,7 +80,7 @@ setInterval(function updateGameResults(){
         });
     // res.json(odds);
   })
-}, 300000)
+}, 600000)
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
@@ -180,6 +180,66 @@ setInterval(function updatePickResults(){
   console.log('picks updated at ' + new Date())
 }, 600000)
 
+// This function checks every nine minutes to see if new lines are available and, if so, adds them to the DB. 
+
+setInterval(function createLines (req, res, next){
+  fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
+    method: 'GET',
+    headers: {
+      'JsonOdds-API-Key': process.env.API_KEY
+    }
+  }).then(function(res){
+    return res.json()
+  }).then(function(odds){
+    odds.forEach(function(game){
+      Line.find({EventID: game.ID}, function(err, line){
+        if (err) {console.log(err)}
+
+        if (!line) {
+          var newLine = new Line({
+            EventID: game.ID,
+            HomeTeam: game.HomeTeam,
+            AwayTeam: game.AwayTeam,
+            HomeAbbrev: abbrevs.teamAbbrev(game.HomeTeam),
+            AwayAbbrev: abbrevs.teamAbbrev(game.AwayTeam),
+            HomeHelmet: helmets.teamHelmet(game.HomeTeam),
+            AwayHelmet: helmets.teamHelmet(game.AwayTeam),
+            HomeColor: colors.teamColor(game.HomeTeam),
+            AwayColor: colors.teamColor(game.AwayTeam),
+            MatchTime: new Date(game.MatchTime),
+            MatchDay: moment(game.MatchTime).utcOffset(-7).format('MMMM Do, YYYY'),
+            DateNumb: parseInt(moment(game.MatchTime).utcOffset(-7).format('YYYYMMDD')),
+            Week: setWeek.weekSetter(game.MatchTime),
+            WeekNumb: setWeekNumb.weekNumbSetter(game.MatchTime),
+            OddType: game.Odds[0].OddType,
+            MoneyLineHome: game.Odds[0].MoneyLineHome,
+            MoneyLineAway: game.Odds[0].MoneyLineAway,
+            PointSpreadHome: game.Odds[0].PointSpreadHome,
+            PointSpreadAway: game.Odds[0].PointSpreadAway,
+            PointSpreadAwayLine: game.Odds[0].PointSpreadAwayLine,
+            PointSpreadHomeLine: game.Odds[0].PointSpreadHomeLine,
+            TotalNumber: game.Odds[0].TotalNumber,
+            OverLine: game.Odds[0].OverLine,
+            UnderLine: game.Odds[0].UnderLine,
+            MLHomePicks: 0,
+            MLAwayPicks: 0,
+            SpreadHomePicks: 0,
+            SpreadAwayPicks: 0,
+            OverPicks: 0,
+            UnderPicks: 0
+          });
+
+          newLine.save(function(err, result){
+            if (err) {console.log(err)};
+
+            console.log(result.EventID + ' was added as a new line');
+          })
+        }
+      })
+    })
+  })
+}, 540000)
+
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
 router.get('/updateOdds', function(req, res, next) {
@@ -197,23 +257,8 @@ router.get('/updateOdds', function(req, res, next) {
 
     for (i = 0; i < odds.length; i++) {
 
-      bulk.find({EventID: odds[i].ID}).upsert().updateOne({
+      bulk.find({EventID: odds[i].ID}).updateOne({
         $set : {
-          EventID: odds[i].ID,
-          HomeTeam: odds[i].HomeTeam,
-          AwayTeam: odds[i].AwayTeam,
-          HomeAbbrev: abbrevs.teamAbbrev(odds[i].HomeTeam),
-          AwayAbbrev: abbrevs.teamAbbrev(odds[i].AwayTeam),
-          HomeHelmet: helmets.teamHelmet(odds[i].HomeTeam),
-          AwayHelmet: helmets.teamHelmet(odds[i].AwayTeam),
-          HomeColor: colors.teamColor(odds[i].HomeTeam),
-          AwayColor: colors.teamColor(odds[i].AwayTeam),
-          MatchTime: new Date(odds[i].MatchTime),
-          MatchDay: moment(odds[i].MatchTime).utcOffset(-7).format('MMMM Do, YYYY'),
-          DateNumb: parseInt(moment(odds[i].MatchTime).utcOffset(-7).format('YYYYMMDD')),
-          Week: setWeek.weekSetter(odds[i].MatchTime),
-          WeekNumb: setWeekNumb.weekNumbSetter(odds[i].MatchTime),
-          OddType: odds[i].Odds[0].OddType,
           MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
           MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
           PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
@@ -307,7 +352,7 @@ router.get('/lines/:week', function(req, res, next){
   } else {
     week = req.params.week
   };
-  
+
   Line.find({
     WeekNumb: week
   }, function(err, games) {
@@ -335,33 +380,6 @@ router.get('/matchups', function(req, res, next){
     res.json(matchups);
   })
 })
-
-// This function runs every 4 minutes and, if a line does not currently have pick counters associated with it, adds them to the line's base data
-
-setInterval(function addPickCounters(){
-  Line.find({
-    MLHomePicks: {
-      $exists: false
-    }
-  }, function(err, lines){
-    if (err) {console.log(err)}
-
-    lines.forEach(function(line){
-      Line.findOneAndUpdate({EventID: line.EventID}, {
-        MLHomePicks: 0,
-        MLAwayPicks: 0,
-        SpreadHomePicks: 0,
-        SpreadAwayPicks: 0,
-        OverPicks: 0,
-        UnderPicks: 0
-      }, function(err, line){
-        console.log(line, " was updated")
-      })
-    })
-
-    console.log("pick counters updated")
-  })
-}, 240000)
 
 // This function runs every 10 minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 
