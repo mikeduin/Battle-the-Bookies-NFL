@@ -86,10 +86,10 @@ UserSchema.methods.validPassword = function(password) {
 };
 
 UserSchema.methods.generateJWT = function () {
-  // this function sets expiration of token to 60 days
+  // this function sets expiration of token to 300 days
   var today = new Date();
   var exp = new Date(today);
-  exp.setDate(today.getDate()+ 60);
+  exp.setDate(today.getDate()+ 300);
 
   //this function below takes two arguments - the payload that will be signed by the JWT + the secret. Hard-coding 'SECRET' for now but need to come back and change that to an environment variable so the secret is kept out of our code. This 'SECRET' reference is also included in the auth variable in index.js, so remember to change that too.
   return jwt.sign({

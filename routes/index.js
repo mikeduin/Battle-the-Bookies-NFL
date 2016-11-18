@@ -1,3 +1,4 @@
+
 var express = require('express');
 var router = express.Router();
 var jwt = require('express-jwt');
@@ -23,6 +24,7 @@ var helmets = require('../modules/helmets.js');
 var colors = require('../modules/colors.js');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
+var updateResults = require('../modules/updateResults.js')
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -41,46 +43,9 @@ function sortNumber(a, b) {
 
 // This first function updates game results every ten minutes.
 
-setInterval(function updateGameResults(){
-  fetch('https://jsonodds.com/api/results/nfl?oddType=Game', {
-    method: 'GET',
-    headers: {
-      'JsonOdds-API-Key': process.env.API_KEY
-    }
-  }).then(function(res){
-    return res.json()
-  }).then(function(results){
-
-    var bulk = Result.collection.initializeOrderedBulkOp();
-    var counter = 0;
-
-    for (i = 0; i < results.length; i++) {
-      bulk.find({EventID: results[i].ID}).upsert().updateOne({
-        $set: {
-          EventID: results[i].ID,
-          HomeScore: results[i].HomeScore,
-          AwayScore: results[i].AwayScore,
-          OddType: results[i].OddType,
-          Final: results[i].Final,
-          FinalType: results[i].FinalType
-        }
-      });
-      counter++;
-
-      if (counter % 1000 == 0) {
-        bulk.execute(function(err, res){
-          bulk = Result.collection.initializeOrderedBulkOp();
-        });
-      }
-    };
-
-    if (counter % 1000 != 0)
-        bulk.execute(function(err,res) {
-           console.log('results bulk update completed at ' + new Date());
-        });
-    // res.json(odds);
-  })
-}, 600000)
+setInterval(function (){
+  updateResults.updateResults()
+}, 300000)
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
@@ -180,7 +145,7 @@ setInterval(function updatePickResults(){
   console.log('picks updated at ' + new Date())
 }, 600000)
 
-// This function checks every nine minutes to see if new lines are available and, if so, adds them to the DB. 
+// This function checks every nine minutes to see if new lines are available and, if so, adds them to the DB.
 
 setInterval(function createLines (req, res, next){
   fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
@@ -1399,6 +1364,40 @@ router.get('/weeklyStats/:username', function(req, res, next){
     })
   })
 })
+
+// router.get('/weeklyDollars/:week', function(req, res, next){
+
+// setInterval(function(){
+//   User.find(function(err, users){
+//     if (err) {console.log(err)}
+//
+//   }).then(function(users){
+//     var weeklyDollars = [];
+//     users.forEach(function(user){
+//       Pick.find({
+//         username: user.username,
+//         Week: "Week 10"
+//       }, function(err, picks){
+//         if (err) {console.log(err)}
+//
+//       }).then(function(picks){
+//         var weeklyMoney = 0;
+//
+//         for (var i=0; i<picks.length; i++){
+//           weeklyMoney += picks[i].finalPayout
+//         };
+//
+//         weeklyDollars.push({
+//           username: user.username,
+//           weeklyMoney: weeklyMoney,
+//           totalDollars: user.totalDollars
+//         });
+//       })
+//     })
+//   })
+// }, 5000)
+
+// })
 
 router.get('/picks/:username/stats', function (req, res, next){
   Pick.find({

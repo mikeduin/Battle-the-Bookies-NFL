@@ -10,7 +10,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.week;
   vm.nflLines = [];
   vm.lastWeekNumb;
-  $scope.nflLines={};
+  $scope.nflLines= {};
   vm.getNflLines = getNflLines;
   vm.getWeeklyNflLines = getWeeklyNflLines;
   vm.updatePicks = updatePicks;
@@ -86,6 +86,14 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
       vm.users = result;
+    })
+  };
+
+  vm.sumAllPicks = function(user) {
+    username = user.username;
+    picksService.getWeeklyStats(username).then(function(result){
+      user.dailyStats = result.data;
+      console.log('user daily stats are ', user.dailyStats);
     })
   };
 
