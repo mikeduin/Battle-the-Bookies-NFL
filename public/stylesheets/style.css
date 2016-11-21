@@ -746,7 +746,7 @@ leadDiv {
 }
 
 .gameHead {
-  font-size: 32px;
+  font-size: 2vw;
   font-weight: 800;
   color: #2F5032;
   margin-top: 10px;
@@ -1081,14 +1081,14 @@ prizeIntro div {
 }
 
 .optLineTm {
-  font-size: 22px;
+  font-size: 1.6vw;
   font-weight: 600;
   text-align: right;
   border-right: 1px solid #d6d6d6;
 }
 
 .optLine {
-  font-size: 22px;
+  font-size: 1.6vw;
   font-weight: 600;
   text-align: left;
 }

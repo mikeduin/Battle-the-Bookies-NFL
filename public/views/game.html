@@ -12,7 +12,7 @@
     </div>
     <div class="col s2">
       <div class="gameSelector">
-        <label><i>Go to another {{vm.game.Week}} game</i></label>
+        <label><i>Go to {{vm.game.Week}} game:</i></label>
           <select class="browser-default gameSelect inline" ng-model="vm.gameSelect" ng-change="vm.goToGame()" ng-options="game.ID as game.Abbrev for game in vm.weeklyGames">
           </select>
       </div>
@@ -69,10 +69,10 @@
         <div class="col s12" style="color: {{vm.game.HomeColor}}">
           {{vm.game.HomeAbbrev}} ML
         </div>
-        <div class="col s12" style="color: #D6D6D6; font-size: 21px; padding-top: 2px">
+        <div class="col s12" style="color: #D6D6D6; padding-top: 2px">
           TOT OVER
         </div>
-        <div class="col s12" style="color: black; font-size: 21px; padding-top: 2px">
+        <div class="col s12" style="color: black; padding-top: 2px">
           TOT UNDER
         </div>
       </div>
