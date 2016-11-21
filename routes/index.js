@@ -1,4 +1,3 @@
-
 var express = require('express');
 var router = express.Router();
 var jwt = require('express-jwt');
@@ -24,7 +23,8 @@ var helmets = require('../modules/helmets.js');
 var colors = require('../modules/colors.js');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
-var updateResults = require('../modules/updateResults.js')
+var updateResults = require('../modules/updateResults.js');
+var updatePickResults = require('../modules/updatePickResults.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -41,111 +41,19 @@ function sortNumber(a, b) {
 
 // BEGIN ROUTES TO AUTO-UPDATE ODDS + RESULTS (FROM API) AND USER PICKS (FROM DB)
 
-// This first function updates game results every ten minutes.
+// This first function updates game results every 10 minutes.
 
 setInterval(function (){
   updateResults.updateResults()
-}, 300000)
+}, 600000)
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
-setInterval(function updatePickResults(){
-  Pick.find({finalPayout: 0}, function (err, picks){
-    if (err) {console.log(err)}
-
-  }).then(function(picks){
-    picks.forEach(function(pick){
-      var HomeScore;
-      var AwayScore;
-      Result.findOne({EventID: pick.EventID}, function (err, result){
-        if(err) {next(err)};
-
-        if(!result) {return};
-
-        if(result.Final === true) {
-          var HomeScore = result.HomeScore;
-          var AwayScore = result.AwayScore;
-
-          Pick.update({"_id": pick._id}, {
-            HomeScore: HomeScore,
-            AwayScore: AwayScore,
-            Final: true
-          }, function (err, pick) {
-            if (err) {console.log(err)}
-
-          })
-        }
-      }).then(function(result){
-        Pick.find({EventID: result.EventID}, function(err, picks){
-          if (err) {console.log(err)}
-
-        }).then(function(picks){
-          picks.forEach(function(pick){
-            var activePayout = pick.activePayout;
-
-            if (pick.Final === true) {
-
-              if (
-                ((pick.pickType === "Away Moneyline") && (pick.AwayScore > pick.HomeScore))
-                ||
-                ((pick.pickType === "Home Moneyline") && (pick.HomeScore > pick.AwayScore))
-                ||
-                ((pick.pickType === "Away Spread") && ((pick.activeSpread + pick.AwayScore) > pick.HomeScore))
-                ||
-                ((pick.pickType === "Home Spread") && ((pick.activeSpread + pick.HomeScore) > pick.AwayScore))
-                ||
-                ((pick.pickType === "Total Over") && ((pick.HomeScore + pick.AwayScore) > pick.activeTotal))
-                ||
-                ((pick.pickType === "Total Under") && ((pick.HomeScore + pick.AwayScore) < pick.activeTotal))
-              ) {
-                  Pick.update({"_id": pick._id}, {
-                    pickResult: "win",
-                    resultBinary: 1,
-                    finalPayout: activePayout,
-                  }, function(err, result){
-                    if (err) {console.log(err)}
-                  })
-                } else if (
-                  ((pick.pickType === "Away Moneyline") && (pick.AwayScore === pick.HomeScore))
-                  ||
-                  ((pick.pickType === "Home Moneyline") && (pick.HomeScore === pick.AwayScore))
-                  ||
-                  ((pick.pickType === "Away Spread") && ((pick.activeSpread + pick.AwayScore) === pick.HomeScore))
-                  ||
-                  ((pick.pickType === "Home Spread") && ((pick.activeSpread + pick.HomeScore) === pick.AwayScore))
-                  ||
-                  ((pick.pickType === "Total Over") && ((pick.HomeScore + pick.AwayScore) === pick.activeTotal))
-                  ||
-                  ((pick.pickType === "Total Under") && ((pick.HomeScore + pick.AwayScore) === pick.activeTotal))
-                ) {
-                    Pick.update({"_id": pick._id}, {
-                      pickResult: "push",
-                      resultBinary: 0.5,
-                      finalPayout: 0.00001,
-                    }, function(err, result){
-                      if (err) {console.log(err)}
-                    })
-                  }
-                 else
-                {
-                  Pick.update({"_id": pick._id}, {
-                    pickResult: "loss",
-                    resultBinary: 0,
-                    finalPayout: -100,
-                  }, function(err, result){
-                    if (err) {console.log(err)}
-                  })
-                }
-              }
-            })
-          })
-        })
-      })
-    })
-  console.log('picks updated at ' + new Date())
+setInterval(function (){
+  updatePickResults.updatePickResults()
 }, 600000)
 
-// This function checks every nine minutes to see if new lines are available and, if so, adds them to the DB.
+// This function checks every 20 minutes to see if new lines are available and, if so, adds them to the DB.
 
 setInterval(function createLines (req, res, next){
   fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
@@ -157,10 +65,11 @@ setInterval(function createLines (req, res, next){
     return res.json()
   }).then(function(odds){
     odds.forEach(function(game){
+
       Line.find({EventID: game.ID}, function(err, line){
         if (err) {console.log(err)}
 
-        if (!line) {
+        if (!line[0]) {
           var newLine = new Line({
             EventID: game.ID,
             HomeTeam: game.HomeTeam,
@@ -203,7 +112,7 @@ setInterval(function createLines (req, res, next){
       })
     })
   })
-}, 540000)
+}, 1200000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
@@ -400,7 +309,7 @@ router.get('/pullGame/:gameID', function(req, res, next){
   })
 })
 
-// This massive function below runs every 5 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrads for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
+// This massive function below runs every 5 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
 
 setInterval(function addPickRanges(){
   var now = moment();
