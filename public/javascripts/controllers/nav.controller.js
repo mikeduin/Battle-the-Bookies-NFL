@@ -11,8 +11,9 @@ function NavController (authService, oddsService, $state) {
 
   vm.getDates = function () {
     oddsService.getDates().then(function(dates){
+      console.log('dates in header are ', dates);
       var currentWeek = vm.weekSetter(moment().format());
-      var currentWeekNumb = parseInt(currentWeek.substring(5));
+      vm.currentWeekNumb = parseInt(currentWeek.substring(5));
       vm.weeksOfGames = dates.reverse();
     })
   };

@@ -45,13 +45,13 @@ function sortNumber(a, b) {
 
 setInterval(function (){
   updateResults.updateResults()
-}, 600000)
+}, 600000);
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
 setInterval(function (){
   updatePickResults.updatePickResults()
-}, 600000)
+}, 600000);
 
 // This function checks every 20 minutes to see if new lines are available and, if so, adds them to the DB.
 

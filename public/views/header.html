@@ -16,9 +16,9 @@ $(document).ready(function(){
     <li><a ui-sref='home.standings'>Overall Standings</a></li>
     <li><a ui-sref='home.prizes'>Prizes</a></li>
   </ul>
-  <ul id='results-dropdown' class="dropdown-content">
+  <!-- <ul id='results-dropdown' class="dropdown-content">
     <li ng-repeat='week in vm.weeksOfGames'> <a ui-sref='home.results.picks({weekNumb: vm.weekConfig(week.substring(5))})'>{{week}}</a></li>
-  </ul>
+  </ul> -->
   <nav class="z-depth-2">
     <div class="nav-wrapper">
       <a ui-sref="home" class="brand-logo">Battle the Bookies</a>
@@ -33,7 +33,7 @@ $(document).ready(function(){
         <li><a ui-sref="home.tutorial">How to Play</a></li>
         <li><a ui-sref="home.makepicks">Make Picks</a></li>
         <li><a class='dropdown-button' data-beloworigin="true" data-constrainwidth="false" href="#" data-activates='standings-dropdown'>Standings</a></li>
-        <li><a class='dropdown-button' data-beloworigin="true" data-constrainwidth="false" href="#" data-activates='results-dropdown'>Results</a></li>
+        <li><a ui-sref='home.results.picks({weekNumb: vm.currentWeekNumb})'>Results</a></li>
         <li><a ui-sref='home.user'>Users</a></li>
         <li><a href='http://www.mikeduin.com/alevelabove/blog/main'>ALA Home</a></li>
       </ul>
@@ -50,7 +50,8 @@ $(document).ready(function(){
         <li><a ui-sref="home.tutorial">How to Play</a></li>
         <li><a ui-sref="home.makepicks">Make Picks</a></li>
         <li><a ui-sref='home.standings'>YTD Standings</a></li>
-        <li class="no-padding">
+        <li><a ui-sref='home.results.picks({weekNumb: vm.currentWeekNumb})'>Results</a></li>
+        <!-- <li class="no-padding">
           <ul class="collapsible collapsible-accordion">
             <li>
               <a class="collapsible-header">Results</a>
@@ -61,7 +62,7 @@ $(document).ready(function(){
               </div>
             </li>
           </ul>
-        </li>
+        </li> -->
         <li><a ui-sref='home.user'>Users</a></li>
         <li><a ui-sref='home.prizes'>Prizes</a></li>
         <li class="ala-link"><a class="ala-linkage" style="color: #E1DFE1; font-size: 24px" href='http://www.mikeduin.com/alevelabove/blog/main'>A Level Above Home</a></li>

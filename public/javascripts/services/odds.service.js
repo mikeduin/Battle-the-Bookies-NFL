@@ -35,18 +35,5 @@ function oddsService ($http) {
         return weeks.data;
       })
     }
-    // getDates: function() {
-    //   return $http.get('/lines')
-    //   .then(function(lines) {
-    //     var dates = [];
-    //     var games = lines.data;
-    //     for (var i in games) {
-    //       if (dates.indexOf(games[i].Week) === -1) {
-    //         dates.push(games[i].Week)
-    //       }
-    //     }
-    //     return dates;
-    //   })
-    // }
   }
 }
