@@ -1,4 +1,4 @@
-<results ng-show="vm.showResults" ng-init="vm.getWeeklyNflLines(); vm.getDates(); vm.getWeeklyPicks(); vm.getAllUsers()">
+<results ng-init="vm.getWeeklyNflLines(); vm.getDates(); vm.getWeeklyPicks(); vm.getAllUsers()">
   <table class="bordered striped">
     <thead>
       <tr>
@@ -16,7 +16,7 @@
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody ng-show="vm.showResults">
       <tr ng-repeat="user in vm.users | orderBy: vm.userSort" ng-init="vm.sumAllPicks(user)">
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a> </td>
         <td class="nobr center-align"> <b> {{user.sumYtd | currency:$:0}} </b> </td>
