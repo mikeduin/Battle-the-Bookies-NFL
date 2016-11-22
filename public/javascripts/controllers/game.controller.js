@@ -442,7 +442,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"12.33%",
+            "y":"13.33%",
             "width": "30%",
             "height": "27%",
             "background-color":"#6D6D6D",
@@ -471,7 +471,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"25.33%",
+            "y":"26.33%",
             "width": "17%",
             "height": "3.335%",
             "background-color":"#6D6D6D",
@@ -488,7 +488,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"28.6%",
+            "y":"29.6%",
             "width": "17%",
             "height": "10%",
             "background-color":"#6D6D6D",
@@ -505,7 +505,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"35.67%",
+            "y":"36.67%",
             "width": "17%",
             "height": "3.335%",
             "background-color":"#6D6D6D",
@@ -523,7 +523,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"mixed",
             "x":"20%",
-            "y":"12.33%",
+            "y":"13.33%",
             "height":"26.67%",
             "width":"79%",
             "background-color":"#6D6D6D",
@@ -735,7 +735,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"39%",
+            "y":"40%",
             "width": "30%",
             "height": "27%",
             "background-color":"#969191",
@@ -763,7 +763,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"52.33%",
+            "y":"53.33%",
             "width": "17%",
             "height": "3.335%",
             "background-color":"#969191",
@@ -780,7 +780,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"56.7%",
+            "y":"57.7%",
             "width": "17%",
             "height": "10%",
             "background-color":"#969191",
@@ -797,7 +797,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"66.7%",
+            "y":"67.7%",
             "width": "17%",
             "height": "3.335%",
             "background-color":"#969191",
@@ -815,7 +815,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"mixed",
             "x":"20%",
-            "y":"39%",
+            "y":"40%",
             "height":"26.67%",
             "width":"79%",
             "background-color":"#969191",
@@ -1021,7 +1021,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"65.67%",
+            "y":"66.67%",
             "width": "30%",
             "height": "26.7%",
             "background-color":"#68A870",
@@ -1049,7 +1049,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"79%",
+            "y":"80%",
             "width": "17%",
             "height": "3.335%",
             "background-color":"#68A870",
@@ -1066,7 +1066,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"82.335%",
+            "y":"83.335%",
             "width": "17%",
             "height": "10%",
             "background-color":"#68A870",
@@ -1083,7 +1083,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"null",
             "x":"1%",
-            "y":"92.335%",
+            "y":"93.335%",
             "width": "17%",
             "height": "0.1%",
             "background-color":"#68A870",
@@ -1100,7 +1100,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         {
             "type":"mixed",
             "x":"20%",
-            "y":"65.67%",
+            "y":"66.67%",
             "height":"26.67%",
             "width":"79%",
             "background-color":"#68A870",

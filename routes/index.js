@@ -854,7 +854,7 @@ router.get('/picks/:week', function (req, res, next){
   })
 })
 
-// The function below checks every hour to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page.
+// The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
 
 setInterval(function checkStartTimes(){
   Line.find({
@@ -879,9 +879,9 @@ setInterval(function checkStartTimes(){
     })
   })
   console.log("matchtimes have been updated")
-}, 3600000)
+}, 50000000)
 
-// This function below checks every five minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
+// This function below checks every 25 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 
 setInterval(function addPickTemplates(){
   User.find(function(err, users){
@@ -930,7 +930,7 @@ setInterval(function addPickTemplates(){
     })
   })
   console.log("auto-templating complete")
-}, 300000)
+}, 1500000)
 
 // The function below runs every hour and calculates a user's weekly totals in terms of picks won, picks lost, and net profits.
 
@@ -1274,39 +1274,43 @@ router.get('/weeklyStats/:username', function(req, res, next){
   })
 })
 
-// router.get('/weeklyDollars/:week', function(req, res, next){
+router.get('/weeklyDollars/:week', function(req, res, next){
+  User.find(function(err, users){
+    if (err) {console.log(err)}
 
-// setInterval(function(){
-//   User.find(function(err, users){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(users){
-//     var weeklyDollars = [];
-//     users.forEach(function(user){
-//       Pick.find({
-//         username: user.username,
-//         Week: "Week 10"
-//       }, function(err, picks){
-//         if (err) {console.log(err)}
-//
-//       }).then(function(picks){
-//         var weeklyMoney = 0;
-//
-//         for (var i=0; i<picks.length; i++){
-//           weeklyMoney += picks[i].finalPayout
-//         };
-//
-//         weeklyDollars.push({
-//           username: user.username,
-//           weeklyMoney: weeklyMoney,
-//           totalDollars: user.totalDollars
-//         });
-//       })
-//     })
-//   })
-// }, 5000)
+  }).then(function(users){
+    var userArray = [];
+    for (var i=0; i<users.length; i++) {
+      userArray.push({
+        username: users[i].username,
+        totalDollars: users[i].totalDollars
+      })
+    };
 
-// })
+    Promise.all(userArray.map(function(user){
+          return Pick.find({
+            username: user.username,
+            Week: "Week 10"
+          }).then(function(picks){
+            var weeklyMoney = 0;
+
+            for (var i=0; i<picks.length; i++){
+              weeklyMoney += picks[i].finalPayout
+            };
+
+            return {
+              username: user.username,
+              totalDollars: user.totalDollars,
+              weeklyMoney: weeklyMoney
+            };
+
+          })
+        })
+      ).then(function(results){
+        res.json(results)
+      })
+  })
+})
 
 router.get('/picks/:username/stats', function (req, res, next){
   Pick.find({
