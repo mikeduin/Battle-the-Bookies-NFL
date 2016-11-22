@@ -19,6 +19,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.updateResults = updateResults;
   vm.getWeeklyPicks = getWeeklyPicks;
   vm.getDates = getDates;
+  vm.showResults = false;
   vm.picks = [];
   vm.users = [];
 
@@ -74,6 +75,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     }).then(function(totalDollars){
       username = user.username;
       picksService.sumWeek(username, $stateParams.weekNumb).then(function(weeklyDollars){
+        vm.showResults = true;
         username = user.username;
         user.sumYtd = totalDollars;
         user.weeklyDollars = weeklyDollars;

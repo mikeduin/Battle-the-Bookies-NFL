@@ -1,4 +1,4 @@
-<results ng-init="vm.getWeeklyNflLines(); vm.getDates(); vm.getWeeklyPicks(); vm.getAllUsers()">
+<results ng-show="vm.showResults" ng-init="vm.getWeeklyNflLines(); vm.getDates(); vm.getWeeklyPicks(); vm.getAllUsers()">
   <table class="bordered striped">
     <thead>
       <tr>
@@ -27,5 +27,4 @@
       </tr>
     </tbody>
   </table>
-  <chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
 </results>

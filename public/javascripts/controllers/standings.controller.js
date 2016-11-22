@@ -13,6 +13,7 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   vm.sortOrder = "-sumYtd";
   vm.users = [];
   vm.user = {};
+  vm.showStandings = false;
   vm.dailyStats = [];
     $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
       vm.showSpinner = false;
@@ -43,6 +44,7 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
       username = user.username;
       picksService.getWeeklyStats(username).then(function(result){
         user.dailyStats = result.data;
+        vm.showStandings = true;
       })
     })
   };

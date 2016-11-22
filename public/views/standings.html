@@ -1,3 +1,5 @@
+<chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
+
 <standingsHead class="row" ng-init="vm.getDates(); vm.getAllUsers()">
   <standDiv class="col m12 result-head z-depth-1">
     <div class="col m5 left-align">
@@ -15,7 +17,7 @@
   </standDiv>
 </standingsHead>
 
-<standings class="row">
+<standings class="row" ng-show="vm.showStandings">
   <table  class="striped">
     <thead>
       <tr>
@@ -57,5 +59,4 @@
       </tr>
     </tbody>
   </table>
-  <chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
 </standings>
