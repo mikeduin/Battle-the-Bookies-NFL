@@ -37,26 +37,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
 
   vm.weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
-  vm.weekValues = [
-    {"value": "-w1dollars", "text": "Week $", "weekNumb": "01"},
-    {"value": "-w2dollars", "text": "Week $", "weekNumb": "02"},
-    {"value": "-w3dollars", "text": "Week $", "weekNumb": "03"},
-    {"value": "-w4dollars", "text": "Week $", "weekNumb": "04"},
-    {"value": "-w5dollars", "text": "Week $", "weekNumb": "05"},
-    {"value": "-w6dollars", "text": "Week $", "weekNumb": "06"},
-    {"value": "-w7dollars", "text": "Week $", "weekNumb": "07"},
-    {"value": "-w8dollars", "text": "Week $", "weekNumb": "08"},
-    {"value": "-w9dollars", "text": "Week $", "weekNumb": "09"},
-    {"value": "-w10dollars", "text": "Week $", "weekNumb": "10"},
-    {"value": "-w11dollars", "text": "Week $", "weekNumb": "11"},
-    {"value": "-w12dollars", "text": "Week $", "weekNumb": "12"},
-    {"value": "-w13dollars", "text": "Week $", "weekNumb": "13"},
-    {"value": "-w14dollars", "text": "Week $", "weekNumb": "14"},
-    {"value": "-w15dollars", "text": "Week $", "weekNumb": "15"},
-    {"value": "-w16dollars", "text": "Week $", "weekNumb": "16"},
-    {"value": "-w17dollars", "text": "Week $", "weekNumb": "17"}
-  ]
-
   vm.checkWeekNumb = function(){
     vm.weekNumb = $stateParams.weekNumb;
     vm.week = parseInt(vm.weekNumb);
@@ -89,13 +69,20 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   };
 
-  vm.sumAllPicks = function(user) {
-    username = user.username;
-    picksService.getWeeklyStats(username).then(function(result){
-      user.dailyStats = result.data;
-      console.log('user daily stats are ', user.dailyStats);
-    })
-  };
+  vm.getWeeklyDollars = function(){
+    resultsService.getWeeklyDollars($stateParams.weekNumb)
+      .then(function(weeklyData){
+        vm.weeklyResults = weeklyData
+      })
+  }
+
+  // vm.sumAllPicks = function(user) {
+  //   username = user.username;
+  //   picksService.getWeeklyStats(username).then(function(result){
+  //     user.dailyStats = result.data;
+  //     console.log('user daily stats are ', user.dailyStats);
+  //   })
+  // };
 
   vm.updateDollars = function(){
     picksService.updateDollars().then(function(){
@@ -109,6 +96,39 @@ function ResultController (oddsService, picksService, resultsService, usersServi
       vm.nflLines = games;
     })
   }
+
+  function updatePicks() {
+    picksService.updatePicks();
+  }
+
+  function updateResults () {
+    resultsService.updateResults().then(function(){
+    })
+  };
+
+  function getPicks () {
+    oddsService.getPicks().then(function(data){
+      vm.picks = data;
+    })
+  }
+
+  function getWeeklyPicks () {
+    oddsService.getWeeklyPicks($stateParams.weekNumb).then(function(data){
+      vm.picks = data;
+    })
+  }
+
+  function getDates () {
+    oddsService.getDates().then(function(dates){
+      var weekNumbers = [];
+      for (i=0; i<dates.length; i++) {
+        var weekNumber = parseInt(dates[i].substring(5));
+        weekNumbers.push(weekNumber)
+      }
+      weekNumbers.sort(sortNumber);
+      vm.lastWeekNumb = weekNumbers[weekNumbers.length-1]
+    })
+  };
 
   function getWeeklyNflLines(){
     vm.showSpinner = true;
@@ -200,38 +220,5 @@ function ResultController (oddsService, picksService, resultsService, usersServi
       }
     })
   }
-
-  function updatePicks() {
-    picksService.updatePicks();
-  }
-
-  function updateResults () {
-    resultsService.updateResults().then(function(){
-    })
-  };
-
-  function getPicks () {
-    oddsService.getPicks().then(function(data){
-      vm.picks = data;
-    })
-  }
-
-  function getWeeklyPicks () {
-    oddsService.getWeeklyPicks($stateParams.weekNumb).then(function(data){
-      vm.picks = data;
-    })
-  }
-
-  function getDates () {
-    oddsService.getDates().then(function(dates){
-      var weekNumbers = [];
-      for (i=0; i<dates.length; i++) {
-        var weekNumber = parseInt(dates[i].substring(5));
-        weekNumbers.push(weekNumber)
-      }
-      weekNumbers.sort(sortNumber);
-      vm.lastWeekNumb = weekNumbers[weekNumbers.length-1]
-    })
-  };
 
 }

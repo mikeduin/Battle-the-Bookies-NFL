@@ -1,4 +1,4 @@
-<results ng-init="vm.getWeeklyNflLines(); vm.getDates(); vm.getAllUsers(); vm.getWeeklyPicks()">
+<results ng-init="vm.getWeeklyNflLines(); vm.getDates(); vm.getWeeklyDollars(); vm.getWeeklyPicks()">
   <table class="bordered striped">
     <thead>
       <tr>
@@ -17,28 +17,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="user in vm.users | orderBy: vm.userSort">
+      <tr ng-repeat="user in vm.weeklyResults | orderBy: vm.userSort">
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a> </td>
         <td class="nobr center-align"> <b> {{user.totalDollars | currency:$:0}} </b> </td>
         <td class="nobr"> <b>
-           <span ng-if="vm.weekNumb === '01'">{{user.w1dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '02'">{{user.w2dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '03'">{{user.w3dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '04'">{{user.w4dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '05'">{{user.w5dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '06'">{{user.w6dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '07'">{{user.w7dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '08'">{{user.w8dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '09'">{{user.w9dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '10'">{{user.w10dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '11'">{{user.w11dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '12'">{{user.w12dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '13'">{{user.w13dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '14'">{{user.w14dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '15'">{{user.w15dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '16'">{{user.w16dollars | currency:$:0}} </span>
-           <span ng-if="vm.weekNumb === '17'">{{user.w17dollars | currency:$:0}} </span>
-          <!-- <sum-user-week user="user" weeknumb="vm.weekNumbFilter"> </sum-user-week> -->
+           <span>{{user.weeklyDollars | currency:$:0}} </span>
         </b> </td>
         <td ng-repeat="pick in vm.picks | orderBy: [vm.gameSort, vm.gameSortTwo] | filter: {username: user.username}" ng-if="vm.checkTime(pick.MatchTime) === true" ng-class="{pickWin: pick.pickResult === 'win', pickLoss: pick.pickResult === 'loss', pickPush: pick.pickResult === 'push'}" on-finish-render="ngRepeatFinished"> {{pick.activePick}} <br><span ng-if="pick.Final === true"> {{pick.finalPayout | currency:$:0}} </span> </td>
       </tr>

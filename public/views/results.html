@@ -17,7 +17,7 @@
         <label> Sort by </label>
         <select class="browser-default" ng-model="vm.userSort">
           <option value="-totalDollars"> YTD $ </option>
-          <option ng-repeat="week in vm.weekValues" ng-show="week.weekNumb === vm.weekNumb" value="{{week.value}}"> {{week.text}} </option>
+          <option value="-weeklyDollars"> Week $ </option>
         </select>
     </selectDiv>
   </leadDiv>

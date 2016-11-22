@@ -66,7 +66,7 @@ setInterval(function createLines (req, res, next){
   }).then(function(odds){
     odds.forEach(function(game){
 
-      Line.find({EventID: game.ID}, function(err, line){
+      Line.find({EventID: game.EventID}, function(err, line){
         if (err) {console.log(err)}
 
         if (!line[0]) {
@@ -1275,6 +1275,7 @@ router.get('/weeklyStats/:username', function(req, res, next){
 })
 
 router.get('/weeklyDollars/:week', function(req, res, next){
+  var week = "Week " + req.params.week;
   User.find(function(err, users){
     if (err) {console.log(err)}
 
@@ -1290,18 +1291,18 @@ router.get('/weeklyDollars/:week', function(req, res, next){
     Promise.all(userArray.map(function(user){
           return Pick.find({
             username: user.username,
-            Week: "Week 10"
+            Week: week
           }).then(function(picks){
-            var weeklyMoney = 0;
+            var weeklyDollars = 0;
 
             for (var i=0; i<picks.length; i++){
-              weeklyMoney += picks[i].finalPayout
+              weeklyDollars += picks[i].finalPayout
             };
 
             return {
               username: user.username,
               totalDollars: user.totalDollars,
-              weeklyMoney: weeklyMoney
+              weeklyDollars: weeklyDollars
             };
 
           })

@@ -14,6 +14,11 @@ function resultsService ($http){
         console.log(results.data);
         return results.data
       })
+    },
+    getWeeklyDollars: function(week){
+      return $http.get('/weeklyDollars/' + week).then(function(results){
+        return results.data
+      })
     }
   }
 }
