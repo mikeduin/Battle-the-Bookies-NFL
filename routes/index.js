@@ -881,7 +881,7 @@ setInterval(function checkStartTimes(){
   console.log("matchtimes have been updated")
 }, 50000000)
 
-// This function below checks every 25 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
+// This function below checks every 12 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 
 setInterval(function addPickTemplates(){
   User.find(function(err, users){
@@ -930,7 +930,7 @@ setInterval(function addPickTemplates(){
     })
   })
   console.log("auto-templating complete")
-}, 1500000)
+}, 720000)
 
 // The function below runs every hour and calculates a user's weekly totals in terms of picks won, picks lost, and net profits.
 

@@ -15,7 +15,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.getWeeklyNflLines = getWeeklyNflLines;
   vm.gameSort = "MatchTime";
   vm.gameSortTwo = "EventID";
-  vm.userSort = "-totalDollars";
+  vm.userSort = "-sumYtd";
   vm.updateResults = updateResults;
   vm.getWeeklyPicks = getWeeklyPicks;
   vm.getDates = getDates;

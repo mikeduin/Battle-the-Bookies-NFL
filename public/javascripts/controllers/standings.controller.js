@@ -10,7 +10,7 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   vm.pageArray = [1];
   vm.activePage = 1;
   vm.pageView;
-  vm.sortOrder = "-totalDollars";
+  vm.sortOrder = "-sumYtd";
   vm.users = [];
   vm.user = {};
   vm.dailyStats = [];
