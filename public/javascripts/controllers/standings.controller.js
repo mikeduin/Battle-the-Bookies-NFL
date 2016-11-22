@@ -19,10 +19,6 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
       vm.showSpinner = false;
     })
 
-  // $timeout(function(){
-  //   vm.showSpinner = false
-  // }, 6000)
-
   function sortNumber(a, b) {
     return a - b
   };

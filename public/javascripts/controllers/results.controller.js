@@ -23,9 +23,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.picks = [];
   vm.users = [];
 
-  // $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
-  //   vm.showSpinner = false;
-  // })
   $timeout(function(){
     vm.showSpinner = false
   }, 6000);
