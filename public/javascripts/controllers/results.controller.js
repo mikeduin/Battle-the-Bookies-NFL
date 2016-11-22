@@ -13,12 +13,11 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   $scope.nflLines= {};
   vm.getNflLines = getNflLines;
   vm.getWeeklyNflLines = getWeeklyNflLines;
-  vm.updatePicks = updatePicks;
   vm.gameSort = "MatchTime";
   vm.gameSortTwo = "EventID";
   vm.userSort = "-totalDollars";
   vm.updateResults = updateResults;
-  vm.getPicks = getPicks;
+  // vm.getPicks = getPicks;
   vm.getWeeklyPicks = getWeeklyPicks;
   vm.getDates = getDates;
   vm.picks = [];
@@ -69,20 +68,28 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   };
 
-  vm.getWeeklyDollars = function(){
-    resultsService.getWeeklyDollars($stateParams.weekNumb)
-      .then(function(weeklyData){
-        vm.weeklyResults = weeklyData
-      })
-  }
+  // vm.getWeeklyDollars = function(user){
+  //   var username = user.username;
+  //   resultsService.getWeeklyDollars(username, $stateParams.weekNumb)
+  //     .then(function(weeklyData){
+  //       console.log('weeklyData is ', weeklyData)
+  //       // vm.weeklyResults = weeklyData
+  //     })
+  // }
 
-  // vm.sumAllPicks = function(user) {
-  //   username = user.username;
-  //   picksService.getWeeklyStats(username).then(function(result){
-  //     user.dailyStats = result.data;
-  //     console.log('user daily stats are ', user.dailyStats);
-  //   })
-  // };
+  vm.sumAllPicks = function(user) {
+    username = user.username;
+    picksService.sumAllPicks(username).then(function(result){
+      return result.totalDollars
+    }).then(function(totalDollars){
+      username = user.username;
+      picksService.sumWeek(username, $stateParams.weekNumb).then(function(weeklyDollars){
+        username = user.username;
+        user.sumYtd = totalDollars;
+        user.weeklyDollars = weeklyDollars;
+      })
+    })
+  };
 
   vm.updateDollars = function(){
     picksService.updateDollars().then(function(){
@@ -97,24 +104,22 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   }
 
-  function updatePicks() {
-    picksService.updatePicks();
-  }
-
   function updateResults () {
     resultsService.updateResults().then(function(){
     })
   };
 
-  function getPicks () {
-    oddsService.getPicks().then(function(data){
-      vm.picks = data;
-    })
-  }
+  // function getPicks () {
+  //   oddsService.getPicks().then(function(data){
+  //     vm.picks = data;
+  //
+  //   })
+  // }
 
   function getWeeklyPicks () {
     oddsService.getWeeklyPicks($stateParams.weekNumb).then(function(data){
       vm.picks = data;
+      console.log('vm.picks are ', vm.picks)
     })
   }
 

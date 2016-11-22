@@ -1274,44 +1274,44 @@ router.get('/weeklyStats/:username', function(req, res, next){
   })
 })
 
-router.get('/weeklyDollars/:week', function(req, res, next){
-  var week = "Week " + req.params.week;
-  User.find(function(err, users){
-    if (err) {console.log(err)}
-
-  }).then(function(users){
-    var userArray = [];
-    for (var i=0; i<users.length; i++) {
-      userArray.push({
-        username: users[i].username,
-        totalDollars: users[i].totalDollars
-      })
-    };
-
-    Promise.all(userArray.map(function(user){
-          return Pick.find({
-            username: user.username,
-            Week: week
-          }).then(function(picks){
-            var weeklyDollars = 0;
-
-            for (var i=0; i<picks.length; i++){
-              weeklyDollars += picks[i].finalPayout
-            };
-
-            return {
-              username: user.username,
-              totalDollars: user.totalDollars,
-              weeklyDollars: weeklyDollars
-            };
-
-          })
-        })
-      ).then(function(results){
-        res.json(results)
-      })
-  })
-})
+// router.get('/weeklyDollars/:week', function(req, res, next){
+//   var week = "Week " + req.params.week;
+//   User.find(function(err, users){
+//     if (err) {console.log(err)}
+//
+//   }).then(function(users){
+//     var userArray = [];
+//     for (var i=0; i<users.length; i++) {
+//       userArray.push({
+//         username: users[i].username,
+//         totalDollars: users[i].totalDollars
+//       })
+//     };
+//
+//     Promise.all(userArray.map(function(user){
+//           return Pick.find({
+//             username: user.username,
+//             Week: week
+//           }).then(function(picks){
+//             var weeklyDollars = 0;
+//
+//             for (var i=0; i<picks.length; i++){
+//               weeklyDollars += picks[i].finalPayout
+//             };
+//
+//             return {
+//               username: user.username,
+//               totalDollars: user.totalDollars,
+//               weeklyDollars: weeklyDollars
+//             };
+//
+//           })
+//         })
+//       ).then(function(results){
+//         res.json(results)
+//       })
+//   })
+// })
 
 router.get('/picks/:username/stats', function (req, res, next){
   Pick.find({

@@ -36,10 +36,6 @@ function picksService ($http, authService) {
         console.log ('dollars updated')
       })
     },
-    updatePicks: function() {
-      return $http.get('/updatePicks').then(function(){
-      })
-    },
     sumWeek: function(username, weeknumb) {
       return $http.get('/picks/' + username + '/' + weeknumb).then(function(result){
         var weekPicks = result.data;
