@@ -20,9 +20,9 @@ module.exports = {
       var counter = 0;
 
       for (i = 0; i < results.length; i++) {
-        bulk.find({EventID: results[i].ID}).upsert().updateOne({
+        bulk.find({EventID: results[i].EventID}).upsert().updateOne({
           $set: {
-            EventID: results[i].ID,
+            EventID: results[i].EventID,
             HomeScore: results[i].HomeScore,
             AwayScore: results[i].AwayScore,
             OddType: results[i].OddType,

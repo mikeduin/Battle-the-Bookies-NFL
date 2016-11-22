@@ -31,11 +31,6 @@ function picksService ($http, authService) {
         console.log(result)
       })
     },
-    updateDollars: function() {
-      return $http.put('/updateDollars').then(function(){
-        console.log ('dollars updated')
-      })
-    },
     sumWeek: function(username, weeknumb) {
       return $http.get('/picks/' + username + '/' + weeknumb).then(function(result){
         var weekPicks = result.data;

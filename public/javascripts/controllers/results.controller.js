@@ -17,7 +17,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.gameSortTwo = "EventID";
   vm.userSort = "-totalDollars";
   vm.updateResults = updateResults;
-  // vm.getPicks = getPicks;
   vm.getWeeklyPicks = getWeeklyPicks;
   vm.getDates = getDates;
   vm.picks = [];
@@ -68,15 +67,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   };
 
-  // vm.getWeeklyDollars = function(user){
-  //   var username = user.username;
-  //   resultsService.getWeeklyDollars(username, $stateParams.weekNumb)
-  //     .then(function(weeklyData){
-  //       console.log('weeklyData is ', weeklyData)
-  //       // vm.weeklyResults = weeklyData
-  //     })
-  // }
-
   vm.sumAllPicks = function(user) {
     username = user.username;
     picksService.sumAllPicks(username).then(function(result){
@@ -91,12 +81,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   };
 
-  vm.updateDollars = function(){
-    picksService.updateDollars().then(function(){
-      console.log('res controller says update dollars')
-    })
-  }
-
   function getNflLines (){
     vm.showSpinner = true;
     oddsService.getNflLines().then(function(games){
@@ -108,13 +92,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     resultsService.updateResults().then(function(){
     })
   };
-
-  // function getPicks () {
-  //   oddsService.getPicks().then(function(data){
-  //     vm.picks = data;
-  //
-  //   })
-  // }
 
   function getWeeklyPicks () {
     oddsService.getWeeklyPicks($stateParams.weekNumb).then(function(data){
