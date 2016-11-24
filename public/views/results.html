@@ -18,8 +18,12 @@
     <selectDiv class="col m2 res-select" ng-show="uiRouterState.current.name === 'home.results.picks'">
         <label> Sort by </label>
         <select class="browser-default" ng-model="vm.userSort">
-          <option value="-sumYtd"> YTD $ </option>
-          <option value="-weeklyDollars"> Week $ </option>
+          <option value="username"> Entrant (A) </option>
+          <option value="-username"> Entrant (Z) </option>
+          <option value="-sumYtd"> YTD $ (High) </option>
+          <option value="sumYtd"> YTD $ (Low) </option>
+          <option value="-weeklyDollars"> Week $ (High) </option>
+          <option value="weeklyDollars"> Week $ (Low) </option>
         </select>
     </selectDiv>
   </leadDiv>
