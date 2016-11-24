@@ -25,6 +25,7 @@ var updatePickResults = require('../modules/updatePickResults.js');
 var createLines = require('../modules/createLines.js');
 var updateFinalScores = require('../modules/updateFinalScores.js');
 var logLineMoves = require('../modules/logLineMoves.js');
+var checkStartTimes = require('../modules/checkStartTimes.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -38,8 +39,6 @@ Array.min = function(array){
 function sortNumber(a, b) {
   return a - b
 };
-
-// BEGIN ROUTES TO AUTO-UPDATE ODDS + RESULTS (FROM API) AND USER PICKS (FROM DB)
 
 // This first function updates game results every nine minutes.
 
@@ -70,6 +69,12 @@ setInterval(function (){
 setInterval(function (){
   logLineMoves.logLineMoves();
 }, 2100000);
+
+// The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
+
+setInterval(function (){
+  checkStartTimes.checkStartTimes();
+}, 10000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
@@ -119,9 +124,6 @@ router.get('/updateOdds', function(req, res, next) {
     }
   )
 });
-
-// END ROUTES TO AUTO-UPDATE ODDS + RESULTS FROM API
-// BEGIN LINE ROUTES
 
 router.get('/line/:gameID', function(req, res, next){
   Line.find({EventID: req.params.gameID}, function(err, result){
@@ -211,9 +213,6 @@ router.get('/matchups', function(req, res, next){
     res.json(matchups);
   })
 })
-
-// END LINE ROUTES
-// BEGIN RESULTS ROUTES
 
 router.get('/results', function(req, res, next){
   Result.find(function(err, games) {
@@ -710,33 +709,6 @@ router.get('/picks/:week', function (req, res, next){
     res.json(picks)
   })
 })
-
-// The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
-
-setInterval(function checkStartTimes(){
-  Line.find({
-    GameStatus: {
-      $ne: "Final"
-    }
-  }, function (err, lines){
-    if (err) {console.log(err)}
-
-  }).then(function(lines){
-    lines.forEach(function(line){
-      Pick.update({
-        EventID: line.EventID
-      }, {
-        MatchTime: line.MatchTime
-      }, {
-        multi: true
-      },function(err, result){
-        if (err) {console.log(err)}
-
-      })
-    })
-  })
-  console.log("matchtimes have been updated")
-}, 50000000)
 
 // This function below checks every 12 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 
