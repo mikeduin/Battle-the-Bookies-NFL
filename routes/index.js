@@ -18,13 +18,11 @@ var Result = mongoose.model('Result');
 var Pick = mongoose.model('Pick');
 var PickArray = mongoose.model('PickArray');
 var LineMove = mongoose.model('LineMove');
-var abbrevs = require('../modules/abbrevs.js');
-var helmets = require('../modules/helmets.js');
-var colors = require('../modules/colors.js');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
 var updateResults = require('../modules/updateResults.js');
 var updatePickResults = require('../modules/updatePickResults.js');
+var createLines = require('../modules/createLines.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -41,78 +39,23 @@ function sortNumber(a, b) {
 
 // BEGIN ROUTES TO AUTO-UPDATE ODDS + RESULTS (FROM API) AND USER PICKS (FROM DB)
 
-// This first function updates game results every 10 minutes.
+// This first function updates game results every nine minutes.
 
 setInterval(function (){
   updateResults.updateResults()
-}, 600000);
+}, 540000);
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
 setInterval(function (){
-  updatePickResults.updatePickResults()
+  updatePickResults.updatePickResults();
 }, 600000);
 
-// This function checks every 20 minutes to see if new lines are available and, if so, adds them to the DB.
+// This function checks every 7 minutes to see if new lines are available and, if so, adds them to the DB.
 
-setInterval(function createLines (req, res, next){
-  fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
-    method: 'GET',
-    headers: {
-      'JsonOdds-API-Key': process.env.API_KEY
-    }
-  }).then(function(res){
-    return res.json()
-  }).then(function(odds){
-    odds.forEach(function(game){
-
-      Line.find({EventID: game.EventID}, function(err, line){
-        if (err) {console.log(err)}
-
-        if (!line[0]) {
-          var newLine = new Line({
-            EventID: game.ID,
-            HomeTeam: game.HomeTeam,
-            AwayTeam: game.AwayTeam,
-            HomeAbbrev: abbrevs.teamAbbrev(game.HomeTeam),
-            AwayAbbrev: abbrevs.teamAbbrev(game.AwayTeam),
-            HomeHelmet: helmets.teamHelmet(game.HomeTeam),
-            AwayHelmet: helmets.teamHelmet(game.AwayTeam),
-            HomeColor: colors.teamColor(game.HomeTeam),
-            AwayColor: colors.teamColor(game.AwayTeam),
-            MatchTime: new Date(game.MatchTime),
-            MatchDay: moment(game.MatchTime).utcOffset(-7).format('MMMM Do, YYYY'),
-            DateNumb: parseInt(moment(game.MatchTime).utcOffset(-7).format('YYYYMMDD')),
-            Week: setWeek.weekSetter(game.MatchTime),
-            WeekNumb: setWeekNumb.weekNumbSetter(game.MatchTime),
-            OddType: game.Odds[0].OddType,
-            MoneyLineHome: game.Odds[0].MoneyLineHome,
-            MoneyLineAway: game.Odds[0].MoneyLineAway,
-            PointSpreadHome: game.Odds[0].PointSpreadHome,
-            PointSpreadAway: game.Odds[0].PointSpreadAway,
-            PointSpreadAwayLine: game.Odds[0].PointSpreadAwayLine,
-            PointSpreadHomeLine: game.Odds[0].PointSpreadHomeLine,
-            TotalNumber: game.Odds[0].TotalNumber,
-            OverLine: game.Odds[0].OverLine,
-            UnderLine: game.Odds[0].UnderLine,
-            MLHomePicks: 0,
-            MLAwayPicks: 0,
-            SpreadHomePicks: 0,
-            SpreadAwayPicks: 0,
-            OverPicks: 0,
-            UnderPicks: 0
-          });
-
-          newLine.save(function(err, result){
-            if (err) {console.log(err)};
-
-            console.log(result.EventID + ' was added as a new line');
-          })
-        }
-      })
-    })
-  })
-}, 1200000)
+setInterval(function (){
+  createLines.createLines();
+}, 420000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 

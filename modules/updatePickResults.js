@@ -1,4 +1,3 @@
-
 var mongoose = require('mongoose');
 var Pick = mongoose.model('Pick');
 var Result = mongoose.model('Result');

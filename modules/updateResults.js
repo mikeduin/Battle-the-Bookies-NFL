@@ -1,8 +1,8 @@
-// This function updates game results.
-
 var fetch = require('node-fetch');
 var mongoose = require('mongoose');
 var Result = mongoose.model('Result');
+
+// This function updates game results.
 
 module.exports = {
 
