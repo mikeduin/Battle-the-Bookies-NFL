@@ -8,6 +8,8 @@ var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
 var Line = mongoose.model('Line');
 
+// This function checks every 7 minutes to see if new lines are available and, if so, adds them to the DB.
+
 module.exports = {
   createLines: function(){
     fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {

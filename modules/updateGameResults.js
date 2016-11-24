@@ -6,7 +6,7 @@ var Result = mongoose.model('Result');
 
 module.exports = {
 
-  updateResults: function(){
+  updateGameResults: function(){
     fetch('https://jsonodds.com/api/results/nfl?oddType=Game', {
       method: 'GET',
       headers: {

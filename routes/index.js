@@ -4,14 +4,14 @@ var jwt = require('express-jwt');
 var auth = jwt({secret: process.env.SESSION_SECRET, userProperty: 'payload'})
 var fetch = require('node-fetch');
 var moment = require('moment');
+var mongoose = require('mongoose');
+var passport = require('passport');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.redirect('index.html');
 });
 
-var mongoose = require('mongoose');
-var passport = require('passport');
 var User = mongoose.model('User');
 var Line = mongoose.model('Line');
 var Result = mongoose.model('Result');
@@ -20,9 +20,11 @@ var PickArray = mongoose.model('PickArray');
 var LineMove = mongoose.model('LineMove');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
-var updateResults = require('../modules/updateResults.js');
+var updateGameResults = require('../modules/updateGameResults.js');
 var updatePickResults = require('../modules/updatePickResults.js');
 var createLines = require('../modules/createLines.js');
+var updateFinalScores = require('../modules/updateFinalScores.js');
+var logLineMoves = require('../modules/logLineMoves.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -42,7 +44,7 @@ function sortNumber(a, b) {
 // This first function updates game results every nine minutes.
 
 setInterval(function (){
-  updateResults.updateResults()
+  updateGameResults.updateGameResults()
 }, 540000);
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
@@ -56,6 +58,18 @@ setInterval(function (){
 setInterval(function (){
   createLines.createLines();
 }, 420000)
+
+// This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
+
+setInterval(function (){
+  updateFinalScores.updateFinalScores();
+}, 480000)
+
+// The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
+
+setInterval(function (){
+  logLineMoves.logLineMoves();
+}, 2100000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
@@ -197,39 +211,6 @@ router.get('/matchups', function(req, res, next){
     res.json(matchups);
   })
 })
-
-// This function runs every 10 minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
-
-setInterval(function updateFinalScores(){
-  Line.find({
-    GameStatus: {
-      $ne: "Final"
-    }
-  }, function(err, lines){
-    if (err) {console.log(err)}
-  }).then(function(lines){
-    lines.forEach(function(line){
-      Result.find({EventID: line.EventID}, function(err, result){
-        if (err) {console.log(err)}
-
-      }).then(function(result){
-        if (result[0].Final === true) {
-          Line.update({EventID: result[0].EventID}, {
-            HomeScore: result[0].HomeScore,
-            AwayScore: result[0].AwayScore,
-            GameStatus: "Final"
-          }, function(err, message){
-            if(err) {console.log(err)}
-
-            console.log("game final has been updated")
-          })
-        } else {
-          console.log(result[0].EventID + " is not final")
-        }
-      })
-    })
-  })
-}, 600000)
 
 // END LINE ROUTES
 // BEGIN RESULTS ROUTES
@@ -696,73 +677,6 @@ setInterval(function addPickRanges(){
     })
   }, 60000))
 }, 300000)
-
-// The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
-
-setInterval(function logLineMoves(){
-  var now = moment();
-  Line.find({
-    MatchTime: {
-      $gt: now
-    }
-  }, function(err, games){
-    if (err) {console.log(err)}
-
-  }).then(function(games){
-    games.forEach(function(game){
-      var homeSpread = game.PointSpreadHome;
-      var homeSpreadJuice = game.PointSpreadHomeLine;
-      var awaySpread = game.PointSpreadAway;
-      var awaySpreadJuice = game.PointSpreadAwayLine;
-      var homeML = game.MoneyLineHome;
-      var awayML = game.MoneyLineAway;
-      var total = game.TotalNumber;
-      var totalOverJuice = game.OverLine;
-      var totalUnderJuice = game.UnderLine;
-
-      if (game.PointSpreadHomeLine === 0) {
-        homeSpread = null;
-        homeSpreadJuice = null;
-        awaySpread = null;
-        awaySpreadJuice = null;
-      };
-
-      if (game.MoneyLineHome === 0) {
-        homeML = null;
-        awayML = null;
-      };
-
-      if (game.TotalNumber === 0){
-        total = null;
-        totalOverJuice = null;
-        totalUnderJuice = null;
-      };
-
-      LineMove.findOneAndUpdate({EventID: game.EventID}, {
-        $set: {
-          AwayAbbrev: game.AwayAbbrev,
-          HomeAbbrev: game.HomeAbbrev
-        },
-        $push: {
-          HomeSpreads: homeSpread,
-          HomeSpreadJuices: homeSpreadJuice,
-          AwaySpreads: awaySpread,
-          AwaySpreadJuices: awaySpreadJuice,
-          HomeMLs: homeML,
-          AwayMLs: awayML,
-          Totals: total,
-          TotalOverJuices: totalOverJuice,
-          TotalUnderJuices: totalUnderJuice,
-          TimeLogged: new Date()
-        }
-      }, {upsert: true}, function(err, line){
-        if (err) {console.log(err)}
-
-        console.log('linemoves have been added for ', line.EventID)
-      })
-    })
-  })
-}, 2100000);
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });

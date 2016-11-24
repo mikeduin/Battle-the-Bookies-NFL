@@ -5,7 +5,6 @@ var Result = mongoose.model('Result');
 // This function looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
 module.exports = {
-
   updatePickResults: function(){
     Pick.find({finalPayout: 0}, function (err, picks){
       if (err) {console.log(err)}
