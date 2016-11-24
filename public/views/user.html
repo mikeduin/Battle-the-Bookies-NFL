@@ -5,7 +5,7 @@
         <div class="col m12">
           <label> Select a User </label>
           <select class="browser-default" ng-model="vm.userFilter" ng-init="vm.getAllUsers()" ng-change="vm.userChange()">
-            <option ng-repeat = "user in vm.users" value="{{user.username}}"> {{user.username}} </option>
+            <option ng-repeat = "user in vm.usernames" value="{{user}}"> {{user}} </option>
           </select>
         </div>
       </selectDiv>

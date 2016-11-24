@@ -2,14 +2,31 @@
   <table class="bordered striped">
     <thead>
       <tr>
-        <th style="font-size: 24px">
-          Entrant
+        <th style="font-size: 24px"  class="center-align">
+          <span class="table-sorter" ng-click="vm.userToggle()">Entrant</span>
+          <br>
+          <div  class="center-align">
+            <span class="sort-indicator" ng-class="sortOn: vm.userSort === 'username'"><i class="fa fa-arrow-circle-up" aria-hidden="true"></i></span>
+            <span class="sort-indicator" ng-class="sortOn: vm.userSort === '-username'"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></span>
+          </div>
+        </th>
+        </th>
+        <th class="center-align"  class="center-align">
+          <span class="table-sorter" ng-click="vm.ytdToggle()">YTD</span>
+          <br>
+          <div class="center-align">
+            <span class="sort-indicator" ><i class="fa fa-arrow-circle-up" ng-class="sortOn: vm.userSort === '-sumYtd'" aria-hidden="true"></i></span>
+            <span class="sort-indicator"><i ng-class="sortOn: vm.userSort === 'sumYtd'" class="fa fa-arrow-circle-down" aria-hidden="true"></i></span>
+          </div>
         </th>
         <th class="center-align">
-          YTD $
+          <span ng-click="vm.weeklyToggle()" class="table-sorter">Week</span>
+          <br>
+          <div class="center-align">
+            <span class="sort-indicator"><i class="fa fa-arrow-circle-up" aria-hidden="true"></i></span>
+            <span class="sort-indicator"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i></span>
+          </div>
         </th>
-        <th class="left-align">
-          Week $
         </th>
         <th ng-repeat="game in vm.nflLines | orderBy: [vm.gameSort, vm.gameSortTwo]" ng-if="vm.checkTime(game.MatchTime) === true"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}}
           <br> <span ng-hide="vm.weekNumb < 6"> <a class="btn-floating float-color" ui-sref="home.game({EventID: game.EventID})"><i class="fa fa-bar-chart" aria-hidden="true"></i></a> </span>

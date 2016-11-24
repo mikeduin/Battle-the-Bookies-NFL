@@ -200,6 +200,30 @@ function ResultController (oddsService, picksService, resultsService, usersServi
           )
       }
     })
-  }
+  };
+
+  vm.weeklyToggle = function() {
+    if (vm.userSort !== '-weeklyDollars') {
+      vm.userSort = '-weeklyDollars'
+    } else {
+      vm.userSort = 'weeklyDollars'
+    }
+  };
+
+  vm.ytdToggle = function() {
+    if (vm.userSort !== '-sumYtd') {
+      vm.userSort = '-sumYtd'
+    } else {
+      vm.userSort = 'sumYtd'
+    }
+  };
+
+  vm.userToggle = function() {
+    if (vm.userSort !== 'username') {
+      vm.userSort = 'username'
+    } else {
+      vm.userSort = '-username'
+    }
+  };
 
 }

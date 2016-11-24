@@ -63,6 +63,11 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
       vm.users = result;
+      vm.usernames = [];
+      for (var i=0; i<result.length; i++) {
+        vm.usernames.push(result[i].username);
+      };
+      vm.usernames.sort();
     })
   }
 

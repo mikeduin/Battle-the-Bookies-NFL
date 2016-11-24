@@ -676,6 +676,25 @@ chasing-dots-spinner {
   top: 5%;
 }
 
+.table-sorter {
+  font-size: 20px;
+}
+
+.table-sorter:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.sort-indicator {
+  padding: 3px;
+  font-size: 10px;
+}
+
+.sortOn {
+  font-size: 20px;
+  color: #2F5032;
+}
+
 .week-number {
   color: #B68708;
 }
