@@ -26,6 +26,7 @@ var createLines = require('../modules/createLines.js');
 var updateFinalScores = require('../modules/updateFinalScores.js');
 var logLineMoves = require('../modules/logLineMoves.js');
 var checkStartTimes = require('../modules/checkStartTimes.js');
+var addPickTemplates = require('../modules/addPickTemplates.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -52,7 +53,7 @@ setInterval(function (){
   updatePickResults.updatePickResults();
 }, 600000);
 
-// This function checks every 7 minutes to see if new lines are available and, if so, adds them to the DB.
+// This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 
 setInterval(function (){
   createLines.createLines();
@@ -74,7 +75,13 @@ setInterval(function (){
 
 setInterval(function (){
   checkStartTimes.checkStartTimes();
-}, 10000)
+}, 50000000)
+
+// This function below checks every 12 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
+
+setInterval(function (){
+  addPickTemplates.addPickTemplates()
+}, 720000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
@@ -709,57 +716,6 @@ router.get('/picks/:week', function (req, res, next){
     res.json(picks)
   })
 })
-
-// This function below checks every 12 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
-
-setInterval(function addPickTemplates(){
-  User.find(function(err, users){
-    if (err) {console.log(err)}
-
-  }).then(function(users){
-    users.forEach(function(user){
-      Line.find({
-        Week: {
-          $nin: ["Preseason", "Postseason"]
-        }
-      }, function(err, lines){
-        if (err) {console.log(err)}
-
-      }).then(function(lines){
-        lines.forEach(function(line){
-          Pick.find({
-            username: user.username,
-            EventID: line.EventID
-          }, function (err, pick){
-            if (err) {console.log(err)}
-
-            if(!pick[0]) {
-
-              var template = Pick({
-                username: user.username,
-                EventID: line.EventID,
-                MatchDay: line.MatchDay,
-                MatchTime: line.MatchTime,
-                Week: line.Week,
-                DateNumb: line.DateNumb,
-                WeekNumb: line.WeekNumb,
-                matchup: line.AwayAbbrev + ' @ ' + line.HomeAbbrev,
-                finalPayout: 0
-              });
-
-              template.save(function(err, template){
-                if (err) {console.log(err)}
-
-                console.log(template + 'has been saved as a template!')
-              })
-            }
-          })
-        })
-      })
-    })
-  })
-  console.log("auto-templating complete")
-}, 720000)
 
 router.get('/picks/checkSubmission/:EventID', auth, function(req, res, next){
   Pick.find({
