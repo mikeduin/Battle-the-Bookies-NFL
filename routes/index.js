@@ -69,7 +69,7 @@ setInterval(function (){
 
 setInterval(function (){
   logLineMoves.logLineMoves();
-}, 2100000);
+}, 60000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
 
