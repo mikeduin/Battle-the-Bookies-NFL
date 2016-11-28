@@ -27,6 +27,7 @@ var updateFinalScores = require('../modules/updateFinalScores.js');
 var logLineMoves = require('../modules/logLineMoves.js');
 var checkStartTimes = require('../modules/checkStartTimes.js');
 var addPickTemplates = require('../modules/addPickTemplates.js');
+var setLineRanges = require('../modules/setLineRanges.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -241,7 +242,7 @@ router.get('/pullGame/:gameID', function(req, res, next){
 
 // This massive function below runs every 5 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
 
-setInterval(function addPickRanges(){
+setInterval(function (){
   var now = moment();
   Line.find({
     MatchTime: {
@@ -252,12 +253,15 @@ setInterval(function addPickRanges(){
     },
     Week: {
       $nin: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
-    }
+    },
   }, function(err, games){
     if (err) {console.log(err)}
 
   }).then(function(games){
     games.forEach(function(game){
+    //   setLineRanges.setLineRanges(game).then(function(returned){
+    //     console.log(returned)
+    //   })
       LineMove.find({EventID: game.EventID}, function(err, gameArrays){
         if(err) {console.log(err)}
 
@@ -394,7 +398,7 @@ setInterval(function addPickRanges(){
         var totalHigh = Array.max(totalValues);
         var totalLow = Array.min(totalValues);
 
-        Line.findOneAndUpdate({EventID: game.EventID}, {
+        return Line.findOneAndUpdate({EventID: game.EventID}, {
           $set: {
             AwaySpreadIndex: awaySpreadObject,
             HomeSpreadIndex: homeSpreadObject,
@@ -412,14 +416,15 @@ setInterval(function addPickRanges(){
             AwaySpreadWorst: awaySpreadLow,
             RangesSet: true
           }
-        }, function(err){
+        }, {new: true}, function(err){
           if (err) {console.log(err)};
 
           console.log("line move objects have been set for ", game.EventID);
         });
       })
     })
-  }).then(function setCapperGrades(){
+  })
+  .then(setTimeout(function (){
     var now = moment();
     // This upcoming chain of functions sets a pick's CapperGrades score if the game has started and the CapperGrades have not previously been set
     Pick.find({
@@ -575,13 +580,13 @@ setInterval(function addPickRanges(){
           }, {upsert: true}, function(err){
             if (err) {console.log(err)}
 
-            console.log(pickID, " has been updated")
+            console.log(pickID, " has been updated with capperGrades")
           });
         })
       })
     })
-  })
-  .then(setTimeout(function createPickObjects(){
+  }, 60000))
+  .then(setTimeout(function (){
     var now = moment();
     Line.find({
       MatchTime: {
@@ -792,6 +797,24 @@ router.get('/weeklyStats/:username', function(req, res, next){
     })
   })
 })
+
+// router.get('/capperGrades', function(req, res){
+setInterval(function(){
+  User.find().distinct('username', function(err, users){
+    if (err) {console.log(err)}
+
+  }).then(function(users){
+    Promise.all(users.map(function(user){
+      return Pick.find({username: user}).then(function(picks){
+
+      })
+    }))
+
+    })
+  // })
+}, 2000)
+
+// })
 
 router.get('/picks/:username/stats', function (req, res, next){
   Pick.find({
