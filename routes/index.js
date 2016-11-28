@@ -252,7 +252,7 @@ setInterval(function (){
     },
     Week: {
       $nin: ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5"]
-    },
+    }
   }, function(err, games){
     if (err) {console.log(err)}
 
@@ -397,7 +397,7 @@ setInterval(function (){
         var totalHigh = Array.max(totalValues);
         var totalLow = Array.min(totalValues);
 
-        return Line.findOneAndUpdate({EventID: game.EventID}, {
+        Line.findOneAndUpdate({EventID: game.EventID}, {
           $set: {
             AwaySpreadIndex: awaySpreadObject,
             HomeSpreadIndex: homeSpreadObject,
@@ -415,7 +415,7 @@ setInterval(function (){
             AwaySpreadWorst: awaySpreadLow,
             RangesSet: true
           }
-        }, {new: true}, function(err){
+        }, function(err){
           if (err) {console.log(err)};
 
           console.log("line move objects have been set for ", game.EventID);
@@ -797,21 +797,21 @@ router.get('/weeklyStats/:username', function(req, res, next){
   })
 })
 
-// router.get('/capperGrades', function(req, res){
-setInterval(function(){
-  User.find().distinct('username', function(err, users){
-    if (err) {console.log(err)}
-
-  }).then(function(users){
-    Promise.all(users.map(function(user){
-      return Pick.find({username: user}).then(function(picks){
-
-      })
-    }))
-
-    })
-  // })
-}, 2000)
+// // router.get('/capperGrades', function(req, res){
+// setInterval(function(){
+//   User.find().distinct('username', function(err, users){
+//     if (err) {console.log(err)}
+//
+//   }).then(function(users){
+//     Promise.all(users.map(function(user){
+//       return Pick.find({username: user}).then(function(picks){
+//
+//       })
+//     }))
+//
+//     })
+//   // })
+// }, 2000)
 
 // })
 
