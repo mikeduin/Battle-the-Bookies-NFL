@@ -27,7 +27,6 @@ var updateFinalScores = require('../modules/updateFinalScores.js');
 var logLineMoves = require('../modules/logLineMoves.js');
 var checkStartTimes = require('../modules/checkStartTimes.js');
 var addPickTemplates = require('../modules/addPickTemplates.js');
-var setLineRanges = require('../modules/setLineRanges.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
