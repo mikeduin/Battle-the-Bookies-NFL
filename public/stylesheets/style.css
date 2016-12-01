@@ -387,6 +387,22 @@ section > div {
   margin-left: 10px;
 }
 
+.tut-btn {
+  margin-top: 30%;
+  width: 50px;
+  height: 50px;
+}
+
+.tut-chart {
+  margin-top: 2%;
+  padding-left: 10%;
+}
+
+.chrono-exp {
+  font-weight: 800;
+  color: #2F5032;
+}
+
 .mline-drop {
   padding-top: 10px
 }
