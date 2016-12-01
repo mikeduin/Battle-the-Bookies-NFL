@@ -398,6 +398,16 @@ section > div {
   padding-left: 10%;
 }
 
+.cg-image {
+  margin-top: -1%;
+}
+
+.cg-label {
+  font-style: italic;
+  font-weight: 500;
+  font-size: 16px;
+}
+
 .chrono-exp {
   font-weight: 800;
   color: #2F5032;

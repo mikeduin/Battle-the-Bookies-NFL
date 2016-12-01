@@ -99,7 +99,7 @@
   </section>
   <secDiv class="col s12 tut-mid z-depth-1">
     <div class="col s12 left-align">
-      <p class="resHead"> Tell me about some of this game's other  one-of-a-kind features. </p>
+      <p class="resHead"> Tell me about some of this game's other awesome, one-of-a-kind features. </p>
     </div>
   </secDiv>
   <section class="col s12">
@@ -108,12 +108,48 @@
     </div>
     <header class="col s10">
       <div class="reg col s8">
-        <span class="chrono-exp">CHRONOLOGICAL SELECTION CHARTING</span>: Clicking a game's chart button will take you to that game's analysis page, which includes charts for the three pick types -- Spreads, Moneylines, and Totals -- that detail line movement over the course of the week and highlight when each user's pick was made. Picks are charted based on relative line value to the best line that was ever available for each pick. <b>Click the image to the right</b> to zoom in on an example, or <b>click the green chart button on the left</b> to see a full Game Analysis page in all its glory.
+        <span class="chrono-exp">GAME ANALYSIS AND CHARTING PAGES</span>: Clicking a game's chart button will take you to that game's analysis page, which includes charts for the three pick types -- Spreads, Moneylines, and Totals -- that detail line movement over the course of the week and highlight when each user's pick was made. Picks are charted based on relative line value to the best line that was ever available for each pick. <b>Click the image to the right</b> to zoom in on an example, or <b>click the green chart button on the left</b> to see a full Game Analysis page in all its glory.
       </div>
       <div class="col s4 center-align tut-chart">
         <img class="materialboxed ex-image" width="350" src="../images/cle_cin_chart.png" />
       </div>
     </header>
+    <section class="col s10 offset-s1">
+      <div class="reg col s8">
+        Also included in a game's analysis page are tables showing the best lines ever available -- including applicable juice -- for each of a game's six pick options, as well as a scrollable section ranking each of the pool's entrants based on their pick's capperGrade for that game. But wait -- what the heck is a capperGrade?!
+      </div>
+      <div class="col s2 center-align tut-chart">
+        <img class="materialboxed ex-image" width="175" src="../images/cle_cin_bestlines.png" />
+      </div>
+      <div class="col s1 center-align tut-chart">
+        <img class="materialboxed ex-image" width="100" style="margin-left: 50%; margin-top: -25%" src="../images/cle_cin_rankings.png" />
+      </div>
+    </section>
+  </section>
+  <section class="col s12">
+    <div class="col s1 right-align">
+      <a ui-sref='home.game({EventID: "979a8963-90c6-4d24-a61c-12de60495373"})' class="btn-floating float-color tut-btn"><i class="fa fa-bar-chart tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a>
+    </div>
+    <header class="col s10">
+      <div class="reg col s8">
+        <span class="chrono-exp">CAPPERGRADES</span>: Forget whether your picks are winning or losing; how good are you at getting the best line available for your chosen selection? This is what capperGrades -- a unique, algorithm-driven evaluation of an entrant's ability to predict line movement -- sets out to determine.
+      </div>
+    </header>
+    <section class="col s10 offset-s1">
+      <div class="reg col s8">
+        Each pick starts with a base capperGrade of 10. For <b>Spread</b> and <b>Total</b> picks, a pick's capperGrade is reduced by the difference between an entrant's selection and the best number ever available for that pick type. From there, the a similar calculation is made based on the juice on your pick and the best juice ever available for your selection, and your CapperGrade is reduced by 0.1 for every five cents of difference in juice. <b>Click the image to the right</b> to see a detailed example.
+      </div>
+      <div class="col s4 center-align cg-image">
+        <span class="cg-label">capperGrades: Spreads and Totals</span>
+        <img class="materialboxed ex-image" width="320" src="../images/cg-spreads.jpg" />
+      </div>
+    </section>
+
+
+    <!--
+
+          <p> The calculations for <b>Moneyline</b> picks are a bit simpler: a pick's starting capperGrade of 10 is reduced by 0.5 for every 20 points in difference between that pick's moneyline and the best moneyline ever available for that selection. This is admittedly a bit inexact, but after running some numbers, 20 points of moneyline movement seemed roughly equivalent to 0.5 points of spread movement.
+          </p> -->
   </section>
   <secDiv class="col s12 tut-mid z-depth-1">
     <div class="col s12 left-align">
