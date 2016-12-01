@@ -1056,6 +1056,11 @@ prizeIntro div {
 /*END PRIZE STYLES*/
 /*BEGIN GAME CHART STYLES*/
 
+.weekLink {
+  color: black;
+  text-decoration: underline;
+}
+
 .gameSelect {
   width: 140px;
 }

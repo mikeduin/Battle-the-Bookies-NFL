@@ -51,7 +51,7 @@ setInterval(function (){
 
 setInterval(function (){
   updatePickResults.updatePickResults();
-}, 600000);
+}, 840000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 
@@ -258,9 +258,6 @@ setInterval(function (){
 
   }).then(function(games){
     games.forEach(function(game){
-    //   setLineRanges.setLineRanges(game).then(function(returned){
-    //     console.log(returned)
-    //   })
       LineMove.find({EventID: game.EventID}, function(err, gameArrays){
         if(err) {console.log(err)}
 
@@ -798,20 +795,20 @@ router.get('/weeklyStats/:username', function(req, res, next){
 })
 
 // // router.get('/capperGrades', function(req, res){
-// setInterval(function(){
-//   User.find().distinct('username', function(err, users){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(users){
-//     Promise.all(users.map(function(user){
-//       return Pick.find({username: user}).then(function(picks){
-//
-//       })
-//     }))
-//
-//     })
-//   // })
-// }, 2000)
+setInterval(function(){
+  User.find().distinct('username', function(err, users){
+    if (err) {console.log(err)}
+
+  }).then(function(users){
+    Promise.all(users.map(function(user){
+      return Pick.find({username: user}).then(function(picks){
+
+      })
+    }))
+
+    })
+  // })
+}, 2000)
 
 // })
 

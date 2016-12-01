@@ -2,7 +2,7 @@
   <div class="col s12 result-head">
     <div class="col s5 left-align">
       <div class="gameHead"> Game Selection Analysis </div>
-      <div class="game-details" ng-show="vm.game.AwayTeam"> {{vm.game.Week}}: <span style="color: {{vm.game.AwayColor}}">{{vm.game.AwayTeam}}</span> @ <span style="color: {{vm.game.HomeColor}}">{{vm.game.HomeTeam}}<span></div>
+      <div class="game-details" ng-show="vm.game.AwayTeam"> <a ui-sref='home.results.picks({weekNumb: vm.weekNumb})' class="weekLink">{{vm.game.Week}}</a>: <span style="color: {{vm.game.AwayColor}}">{{vm.game.AwayTeam}}</span> @ <span style="color: {{vm.game.HomeColor}}">{{vm.game.HomeTeam}}<span></div>
       <div ng-show="vm.game.GameStatus === 'Final' && vm.game.HomeScore > vm.game.AwayScore">
         <b>FINAL SCORE: <span style='color: {{vm.game.HomeColor}}'>{{vm.game.HomeAbbrev}} </span> {{vm.game.HomeScore}}, <span style='color: {{vm.game.AwayColor}}'>{{vm.game.AwayAbbrev}}</span> {{vm.game.AwayScore}} </b>
       </div>

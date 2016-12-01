@@ -1,19 +1,5 @@
-function double(array) {
-  result = [];
-  for (var i=0; i<array.length; i++) {
-    result.push(array[i]*2)
-  }
-  return result
-}
+arr = [6, 8, 14, 22, 89, 100];
 
-function add(array){
-  result = 0;
-  for (var i=0; i<array.length; i++){
-    result += array[i]
-  };
-  return result
-}
-
-document.getElementById('btn').on('click', function(e){
-  
-})
+function higher (value) {
+  return value > 20;
+};
