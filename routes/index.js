@@ -41,11 +41,11 @@ function sortNumber(a, b) {
   return a - b
 };
 
-// This first function updates game results every nine minutes.
+// This first function updates game results every 11 minutes.
 
 setInterval(function (){
   updateGameResults.updateGameResults()
-}, 540000);
+}, 660000);
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 
@@ -77,11 +77,11 @@ setInterval(function (){
   checkStartTimes.checkStartTimes();
 }, 50000000)
 
-// This function below checks every 12 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
+// This function below checks every 17 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 
 setInterval(function (){
   addPickTemplates.addPickTemplates()
-}, 720000)
+}, 1020000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
