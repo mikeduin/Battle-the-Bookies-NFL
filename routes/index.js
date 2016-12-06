@@ -60,13 +60,13 @@ setInterval(function (){
 
 setInterval(function (){
   createLines.createLines();
-}, 420000)
+}, 420000);
 
 // This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 
 setInterval(function (){
   updateFinalScores.updateFinalScores();
-}, 480000)
+}, 480000);
 
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 
@@ -84,7 +84,7 @@ setInterval(function (){
 
 setInterval(function (){
   addPickTemplates.addPickTemplates()
-}, 1020000)
+}, 1020000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
@@ -269,7 +269,7 @@ setInterval(function (){
       setLineRanges.setLineRanges(game)
     })
   })
-}, 180000);
+}, 960000);
 
 setInterval(function(){
   var now = moment();
@@ -311,7 +311,7 @@ setInterval(function(){
       })
     })
   })
-}, 240000)
+}, 960000)
 
 setInterval(function (){
   var now = moment();
@@ -336,7 +336,7 @@ setInterval(function (){
       buildPickArrays.buildPickArrays(game);
     })
   })
-}, 10000)
+}, 1200000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });
