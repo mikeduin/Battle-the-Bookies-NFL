@@ -1,7 +1,9 @@
-  arr = [6, 8, 14, 22, 89, 100];
-
-function double (arr) {
-  return arr.map(function(x){
-    return x*2
-  })
+function garland (string) {
+  var degree = 0;
+  for (var i=0; i<string.length; i++) {
+    if (string.substring(0, i+1) === string.substring(string.length-(i+1), string.length)) {
+      degree === i
+    }
+  };
+  return degree;
 }
