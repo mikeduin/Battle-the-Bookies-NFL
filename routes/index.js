@@ -408,15 +408,18 @@ router.get('/weeklyStats/:username', function(req, res, next){
     for (i=0; i<weeks.length; i++) {
       var weekNumber = parseInt(weeks[i].substring(5));
       weekNumbers.push(weekNumber)
-    }
+    };
     weekNumbers.sort(sortNumber);
     for (i=0; i<weekNumbers.length; i++) {
       var newWeek = "Week " + weekNumbers[i];
       newWeeks.push(newWeek)
-    }
+    };
 
     Promise.all(newWeeks.map(function(week){
       return Pick.find({username: username, Week: week}).then(function(results){
+
+        var totCapperGrade = 0;
+        var cappedGames = 0;
 
         var totalDollars = 0;
         var totalGames = 0;
@@ -430,15 +433,21 @@ router.get('/weeklyStats/:username', function(req, res, next){
             if (result.finalPayout !== 0) {
               username = result.username;
               week = result.Week;
-              MatchDay = result.MatchDay;
+              // MatchDay = result.MatchDay;
               totalDollars += result.finalPayout;
               totalGames += 1;
               totalWins += result.resultBinary;
               totalLosses += (1-result.resultBinary);
-            }
-        })
+              if (result.capperGrade !== null) {
+                totCapperGrade += result.capperGrade;
+                cappedGames +=1;
+              }
+            };
+        });
 
-        return {username: username, week: week, MatchDay: MatchDay, totalDollars: totalDollars, totalWins: totalWins, totalLosses: totalLosses, totalGames: totalGames}
+        var avgCapperGrade = totCapperGrade / cappedGames;
+
+        return {username: username, week: week, totalDollars: totalDollars, totalWins: totalWins, totalLosses: totalLosses, totalGames: totalGames, avgCapperGrade: avgCapperGrade}
       })
 
     })).then(function(userArray){
@@ -446,24 +455,6 @@ router.get('/weeklyStats/:username', function(req, res, next){
     })
   })
 })
-
-// // router.get('/capperGrades', function(req, res){
-// setInterval(function(){
-//   User.find().distinct('username', function(err, users){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(users){
-//     Promise.all(users.map(function(user){
-//       return Pick.find({username: user}).then(function(picks){
-//
-//       })
-//     }))
-//
-//     })
-//   // })
-// }, 2000)
-
-// })
 
 router.get('/picks/:username/stats', function (req, res, next){
   Pick.find({
