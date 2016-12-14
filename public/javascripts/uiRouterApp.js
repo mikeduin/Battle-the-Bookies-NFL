@@ -131,6 +131,16 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
         }
       }
     })
+    .state('home.capper-grades', {
+      url: 'capper-grades',
+      views: {
+        'content@': {
+          templateUrl: 'views/capper-grades.html',
+          controller: 'capperController',
+          controllerAs: 'vm'
+        }
+      }
+    })
     .state('home.prizes', {
       url: 'prizes',
       views: {
