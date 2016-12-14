@@ -1,4 +1,4 @@
-<standingsHead class="row">
+<standingsHead class="row" ng-init="vm.getDates(); vm.getAllUsers()">
   <standDiv class="col m12 result-head z-depth-1">
     <div class="col m5 left-align">
       <p class="resHead"> capperGrades </p>
@@ -14,3 +14,25 @@
     </pagination> -->
   </standDiv>
 </standingsHead>
+
+<cGrades class="row">
+  <table class="striped">
+    <thead>
+      <tr>
+        <th colspan="2">  </th>
+        <th colspan="{{vm.weeksOfGames.length}}" class="center-align">Week</th>
+      </tr>
+      <tr>
+        <th>Entrant</th>
+        <th>Total CapperGrade</th>
+        <th ng-repeat="week in vm.weekNumbs">{{week}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in vm.users" ng-init="vm.getCapperGrades(user)">
+        <td>{{user.username}}</td>
+      </tr>
+    </tbody>
+
+  </table>
+</cGrades>

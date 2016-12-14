@@ -395,7 +395,7 @@ router.get('/picks/:username/all', function (req, res, next) {
 router.get('/weeklyStats/:username', function(req, res, next){
   var username = req.params.username;
   var weekArray = [];
-  Pick.find().distinct('Week',function(err, weeks){
+  Pick.find().distinct('Week', function(err, weeks){
     if (err) {console.log(err)}
 
     weekArray = weeks;
@@ -438,7 +438,7 @@ router.get('/weeklyStats/:username', function(req, res, next){
               totalGames += 1;
               totalWins += result.resultBinary;
               totalLosses += (1-result.resultBinary);
-              if (result.capperGrade !== null) {
+              if (result.capperGraded) {
                 totCapperGrade += result.capperGrade;
                 cappedGames +=1;
               }
