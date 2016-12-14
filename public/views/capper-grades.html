@@ -3,36 +3,37 @@
     <div class="col m5 left-align">
       <p class="resHead"> capperGrades </p>
     </div>
-    <!-- <pagination class="col m4 offset-m3 right-align">
-      <div>
-        <ul class="pagination">
-          <li class="waves-effect" ng-class="{disabled: vm.activePage === 1}" ng-click="vm.activePage !== 1? vm.pageDown() : null"><a><i class="fa fa-chevron-left"></i></a></li>
-          <li ng-repeat="i in vm.pageArray" ng-class="{active: i === vm.activePage}" ng-click="vm.pageClick(i)" class="waves-effect"> {{i}}</li>
-          <li class="waves-effect" ng-class="{disabled: vm.activePage > (vm.dayArrayLength / 4)}" ng-click="vm.activePage < (vm.dayArrayLength / 4) ? vm.pageUp() : null"><a><i class="fa fa-chevron-right"></i></a></li>
-        </ul>
-      </div>
-    </pagination> -->
   </standDiv>
 </standingsHead>
 
 <cGrades class="row">
-  <table class="striped">
+  <table class="striped" border="0" cellspacing="0" cellpadding="0">
     <thead>
       <tr>
-        <th colspan="2">  </th>
-        <th colspan="{{vm.weeksOfGames.length}}" class="center-align">Week</th>
+        <th colspan="1">  </th>
+        <th colspan="5" class="center-align ytd-header"> Year to Date </th>
+        <th colspan="{{vm.weeksOfGames.length}}" class="center-align ytd-header">Week</th>
       </tr>
-      <tr>
+      <tr class="bord-bottom">
         <th>Entrant</th>
-        <th>Total CapperGrade</th>
-        <th ng-repeat="week in vm.weekNumbs">{{week}}</th>
+        <th class="pushdown"> W </th>
+        <th class="pushdown"> L </th>
+        <th class="pushdown"> Win% </th>
+        <th class="pushdown"> $ </th>
+        <th class="pushdown center-align">CapperScore</th>
+        <th ng-repeat="week in vm.weekNumbs" class="center-align">{{week}}</th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="user in vm.users" ng-init="vm.getCapperGrades(user)">
-        <td>{{user.username}}</td>
+      <tr ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-init="vm.getCapperGrades(user)">
+        <td class="pushdown user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</td>
+        <td class="pushdown ytdwBox"> <b> {{user.ytdW}} </b> </td>
+        <td class="pushdown ytdwBox"> <b> {{user.ytdL}} </b> </td>
+        <td class="pushdown"> <i> {{user.ytdPct | percentage:2}} </i> </td>
+        <td class="pushdown sum-total" ng-class="{dayWin: user.sumYtd > 0, dayLoss: user.sumYtd < 0}"> {{user.sumYtd | currency:$:2}} </td>
+        <td class="pushdown center-align capperScore"> {{user.totalCapperScore | number:2}} </td>
+        <td ng-repeat="week in user.capperGrades" class="pushdown" ng-class="{capperHigh: week.avgCapperGrade >= 9, capperMed: week.avgCapperGrade < 9 && week.avgCapperGrade > 7.5, capperLow: week.avgCapperGrade <= 7.5}"> {{week.avgCapperGrade | number:2}}</td>
       </tr>
     </tbody>
-
   </table>
 </cGrades>

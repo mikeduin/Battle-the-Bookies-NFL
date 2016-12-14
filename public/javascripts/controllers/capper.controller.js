@@ -7,6 +7,7 @@ function capperController (picksService, oddsService, usersService) {
 
   vm.getDates = getDates;
   vm.getCapperGrades = getCapperGrades;
+  vm.sortOrder = "-totalCapperScore";
 
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
@@ -35,8 +36,13 @@ function capperController (picksService, oddsService, usersService) {
       user.ytdL = result.totalG - result.totalW;
       user.ytdPct = result.totalW / result.totalG;
     }).then(function(){
+      username = user.username;
       picksService.getWeeklyStats(username).then(function(result){
         user.capperGrades = result.data;
+        user.totalCapperScore = 0;
+        for (var i=0; i<user.capperGrades.length; i++) {
+          user.totalCapperScore += user.capperGrades[i].avgCapperGrade
+        };
       })
     })
   }

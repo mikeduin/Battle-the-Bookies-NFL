@@ -860,6 +860,10 @@ standings th, standings td {
   text-align: center;
 }
 
+.header-row {
+  padding-top: -20;
+}
+
 .ytd-header {
   font-size: 22px;
   color: #2F5032;
@@ -958,6 +962,11 @@ standings table {
 
 notice {
   margin-top: 40px;
+}
+
+.capperScore {
+  font-size: 18px;
+  font-weight: 700;
 }
 
 /*END STANDINGS STYLES*/
