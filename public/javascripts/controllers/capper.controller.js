@@ -1,15 +1,19 @@
 angular
   .module('battleBookies')
-  .controller('capperController', ['picksService', 'oddsService', 'usersService', capperController])
+  .controller('capperController', ['picksService', 'oddsService', 'usersService', '$scope', capperController])
 
-function capperController (picksService, oddsService, usersService) {
+function capperController (picksService, oddsService, usersService, $scope) {
   var vm = this;
 
   vm.getDates = getDates;
   vm.getCapperGrades = getCapperGrades;
+  vm.getAllUsers = getAllUsers;
   vm.sortOrder = "-totalCapperScore";
+  $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
+    vm.showSpinner = false;
+  })
 
-  vm.getAllUsers = function(){
+  function getAllUsers (){
     usersService.getAllUsers().then(function(result){
       vm.users = result
     })

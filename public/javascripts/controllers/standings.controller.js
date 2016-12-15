@@ -15,9 +15,9 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   vm.user = {};
   vm.showStandings = false;
   vm.dailyStats = [];
-    $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
-      vm.showSpinner = false;
-    })
+  $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
+    vm.showSpinner = false;
+  })
 
   function sortNumber(a, b) {
     return a - b
