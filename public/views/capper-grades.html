@@ -10,9 +10,11 @@
       <p class="col s12">
         - An entrant's weekly capperGrades are the average of their capperGrades for that week's games. Those scores are then summed to make an entrant's total capperScore.
       </p>
-      <p class="col s12">
-        - As line movements were not logged prior to Week 6, capperGrades for Weeks 1-5 are derived based on the best line selected by <i>any member of the pool</i> -- as opposed to the best line <i>ever available</i> -- and thus will be higher in value than the capperGrades from Week 6 on.
-      </p>
+      <div class="col s12" style="margin-bottom: 15px">
+        <p>
+          - As line movements were not logged prior to Week 6, capperGrades for Weeks 1-5 are derived based on the best line selected by <i>any member of the pool</i> -- as opposed to the best line <i>ever available</i> -- and thus will be higher in value than the capperGrades from Week 6 on.
+        </p>
+      </div>
     </howTo>
   </standDiv>
 </standingsHead>
@@ -36,14 +38,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-init="vm.getCapperGrades(user)">
-        <td class="pushdown user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</td>
-        <td class="pushdown ytdwBox"> <b> {{user.ytdW}} </b> </td>
-        <td class="pushdown ytdwBox"> <b> {{user.ytdL}} </b> </td>
-        <td class="pushdown"> <i> {{user.ytdPct | percentage:2}} </i> </td>
-        <td class="pushdown sum-total" ng-class="{dayWin: user.sumYtd > 0, dayLoss: user.sumYtd < 0}"> {{user.sumYtd | currency:$:2}} </td>
-        <td class="pushdown center-align capperScore"> {{user.totalCapperScore | number:2}} </td>
-        <td ng-repeat="week in user.capperGrades" class="pushdown" ng-class="{capperHigh: week.avgCapperGrade >= 9, capperMed: week.avgCapperGrade < 9 && week.avgCapperGrade > 7.5, capperLow: week.avgCapperGrade <= 7.5}"> {{week.avgCapperGrade | number:2}}</td>
+      <tr ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-init="vm.getCapperGrades(user)" class="pushdown">
+        <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</td>
+        <td class="ytdwBox"> <b> {{user.ytdW}} </b> </td>
+        <td class="ytdwBox"> <b> {{user.ytdL}} </b> </td>
+        <td> <i> {{user.ytdPct | percentage:2}} </i> </td>
+        <td class="sum-total" ng-class="{dayWin: user.sumYtd > 0, dayLoss: user.sumYtd < 0}"> {{user.sumYtd | currency:$:2}} </td>
+        <td class="center-align capperScore"> {{user.totalCapperScore | number:2}} </td>
+        <td ng-repeat="week in user.capperGrades" ng-class="{capperHigh: week.avgCapperGrade >= 9, capperMed: week.avgCapperGrade < 9 && week.avgCapperGrade > 7.5, capperLow: week.avgCapperGrade <= 7.5}"> {{week.avgCapperGrade | number:2}}</td>
       </tr>
     </tbody>
   </table>

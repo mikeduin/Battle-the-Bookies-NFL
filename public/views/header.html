@@ -14,6 +14,7 @@ $(document).ready(function(){
 <div class="navbar-fixed" ng-init="vm.getDates()">
   <ul id='standings-dropdown' class="dropdown-content">
     <li><a ui-sref='home.standings'>Overall Standings</a></li>
+    <li><a ui-sref='home.capper-grades'>capperGrades</a></li>
     <li><a ui-sref='home.prizes'>Prizes</a></li>
   </ul>
   <nav class="z-depth-2">
@@ -47,6 +48,7 @@ $(document).ready(function(){
         <li><a ui-sref="home.tutorial">How to Play</a></li>
         <li><a ui-sref="home.makepicks">Make Picks</a></li>
         <li><a ui-sref='home.standings'>YTD Standings</a></li>
+        <li><a ui-sref='home.capper-grades'>capperGrades</a></li>
         <li><a ui-sref='home.results.picks({weekNumb: vm.currentWeekNumb})'>Results</a></li>
         <li><a ui-sref='home.user({username: vm.currentUser()})'>Users</a></li>
         <li><a ui-sref='home.prizes'>Prizes</a></li>
