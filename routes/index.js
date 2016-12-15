@@ -76,9 +76,9 @@ setInterval(function (){
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
 
-setInterval(function (){
-  checkStartTimes.checkStartTimes();
-}, 50000000)
+// setInterval(function (){
+//   checkStartTimes.checkStartTimes();
+// }, 50000000)
 
 // This function below checks every 17 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
 

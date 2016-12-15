@@ -950,6 +950,7 @@ standings th, standings td {
 
 standDiv {
   margin-top: 20px;
+  padding-bottom: 10px;
 }
 
 pagination {
@@ -969,6 +970,24 @@ notice {
   font-weight: 700;
 }
 
+.capHead {
+  font-size: 32px;
+  font-weight: 800;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #2F5032;
+}
+
+.capper-head {
+  background: url('../images/bet_board2.png') no-repeat center center;
+  background-size: cover;
+  margin-top: 0px;
+  /*display: inline-block;*/
+}
+
+cGrades table thead tr th {
+  padding: 5px 0 0 0;
+}
 /*END STANDINGS STYLES*/
 /*BEGIN USER STYLES*/
 

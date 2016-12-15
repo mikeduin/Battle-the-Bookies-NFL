@@ -1,13 +1,24 @@
 <standingsHead class="row" ng-init="vm.getDates(); vm.getAllUsers()">
-  <standDiv class="col m12 result-head z-depth-1">
-    <div class="col m5 left-align">
-      <p class="resHead"> capperGrades </p>
+  <standDiv class="col s12 capper-head z-depth-1">
+    <div class="col s12 left-align">
+      <p class="capHead"> capperGrades </p>
     </div>
+    <howTo>
+      <p class="col s12">
+        - capperGrades are explained in detail in the <a ui-sref="home.tutorial">How to Play</a> page.
+      </p>
+      <p class="col s12">
+        - An entrant's weekly capperGrades are the average of their capperGrades for that week's games. Those scores are then summed to make an entrant's total capperScore.
+      </p>
+      <p class="col s12">
+        - As line movements were not logged prior to Week 6, capperGrades for Weeks 1-5 are derived based on the best line selected by <i>any member of the pool</i> -- as opposed to the best line <i>ever available</i> -- and thus will be higher in value than the capperGrades from Week 6 on.
+      </p>
+    </howTo>
   </standDiv>
 </standingsHead>
 
 <cGrades class="row">
-  <table class="striped" border="0" cellspacing="0" cellpadding="0">
+  <table class="striped">
     <thead>
       <tr>
         <th colspan="1">  </th>
@@ -16,12 +27,12 @@
       </tr>
       <tr class="bord-bottom">
         <th>Entrant</th>
-        <th class="pushdown"> W </th>
-        <th class="pushdown"> L </th>
-        <th class="pushdown"> Win% </th>
-        <th class="pushdown"> $ </th>
-        <th class="pushdown center-align">CapperScore</th>
-        <th ng-repeat="week in vm.weekNumbs" class="center-align">{{week}}</th>
+        <th> W </th>
+        <th> L </th>
+        <th> Win% </th>
+        <th class="center-align"> $ </th>
+        <th class="center-align">capperScore</th>
+        <th ng-repeat="week in vm.weekNumbs" class="center-align ">{{week}}</th>
       </tr>
     </thead>
     <tbody>

@@ -1,21 +1,20 @@
-function parenChecker (str) {
-  var left = 0;
-  var right = 0;
-  var verdict;
-  for (var i=0; i<str.length; i++) {
-    if (str[i] === '(') {
-      left += 1
-    };
-    if (str[i] === ')') {
-      right += 1
-    };
-    if (right > left) {
-      return false
-    };
+function sumDigits (num) {
+  var str = num.toString();
+  var sum = 0;
+
+  if (str.length === 1) {
+    return num
   };
-  if (left === right) {
-    return true
+
+  for (var i=0; i<str.length; i++) {
+    sum += parseInt(str[i]);
+  };
+
+  var sumString = sum.toString();
+  
+  if (sumString.length === 1) {
+    return sum
   } else {
-    return false
+    sumDigits (sum)
   };
 }
