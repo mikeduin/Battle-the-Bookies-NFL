@@ -3,11 +3,11 @@
 <standingsHead class="row" ng-init="vm.getDates(); vm.getAllUsers()">
   <standDiv class="col s12 capper-head z-depth-1">
     <div class="col s12 left-align">
-      <p class="capHead"> capperGrades </p>
+      <p class="capHead"> <a ng-click="vm.tutRedirect()" class="btn-floating float-color tut-btn-page"><i class="fa fa-graduation-cap tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a> capperGrades </p>
     </div>
     <howTo>
       <p class="col s12">
-        - capperGrades are explained in detail in the <a ui-sref="home.tutorial">How to Play</a> page.
+        - The capperGrade methodology is explained in detail in the <a ng-click="vm.tutRedirect()" class="pointer">How to Play</a> page.
       </p>
       <p class="col s12">
         - An entrant's weekly capperGrade is the average of their capperGrades for that week's games. Those scores are then summed to make an entrant's total capperScore.

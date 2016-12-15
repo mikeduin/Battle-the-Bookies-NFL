@@ -1,14 +1,16 @@
 angular
   .module('battleBookies')
-  .controller('capperController', ['picksService', 'oddsService', 'usersService', '$scope', capperController])
+  .controller('capperController', ['picksService', 'oddsService', 'usersService', '$scope', '$state', '$location', '$anchorScroll', capperController])
 
-function capperController (picksService, oddsService, usersService, $scope) {
+function capperController (picksService, oddsService, usersService, $scope, $state, $location, $anchorScroll) {
   var vm = this;
 
   vm.getDates = getDates;
   vm.getCapperGrades = getCapperGrades;
   vm.getAllUsers = getAllUsers;
   vm.sortOrder = "-totalCapperScore";
+  vm.tutRedirect = tutRedirect;
+
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
   })
@@ -49,6 +51,14 @@ function capperController (picksService, oddsService, usersService, $scope) {
         };
         vm.showStandings = true;
       })
+    })
+  }
+
+  function tutRedirect () {
+    $state.go('home.tutorial').then(function(){
+      $location.hash('capperGrades');
+      $anchorScroll.yOffset = 50;
+      $anchorScroll();
     })
   }
 
