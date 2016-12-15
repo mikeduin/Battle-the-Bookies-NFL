@@ -384,7 +384,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
       if (weekNumb < 10) {
         vm.weekNumb = "0" + weekNumb
       } else {
-        vm.weeknumb = weekNumb
+        vm.weekNumb = weekNumb
       };
       console.log('vm.weekNumb is ', vm.weekNumb);
       oddsService.getWeeklyNflLines(weekNumb).then(function(games){

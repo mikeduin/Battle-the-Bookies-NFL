@@ -2,12 +2,15 @@
   <div class="col s12 result-head">
     <div class="col s5 left-align">
       <div class="gameHead"> Game Selection Analysis </div>
-      <div class="game-details" ng-show="vm.game.AwayTeam"> <a ui-sref='home.results.picks({weekNumb: vm.weekNumb})' class="weekLink">{{vm.game.Week}}</a>: <span style="color: {{vm.game.AwayColor}}">{{vm.game.AwayTeam}}</span> @ <span style="color: {{vm.game.HomeColor}}">{{vm.game.HomeTeam}}<span></div>
+      <div class="game-details" ng-show="vm.game.AwayTeam"> {{vm.game.Week}}: <span style="color: {{vm.game.AwayColor}}">{{vm.game.AwayTeam}}</span> @ <span style="color: {{vm.game.HomeColor}}">{{vm.game.HomeTeam}}<span></div>
       <div ng-show="vm.game.GameStatus === 'Final' && vm.game.HomeScore > vm.game.AwayScore">
         <b>FINAL SCORE: <span style='color: {{vm.game.HomeColor}}'>{{vm.game.HomeAbbrev}} </span> {{vm.game.HomeScore}}, <span style='color: {{vm.game.AwayColor}}'>{{vm.game.AwayAbbrev}}</span> {{vm.game.AwayScore}} </b>
       </div>
       <div ng-show="vm.game.GameStatus === 'Final' && vm.game.AwayScore > vm.game.HomeScore">
         <b>FINAL SCORE: <span style='color: {{vm.game.AwayColor}}'>{{vm.game.AwayAbbrev}} </span> {{vm.game.AwayScore}}, <span style='color: {{vm.game.HomeColor}}'>{{vm.game.HomeAbbrev}}</span> {{vm.game.HomeScore}} </b>
+      </div>
+      <div class="">
+        <a ui-sref='home.results.picks({weekNumb: vm.weekNumb})'> <i>Back to {{vm.game.Week}} Results </i></a>
       </div>
     </div>
     <div class="col s2">
