@@ -47,6 +47,7 @@ function capperController (picksService, oddsService, usersService, $scope) {
         for (var i=0; i<user.capperGrades.length; i++) {
           user.totalCapperScore += user.capperGrades[i].avgCapperGrade
         };
+        vm.showStandings = true;
       })
     })
   }

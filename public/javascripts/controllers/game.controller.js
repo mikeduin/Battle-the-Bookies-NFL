@@ -386,7 +386,6 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
       } else {
         vm.weekNumb = weekNumb
       };
-      console.log('vm.weekNumb is ', vm.weekNumb);
       oddsService.getWeeklyNflLines(weekNumb).then(function(games){
         vm.weeklyGames = [];
         for (var i=0; i<games.length; i++) {

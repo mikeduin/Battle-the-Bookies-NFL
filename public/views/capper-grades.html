@@ -39,7 +39,7 @@
         <th ng-repeat="week in vm.weekNumbs" class="center-align ">{{week}}</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody ng-show="vm.showStandings">
       <tr ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-init="vm.getCapperGrades(user)" class="pushdown">
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</td>
         <td class="ytdwBox"> <b> {{user.ytdW}} </b> </td>
