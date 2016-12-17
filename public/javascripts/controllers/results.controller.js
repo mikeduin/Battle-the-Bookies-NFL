@@ -33,12 +33,21 @@ function ResultController (oddsService, picksService, resultsService, usersServi
 
   vm.weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
+  vm.currentTime = moment().format();
+
+  vm.chartDisplay = function(gametime){
+    if (moment(gametime).add(10, 'm').isBefore(vm.currentTime)){
+      return true
+    } else {
+      return false
+    }
+  };
+
   vm.checkWeekNumb = function(){
     vm.weekNumb = $stateParams.weekNumb;
     vm.week = parseInt(vm.weekNumb);
   };
   vm.checkWeekNumb();
-  console.log('vm.weekNumb is ', vm.weekNumb);
 
   vm.weekConfig = function(week){
     var newWeek = week.toString();
@@ -56,8 +65,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
       return false
     }
   }
-
-  vm.currentTime = moment().format();
 
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){

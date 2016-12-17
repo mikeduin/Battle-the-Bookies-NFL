@@ -269,7 +269,7 @@ setInterval(function (){
       setLineRanges.setLineRanges(game)
     })
   })
-}, 960000);
+}, 300000);
 
 setInterval(function(){
   var now = moment();
@@ -311,7 +311,7 @@ setInterval(function(){
       })
     })
   })
-}, 960000)
+}, 420000)
 
 setInterval(function (){
   var now = moment();
@@ -336,7 +336,7 @@ setInterval(function (){
       buildPickArrays.buildPickArrays(game);
     })
   })
-}, 1200000)
+}, 900000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });
