@@ -40,7 +40,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   };
 
   vm.checkDisplay = function(game){
-    if (moment(game.MatchTime).isBefore(now) || vm.currentUser() === vm.userFilter) {
+    if (moment(game.MatchTime).add(10, 'm').isBefore(now) || vm.currentUser() === vm.userFilter) {
       return true
     } else {
       return false
