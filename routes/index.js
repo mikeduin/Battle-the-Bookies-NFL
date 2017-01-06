@@ -45,34 +45,39 @@ function sortNumber(a, b) {
 };
 
 // This first function updates game results every 11 minutes.
+// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
 
-setInterval(function (){
-  updateGameResults.updateGameResults()
-}, 660000);
+// setInterval(function (){
+//   updateGameResults.updateGameResults()
+// }, 660000);
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
+// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no picks to update)
 
-setInterval(function (){
-  updatePickResults.updatePickResults();
-}, 840000);
+// setInterval(function (){
+//   updatePickResults.updatePickResults();
+// }, 840000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
+// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no lines to update)
 
-setInterval(function (){
-  createLines.createLines();
-}, 420000);
+// setInterval(function (){
+//   createLines.createLines();
+// }, 420000);
 
 // This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
+// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
 
-setInterval(function (){
-  updateFinalScores.updateFinalScores();
-}, 480000);
+// setInterval(function (){
+//   updateFinalScores.updateFinalScores();
+// }, 480000);
 
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
+// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
 
-setInterval(function (){
-  logLineMoves.logLineMoves();
-}, 2100000);
+// setInterval(function (){
+//   logLineMoves.logLineMoves();
+// }, 2100000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
 
@@ -81,10 +86,11 @@ setInterval(function (){
 // }, 50000000)
 
 // This function below checks every 17 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
+// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no picks to update)
 
-setInterval(function (){
-  addPickTemplates.addPickTemplates()
-}, 1020000);
+// setInterval(function (){
+//   addPickTemplates.addPickTemplates()
+// }, 1020000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
