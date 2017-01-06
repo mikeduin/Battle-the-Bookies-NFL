@@ -152,14 +152,15 @@ router.get('/linemove/:gameID', function(req, res, next){
 });
 
 router.get('/lines', function(req, res, next){
-  var week = setWeek.weekSetter(moment());
-  var week2 = setWeek.weekSetter(moment().add(1, 'w'));
-  var week3 = setWeek.weekSetter(moment().subtract(1, 'w'));
+  // hide triple-week setting in offseason
+  // var week = setWeek.weekSetter(moment());
+  // var week2 = setWeek.weekSetter(moment().add(1, 'w'));
+  // var week3 = setWeek.weekSetter(moment().subtract(1, 'w'));
 
   Line.find({
     Week: {
       $nin: ["Preseason", "Postseason"],
-      $in: [week, week2, week3]
+      // $in: [week, week2, week3]
     }
   }, function(err, games) {
     if (err) { next(err) };
