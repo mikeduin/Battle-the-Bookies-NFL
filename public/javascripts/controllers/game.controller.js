@@ -92,8 +92,6 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
       vm.awayColor = vm.game.AwayColor;
       vm.homeColor = vm.game.HomeColor;
 
-      console.log(vm.game);
-
       vm.gameSelect = {
         "Abbrev": vm.game.AwayAbbrev + " @ " + vm.game.HomeAbbrev,
         "ID": vm.game.EventID

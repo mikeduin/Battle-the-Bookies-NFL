@@ -176,12 +176,14 @@ router.get('/weeks', function(req, res, next){
     var newWeeks = [];
     for (i=0; i<weeks.length; i++) {
       var weekNumber = parseInt(weeks[i].substring(5));
-      weekNumbers.push(weekNumber)
+      weekNumbers.push(weekNumber);
     }
     weekNumbers.sort(sortNumber);
     for (i=0; i<weekNumbers.length; i++) {
       var newWeek = "Week " + weekNumbers[i];
-      newWeeks.push(newWeek)
+      if (newWeek !== 'Week NaN') {
+        newWeeks.push(newWeek)
+      };
     }
 
     res.json(newWeeks)
