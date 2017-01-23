@@ -184,14 +184,20 @@ router.get('/weeks', function(req, res, next){
     for (i=0; i<weeks.length; i++) {
       var weekNumber = parseInt(weeks[i].substring(5));
       weekNumbers.push(weekNumber);
-    }
+    };
     weekNumbers.sort(sortNumber);
+    console.log('weekNumbers are ', weekNumbers);
     for (i=0; i<weekNumbers.length; i++) {
       var newWeek = "Week " + weekNumbers[i];
       if (newWeek !== 'Week NaN') {
         newWeeks.push(newWeek)
       };
     }
+
+    console.log('new weeks are ', newWeeks);
+
+    // temp replacement
+    newWeeks = ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7", "Week 8", "Week 9", "Week 10", "Week 11", "Week 12", "Week 13", "Week 14", "Week 15", "Week 16", "Week 17"];
 
     res.json(newWeeks)
   })
