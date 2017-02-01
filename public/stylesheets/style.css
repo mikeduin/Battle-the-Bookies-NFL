@@ -1,5 +1,7 @@
 
 body {
+  float: left;
+  min-width: 100%;
   padding-left: 5px;
   padding-right: 5px;
   background-size: cover;
@@ -400,25 +402,26 @@ section > div {
 
 .tut-chart {
   margin-top: 2%;
-  padding-left: 10%;
+  position: relative;
 }
 
 .cg-image {
   margin-top: -1%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
 }
 
 .cg-label {
   font-style: italic;
   font-weight: 500;
   font-size: 16px;
-
 }
 
 .cg-ml-label {
   font-style: italic;
   font-weight: 500;
   font-size: 16px;
-  padding-left: 10%;
 }
 
 .chrono-exp {
