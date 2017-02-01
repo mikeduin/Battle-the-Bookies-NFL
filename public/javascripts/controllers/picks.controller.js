@@ -147,9 +147,10 @@ function PickController (oddsService, picksService, resultsService, authService,
   };
 
   function timeCheck (game) {
-    if(moment(game.MatchTime).isBefore(moment())) {
-      game.locked = true;
-    }
+    // DISABLE DURING OFFSEASON TO DEMONSTRATE SELECTION FUNCTIONALITY
+    // if(moment(game.MatchTime).isBefore(moment())) {
+    //   game.locked = true;
+    // }
   }
 
   function awaySpread (game) {
