@@ -40,7 +40,7 @@ function authService ($http, $window) {
 
     auth.register = function(user) {
       console.log(user);
-      return $http.post('/register', user)
+      return $http.post('/users/register', user)
       .success(function(data){
         auth.saveToken(data.token);
       })
