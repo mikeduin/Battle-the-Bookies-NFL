@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var knex = require ('../db/knex');
 var crypto = require('crypto');
+var jwt = require('jsonwebtoken');
+var passport = require('passport');
+require('dotenv').load();
 
 function Users() {
   return knex('users');
@@ -48,9 +51,27 @@ router.post('/register', function(req, res, next){
     hash: hash,
   }, '*').then(function(user){
     // delete this logging later, just making sure we get to this step
-    console.log('user has been added to the database!')
-    console.log('user is ', user)
+    console.log('user has been added to the database!');
+    console.log('user is ', user);
+    res.json({token: generateJWT(user)});
   });
 });
+
+router.post('/login', function(req, res, next){
+  if(!req.body.username || !req.body.password){
+    return res.status(400).json({message: 'You forgot to include either your username or your password!'});
+  };
+
+  passport.authenticate('local', function(err, user, info){
+    console.log('user is ', user);
+    if(err){ return next(err); }
+
+    if(user){
+      return res.json({token: generateJWT(user)});
+    } else {
+      return res.status(401).json(info);
+    }
+  })(req, res, next);
+})
 
 module.exports = router;

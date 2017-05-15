@@ -681,39 +681,41 @@ router.get('/users/:username', function (req, res, next){
 // END USER ROUTES
 // BEGIN AUTH ROUTES
 
-router.post('/register', function(req, res, next){
-  if(!req.body.username || !req.body.password || !req.body.nameFirst || !req.body.nameLast || !req.body.email || !req.body.buyin
-  ){
-    return res.status(400).json({message: 'You left something blank!'});
-  }
+// This register route below is irrelavent per SQL migration, can delete when confirm everything is working properly
 
-  // User.findOne({
-  //   username: req.body.username
-  // }, function(err, username, next){
-  //   if(username) {
-  //     return res.status(400).json({message: 'That username already exists.'})
-  //   } else {
-      var user = new User();
-
-      user.username = req.body.username;
-      user.nameFirst = req.body.nameFirst;
-      user.nameLast = req.body.nameLast;
-      user.email = req.body.email;
-      user.buyin = req.body.buyin;
-      user.setPassword(req.body.password);
-
-      console.log(user);
-
-      user.save(function (err){
-        if(err){ console.log(err); }
-
-        console.log(user + 'has been added to db!');
-        res.json({token: user.generateJWT()})
-      });
-  //   }
-  // })
-
-});
+// router.post('/register', function(req, res, next){
+//   if(!req.body.username || !req.body.password || !req.body.nameFirst || !req.body.nameLast || !req.body.email || !req.body.buyin
+//   ){
+//     return res.status(400).json({message: 'You left something blank!'});
+//   }
+//
+//   // User.findOne({
+//   //   username: req.body.username
+//   // }, function(err, username, next){
+//   //   if(username) {
+//   //     return res.status(400).json({message: 'That username already exists.'})
+//   //   } else {
+//       var user = new User();
+//
+//       user.username = req.body.username;
+//       user.nameFirst = req.body.nameFirst;
+//       user.nameLast = req.body.nameLast;
+//       user.email = req.body.email;
+//       user.buyin = req.body.buyin;
+//       user.setPassword(req.body.password);
+//
+//       console.log(user);
+//
+//       user.save(function (err){
+//         if(err){ console.log(err); }
+//
+//         console.log(user + 'has been added to db!');
+//         res.json({token: user.generateJWT()})
+//       });
+//   //   }
+//   // })
+//
+// });
 
 router.post('/login', function(req, res, next){
   if(!req.body.username || !req.body.password){

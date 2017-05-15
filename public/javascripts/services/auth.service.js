@@ -47,7 +47,7 @@ function authService ($http, $window) {
     }
 
     auth.logIn = function(user) {
-      return $http.post('/login', user)
+      return $http.post('/users/login', user)
       .success(function(data){
         auth.saveToken(data.token);
       }).error(function(response){
