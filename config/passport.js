@@ -8,7 +8,6 @@ function Users() {
 }
 
 function checkPassword (user, password) {
-  console.log('user salt is ', user[0].salt);
   var hash = crypto.pbkdf2Sync(password, user[0].salt, 1000, 64).toString('hex');
 
   return user[0].hash === hash;

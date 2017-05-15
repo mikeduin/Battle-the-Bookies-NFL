@@ -18,11 +18,11 @@ function generateJWT (user) {
 
   //this function below takes two arguments - the payload that will be signed by the JWT + the secret. Hard-coding 'SECRET' for now but need to come back and change that to an environment variable so the secret is kept out of our code. This 'SECRET' reference is also included in the auth variable in index.js, so remember to change that too.
   return jwt.sign({
-    _id: user._id,
-    username: user.username,
-    email: user.email,
-    nameFirst: user.nameFirst,
-    nameLast: user.nameLast,
+    _id: user[0]._id,
+    username: user[0].username,
+    email: user[0].email,
+    nameFirst: user[0].nameFirst,
+    nameLast: user[0].nameLast,
     exp: parseInt(exp.getTime() / 1000),
   }, process.env.SESSION_SECRET)
 }
@@ -50,9 +50,6 @@ router.post('/register', function(req, res, next){
     salt: salt,
     hash: hash,
   }, '*').then(function(user){
-    // delete this logging later, just making sure we get to this step
-    console.log('user has been added to the database!');
-    console.log('user is ', user);
     res.json({token: generateJWT(user)});
   });
 });
@@ -63,7 +60,6 @@ router.post('/login', function(req, res, next){
   };
 
   passport.authenticate('local', function(err, user, info){
-    console.log('user is ', user);
     if(err){ return next(err); }
 
     if(user){
