@@ -1,3 +1,5 @@
+// THIS CAN BE DELETED ONCE FULL USER MIGRATION TO POSTGRES HAS BEEN COMPLETED
+
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
