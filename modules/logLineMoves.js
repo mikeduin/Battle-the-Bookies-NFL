@@ -48,8 +48,8 @@ module.exports = {
         };
 
         LineMoves().where({EventID: game.EventID}).then(function(result){
+          var logged = new Date();
           if(result.length === 0) {
-            var logged = new Date();
             LineMoves().insert({
               EventID: game.EventID,
               HomeAbbrev: game.HomeAbbrev,
@@ -62,8 +62,8 @@ module.exports = {
               AwayMLs: [awayML],
               Totals: [total],
               TotalOverJuices: [totalOverJuice],
-              TotalUnderJuices: [totalUnderJuice]
-              // TimeLogged: [''+logged]
+              TotalUnderJuices: [totalUnderJuice],
+              TimeLogged: [logged]
             }, '*').then(function(line){
               console.log(line, ' has been added');
             });
@@ -78,6 +78,7 @@ module.exports = {
               'Totals': knex.raw('array_append("Totals", ?)', [total]),
               'TotalOverJuices': knex.raw('array_append("TotalOverJuices", ?)', [totalOverJuice]),
               'TotalUnderJuices': knex.raw('array_append("TotalUnderJuices", ?)', [totalUnderJuice]),
+              'TimeLogged': knex.raw('array_append("TimeLogged", ?)', [logged]),
             }, '*').then(function(returned){
               console.log('array updated!');
             })
