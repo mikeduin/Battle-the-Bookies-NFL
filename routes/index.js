@@ -60,10 +60,10 @@ function sortNumber(a, b) {
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no lines to update)
-
-setInterval(function (){
-  createLines.createLines();
-}, 10000);
+//
+// setInterval(function (){
+//   createLines.createLines();
+// }, 420000);
 
 // This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
@@ -75,9 +75,9 @@ setInterval(function (){
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
 
-// setInterval(function (){
-//   logLineMoves.logLineMoves();
-// }, 2100000);
+setInterval(function (){
+  logLineMoves.logLineMoves();
+}, 10000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
 
