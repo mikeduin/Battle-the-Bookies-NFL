@@ -61,9 +61,9 @@ function sortNumber(a, b) {
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no lines to update)
 
-// setInterval(function (){
-//   createLines.createLines();
-// }, 420000);
+setInterval(function (){
+  createLines.createLines();
+}, 10000);
 
 // This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)

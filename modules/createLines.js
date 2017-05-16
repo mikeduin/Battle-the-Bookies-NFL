@@ -17,7 +17,7 @@ function Lines() {
 
 module.exports = {
   createLines: function(){
-    fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
+    fetch('https://jsonodds.com/api/odds/mlb?oddType=Game', {
       method: 'GET',
       headers: {
         'JsonOdds-API-Key': process.env.API_KEY
@@ -25,11 +25,12 @@ module.exports = {
     }).then(function(res){
       return res.json()
     }).then(function(odds){
+      console.log('odds are ', odds);
       odds.forEach(function(game){
         Lines().where({EventID: game.Odds[0].EventID}).first().then(function(err, line){
           if (err) {console.log(err)};
 
-          if (!line[0]) {
+          if (!line) {
             Lines().insert({
               EventID: game.ID,
               HomeTeam: game.HomeTeam,
@@ -41,8 +42,8 @@ module.exports = {
               HomeColor: colors.teamColor(game.HomeTeam),
               AwayColor: colors.teamColor(game.AwayTeam),
               MatchTime: new Date(game.MatchTime),
-              MatchDay: moment(game.MatchTime).utcOffset(-7).format('MMMM Do, YYYY'),
-              DateNumb: parseInt(moment(game.MatchTime).utcOffset(-7).format('YYYYMMDD')),
+              MatchDay: moment(new Date(game.MatchTime)).format('MMMM Do, YYYY'),
+              DateNumb: parseInt(moment(new Date(game.MatchTime)).format('YYYYMMDD')),
               Week: setWeek.weekSetter(game.MatchTime),
               WeekNumb: setWeekNumb.weekNumbSetter(game.MatchTime),
               OddType: game.Odds[0].OddType,
@@ -56,7 +57,7 @@ module.exports = {
               OverLine: game.Odds[0].OverLine,
               UnderLine: game.Odds[0].UnderLine
             }, '*').then(function(result){
-              console.log(result.EventID + 'was added as a new line');
+              console.log(result[0].EventID + ' was added as a new line');
             })
           }
         })
