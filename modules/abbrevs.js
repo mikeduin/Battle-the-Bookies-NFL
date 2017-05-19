@@ -47,6 +47,7 @@ module.exports = {
       "Oakland Athletics": "OAK",
       "Seattle Mariners": "SEA",
       "Tampa Bay Rays": "TB",
+      "Texas Rangers": "TEX",
       "Toronto Blue Jays": "TOR",
       "Arizona Diamondbacks": "ARI",
       "Atlanta Braves": "ATL",
@@ -59,6 +60,7 @@ module.exports = {
       "New York Mets": "NYM",
       "Philadelphia Phillies": "PHI",
       "Pittsburgh Pirates": "PIT",
+      "San Diego Padres": "SD",
       "San Francisco Giants": "SF",
       "St. Louis Cardinals": "STL",
       "Washington Nationals": "WAS"

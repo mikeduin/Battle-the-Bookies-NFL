@@ -46,10 +46,11 @@ function sortNumber(a, b) {
 
 // This first function updates game results every 11 minutes.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
+// ! UPDATED FOR SQL + merged w/updateFinalScores !
 
-setInterval(function (){
-  updateGameResults.updateGameResults()
-}, 10000);
+// setInterval(function (){
+//   updateGameResults.updateGameResults()
+// }, 10000);
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no picks to update)
@@ -60,10 +61,11 @@ setInterval(function (){
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no lines to update)
+// ! UPDATED FOR SQL !
 //
-// setInterval(function (){
-//   createLines.createLines();
-// }, 420000);
+setInterval(function (){
+  createLines.createLines();
+}, 10000);
 
 // This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
@@ -74,6 +76,7 @@ setInterval(function (){
 
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
+// ! UPDATED FOR SQL !
 //
 // setInterval(function (){
 //   logLineMoves.logLineMoves();

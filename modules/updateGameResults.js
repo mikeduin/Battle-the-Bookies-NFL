@@ -6,6 +6,10 @@ function Results () {
   return knex('results');
 };
 
+function Lines () {
+  return knex('lines');
+}
+
 // This function updates game results.
 
 module.exports = {
@@ -29,6 +33,14 @@ module.exports = {
               OddType: results[i].OddType,
               Final: results[i].Final,
               FinalType: results[i].FinalType
+            }, '*').then(function(game){
+              Lines().where({EventID: game[0].EventID}).update({
+                HomeScore: game[0].HomeScore,
+                AwayScore: game[0].AwayScore,
+                GameStatus: "Final"
+              }, '*').then(function(line){
+                console.log('line has been updated with final score');
+              })
             })
           }
         }
