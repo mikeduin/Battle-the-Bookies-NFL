@@ -48,9 +48,9 @@ function sortNumber(a, b) {
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
 // ! UPDATED FOR SQL + merged w/updateFinalScores !
 
-// setInterval(function (){
-//   updateGameResults.updateGameResults()
-// }, 10000);
+setInterval(function (){
+  updateGameResults.updateGameResults()
+}, 660000);
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no picks to update)
@@ -78,9 +78,9 @@ setInterval(function (){
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
 // ! UPDATED FOR SQL !
 //
-// setInterval(function (){
-//   logLineMoves.logLineMoves();
-// }, 10000);
+setInterval(function (){
+  logLineMoves.logLineMoves();
+}, 3500000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
 

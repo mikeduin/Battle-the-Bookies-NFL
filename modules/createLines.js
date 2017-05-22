@@ -13,6 +13,14 @@ function Lines() {
   return knex('lines');
 };
 
+function Users() {
+  return knex('users');
+}
+
+function Picks() {
+  return knex('picks');
+}
+
 // This function checks every 7 minutes to see if new lines are available and, if so, adds them to the DB.
 
 module.exports = {
@@ -25,12 +33,12 @@ module.exports = {
     }).then(function(res){
       return res.json()
     }).then(function(odds){
-      console.log('odds are ', odds);
       odds.forEach(function(game){
-        Lines().where({EventID: game.Odds[0].EventID}).first().then(function(err, line){
+        Lines().where({EventID: game.Odds[0].EventID}).first().then(function(err, exist){
           if (err) {console.log(err)};
 
-          if (!line) {
+          if (!exist) {
+            console.log(game.ID + ' does not exist');
             Lines().insert({
               EventID: game.ID,
               HomeTeam: game.HomeTeam,
@@ -56,8 +64,27 @@ module.exports = {
               TotalNumber: game.Odds[0].TotalNumber,
               OverLine: game.Odds[0].OverLine,
               UnderLine: game.Odds[0].UnderLine
-            }, '*').then(function(result){
-              console.log(result[0].EventID + ' was added as a new line');
+            }, '*').then(function(line){
+              console.log(line[0].EventID + ' was added as a new line');
+              // This function below adds the user pick templates for each pick once it's been added as a line.
+              Users().pluck('username').then(function(users){
+                console.log('users are ', users);
+                for (var i=0; i<users.length; i++) {
+                  Picks().insert({
+                    username: users[i],
+                    EventID: line[0].EventID,
+                    MatchDay: line[0].MatchDay,
+                    MatchTime: line[0].MatchTime,
+                    Week: line[0].Week,
+                    DateNumb: line[0].DateNumb,
+                    WeekNumb: line[0].WeekNumb,
+                    matchup: line[0].AwayAbbrev + ' @ ' + line[0].HomeAbbrev,
+                    finalPayout: 0
+                  }, '*').then(function(pick){
+                    console.log('pick has been added for user ', pick[0].username, ' and event ', pick[0].EventID)
+                  })
+                }
+              })
             })
           }
         })
