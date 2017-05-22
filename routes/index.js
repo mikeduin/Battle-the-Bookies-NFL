@@ -46,7 +46,7 @@ function sortNumber(a, b) {
 
 // This first function updates game results every 11 minutes.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
-// ! UPDATED FOR SQL + merged w/updateFinalScores !
+// ! UPDATED FOR SQL + merged w/updateFinalScores and updatePickResults !
 
 setInterval(function (){
   updateGameResults.updateGameResults()
@@ -54,6 +54,7 @@ setInterval(function (){
 
 // The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no picks to update)
+// !! THIS CAN BE DELETED - updatePickResults was merged into updateGameResults
 
 // setInterval(function (){
 //   updatePickResults.updatePickResults();
@@ -65,10 +66,11 @@ setInterval(function (){
 //
 setInterval(function (){
   createLines.createLines();
-}, 10000);
+}, 420000);
 
 // This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
+// !! THIS CAN BE DELETED - updateFinalScores was merged into updateGameResults
 
 // setInterval(function (){
 //   updateFinalScores.updateFinalScores();
