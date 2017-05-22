@@ -34,11 +34,8 @@ module.exports = {
       return res.json()
     }).then(function(odds){
       odds.forEach(function(game){
-        Lines().where({EventID: game.Odds[0].EventID}).first().then(function(err, exist){
-          if (err) {console.log(err)};
-
+        Lines().where({EventID: game.Odds[0].EventID}).then(function(exist){
           if (!exist) {
-            console.log(game.ID + ' does not exist');
             Lines().insert({
               EventID: game.ID,
               HomeTeam: game.HomeTeam,
