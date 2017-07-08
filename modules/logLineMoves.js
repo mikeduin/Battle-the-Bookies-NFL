@@ -15,7 +15,7 @@ function LineMoves() {
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 
 module.exports = {
-  logLineMoves: function() {
+  logAllLineMoves: function() {
     var now = moment();
     Lines().where('MatchTime', '>', now).select('EventID', 'HomeAbbrev', 'AwayAbbrev', 'PointSpreadHome', 'PointSpreadAway', 'PointSpreadHomeLine', 'PointSpreadAwayLine', 'MoneyLineHome', 'MoneyLineAway', 'TotalNumber', 'OverLine', 'UnderLine').then(function(games){
       games.forEach(function(game){
@@ -86,6 +86,55 @@ module.exports = {
         });
       })
     })
+  },
+  logIndLineMove: function(game){
+    var homeSpread = game[0].PointSpreadHome;
+    var homeSpreadJuice = game[0].PointSpreadHomeLine;
+    var awaySpread = game[0].PointSpreadAway;
+    var awaySpreadJuice = game[0].PointSpreadAwayLine;
+    var homeML = game[0].MoneyLineHome;
+    var awayML = game[0].MoneyLineAway;
+    var total = game[0].TotalNumber;
+    var totalOverJuice = game[0].OverLine;
+    var totalUnderJuice = game[0].UnderLine;
+
+    if (game[0].PointSpreadHomeLine === 0) {
+      homeSpread = null;
+      homeSpreadJuice = null;
+      awaySpread = null;
+      awaySpreadJuice = null;
+    };
+
+    if (game[0].MoneyLineHome === 0) {
+      homeML = null;
+      awayML = null;
+    };
+
+    if (game[0].TotalNumber === 0){
+      total = null;
+      totalOverJuice = null;
+      totalUnderJuice = null;
+    };
+
+    var logged = new Date();
+
+    LineMoves().insert({
+      EventID: game[0].EventID,
+      HomeAbbrev: game[0].HomeAbbrev,
+      AwayAbbrev: game[0].AwayAbbrev,
+      HomeSpreads: [homeSpread],
+      HomeSpreadJuices: [homeSpreadJuice],
+      AwaySpreads: [awaySpread],
+      AwaySpreadJuices: [awaySpreadJuice],
+      HomeMLs: [homeML],
+      AwayMLs: [awayML],
+      Totals: [total],
+      TotalOverJuices: [totalOverJuice],
+      TotalUnderJuices: [totalUnderJuice],
+      TimeLogged: [logged]
+    }, '*').then(function(line){
+      console.log('linemove arrays initiated for ', line[0].EventID);
+    });
   }
 
   // logLineMoves: function(){

@@ -6,6 +6,7 @@ var helmets = require('../modules/helmets.js');
 var colors = require('../modules/colors.js');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
+var logLineMoves = require('../modules/logLineMoves.js');
 // var Line = mongoose.model('Line');
 var knex = require ('../db/knex');
 
@@ -21,6 +22,10 @@ function Picks() {
   return knex('picks');
 }
 
+function LineMoves() {
+  return knex ('line_moves');
+};
+
 // This function checks every 7 minutes to see if new lines are available and, if so, adds them to the DB.
 
 module.exports = {
@@ -35,7 +40,7 @@ module.exports = {
     }).then(function(odds){
       odds.forEach(function(game){
         Lines().where({EventID: game.Odds[0].EventID}).then(function(exist){
-          if (!exist) {
+          if (exist.length === 0) {
             Lines().insert({
               EventID: game.ID,
               HomeTeam: game.HomeTeam,
@@ -65,7 +70,6 @@ module.exports = {
               console.log(line[0].EventID + ' was added as a new line');
               // This function below adds the user pick templates for each pick once it's been added as a line.
               Users().pluck('username').then(function(users){
-                console.log('users are ', users);
                 for (var i=0; i<users.length; i++) {
                   Picks().insert({
                     username: users[i],
@@ -78,11 +82,16 @@ module.exports = {
                     matchup: line[0].AwayAbbrev + ' @ ' + line[0].HomeAbbrev,
                     finalPayout: 0
                   }, '*').then(function(pick){
-                    console.log('pick has been added for user ', pick[0].username, ' and event ', pick[0].EventID)
+                    console.log('pick has been added for user ', pick[0].username, ' and event ', pick[0].EventID);
+                    Lines().where({EventID: pick[0].EventID}).then(function(res){
+                      logLineMoves.logIndLineMove(res);
+                    })
                   })
                 }
               })
             })
+          } else {
+            console.log('line already exists');
           }
         })
       })

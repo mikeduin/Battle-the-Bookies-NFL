@@ -24,7 +24,7 @@ var updateGameResults = require('../modules/updateGameResults.js');
 var updatePickResults = require('../modules/updatePickResults.js');
 var createLines = require('../modules/createLines.js');
 var updateFinalScores = require('../modules/updateFinalScores.js');
-var logLineMoves = require('../modules/logLineMoves.js');
+var logAllLineMoves = require('../modules/logLineMoves.js');
 var checkStartTimes = require('../modules/checkStartTimes.js');
 var addPickTemplates = require('../modules/addPickTemplates.js');
 var setLineRanges = require('../modules/setLineRanges.js');
@@ -66,7 +66,7 @@ setInterval(function (){
 //
 setInterval(function (){
   createLines.createLines();
-}, 420000);
+}, 10000);
 
 // This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
@@ -81,7 +81,7 @@ setInterval(function (){
 // ! UPDATED FOR SQL !
 //
 setInterval(function (){
-  logLineMoves.logLineMoves();
+  logLineMoves.logAllLineMoves();
 }, 3500000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
