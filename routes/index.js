@@ -24,12 +24,13 @@ var updateGameResults = require('../modules/updateGameResults.js');
 var updatePickResults = require('../modules/updatePickResults.js');
 var createLines = require('../modules/createLines.js');
 var updateFinalScores = require('../modules/updateFinalScores.js');
-var logAllLineMoves = require('../modules/logLineMoves.js');
+var logLineMoves = require('../modules/logLineMoves.js');
 var checkStartTimes = require('../modules/checkStartTimes.js');
 var addPickTemplates = require('../modules/addPickTemplates.js');
 var setLineRanges = require('../modules/setLineRanges.js');
 var setCapperGrades = require('../modules/setCapperGrades.js');
 var buildPickArrays = require('../modules/buildPickArrays.js');
+var getWeeks = require('../modules/getWeeks.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -42,6 +43,10 @@ Array.min = function(array){
 
 function sortNumber(a, b) {
   return a - b
+};
+
+function Lines() {
+  return knex ('lines');
 };
 
 // This first function updates game results every 11 minutes.
@@ -66,7 +71,7 @@ setInterval(function (){
 //
 setInterval(function (){
   createLines.createLines();
-}, 10000);
+}, 420000);
 
 // This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
@@ -181,30 +186,8 @@ router.get('/lines', function(req, res, next){
 })
 
 router.get('/weeks', function(req, res, next){
-  Line.find().distinct('Week', function(err, weeks){
-    if (err) {console.log (err)}
-
-    var weekNumbers = [];
-    var newWeeks = [];
-    for (i=0; i<weeks.length; i++) {
-      var weekNumber = parseInt(weeks[i].substring(5));
-      weekNumbers.push(weekNumber);
-    };
-    weekNumbers.sort(sortNumber);
-    console.log('weekNumbers are ', weekNumbers);
-    for (i=0; i<weekNumbers.length; i++) {
-      var newWeek = "Week " + weekNumbers[i];
-      if (newWeek !== 'Week NaN') {
-        newWeeks.push(newWeek)
-      };
-    }
-
-    console.log('new weeks are ', newWeeks);
-
-    // temp replacement
-    newWeeks = ["Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7", "Week 8", "Week 9", "Week 10", "Week 11", "Week 12", "Week 13", "Week 14", "Week 15", "Week 16", "Week 17"];
-
-    res.json(newWeeks)
+  getWeeks.getWeeks().then(function(weeks){
+    res.json(weeks);
   })
 })
 
