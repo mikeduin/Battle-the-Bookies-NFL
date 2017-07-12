@@ -18,14 +18,12 @@ module.exports = {
         weekNumbers.push(weekNumber);
       };
       weekNumbers.sort(sortNumber);
-      console.log('weekNumbers are ', weekNumbers);
       for (i=0; i<weekNumbers.length; i++) {
         var newWeek = "Week " + weekNumbers[i];
         if (newWeek !== 'Week NaN') {
           newWeeks.push(newWeek)
         };
-      }
-      console.log('new weeks are ', newWeeks);
+      };
       return newWeeks;
     })
   }

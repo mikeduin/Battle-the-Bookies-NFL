@@ -6,6 +6,7 @@ var fetch = require('node-fetch');
 var moment = require('moment');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var knex = require('../db/knex');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -29,7 +30,7 @@ var checkStartTimes = require('../modules/checkStartTimes.js');
 var addPickTemplates = require('../modules/addPickTemplates.js');
 var setLineRanges = require('../modules/setLineRanges.js');
 var setCapperGrades = require('../modules/setCapperGrades.js');
-var buildPickArrays = require('../modules/buildPickArrays.js');
+var pickArrays = require('../modules/pickArrays.js');
 var getWeeks = require('../modules/getWeeks.js');
 var fetchLines = require('../modules/fetchLines.js');
 
@@ -156,15 +157,6 @@ router.get('/updateOdds', function(req, res, next) {
   )
 });
 
-// below REBUILT FOR SQL -- NOT TESTED YET!
-router.get('/linemove/:gameID', function(req, res, next){
-  LineMoves().where({EventID: req.params.gameID}).then(function(err, result){
-    if (err) {console.log(err)}
-
-    res.json(result);
-  })
-})
-
 // below REBUILT FOR SQL
 router.get('/weeks', function(req, res, next){
   getWeeks.getWeeks().then(function(weeks){
@@ -198,6 +190,13 @@ router.get('/matchups', function(req, res, next){
   fetchLines.matchups().then(function(matchups){
     res.json(matchups);
   })
+})
+
+// below REBUILT FOR SQL -- NOT TESTED YET!
+router.get('/linemove/:gameID', function(req, res, next){
+  linesMoves.byID(req.params.gameID).then(function(game){
+    res.json(game)
+  });
 })
 
 router.get('/results', function(req, res, next){
@@ -291,28 +290,31 @@ setInterval(function(){
 
 setInterval(function (){
   var now = moment();
-  Line.find({
-    MatchTime: {
-      $lt: now
-    },
-    ArraysBuilt: {
-      $in: [false, null]
-    },
-    CapperGraded: true
-  }, function(err, games){
-    if(err) {console.log(err)}
-
-  }).then(function(games){
-    if (!games[0]) {
-      console.log('no pick arrays needing to be built')
-      return
-    };
-
-    games.forEach(function(game){
-      buildPickArrays.buildPickArrays(game);
-    })
+  pickArrays.buildArrays().then(function(arrays){
+    console.log(arrays)
   })
-}, 900000)
+  // Line.find({
+  //   MatchTime: {
+  //     $lt: now
+  //   },
+  //   ArraysBuilt: {
+  //     $in: [false, null]
+  //   },
+  //   CapperGraded: true
+  // }, function(err, games){
+  //   if(err) {console.log(err)}
+  //
+  // }).then(function(games){
+  //   if (!games[0]) {
+  //     console.log('no pick arrays needing to be built')
+  //     return
+  //   };
+  //
+  //   games.forEach(function(game){
+  //     pickArrays.buildArrays(game);
+  //   })
+  // })
+}, 5000)
 
 router.param('EventID', function(req, res, next, EventID) {
   var query = Result.find({ EventID: EventID });

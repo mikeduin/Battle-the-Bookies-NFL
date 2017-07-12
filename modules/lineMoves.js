@@ -87,6 +87,7 @@ module.exports = {
       })
     })
   },
+
   logIndLineMove: function(game){
     var homeSpread = game[0].PointSpreadHome;
     var homeSpreadJuice = game[0].PointSpreadHomeLine;
@@ -135,6 +136,10 @@ module.exports = {
     }, '*').then(function(line){
       console.log('linemove arrays initiated for ', line[0].EventID);
     });
+  },
+
+  byId: function(id) {
+    return LineMoves().where({EventID: id});
   }
 
   // logLineMoves: function(){
