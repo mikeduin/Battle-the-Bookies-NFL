@@ -24,13 +24,14 @@ var updateGameResults = require('../modules/updateGameResults.js');
 var updatePickResults = require('../modules/updatePickResults.js');
 var createLines = require('../modules/createLines.js');
 var updateFinalScores = require('../modules/updateFinalScores.js');
-var logLineMoves = require('../modules/logLineMoves.js');
+var lineMoves = require('../modules/lineMoves.js');
 var checkStartTimes = require('../modules/checkStartTimes.js');
 var addPickTemplates = require('../modules/addPickTemplates.js');
 var setLineRanges = require('../modules/setLineRanges.js');
 var setCapperGrades = require('../modules/setCapperGrades.js');
 var buildPickArrays = require('../modules/buildPickArrays.js');
 var getWeeks = require('../modules/getWeeks.js');
+var fetchLines = require('../modules/fetchLines.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -46,7 +47,11 @@ function sortNumber(a, b) {
 };
 
 function Lines() {
-  return knex ('lines');
+  return knex('lines');
+};
+
+function LineMoves() {
+  return knex ('line_moves');
 };
 
 // This first function updates game results every 11 minutes.
@@ -86,7 +91,7 @@ setInterval(function (){
 // ! UPDATED FOR SQL !
 //
 setInterval(function (){
-  logLineMoves.logAllLineMoves();
+  lineMoves.logAllLineMoves();
 }, 3500000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
@@ -151,78 +156,46 @@ router.get('/updateOdds', function(req, res, next) {
   )
 });
 
-router.get('/line/:gameID', function(req, res, next){
-  Line.find({EventID: req.params.gameID}, function(err, result){
-    if (err) {console.log(err)}
-
-    res.json(result)
-  })
-});
-
+// below REBUILT FOR SQL -- NOT TESTED YET!
 router.get('/linemove/:gameID', function(req, res, next){
-  LineMove.find({EventID: req.params.gameID}, function(err, result){
+  LineMoves().where({EventID: req.params.gameID}).then(function(err, result){
     if (err) {console.log(err)}
 
-    res.json(result)
-  })
-});
-
-router.get('/lines', function(req, res, next){
-  // hide triple-week setting in offseason
-  // var week = setWeek.weekSetter(moment());
-  // var week2 = setWeek.weekSetter(moment().add(1, 'w'));
-  // var week3 = setWeek.weekSetter(moment().subtract(1, 'w'));
-
-  Line.find({
-    Week: {
-      $nin: ["Preseason", "Postseason"],
-      // $in: [week, week2, week3]
-    }
-  }, function(err, games) {
-    if (err) { next(err) };
-
-    res.json(games);
+    res.json(result);
   })
 })
 
+// below REBUILT FOR SQL
 router.get('/weeks', function(req, res, next){
   getWeeks.getWeeks().then(function(weeks){
     res.json(weeks);
   })
 })
 
-router.get('/lines/:week', function(req, res, next){
-  var week;
-  if (req.params.week.length === 1) {
-    week = "0"+req.params.week
-  } else {
-    week = req.params.week
-  };
-
-  Line.find({
-    WeekNumb: week
-  }, function(err, games) {
-    if (err) { next(err) };
-
-    res.json(games);
+// below REBUILT FOR SQL
+router.get('/lines', function(req, res, next){
+  fetchLines.allLines().then(function(lines){
+    res.json(lines);
   })
 })
 
+// below REBUILT FOR SQL
+router.get('/lines/:week', function(req, res, next){
+  fetchLines.wkLines(req.params.week).then(function(lines){
+    res.json(lines);
+  })
+})
+
+// below REBUILT FOR SQL -- NOT TESTED YET!
+router.get('/line/:gameID', function(req, res, next){
+  fetchLines.byID(req.params.gameID).then(function(lines){
+    res.json(lines);
+  })
+})
+
+// below REBUILT FOR SQL -- NOT TESTED YET!
 router.get('/matchups', function(req, res, next){
-  Line.find(function(err, games){
-    if (err) {console.log(err)}
-
-    var matchups = {};
-    for (var i=0; i<games.length; i++){
-      var id = games[i].EventID;
-      var obj = {}
-
-      matchups[id] = {
-        "HomeAbbrev": games[i].HomeAbbrev,
-        "AwayAbbrev": games[i].AwayAbbrev
-      }
-    }
-
+  fetchLines.matchups().then(function(matchups){
     res.json(matchups);
   })
 })

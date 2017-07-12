@@ -6,7 +6,7 @@ var helmets = require('../modules/helmets.js');
 var colors = require('../modules/colors.js');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
-var logLineMoves = require('../modules/logLineMoves.js');
+var logLineMoves = require('../modules/lineMoves.js');
 // var Line = mongoose.model('Line');
 var knex = require ('../db/knex');
 
@@ -23,7 +23,7 @@ function Picks() {
 }
 
 function LineMoves() {
-  return knex ('line_moves');
+  return knex('line_moves');
 };
 
 // This function checks every 7 minutes to see if new lines are available and, if so, adds them to the DB.
