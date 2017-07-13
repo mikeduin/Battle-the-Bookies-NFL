@@ -157,27 +157,27 @@ router.put('/', auth, function(req, res, next){
     if (pick[0].pickType === "Away Moneyline") {
       Lines()
       .where({EventID: pick[0].EventID})
-      .increment({'MLAwayPicks', 1})
+      .increment('MLAwayPicks', 1)
     } else if (pick[0].pickType === "Home Moneyline") {
       Lines()
       .where({EventID: pick[0].EventID})
-      .increment({'MLHomePicks', 1})
+      .increment('MLHomePicks', 1)
     } else if (pick[0].pickType === "Home Spread") {
       Lines()
       .where({EventID: pick[0].EventID})
-      .increment({'SpreadHomePicks', 1})
+      .increment('SpreadHomePicks', 1)
     } else if (pick[0].pickType === "Away Spread") {
       Lines()
       .where({EventID: pick[0].EventID})
-      .increment({'SpreadAwayPicks', 1})
+      .increment('SpreadAwayPicks', 1)
     } else if (pick[0].pickType === "Total Over") {
       Lines()
       .where({EventID: pick[0].EventID})
-      .increment({'OverPicks', 1})
+      .increment('OverPicks', 1)
     } else if (pick[0].pickType === "Total Under") {
       Lines()
       .where({EventID: pick[0].EventID})
-      .increment({'UnderPicks', 1})
+      .increment('UnderPicks', 1)
     } else {
       console.log("no pick type was found")
     };

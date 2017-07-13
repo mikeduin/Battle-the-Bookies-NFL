@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var jwt = require('express-jwt');
-var auth = jwt({secret: process.env.SESSION_SECRET, userProperty: 'payload'})
+var auth = jwt({secret: process.env.SESSION_SECRET, userProperty: 'payload'});
 var fetch = require('node-fetch');
 var moment = require('moment');
 var mongoose = require('mongoose');
@@ -120,41 +120,59 @@ router.get('/updateOdds', function(req, res, next) {
     return res.json()
   }).then(function(odds){
 
-    var bulk = Line.collection.initializeOrderedBulkOp();
-    var counter = 0;
-
-    for (i = 0; i < odds.length; i++) {
-
-      bulk.find({EventID: odds[i].ID}).updateOne({
-        $set : {
-          MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
-          MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
-          PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
-          PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
-          PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
-          PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
-          TotalNumber: odds[i].Odds[0].TotalNumber,
-          OverLine: odds[i].Odds[0].OverLine,
-          UnderLine: odds[i].Odds[0].UnderLine
-        }
-      });
-      counter++;
-
-      if (counter % 1000 == 0) {
-        bulk.execute(function(err, result){
-          bulk = Line.collection.initializeOrderedBulkOp();
-        });
-      }
+    for (i=0; i<odds.length; i++) {
+      Lines().where({EventID: odds[i].ID}).update({
+        MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
+        MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
+        PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
+        PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
+        PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
+        PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
+        TotalNumber: odds[i].Odds[0].TotalNumber,
+        OverLine: odds[i].Odds[0].OverLine,
+        UnderLine: odds[i].Odds[0].UnderLine
+      })
     };
 
-    if (counter % 1000 != 0)
-        bulk.execute(function(err,result) {
-           console.log('odds bulk update completed at ' + new Date());
-        });
+    return Lines();
 
-    res.json(odds);
+    // var bulk = Line.collection.initializeOrderedBulkOp();
+    // var counter = 0;
+    //
+    // for (i = 0; i < odds.length; i++) {
+    //
+    //   bulk.find({EventID: odds[i].ID}).updateOne({
+    //     $set : {
+    //       MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
+    //       MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
+    //       PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
+    //       PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
+    //       PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
+    //       PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
+    //       TotalNumber: odds[i].Odds[0].TotalNumber,
+    //       OverLine: odds[i].Odds[0].OverLine,
+    //       UnderLine: odds[i].Odds[0].UnderLine
+    //     }
+    //   });
+    //   counter++;
+    //
+    //   if (counter % 1000 == 0) {
+    //     bulk.execute(function(err, result){
+    //       bulk = Line.collection.initializeOrderedBulkOp();
+    //     });
+    //   }
+    // };
+    //
+    // if (counter % 1000 != 0)
+    //     bulk.execute(function(err,result) {
+    //        console.log('odds bulk update completed at ' + new Date());
+    //     });
+
+    // res.json(odds);
     }
-  )
+  ).then(function(updOdds){
+    res.json(updOdds)
+  })
 });
 
 // below REBUILT FOR SQL
@@ -219,7 +237,7 @@ setInterval(function (){
       setLineRanges.setLineRanges(game);
     })
   })
-}, 10000);
+}, 180000);
 
 // THIS MODULE BELOW CAN BE REMOVED PENDING SUCCESSFUL TEST OF ABOVE ... THAT WAS REBUILT TO INCLUDE capperGrades
 
