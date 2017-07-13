@@ -32,6 +32,7 @@ db.once('open', function() {
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var lines = require('./routes/lines');
+var picks = require('./routes/picks');
 
 var app = express();
 
@@ -47,6 +48,7 @@ app.use(passport.initialize());
 app.use('/', routes);
 app.use('/lines', lines);
 app.use('/users', users);
+app.use('/picks', picks);
 
 app.all('/*', function(req, res, next){
   res.sendFile('public/index.html', { root: __dirname });

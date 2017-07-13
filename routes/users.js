@@ -29,8 +29,16 @@ function generateJWT (user) {
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  Users().then(function(users){
+    res.json(users);
+  })
 });
+
+router.get('/:username', function (req, res, next){
+  Users().where({username: req.params.username}).then(function(user){
+    res.json(user);
+  })
+})
 
 router.post('/register', function(req, res, next){
   if(!req.body.username || !req.body.password || !req.body.nameFirst || !req.body.nameLast || !req.body.email || !req.body.buyin
