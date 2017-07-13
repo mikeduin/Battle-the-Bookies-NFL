@@ -7,6 +7,7 @@ var moment = require('moment');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var knex = require('../db/knex');
+var request = require('request-promise');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -111,7 +112,7 @@ setInterval(function (){
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
 router.get('/updateOdds', function(req, res, next) {
-  fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
+  fetch('https://jsonodds.com/api/odds/mlb?oddType=Game', {
     method: 'GET',
     headers: {
       'JsonOdds-API-Key': process.env.API_KEY
@@ -131,9 +132,12 @@ router.get('/updateOdds', function(req, res, next) {
         TotalNumber: odds[i].Odds[0].TotalNumber,
         OverLine: odds[i].Odds[0].OverLine,
         UnderLine: odds[i].Odds[0].UnderLine
+      }, '*').then(function(line){
+        console.log('line ', line[0].EventID, ' has been updated');
       })
     };
 
+    // NEED TO FIX: This is not waiting until the above operation is complete to return the lines.
     return Lines();
 
     // var bulk = Line.collection.initializeOrderedBulkOp();
@@ -171,6 +175,7 @@ router.get('/updateOdds', function(req, res, next) {
     // res.json(odds);
     }
   ).then(function(updOdds){
+    // console.log('updOdds are ', updOdds)
     res.json(updOdds)
   })
 });

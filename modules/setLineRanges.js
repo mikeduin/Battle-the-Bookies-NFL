@@ -26,6 +26,10 @@ module.exports = {
   setLineRanges: function(game) {
     LineMoves().where({EventID: game.EventID}).then(function(gameArrays){
 
+      if (gameArrays.length < 1) {
+        return
+      };
+
       var homeSpreads = gameArrays[0].HomeSpreads;
       var homeSpreadJuices = gameArrays[0].HomeSpreadJuices;
       var awaySpreads = gameArrays[0].AwaySpreads;

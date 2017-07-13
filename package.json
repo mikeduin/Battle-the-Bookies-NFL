@@ -30,6 +30,7 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pg": "^6.1.5",
+    "request-promise": "^4.2.1",
     "serve-favicon": "~2.3.0",
     "zingchart-angularjs": "^1.0.6"
   }

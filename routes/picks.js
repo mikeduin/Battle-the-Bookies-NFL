@@ -10,6 +10,10 @@ function Picks () {
   return knex('picks')
 }
 
+function Lines () {
+  return knex('lines')
+}
+
 router.get('/', function (req, res, next){
   Picks().then(function(picks){
     res.json(picks);
@@ -154,30 +158,50 @@ router.put('/', auth, function(req, res, next){
     geoType: req.body.geoType,
     submittedAt: new Date()
   }, '*').then(function(pick){
+    console.log('pick is ', pick);
     if (pick[0].pickType === "Away Moneyline") {
       Lines()
       .where({EventID: pick[0].EventID})
       .increment('MLAwayPicks', 1)
+      .then(function(){
+        console.log('MLAway picks have been incremented')
+      });
     } else if (pick[0].pickType === "Home Moneyline") {
       Lines()
       .where({EventID: pick[0].EventID})
       .increment('MLHomePicks', 1)
+      .then(function(){
+        console.log('MLHome picks have been incremented')
+      });
     } else if (pick[0].pickType === "Home Spread") {
       Lines()
       .where({EventID: pick[0].EventID})
       .increment('SpreadHomePicks', 1)
+      .then(function(){
+        console.log('SpreadHome picks have been incremented')
+      });
     } else if (pick[0].pickType === "Away Spread") {
       Lines()
       .where({EventID: pick[0].EventID})
       .increment('SpreadAwayPicks', 1)
-    } else if (pick[0].pickType === "Total Over") {
+      .then(function(){
+        console.log('SpreadAway have been incremented')
+      });
+    } else if (pick[0].pickType === 'Total Over') {
+      console.log('pick type is total over');
       Lines()
       .where({EventID: pick[0].EventID})
       .increment('OverPicks', 1)
+      .then(function(){
+        console.log('Over picks have been incremented')
+      });
     } else if (pick[0].pickType === "Total Under") {
       Lines()
       .where({EventID: pick[0].EventID})
       .increment('UnderPicks', 1)
+      .then(function(){
+        console.log('Under picks have been incremented')
+      });
     } else {
       console.log("no pick type was found")
     };
