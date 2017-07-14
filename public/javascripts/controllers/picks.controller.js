@@ -49,7 +49,7 @@ function PickController (oddsService, picksService, resultsService, authService,
   vm.checkDisplay = function(game){
     var week = parseInt(vm.gameWeekFilter.substring(4));
 
-    if (moment(game.MatchTime).isBefore(now) && week > 5) {
+    if (moment(game.MatchTime).isBefore(now)) {
       return true
     } else {
       return false
@@ -148,10 +148,9 @@ function PickController (oddsService, picksService, resultsService, authService,
   };
 
   function timeCheck (game) {
-    // DISABLE DURING OFFSEASON TO DEMONSTRATE SELECTION FUNCTIONALITY
-    // if(moment(game.MatchTime).isBefore(moment())) {
-    //   game.locked = true;
-    // }
+    if(moment(game.MatchTime).isBefore(moment())) {
+      game.locked = true;
+    }
   }
 
   function awaySpread (game) {

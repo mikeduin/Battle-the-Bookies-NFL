@@ -56,6 +56,10 @@ function LineMoves() {
   return knex ('line_moves');
 };
 
+function Picks() {
+  return knex('picks');
+}
+
 // This first function updates game results every 11 minutes.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
 // ! UPDATED FOR SQL + merged w/updateFinalScores and updatePickResults !
@@ -122,29 +126,30 @@ router.get('/updateOdds', function(req, res, next) {
   }).then(function(odds){
       for (i=0; i<odds.length; i++) {
 
-        // Lines().where({EventID: odds[i].ID}).then(function(line){
-        //   console.log('line is ', line);
-        // })
-
-        Lines().where({EventID: odds[i].ID}).update({
-          MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
-          MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
-          PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
-          PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
-          PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
-          PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
-          TotalNumber: odds[i].Odds[0].TotalNumber,
-          OverLine: odds[i].Odds[0].OverLine,
-          UnderLine: odds[i].Odds[0].UnderLine
-        }, '*').then(function(line){
-          console.log('line ', line[0].EventID, ' has been updated');
-        })
+        if (Lines().where({EventID: odds[i].ID}).then(function(line){
+          if (line.length > 0) {true}
+        })) {
+          Lines().where({EventID: odds[i].ID}).update({
+            MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
+            MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
+            PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
+            PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
+            PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
+            PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
+            TotalNumber: odds[i].Odds[0].TotalNumber,
+            OverLine: odds[i].Odds[0].OverLine,
+            UnderLine: odds[i].Odds[0].UnderLine
+          }, '*').then(function(line){
+            console.log('line ', line[0].EventID, ' has been updated');
+          })
+        } else {
+          console.log('line not found')
+        }
       };
     }
   ).then(function(){
     return Lines();
   }).then(function(updOdds){
-    console.log('updOdds are ', updOdds)
     res.json(updOdds)
   })
 });
@@ -265,27 +270,24 @@ setInterval(function (){
   })
 }, 900000)
 
-router.param('EventID', function(req, res, next, EventID) {
-  var query = Result.find({ EventID: EventID });
+// CAN LIKELY DELETE THIS BELOW ... SHOULDN'T NEED ANYMORE?
+// router.param('EventID', function(req, res, next, EventID) {
+//   var query = Result.find({ EventID: EventID });
+//
+//   query.exec(function (err, result) {
+//     if (err) { next(err) }
+//     if (!result) {return next(new Error("can't find game")); }
+//
+//     req.result = result;
+//     return next();
+//   })
+// })
 
-  query.exec(function (err, result) {
-    if (err) { next(err) }
-    if (!result) {return next(new Error("can't find game")); }
-
-    req.result = result;
-    return next();
-  })
-})
-
-// END RESULTS ROUTES
-// BEGIN PICK ROUTES
-
+// REBUILT FOR SQL, NOT TESTED YET
 router.get('/weeklyStats/:username', function(req, res, next){
   var username = req.params.username;
   var weekArray = [];
-  Pick.find().distinct('Week', function(err, weeks){
-    if (err) {console.log(err)}
-
+  Picks().pluck('Week').distinct().then(function(weeks){
     weekArray = weeks;
     weeks = weekArray.sort();
     return weeks
@@ -304,7 +306,7 @@ router.get('/weeklyStats/:username', function(req, res, next){
     };
 
     Promise.all(newWeeks.map(function(week){
-      return Pick.find({username: username, Week: week}).then(function(results){
+      return Picks().where({username: username, Week: week}).then(function(results){
 
         var totCapperGrade = 0;
         var cappedGames = 0;

@@ -157,7 +157,6 @@ router.put('/', auth, function(req, res, next){
     geoType: req.body.geoType,
     submittedAt: new Date()
   }, '*').then(function(pick){
-    console.log('pick is ', pick);
     if (pick[0].pickType === "Away Moneyline") {
       Lines()
       .where({EventID: pick[0].EventID})
