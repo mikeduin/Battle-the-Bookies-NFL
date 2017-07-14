@@ -7,7 +7,6 @@ var moment = require('moment');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var knex = require('../db/knex');
-var request = require('request-promise');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

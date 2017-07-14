@@ -12,9 +12,7 @@ function NavController (authService, oddsService, $state) {
   vm.getDates = function () {
     oddsService.getDates().then(function(dates){
       var currentWeek = vm.weekSetter(moment().subtract(2, 'd').format());
-      // vm.currentWeekNumb = parseInt(currentWeek.substring(5));
-      // set weeknumb to 17 in offseason below
-      vm.currentWeekNumb = 17;
+      vm.currentWeekNumb = parseInt(currentWeek.substring(5));
       vm.weeksOfGames = dates.reverse();
     })
   };
@@ -41,42 +39,42 @@ function NavController (authService, oddsService, $state) {
   }
 
   vm.weekSetter = function(MatchTime) {
-    if (moment(MatchTime).isBetween('2016-06-23', '2016-09-06')) {
+    if (moment(MatchTime).isBetween('2017-06-23', '2017-07-11')) {
       return "Preseason"
-    } else if (moment(MatchTime).isBetween('2016-09-06', '2016-09-13')) {
-      return "Week 1"
-    } else if (moment(MatchTime).isBetween('2016-09-13', '2016-09-20')) {
-      return "Week 2"
-    } else if (moment(MatchTime).isBetween('2016-09-20', '2016-09-27')) {
+    } else if (moment(MatchTime).isBetween('2017-07-11', '2017-07-19')) {
       return "Week 3"
-    } else if (moment(MatchTime).isBetween('2016-09-27', '2016-10-04')) {
+    } else if (moment(MatchTime).isBetween('2017-07-19', '2017-07-26')) {
       return "Week 4"
-    } else if (moment(MatchTime).isBetween('2016-10-04', '2016-10-11')) {
+    } else if (moment(MatchTime).isBetween('2017-07-26', '2017-08-02')) {
       return "Week 5"
-    } else if (moment(MatchTime).isBetween('2016-10-11', '2016-10-18')) {
+    } else if (moment(MatchTime).isBetween('2017-08-02', '2017-08-09')) {
       return "Week 6"
-    } else if (moment(MatchTime).isBetween('2016-10-18', '2016-10-25')) {
+    } else if (moment(MatchTime).isBetween('2017-08-09', '2017-08-16')) {
       return "Week 7"
-    } else if (moment(MatchTime).isBetween('2016-10-25', '2016-11-01')) {
+    } else if (moment(MatchTime).isBetween('2017-08-16', '2017-08-23')) {
       return "Week 8"
-    } else if (moment(MatchTime).isBetween('2016-11-01', '2016-11-08')) {
+    } else if (moment(MatchTime).isBetween('2017-08-23', '2017-08-30')) {
       return "Week 9"
-    } else if (moment(MatchTime).isBetween('2016-11-08', '2016-11-15')) {
+    } else if (moment(MatchTime).isBetween('2017-10-26', '2017-11-02')) {
       return "Week 10"
-    } else if (moment(MatchTime).isBetween('2016-11-15', '2016-11-22')) {
+    } else if (moment(MatchTime).isBetween('2017-11-02', '2017-11-09')) {
       return "Week 11"
-    } else if (moment(MatchTime).isBetween('2016-11-22', '2016-11-29')) {
+    } else if (moment(MatchTime).isBetween('2017-11-09', '2017-11-16')) {
       return "Week 12"
-    } else if (moment(MatchTime).isBetween('2016-11-29', '2016-12-06')) {
+    } else if (moment(MatchTime).isBetween('2017-11-16', '2017-11-23')) {
       return "Week 13"
-    } else if (moment(MatchTime).isBetween('2016-12-06', '2016-12-13')) {
+    } else if (moment(MatchTime).isBetween('2017-11-23', '2017-11-30')) {
       return "Week 14"
-    } else if (moment(MatchTime).isBetween('2016-12-13', '2016-12-20')) {
+    } else if (moment(MatchTime).isBetween('2017-11-30', '2017-12-07')) {
       return "Week 15"
-    } else if (moment(MatchTime).isBetween('2016-12-20', '2016-12-27')) {
+    } else if (moment(MatchTime).isBetween('2017-12-07', '2017-12-14')) {
       return "Week 16"
-    } else if (moment(MatchTime).isBetween('2016-12-27', '2017-01-03')) {
+    } else if (moment(MatchTime).isBetween('2017-12-14', '2017-12-21')) {
       return "Week 17"
+    } else if (moment(MatchTime).isBetween('2017-12-21', '2017-12-28')) {
+      return "Week 18"
+    } else if (moment(MatchTime).isBetween('2017-12-28', '2017-01-04')) {
+      return "Week 19"
     } else {
       return "Postseason"
     }
