@@ -127,7 +127,6 @@ router.post('/addTemp', auth, function (req, res, next){
 })
 
 // The following function both updates the user pick template with the user's actual pick and then updates the line's counters that track pick types.
-// NEEDS TO BE TESTED
 
 router.put('/', auth, function(req, res, next){
   var activeSpread;
@@ -208,90 +207,6 @@ router.put('/', auth, function(req, res, next){
 
     res.json(pick[0]);
   })
-
-  // Pick.findOneAndUpdate({
-  //   EventID: req.body.activeGame,
-  //   username: req.payload.username,
-  // }, {
-  //   activePick: req.body.activePick,
-  //   activeSpread: activeSpread,
-  //   activeTotal: activeTotal,
-  //   activeLine: req.body.activeLine,
-  //   activePayout: req.body.activePayout,
-  //   pickType: req.body.pickType,
-  //   favType: req.body.favType,
-  //   betType: req.body.betType,
-  //   geoType: req.body.geoType,
-  //   submittedAt: new Date()
-  // }, {new: true}, function(err, pick) {
-  //   if (err) {console.log(err)}
-  //
-  //   if (pick.pickType === "Away Moneyline") {
-  //     Line.findOneAndUpdate({EventID: pick.EventID}, {
-  //       $inc: {
-  //         MLAwayPicks: 1
-  //       }
-  //     }, {new: true},
-  //     function(err, line){
-  //       if (err) {console.log(err)}
-  //
-  //     })
-  //   } else if (pick.pickType === "Home Moneyline") {
-  //     Line.findOneAndUpdate({EventID: pick.EventID}, {
-  //       $inc: {
-  //         MLHomePicks: 1
-  //       }
-  //     }, {new: true},
-  //     function(err, line){
-  //       if (err) {console.log(err)}
-  //
-  //     })
-  //   } else if (pick.pickType === "Home Spread") {
-  //     Line.findOneAndUpdate({EventID: pick.EventID}, {
-  //       $inc: {
-  //         SpreadHomePicks: 1
-  //       }
-  //     }, {new: true},
-  //     function(err, line){
-  //       if (err) {console.log(err)}
-  //
-  //     })
-  //   } else if (pick.pickType === "Away Spread") {
-  //     Line.findOneAndUpdate({EventID: pick.EventID}, {
-  //       $inc: {
-  //         SpreadAwayPicks: 1
-  //       }
-  //     }, {new: true},
-  //     function(err, line){
-  //       if (err) {console.log(err)}
-  //
-  //     })
-  //   } else if (pick.pickType === "Total Over") {
-  //     Line.findOneAndUpdate({EventID: pick.EventID}, {
-  //       $inc: {
-  //         OverPicks: 1
-  //       }
-  //     }, {new: true},
-  //     function(err, line){
-  //       if (err) {console.log(err)}
-  //
-  //     })
-  //   } else if (pick.pickType === "Total Under") {
-  //     Line.findOneAndUpdate({EventID: pick.EventID}, {
-  //       $inc: {
-  //         UnderPicks: 1
-  //       }
-  //     }, {new: true},
-  //     function(err, line){
-  //       if (err) {console.log(err)}
-  //
-  //     })
-  //   } else {
-  //     console.log("no pick type was found")
-  //   }
-  //
-  //   res.json(pick);
-  // })
 })
 
 module.exports = router;

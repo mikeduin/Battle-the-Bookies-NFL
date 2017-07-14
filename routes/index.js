@@ -120,62 +120,31 @@ router.get('/updateOdds', function(req, res, next) {
   }).then(function(res){
     return res.json()
   }).then(function(odds){
+      for (i=0; i<odds.length; i++) {
 
-    for (i=0; i<odds.length; i++) {
-      Lines().where({EventID: odds[i].ID}).update({
-        MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
-        MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
-        PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
-        PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
-        PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
-        PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
-        TotalNumber: odds[i].Odds[0].TotalNumber,
-        OverLine: odds[i].Odds[0].OverLine,
-        UnderLine: odds[i].Odds[0].UnderLine
-      }, '*').then(function(line){
-        console.log('line ', line[0].EventID, ' has been updated');
-      })
-    };
+        // Lines().where({EventID: odds[i].ID}).then(function(line){
+        //   console.log('line is ', line);
+        // })
 
-    // NEED TO FIX: This is not waiting until the above operation is complete to return the lines.
-    return Lines();
-
-    // var bulk = Line.collection.initializeOrderedBulkOp();
-    // var counter = 0;
-    //
-    // for (i = 0; i < odds.length; i++) {
-    //
-    //   bulk.find({EventID: odds[i].ID}).updateOne({
-    //     $set : {
-    //       MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
-    //       MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
-    //       PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
-    //       PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
-    //       PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
-    //       PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
-    //       TotalNumber: odds[i].Odds[0].TotalNumber,
-    //       OverLine: odds[i].Odds[0].OverLine,
-    //       UnderLine: odds[i].Odds[0].UnderLine
-    //     }
-    //   });
-    //   counter++;
-    //
-    //   if (counter % 1000 == 0) {
-    //     bulk.execute(function(err, result){
-    //       bulk = Line.collection.initializeOrderedBulkOp();
-    //     });
-    //   }
-    // };
-    //
-    // if (counter % 1000 != 0)
-    //     bulk.execute(function(err,result) {
-    //        console.log('odds bulk update completed at ' + new Date());
-    //     });
-
-    // res.json(odds);
+        Lines().where({EventID: odds[i].ID}).update({
+          MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
+          MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
+          PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
+          PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
+          PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
+          PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
+          TotalNumber: odds[i].Odds[0].TotalNumber,
+          OverLine: odds[i].Odds[0].OverLine,
+          UnderLine: odds[i].Odds[0].UnderLine
+        }, '*').then(function(line){
+          console.log('line ', line[0].EventID, ' has been updated');
+        })
+      };
     }
-  ).then(function(updOdds){
-    // console.log('updOdds are ', updOdds)
+  ).then(function(){
+    return Lines();
+  }).then(function(updOdds){
+    console.log('updOdds are ', updOdds)
     res.json(updOdds)
   })
 });
