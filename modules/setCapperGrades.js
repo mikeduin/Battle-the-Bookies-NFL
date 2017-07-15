@@ -138,7 +138,7 @@ module.exports = {
         return
       };
 
-      Picks().where({_id: pickID}).update({
+      Picks().where({id: pickID}).update({
         capperGrade: capperGrade,
         capperGraded: true,
         bestLineAvail: bestLineAvail,
@@ -146,6 +146,8 @@ module.exports = {
       }, '*').then(function(ret){
         console.log(pickID, ' has been updated with capperGrade')
       })
+    }).then(function(line){
+      console.log('line that gets to end of capperGrade is ', line);
     })
 
 
