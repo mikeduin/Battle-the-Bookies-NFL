@@ -93,6 +93,8 @@ module.exports = {
   },
 
   byId: function(id){
-    return PickArrays().where({EventID: id});
+    return PickArrays().where({EventID: id}).then(function(arrays){
+      return arrays
+    });
   }
 }

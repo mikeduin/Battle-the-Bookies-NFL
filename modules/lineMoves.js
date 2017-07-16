@@ -136,6 +136,8 @@ module.exports = {
   },
 
   byId: function(id) {
-    return LineMoves().where({EventID: id});
+    return LineMoves().where({EventID: id}).then(function(moves){
+      return moves;
+    });
   }
 }

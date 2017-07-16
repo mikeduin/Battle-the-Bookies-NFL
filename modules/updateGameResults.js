@@ -48,8 +48,7 @@ module.exports = {
                   HomeScore: game[0].HomeScore,
                   AwayScore: game[0].AwayScore,
                   Final: true
-                }).then(function(picks){
-                  console.log('pick has been updated with final score');
+                }, '*').then(function(picks){
                   picks.forEach(function(pick){
                     var activePayout = pick.activePayout;
                     if (

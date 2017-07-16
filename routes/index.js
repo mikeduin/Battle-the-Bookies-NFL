@@ -177,7 +177,7 @@ router.get('/matchups', function(req, res, next){
 
 // below REBUILT FOR SQL -- NOT TESTED YET!
 router.get('/linemove/:gameID', function(req, res, next){
-  linesMoves.byID(req.params.gameID).then(function(game){
+  lineMoves.byId(req.params.gameID).then(function(game){
     res.json(game)
   });
 })
@@ -192,7 +192,7 @@ router.get('/results', function(req, res, next){
 
 // below REBUILT FOR SQL -- NOT TESTED YET!
 router.get('/pullGame/:gameID', function(req, res, next){
-  pickArrays.byID(req.params.gameID).then(function(arrays){
+  pickArrays.byId(req.params.gameID).then(function(arrays){
     res.json(arrays);
   })
 })
@@ -216,7 +216,7 @@ setInterval(function (){
       setLineRanges.setLineRanges(game);
     })
   })
-}, 10000);
+}, 180000);
 
 // THIS MODULE BELOW CAN BE REMOVED PENDING SUCCESSFUL TEST OF ABOVE ... THAT WAS REBUILT TO INCLUDE capperGrades
 
