@@ -86,53 +86,60 @@ module.exports = {
   },
 
   logIndLineMove: function(game){
-    var homeSpread = game[0].PointSpreadHome;
-    var homeSpreadJuice = game[0].PointSpreadHomeLine;
-    var awaySpread = game[0].PointSpreadAway;
-    var awaySpreadJuice = game[0].PointSpreadAwayLine;
-    var homeML = game[0].MoneyLineHome;
-    var awayML = game[0].MoneyLineAway;
-    var total = game[0].TotalNumber;
-    var totalOverJuice = game[0].OverLine;
-    var totalUnderJuice = game[0].UnderLine;
+    LineMoves().where({EventID: game.EventID}).then(function(result){
+      if (result.length === 0) {
+        var homeSpread = game[0].PointSpreadHome;
+        var homeSpreadJuice = game[0].PointSpreadHomeLine;
+        var awaySpread = game[0].PointSpreadAway;
+        var awaySpreadJuice = game[0].PointSpreadAwayLine;
+        var homeML = game[0].MoneyLineHome;
+        var awayML = game[0].MoneyLineAway;
+        var total = game[0].TotalNumber;
+        var totalOverJuice = game[0].OverLine;
+        var totalUnderJuice = game[0].UnderLine;
 
-    if (game[0].PointSpreadHomeLine === 0) {
-      homeSpread = null;
-      homeSpreadJuice = null;
-      awaySpread = null;
-      awaySpreadJuice = null;
-    };
+        if (game[0].PointSpreadHomeLine === 0) {
+          homeSpread = null;
+          homeSpreadJuice = null;
+          awaySpread = null;
+          awaySpreadJuice = null;
+        };
 
-    if (game[0].MoneyLineHome === 0) {
-      homeML = null;
-      awayML = null;
-    };
+        if (game[0].MoneyLineHome === 0) {
+          homeML = null;
+          awayML = null;
+        };
 
-    if (game[0].TotalNumber === 0){
-      total = null;
-      totalOverJuice = null;
-      totalUnderJuice = null;
-    };
+        if (game[0].TotalNumber === 0){
+          total = null;
+          totalOverJuice = null;
+          totalUnderJuice = null;
+        };
 
-    var logged = new Date();
+        var logged = new Date();
 
-    LineMoves().insert({
-      EventID: game[0].EventID,
-      HomeAbbrev: game[0].HomeAbbrev,
-      AwayAbbrev: game[0].AwayAbbrev,
-      HomeSpreads: [homeSpread],
-      HomeSpreadJuices: [homeSpreadJuice],
-      AwaySpreads: [awaySpread],
-      AwaySpreadJuices: [awaySpreadJuice],
-      HomeMLs: [homeML],
-      AwayMLs: [awayML],
-      Totals: [total],
-      TotalOverJuices: [totalOverJuice],
-      TotalUnderJuices: [totalUnderJuice],
-      TimeLogged: [logged]
-    }, '*').then(function(line){
-      console.log('linemove arrays initiated for ', line[0].EventID);
-    });
+        LineMoves().insert({
+          EventID: game[0].EventID,
+          HomeAbbrev: game[0].HomeAbbrev,
+          AwayAbbrev: game[0].AwayAbbrev,
+          HomeSpreads: [homeSpread],
+          HomeSpreadJuices: [homeSpreadJuice],
+          AwaySpreads: [awaySpread],
+          AwaySpreadJuices: [awaySpreadJuice],
+          HomeMLs: [homeML],
+          AwayMLs: [awayML],
+          Totals: [total],
+          TotalOverJuices: [totalOverJuice],
+          TotalUnderJuices: [totalUnderJuice],
+          TimeLogged: [logged]
+        }, '*').then(function(line){
+          console.log('linemove arrays initiated for ', line[0].EventID);
+        });
+      } else {
+        // can delete this else once its been confirmed to work
+        console.log("line move array ALREADY INITIATED for this event");
+      }
+    })
   },
 
   byId: function(id) {

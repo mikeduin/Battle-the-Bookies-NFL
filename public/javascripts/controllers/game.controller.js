@@ -64,13 +64,13 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
 
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
-  })
+  });
 
   vm.checkDST = function() {
     if (moment().isDST() === true){
-      vm.utcAdjust = -7
+      vm.utcAdjust = -7;
     } else {
-      vm.utcAdjust = -8
+      vm.utcAdjust = -8;
     }
   };
 
@@ -140,21 +140,21 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
       var homeSpreadRange = [];
 
       for (i=homeSpreadRangeMin; i<homeSpreadRangeLoopMax; i+=0.5){
-        vm.homeSpreadRange.push(i)
+        vm.homeSpreadRange.push(i);
       };
 
       var awayMLRangeMin = (vm.game.AwayMLWorst) - 15;
       var awayMLRangeMax = (vm.game.AwayMLBest) + 30;
 
       for (i=awayMLRangeMin; i<awayMLRangeMax; i+=15){
-        vm.awayMLRange.push(i)
+        vm.awayMLRange.push(i);
       };
 
       var homeMLRangeMin = (vm.game.HomeMLWorst) - 15;
       var homeMLRangeMax = (vm.game.HomeMLBest) + 30;
 
       for (i=homeMLRangeMin; i<homeMLRangeMax; i+=15){
-        vm.homeMLRange.push(i)
+        vm.homeMLRange.push(i);
       };
 
       var totalRangeMin = (vm.game.TotalLow) - 0.5;
@@ -167,6 +167,8 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
 
     }).then(function(){
       gameService.getPickArrays(vm.EventID).then(function(result){
+
+        console.log('result in gameService is ', result);
 
         vm.awayMLPicks = result[0].AwayMLPickArray;
         vm.awaySpreadPicks = result[0].AwaySpreadPickArray;
@@ -238,9 +240,9 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
 
           var dogInd;
           if (vm.awaySpreadPicks[i].relevantLine>1) {
-            dogInd = '+'
+            dogInd = '+';
           } else {
-            dogInd = ''
+            dogInd = '';
           };
 
           masterPickArray.push(vm.awaySpreadPicks[i]);
@@ -346,16 +348,16 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
 
           var awayDogInd;
           if (vm.lineMoves.AwaySpreads[i]>1) {
-            awayDogInd = '+'
+            awayDogInd = '+';
           } else {
-            awayDogInd = ''
+            awayDogInd = '';
           };
 
           var homeDogInd;
           if (vm.lineMoves.HomeSpreads[i]>1) {
-            homeDogInd = '+'
+            homeDogInd = '+';
           } else {
-            homeDogInd = ''
+            homeDogInd = '';
           };
 
           vm.homeSpreadProg.push([unixTime, vm.lineMoves.HomeSpreads[i]]);
@@ -380,9 +382,9 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
     }).then(function(){
       var weekNumb = parseInt(vm.game.Week.substring(5));
       if (weekNumb < 10) {
-        vm.weekNumb = "0" + weekNumb
+        vm.weekNumb = "0" + weekNumb;
       } else {
-        vm.weekNumb = weekNumb
+        vm.weekNumb = weekNumb;
       };
       oddsService.getWeeklyNflLines(weekNumb).then(function(games){
         vm.weeklyGames = [];
@@ -648,7 +650,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                       "background-color":"#fff",
                       "shadow":true,
                       "padding":"10px"
-                  },
+                  }
                 },
                 {
                   "values": vm.awaySpreadChartValues,
@@ -679,7 +681,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                       "background-color":"#fff",
                       "shadow":true,
                       "padding":"10px"
-                  },
+                  }
                 },
                 {
                     "values": vm.homeSpreadProg,
@@ -705,7 +707,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                         "background-color":"#fff",
                         "shadow":true,
                         "padding":"5px"
-                    },
+                    }
                 },
                 {
                     "values": vm.awaySpreadProg,
@@ -731,7 +733,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                         "background-color":"#fff",
                         "shadow":true,
                         "padding":"5px"
-                    },
+                    }
                 }
             ]
         },
@@ -938,7 +940,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                       "background-color":"#fff",
                       "shadow":true,
                       "padding":"10px"
-                  },
+                  }
               },
               {
                 "values": vm.awayMLChartValues,
@@ -1017,7 +1019,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                       "background-color":"#fff",
                       "shadow":true,
                       "padding":"5px"
-                  },
+                  }
               }
             ]
         },
@@ -1254,7 +1256,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                       "background-color":"#fff",
                       "shadow":true,
                       "padding":"10px"
-                  },
+                  }
               },
               {
                 "values": vm.underChartValues,
@@ -1286,7 +1288,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                     "background-color":"#fff",
                     "shadow":true,
                     "padding":"10px"
-                },
+                }
               },
               {
                   "values": vm.totalProg,
@@ -1310,7 +1312,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                       "background-color":"#fff",
                       "shadow":true,
                       "padding":"5px"
-                  },
+                  }
               },
               {
                   "values": vm.totalProg,
@@ -1334,7 +1336,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
                       "background-color":"#fff",
                       "shadow":true,
                       "padding":"5px"
-                  },
+                  }
               }
             ]
         }

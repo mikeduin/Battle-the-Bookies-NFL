@@ -94,6 +94,7 @@ module.exports = {
 
   byId: function(id){
     return PickArrays().where({EventID: id}).then(function(arrays){
+      console.log('arrays in pickArrays are ', arrays);
       return arrays
     });
   }

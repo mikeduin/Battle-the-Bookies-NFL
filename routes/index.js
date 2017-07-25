@@ -193,6 +193,7 @@ router.get('/results', function(req, res, next){
 // below REBUILT FOR SQL -- NOT TESTED YET!
 router.get('/pullGame/:gameID', function(req, res, next){
   pickArrays.byId(req.params.gameID).then(function(arrays){
+    console.log('arrays in server are ', arrays);
     res.json(arrays);
   })
 })
@@ -217,50 +218,6 @@ setInterval(function (){
     })
   })
 }, 180000);
-
-// THIS MODULE BELOW CAN BE REMOVED PENDING SUCCESSFUL TEST OF ABOVE ... THAT WAS REBUILT TO INCLUDE capperGrades
-
-// setInterval(function(){
-//   var now = moment();
-//   Line.find({
-//     MatchTime: {
-//       $lt: now
-//     },
-//     RangesSet: true,
-//     CapperGraded: {
-//       $in: [null, false]
-//     }
-//   }, function(err, games){
-//     if (err) {console.log(err)}
-//
-//   }).then(function(games){
-//     if (!games[0]) {
-//       console.log ('no capper grades need to be set');
-//       return
-//     };
-//     games.forEach(function(game){
-//       return Pick.find({EventID: game.EventID}).then(function(picks){
-//         picks.forEach(function(pick){
-//           if (!pick.activePick) {
-//             return
-//           };
-//
-//           setCapperGrades.setCapperGrades(pick);
-//         })
-//       }).then(function(){
-//         Line.findOneAndUpdate({EventID: game.EventID}, {$set:
-//           {
-//             CapperGraded: true
-//           }
-//         }, function(err, line){
-//           if (err) {console.log (err)}
-//
-//           console.log('CapperGrades set for ', line.EventID)
-//         })
-//       })
-//     })
-//   })
-// }, 420000)
 
 // below REBUILT FOR SQL -- INITIAL TEST GOOD, RUN AGAIN ONCE PICKS ADDED TO ENSURE PROPERLY ADDED TO ARRAYS
 setInterval(function (){
