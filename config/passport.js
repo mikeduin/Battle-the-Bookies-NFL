@@ -15,7 +15,7 @@ function checkPassword (user, password) {
 
 passport.use(new LocalStrategy(function(username, password, done) {
   Users().where({username: username}).then(function(user){
-    if (!user) {
+    if (user.length === 0) {
       return done(null, false, {
         message: 'Username not found'
       });
