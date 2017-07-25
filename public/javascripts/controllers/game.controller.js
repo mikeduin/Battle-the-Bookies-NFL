@@ -185,9 +185,13 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         vm.overPickPct = Math.round((vm.overPicks.length/38)*100);
         vm.underPickPct = Math.round((vm.underPicks.length/38)*100);
 
-        vm.homeAbbrev = vm.homeSpreadPicks[0].activePick.substr(0, vm.homeSpreadPicks[0].activePick.indexOf(' '));
+        // RESET THIS BEFORE FOOTBALL
+        // vm.homeAbbrev = vm.homeSpreadPicks[0].activePick.substr(0, vm.homeSpreadPicks[0].activePick.indexOf(' '));
+        vm.homeAbbrev = 'ONE'
 
-        vm.awayAbbrev = vm.awaySpreadPicks[0].activePick.substr(0, vm.awaySpreadPicks[0].activePick.indexOf(' '));
+        // RESET THIS BEFORE FOOTBALL
+        // vm.awayAbbrev = vm.awaySpreadPicks[0].activePick.substr(0, vm.awaySpreadPicks[0].activePick.indexOf(' '));
+        vm.awayAbbrev = 'TWO'
 
         vm.myConfig.graphset[2].subtitle.fontColor = vm.homeColor;
         vm.myConfig.graphset[7].subtitle.fontColor = vm.homeColor;

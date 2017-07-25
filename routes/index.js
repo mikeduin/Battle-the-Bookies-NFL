@@ -143,7 +143,7 @@ router.get('/updateOdds', function(req, res, next) {
             console.log('line ', line[0].EventID, ' has been updated');
           })
         } else {
-          console.log('line not found')
+          console.log('line not found');
         }
       };
     }
@@ -219,13 +219,14 @@ setInterval(function (){
   })
 }, 180000);
 
-// below REBUILT FOR SQL -- INITIAL TEST GOOD, RUN AGAIN ONCE PICKS ADDED TO ENSURE PROPERLY ADDED TO ARRAYS
-setInterval(function (){
-  var now = moment();
-  pickArrays.buildArrays().then(function(arrays){
-    console.log(arrays)
-  })
-}, 900000)
+// below REBUILT FOR SQL -- INITIAL TEST GOOD, RUN AGAIN ONCE PICKS ADDED TO ENSURE PROPERLY ADDED TO ARRAYS ...
+// REBUILT A SECOND TIME BY ADDING INTO BOTTOM OF setLineRanges
+// setInterval(function (){
+//   var now = moment();
+//   pickArrays.buildArrays().then(function(arrays){
+//     console.log(arrays)
+//   })
+// }, 900000)
 
 // CAN LIKELY DELETE THIS BELOW ... SHOULDN'T NEED ANYMORE?
 // router.param('EventID', function(req, res, next, EventID) {
