@@ -125,26 +125,23 @@ router.get('/updateOdds', function(req, res, next) {
     return res.json()
   }).then(function(odds){
       for (i=0; i<odds.length; i++) {
-
-        if (Lines().where({EventID: odds[i].ID}).then(function(line){
-          if (line.length > 0) {true}
-        })) {
-          Lines().where({EventID: odds[i].ID}).update({
-            MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
-            MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
-            PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
-            PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
-            PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
-            PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
-            TotalNumber: odds[i].Odds[0].TotalNumber,
-            OverLine: odds[i].Odds[0].OverLine,
-            UnderLine: odds[i].Odds[0].UnderLine
-          }, '*').then(function(line){
-            console.log('line ', line[0].EventID, ' has been updated');
-          })
-        } else {
-          console.log('line not found');
-        }
+        Lines().where({EventID: odds[i].ID}).update({
+          MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
+          MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
+          PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
+          PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
+          PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
+          PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
+          TotalNumber: odds[i].Odds[0].TotalNumber,
+          OverLine: odds[i].Odds[0].OverLine,
+          UnderLine: odds[i].Odds[0].UnderLine
+        }, '*').then(function(upd){
+          if (upd.length > 0) {
+            console.log('line ', upd[0].EventID, ' has been updated');
+          } else {
+            console.log('line not created yet')
+          }
+        })
       };
     }
   ).then(function(){

@@ -11,7 +11,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.nflLines = [];
   vm.lastWeekNumb;
   $scope.nflLines= {};
-  // vm.getNflLines = getNflLines;
   vm.getWeeklyNflLines = getWeeklyNflLines;
   vm.gameSort = "MatchTime";
   vm.gameSortTwo = "EventID";
@@ -80,13 +79,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
       })
     })
   };
-
-  // function getNflLines (){
-  //   vm.showSpinner = true;
-  //   oddsService.getNflLines().then(function(games){
-  //     vm.nflLines = games;
-  //   })
-  // }
 
   function updateResults () {
     resultsService.updateResults().then(function(){
