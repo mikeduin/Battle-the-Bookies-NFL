@@ -11,7 +11,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.nflLines = [];
   vm.lastWeekNumb;
   $scope.nflLines= {};
-  vm.getNflLines = getNflLines;
+  // vm.getNflLines = getNflLines;
   vm.getWeeklyNflLines = getWeeklyNflLines;
   vm.gameSort = "MatchTime";
   vm.gameSortTwo = "EventID";
@@ -42,12 +42,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
       return false
     }
   };
-
-  vm.checkWeekNumb = function(){
-    vm.weekNumb = $stateParams.weekNumb;
-    vm.week = parseInt(vm.weekNumb);
-  };
-  vm.checkWeekNumb();
 
   vm.weekConfig = function(week){
     var newWeek = week.toString();
@@ -87,12 +81,12 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     })
   };
 
-  function getNflLines (){
-    vm.showSpinner = true;
-    oddsService.getNflLines().then(function(games){
-      vm.nflLines = games;
-    })
-  }
+  // function getNflLines (){
+  //   vm.showSpinner = true;
+  //   oddsService.getNflLines().then(function(games){
+  //     vm.nflLines = games;
+  //   })
+  // }
 
   function updateResults () {
     resultsService.updateResults().then(function(){
@@ -100,7 +94,12 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   };
 
   function getWeeklyPicks () {
-    oddsService.getWeeklyPicks($stateParams.weekNumb).then(function(data){
+    vm.weekNumb = $stateParams.weekNumb;
+    if (vm.weekNumb < 10 ) {
+      vm.weekNumb = '0' + vm.weekNumb;
+    };
+    vm.week = parseInt(vm.weekNumb);
+    oddsService.getWeeklyPicks(vm.weekNumb).then(function(data){
       vm.picks = data;
       console.log('vm.picks are ', vm.picks)
     })
@@ -121,6 +120,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   function getWeeklyNflLines(){
     vm.showSpinner = true;
     oddsService.getWeeklyNflLines($stateParams.weekNumb).then(function(games){
+      console.log('games are ', games);
       vm.nflLines = games;
       for (i=0; i<vm.nflLines.length; i++){
         vm.nflLines[i].homeColor = "#B68708";

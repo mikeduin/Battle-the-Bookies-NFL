@@ -240,7 +240,8 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
 
         for (i=0; i<vm.awaySpreadPicks.length; i++) {
           var unixTime = moment(vm.awaySpreadPicks[i].submittedAt).valueOf();
-          var awayAbbrev = vm.awaySpreadPicks[i].activePick.substr(0, vm.awaySpreadPicks[i].activePick.indexOf(' '));
+          // var awayAbbrev = vm.awaySpreadPicks[i].activePick.substr(0, vm.awaySpreadPicks[i].activePick.indexOf(' '));
+          var awayAbbrev = "TWO";
 
           var dogInd;
           if (vm.awaySpreadPicks[i].relevantLine>1) {

@@ -92,13 +92,13 @@ setInterval(function (){
 //   updateFinalScores.updateFinalScores();
 // }, 480000);
 
-// The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
+// The function below runs once every 15 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
 // ! UPDATED FOR SQL !
 //
 setInterval(function (){
   lineMoves.logAllLineMoves();
-}, 3500000);
+}, 900000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
 
@@ -220,7 +220,7 @@ setInterval(function (){
 }, 180000);
 
 // below REBUILT FOR SQL -- INITIAL TEST GOOD, RUN AGAIN ONCE PICKS ADDED TO ENSURE PROPERLY ADDED TO ARRAYS ...
-// REBUILT A SECOND TIME BY ADDING INTO BOTTOM OF setLineRanges
+// REBUILT A SECOND TIME BY ADDING INTO BOTTOM OF
 // setInterval(function (){
 //   var now = moment();
 //   pickArrays.buildArrays().then(function(arrays){

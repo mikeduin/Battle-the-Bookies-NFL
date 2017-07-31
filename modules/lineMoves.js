@@ -86,6 +86,7 @@ module.exports = {
   },
 
   logIndLineMove: function(game){
+    console.log('game passed to logIndLineMove is ', game);
     LineMoves().where({EventID: game.EventID}).then(function(result){
       if (result.length === 0) {
         var homeSpread = game[0].PointSpreadHome;

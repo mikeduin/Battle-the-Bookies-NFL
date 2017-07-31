@@ -4,17 +4,17 @@ module.exports = {
   weekNumbSetter: function (MatchTime) {
     if (moment(MatchTime).isBetween('2017-06-23', '2017-07-07')) {
       return "PRE"
-    } else if (moment(MatchTime).isBetween('2017-07-08', '2017-07-15')) {
+    } else if (moment(MatchTime).isBetween('2017-07-11', '2017-07-19')) {
       return "03"
-    } else if (moment(MatchTime).isBetween('2017-07-15', '2017-07-22')) {
+    } else if (moment(MatchTime).isBetween('2017-07-19', '2017-07-26')) {
       return "04"
-    } else if (moment(MatchTime).isBetween('2017-07-22', '2017-07-29')) {
+    } else if (moment(MatchTime).isBetween('2017-07-26', '2017-08-02')) {
       return "05"
-    } else if (moment(MatchTime).isBetween('2017-07-29', '2017-08-05')) {
+    } else if (moment(MatchTime).isBetween('2017-08-02', '2017-08-09')) {
       return "06"
-    } else if (moment(MatchTime).isBetween('2017-08-05', '2017-08-12')) {
+    } else if (moment(MatchTime).isBetween('2017-08-09', '2017-08-16')) {
       return "07"
-    } else if (moment(MatchTime).isBetween('2017-08-12', '2017-08-19')) {
+    } else if (moment(MatchTime).isBetween('2017-08-16', '2017-08-23')) {
       return "08"
     } else if (moment(MatchTime).isBetween('2017-08-23', '2017-08-30')) {
       return "09"
