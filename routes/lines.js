@@ -14,7 +14,6 @@ router.get('/', function(req, res, next){
 // below REBUILT FOR SQL
 router.get('/:week', function(req, res, next){
   fetchLines.wkLines(req.params.week).then(function(lines){
-    console.log('lines are ', lines);
     res.json(lines);
   })
 })
