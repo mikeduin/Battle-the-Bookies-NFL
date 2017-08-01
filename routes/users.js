@@ -55,6 +55,7 @@ router.post('/register', function(req, res, next){
     nameLast: req.body.nameLast,
     email: req.body.email,
     buyin: req.body.buyin,
+    plan: req.body.plan,
     salt: salt,
     hash: hash,
   }, '*').then(function(user){
