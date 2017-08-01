@@ -168,8 +168,6 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
     }).then(function(){
       gameService.getPickArrays(vm.EventID).then(function(result){
 
-        console.log('result in gameService is ', result);
-
         vm.awayMLPicks = result[0].AwayMLPickArray;
         vm.awaySpreadPicks = result[0].AwaySpreadPickArray;
         vm.homeMLPicks = result[0].HomeMLPickArray;
@@ -178,12 +176,14 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         vm.underPicks = result[0].UnderPickArray;
         vm.noPicks = result[0].NoPickArray;
 
-        vm.awayMLPickPct = Math.round((vm.awayMLPicks.length/38)*100);
-        vm.awaySpreadPickPct = Math.round((vm.awaySpreadPicks.length/38)*100);
-        vm.homeMLPickPct = Math.round((vm.homeMLPicks.length/38)*100);
-        vm.homeSpreadPickPct = Math.round((vm.homeSpreadPicks.length/38)*100);
-        vm.overPickPct = Math.round((vm.overPicks.length/38)*100);
-        vm.underPickPct = Math.round((vm.underPicks.length/38)*100);
+        var totalUsers = vm.awayMLPicks.length + vm.awaySpreadPicks.length + vm.homeMLPicks.length + vm.homeSpreadPicks.length + vm.overPicks.length + vm.underPicks.length;
+
+        vm.awayMLPickPct = Math.round((vm.awayMLPicks.length/totalUsers)*100);
+        vm.awaySpreadPickPct = Math.round((vm.awaySpreadPicks.length/totalUsers)*100);
+        vm.homeMLPickPct = Math.round((vm.homeMLPicks.length/totalUsers)*100);
+        vm.homeSpreadPickPct = Math.round((vm.homeSpreadPicks.length/totalUsers)*100);
+        vm.overPickPct = Math.round((vm.overPicks.length/totalUsers)*100);
+        vm.underPickPct = Math.round((vm.underPicks.length/totalUsers)*100);
 
         // RESET THIS BEFORE FOOTBALL
         // vm.homeAbbrev = vm.homeSpreadPicks[0].activePick.substr(0, vm.homeSpreadPicks[0].activePick.indexOf(' '));
