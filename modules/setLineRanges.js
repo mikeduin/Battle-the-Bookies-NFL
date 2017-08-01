@@ -183,15 +183,12 @@ module.exports = {
         console.log('line move objects have been set for ', gameID);
         Picks().where({EventID: gameID}).then(function(picks){
           var numPicks = picks.length;
-          console.log('numPicks is ', numPicks);
           var counter = 0;
           picks.forEach(function(pick){
             setCapperGrades.setCapperGrades(pick).then(function(eventIDret){
-              console.log('EventID returned to setCapperGrades is ', eventIDret)
               counter++;
-              console.log('counter is ', counter);
               if (counter === numPicks) {
-                pickArrays.buildArrays(gameID);
+                setTimeout(pickArrays.buildArrays(gameID), 20000);
               };
             });
           })

@@ -17,9 +17,6 @@ module.exports = {
     var bestJuiceAvail;
     var pickID = pick.id;
     return Lines().where({EventID: pick.EventID}).then(function(line){
-      console.log('line in setCapperGrades is ', line);
-      console.log('pick in setCappterGrades is ', pick);
-      console.log('pickID in setCapperGrades is ', pickID)
 
       if (pick.pickType === "Away Spread") {
         bestLineAvail = line[0].AwaySpreadBest;

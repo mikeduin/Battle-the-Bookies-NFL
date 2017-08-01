@@ -68,34 +68,17 @@ setInterval(function (){
   updateGameResults.updateGameResults()
 }, 660000);
 
-// The next function below looks for picks that have a finalPayout of ZERO (e.g., they have not been 'settled' yet) then checks to see if the Result of that pick's game is final. If the result IS final, it updates the picks with the HomeScore and AwayScore and sets 'Final' to true for that pick. THEN, it runs through each potential outcome based on PickType and updates the result variables accordingly.
-// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no picks to update)
-// !! THIS CAN BE DELETED - updatePickResults was merged into updateGameResults
-
-// setInterval(function (){
-//   updatePickResults.updatePickResults();
-// }, 840000);
-
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no lines to update)
 // ! UPDATED FOR SQL !
-//
 setInterval(function (){
   createLines.createLines();
 }, 420000);
 
-// This function runs every eight minutes and checks to see if a game is final and, if so, updates the line data with the final score and change's the game status
-// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
-// !! THIS CAN BE DELETED - updateFinalScores was merged into updateGameResults
-
-// setInterval(function (){
-//   updateFinalScores.updateFinalScores();
-// }, 480000);
 
 // The function below runs once every 15 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 // DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
 // ! UPDATED FOR SQL !
-//
 setInterval(function (){
   lineMoves.logAllLineMoves();
 }, 900000);
@@ -209,34 +192,11 @@ setInterval(function (){
       console.log('no line move objects need to be set');
       return
     };
-
     games.forEach(function(game){
       setLineRanges.setLineRanges(game);
     })
   })
 }, 180000);
-
-// below REBUILT FOR SQL -- INITIAL TEST GOOD, RUN AGAIN ONCE PICKS ADDED TO ENSURE PROPERLY ADDED TO ARRAYS ...
-// REBUILT A SECOND TIME BY ADDING INTO BOTTOM OF
-// setInterval(function (){
-//   var now = moment();
-//   pickArrays.buildArrays().then(function(arrays){
-//     console.log(arrays)
-//   })
-// }, 900000)
-
-// CAN LIKELY DELETE THIS BELOW ... SHOULDN'T NEED ANYMORE?
-// router.param('EventID', function(req, res, next, EventID) {
-//   var query = Result.find({ EventID: EventID });
-//
-//   query.exec(function (err, result) {
-//     if (err) { next(err) }
-//     if (!result) {return next(new Error("can't find game")); }
-//
-//     req.result = result;
-//     return next();
-//   })
-// })
 
 // REBUILT FOR SQL, NOT TESTED YET
 router.get('/weeklyStats/:username', function(req, res, next){
