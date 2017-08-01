@@ -74,7 +74,6 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.pullAbbrevs = function(EventID){
     var home = vm.matchups[EventID].HomeAbbrev;
     var away = vm.matchups[EventID].AwayAbbrev;
-
     vm.abbrev = "" + away + "@" + home + "";
   }
 
@@ -109,9 +108,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.getWeeklyStats = function(username){
     picksService.getWeeklyStats(username).then(function(result){
       stats = result.data;
-
       var ytdDollars = 0
-
       for (i=0; i<stats.length; i++) {
         var dayDollars = stats[i].totalDollars;
         var lastDate = vm.dailyData.scaleX.values[vm.dailyData.scaleX.values.length - 1]

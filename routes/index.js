@@ -134,6 +134,26 @@ router.get('/updateOdds', function(req, res, next) {
   })
 });
 
+// This massive function below runs every 3 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
+
+// REBUILT FOR SQL -- Initial tests good, re-test with differing line data
+// MODULE REBUILT TO TRANSITION TO CAPPER GRADES
+setInterval(function (){
+  var now = moment();
+  Lines()
+  .where('MatchTime', '<', now)
+  .andWhere('RangesSet', null)
+  .then(function(games){
+    if (!games[0]) {
+      console.log('no line move objects need to be set');
+      return
+    };
+    games.forEach(function(game){
+      setLineRanges.setLineRanges(game);
+    })
+  })
+}, 180000);
+
 // below REBUILT FOR SQL
 router.get('/weeks', function(req, res, next){
   getWeeks.getWeeks().then(function(weeks){
@@ -177,26 +197,6 @@ router.get('/pullGame/:gameID', function(req, res, next){
     res.json(arrays);
   })
 })
-
-// This massive function below runs every 3 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
-
-// REBUILT FOR SQL -- Initial tests good, re-test with differing line data
-// MODULE REBUILT TO TRANSITION TO CAPPER GRADES
-setInterval(function (){
-  var now = moment();
-  Lines()
-  .where('MatchTime', '<', now)
-  .andWhere('RangesSet', null)
-  .then(function(games){
-    if (!games[0]) {
-      console.log('no line move objects need to be set');
-      return
-    };
-    games.forEach(function(game){
-      setLineRanges.setLineRanges(game);
-    })
-  })
-}, 180000);
 
 // REBUILT FOR SQL, NOT TESTED YET
 router.get('/weeklyStats/:username', function(req, res, next){
