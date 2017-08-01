@@ -62,7 +62,7 @@
                 <label for="goldTier" ng-style="user.buyin === '200' ? {'font-weight': 800} : {'font-weight': 200}"> <color class="gold">Gold</color> ($200) </label>
               </buyInLevel>
               <pickProtect class="col m4">
-                <span class="buy-in-label"> Pick Protection Plan ($25):</span>
+                <span class="buy-in-label tooltipped" data-position="top" data-delay="50" data-tooltip="I am a tooltip"> Pick Protection Plan ($25):</span>
                 <br>
                 <input class="with-gap" name="group2" type="radio" id="noPlan" value="noPlan" ng-model="user.plan">
                 <label for="noPlan" ng-style="user.plan === 'noPlan' ? {'font-weight': 800, 'color': 'black'} : {'font-weight': 200}"> No Plan (free) </label>
