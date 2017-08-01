@@ -200,7 +200,7 @@ function PickController (oddsService, picksService, resultsService, authService,
       vm.pick.favType = "Neither";
       vm.pick.geoType = "Home +0";
       vm.pick.betType = "Spread +0";
-    }
+    };
     vm.pick.activeGame = game.EventID;
     vm.pick.activeSpread = game.PointSpreadHome;
     vm.pick.activeLine = game.PointSpreadHomeLine;

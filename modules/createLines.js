@@ -69,10 +69,11 @@ module.exports = {
             }, '*').then(function(line){
               console.log(line[0].EventID + ' was added as a new line');
               // This function below adds the user pick templates for each pick once it's been added as a line.
-              Users().pluck('username').then(function(users){
+              Users().then(function(users){
                 for (var i=0; i<users.length; i++) {
                   Picks().insert({
-                    username: users[i],
+                    username: users[i].username,
+                    plan: users[i].plan,
                     EventID: line[0].EventID,
                     MatchDay: line[0].MatchDay,
                     MatchTime: line[0].MatchTime,
