@@ -43,12 +43,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   };
 
   vm.weekConfig = function(week){
-    var newWeek = week.toString();
-    if (newWeek.length === 1) {
-      return ("0" + newWeek)
-    } else {
-      return newWeek;
-    }
+    return week.toString();
   }
 
   vm.checkTime = function(gametime) {

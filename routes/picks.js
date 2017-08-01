@@ -110,7 +110,6 @@ router.get('/:username/:weeknumb', function (req, res, next) {
     username: req.params.username,
     WeekNumb: weekNumb
   }).then(function(picks){
-    console.log('picks are ', picks);
     res.json(picks);
   })
 })

@@ -386,12 +386,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
       })
     }).then(function(){
       vm.weekNumb = parseInt(vm.game.Week.substring(5));
-      // if (weekNumb < 10) {
-      //   vm.weekNumb = "0" + weekNumb;
-      // } else {
-      //   vm.weekNumb = weekNumb;
-      // };
-      oddsService.getWeeklyNflLines(weekNumb).then(function(games){
+      oddsService.getWeeklyNflLines(vm.weekNumb).then(function(games){
         vm.weeklyGames = [];
         for (var i=0; i<games.length; i++) {
           if (games[i].AwayAbbrev !== vm.game.AwayAbbrev && moment(games[i].MatchTime).isBefore(moment())) {
