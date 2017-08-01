@@ -49,8 +49,8 @@
               </div>
             </div>
             <div class="row">
-              <buyInLevel class="col m5 offset-m3">
-                <span class="buy-in-label"> Choose Your Buy-in Level:</span>
+              <buyInLevel class="col m3 offset-m1">
+                <span class="buy-in-label"> Choose Your Buy-in:</span>
                 <br>
                 <input class="with-gap" name="group1" type="radio" id="bronzeTier" value='50' ng-model="user.buyin" required>
                 <label for="bronzeTier"> <color class="bronze">Bronze</color> ($50) </label>
@@ -61,6 +61,20 @@
                 <input class="with-gap" name="group1" type="radio" id="goldTier" value='200' ng-model="user.buyin">
                 <label for="goldTier"> <color class="gold">Gold</color> ($200) </label>
               </buyInLevel>
+              <pickProtect class="col m4">
+                <span class="buy-in-label"> Pick Protection Plan ($25):</span>
+                <br>
+                <input class="with-gap" name="group2" type="radio" id="noPlan" value="noPlan" ng-model="user.plan">
+                <label for="noPlan" ng-style="user.plan === 'noPlan' ? {'font-weight': 800, 'color': 'black'} : {'font-weight': 200}"> No Plan </label>
+                <input class="with-gap" name="group2" type="radio" id="homeSpreads" value="homeSpreads" ng-model="user.plan">
+                <label for="homeSpreads" ng-style="user.plan === 'homeSpreads' ? {'font-weight': 800, 'color': 'black'} : {'font-weight': 200}"> Home Spreads </label>
+                <input class="with-gap" name="group2" type="radio" id="roadSpreads" value="roadSpreads" ng-model="user.plan">
+                <label for="roadSpreads" ng-style="user.plan === 'roadSpreads' ? {'font-weight': 800, 'color': 'black'} : {'font-weight': 200}"> Road Spreads </label>
+                <input class="with-gap" name="group2" type="radio" id="favMLs" value="favMLs" ng-model="user.plan">
+                <label for="favMLs" ng-style="user.plan === 'favMLs' ? {'font-weight': 800, 'color': 'black'} : {'font-weight': 200}"> Favorite MLs </label>
+                <input class="with-gap" name="group2" type="radio" id="dogSpreads" value="dogSpreads" ng-model="user.plan">
+                <label for="dogSpreads" ng-style="user.plan === 'dogSpreads' ? {'font-weight': 800, 'color': 'black'} : {'font-weight': 200}"> Dog Spreads </label>
+              </pickProtect>
               <div class="col m3">
                 <button type="submit" class="btn btn-large waves-effect waves-light login-button" > GAME ON! </button>
                 <div>
