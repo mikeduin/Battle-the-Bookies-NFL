@@ -187,15 +187,17 @@ module.exports = {
           var capCounter = 0;
           var planCounter = 0;
           picks.forEach(function(pick){
-            checkPlans.setPickPlans(pick).then(function(planChecked){
+            checkPlans.checkPickPlans(pick).then(function(planChecked){
               planCounter++;
               if (planCounter === numPicks) {
-                setTimeout(setCapperGrades.setCapperGrades(pick), 20000).then(function(eventIDret){
-                  capCounter++;
-                  if (capCounter === numPicks) {
-                    setTimeout(pickArrays.buildArrays(gameID), 20000);
-                  };
-                });
+                setTimeout(function(){setCapperGrades.setCapperGrades(pick)
+                  .then(function(eventIDret){
+                    capCounter++;
+                    if (capCounter === numPicks) {
+                      setTimeout(function(){pickArrays.buildArrays(gameID)}, 20000);
+                    };
+                  })
+              }, 20000)
               }
             })
           })

@@ -8,6 +8,10 @@ function Users() {
   return knex('users');
 }
 
+function Lines() {
+  return knex('lines');
+}
+
 function activePayCalc (line) {
   var payout;
   if (line < 0) {
@@ -18,19 +22,27 @@ function activePayCalc (line) {
   return payout
 };
 
+function mlFormat (ml) {
+  if (ml < 0) {
+    return ml
+  } else {
+    return "+" + ml
+  }
+};
+
 module.exports = {
   checkPickPlans: function(pick){
-    return Lines().where({EventID: pick.eventID}).then(function(game){
+    return Lines().where({EventID: pick.EventID}).then(function(game){
       if (pick.activePick === null) {
-        if (pick.plan === 'noPlan') {
+        if (pick.plan === 'noPlan' || pick.plan === null) {
           return
         } else if (pick.plan === 'homeSpreads') {
 
-          if (game.PointSpreadHome > 0) {
+          if (game[0].PointSpreadHome > 0) {
             var favType = "Underdog";
             var geoType = "Home Dog";
             var betType = "Dog Spread";
-          } else if (game.PointSpreadHome < 0) {
+          } else if (game[0].PointSpreadHome < 0) {
             var favType = "Favorite";
             var geoType = "Home Fav";
             var betType = "Fav Spread";
@@ -42,10 +54,10 @@ module.exports = {
 
           Picks().where({id: pick.id}).update({
             submittedAt: new Date(),
-            activePick: game.HomeAbbrev + ' ' + game.PointSpreadHome,
-            activeSpread: game.PointSpreadHome,
-            activeLine: game.PointSpreadHomeLine,
-            activePayout: activePayCalc(game.PointSpreadHomeLine),
+            activePick: game[0].HomeAbbrev + ' ' + mlFormat(game[0].PointSpreadHome),
+            activeSpread: game[0].PointSpreadHome,
+            activeLine: game[0].PointSpreadHomeLine,
+            activePayout: activePayCalc(game[0].PointSpreadHomeLine),
             pickType: 'Home Spread',
             favType: favType,
             betType: betType,
@@ -56,11 +68,11 @@ module.exports = {
           });
         } else if (pick.plan === 'awaySpreads') {
 
-          if (game.PointSpreadAway > 0) {
+          if (game[0].PointSpreadAway > 0) {
             var favType = "Underdog";
             var geoType = "Away Dog";
             var betType = "Dog Spread";
-          } else if (game.PointSpreadAway < 0) {
+          } else if (game[0].PointSpreadAway < 0) {
             var favType = "Favorite";
             var geoType = "Away Fav";
             var betType = "Fav Spread";
@@ -72,10 +84,10 @@ module.exports = {
 
           Picks().where({id: pick.id}).update({
             submittedAt: new Date(),
-            activePick: game.AwayAbbrev + ' ' + game.PointSpreadAway,
-            activeSpread: game.PointSpreadAway,
-            activeLine: game.PointSpreadAwayLine,
-            activePayout: activePayCalc(game.PointSpreadAwayLine),
+            activePick: game[0].AwayAbbrev + ' ' + mlFormat(game[0].PointSpreadAway),
+            activeSpread: game[0].PointSpreadAway,
+            activeLine: game[0].PointSpreadAwayLine,
+            activePayout: activePayCalc(game[0].PointSpreadAwayLine),
             pickType: 'Away Spread',
             favType: favType,
             betType: betType,
@@ -86,12 +98,12 @@ module.exports = {
           });
 
         } else if (pick.plan === 'favMLs') {
-          if (game.MoneyLineHome <= game.MoneyLineAway) {
+          if (game[0].MoneyLineHome <= game[0].MoneyLineAway) {
             Picks().where({id: pick.id}).update({
               submittedAt: new Date(),
-              activePick: game.HomeAbbrev + ' ' + game.MoneyLineHome,
-              activeLine: game.MoneyLineHome,
-              activePayout: activePayCalc(game.MoneyLineHome),
+              activePick: game[0].HomeAbbrev + ' ' + mlFormat(game[0].MoneyLineHome),
+              activeLine: game[0].MoneyLineHome,
+              activePayout: activePayCalc(game[0].MoneyLineHome),
               pickType: 'Home Moneyline',
               favType: 'Favorite',
               betType: 'Fav ML',
@@ -103,9 +115,9 @@ module.exports = {
           } else {
             Picks().where({id: pick.id}).update({
               submittedAt: new Date(),
-              activePick: game.AwayAbbrev + ' ' + game.MoneyLineAway,
-              activeLine: game.MoneyLineAway,
-              activePayout: activePayCalc(game.MoneyLineAway),
+              activePick: game[0].AwayAbbrev + ' ' + mlFormat(game[0].MoneyLineAway),
+              activeLine: game[0].MoneyLineAway,
+              activePayout: activePayCalc(game[0].MoneyLineAway),
               pickType: 'Away Moneyline',
               favType: 'Favorite',
               betType: 'Fav ML',
@@ -116,12 +128,12 @@ module.exports = {
             });
           }
         } else if (pick.plan === 'dogSpreads') {
-          if (game.PointSpreadHome >= game.PointSpreadAway) {
+          if (game[0].PointSpreadHome >= game[0].PointSpreadAway) {
             Picks().where({id: pick.id}).update({
               submittedAt: new Date(),
-              activePick: game.HomeAbbrev + ' ' + game.PointSpreadHome,
-              activeLine: game.PointSpreadHomeLine,
-              activePayout: activePayCalc(game.PointSpreadHomeLine),
+              activePick: game[0].HomeAbbrev + ' ' + mlFormat(game[0].PointSpreadHome),
+              activeLine: game[0].PointSpreadHomeLine,
+              activePayout: activePayCalc(game[0].PointSpreadHomeLine),
               pickType: 'Home Spread',
               favType: 'Underdog',
               betType: 'Dog Spread',
@@ -133,9 +145,9 @@ module.exports = {
           } else {
             Picks().where({id: pick.id}).update({
               submittedAt: new Date(),
-              activePick: game.AwayAbbrev + ' ' + game.PointSpreadAway,
-              activeLine: game.PointSpreadAwayLine,
-              activePayout: activePayCalc(game.PointSpreadAwayLine),
+              activePick: game[0].AwayAbbrev + ' ' + mlFormat(game[0].PointSpreadAway),
+              activeLine: game[0].PointSpreadAwayLine,
+              activePayout: activePayCalc(game[0].PointSpreadAwayLine),
               pickType: 'Away Spread',
               favType: 'Underdog',
               betType: 'Dog Spread',
