@@ -185,20 +185,19 @@ module.exports = {
         Picks().where({EventID: gameID}).then(function(picks){
           var numPicks = picks.length;
           var capCounter = 0;
-          var planCounter = 0;
           picks.forEach(function(pick){
-            checkPlans.checkPickPlans(pick).then(function(planChecked){
-              planCounter++;
-              if (planCounter === numPicks) {
-                setTimeout(function(){setCapperGrades.setCapperGrades(pick)
-                  .then(function(eventIDret){
-                    capCounter++;
-                    if (capCounter === numPicks) {
-                      setTimeout(function(){pickArrays.buildArrays(gameID)}, 20000);
-                    };
-                  })
-              }, 20000)
-              }
+            checkPlans.checkPickPlans(pick).then(function(retArray){
+              setCapperGrades.setCapperGrades(retArray)
+                .then(function(eventIDret){
+                  capCounter++;
+                  console.log('capCounter is ', capCounter);
+                  if (capCounter === numPicks) {
+                    setTimeout(function(){
+                      console.log('function gets to build pickArrays');
+                      pickArrays.buildArrays(gameID);
+                    }, 20000);
+                  };
+                })
             })
           })
         })

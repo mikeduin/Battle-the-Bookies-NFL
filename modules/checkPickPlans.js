@@ -35,7 +35,7 @@ module.exports = {
     return Lines().where({EventID: pick.EventID}).then(function(game){
       if (pick.activePick === null) {
         if (pick.plan === 'noPlan' || pick.plan === null) {
-          return
+          return [pick, game]
         } else if (pick.plan === 'homeSpreads') {
 
           if (game[0].PointSpreadHome > 0) {
@@ -62,9 +62,9 @@ module.exports = {
             favType: favType,
             betType: betType,
             geoType: geoType
-          }, '*').then(function(planned){
-            console.log(planned[0].id, ' has been updated as homeSpread');
-            return planned[0].id;
+          }, '*').then(function(newPick){
+            console.log(newPick[0].id, ' has been updated as homeSpread');
+            return [newPick, game];
           });
         } else if (pick.plan === 'awaySpreads') {
 
@@ -92,9 +92,9 @@ module.exports = {
             favType: favType,
             betType: betType,
             geoType: geoType
-          }, '*').then(function(planned){
-            console.log(planned[0].id, ' has been updated as awaySpread');
-            return planned[0].id;
+          }, '*').then(function(newPick){
+            console.log(newPick[0].id, ' has been updated as awaySpread');
+            return [newPick, game];
           });
 
         } else if (pick.plan === 'favMLs') {
@@ -108,9 +108,9 @@ module.exports = {
               favType: 'Favorite',
               betType: 'Fav ML',
               geoType: 'Home Fav'
-            }, '*').then(function(planned){
-              console.log(planned[0].id, ' has been updated as favML');
-              return planned[0].id;
+            }, '*').then(function(newPick){
+              console.log(newPick[0].id, ' has been updated as favML');
+              return [newPick, game];
             });
           } else {
             Picks().where({id: pick.id}).update({
@@ -122,9 +122,9 @@ module.exports = {
               favType: 'Favorite',
               betType: 'Fav ML',
               geoType: 'Away Fav'
-            }, '*').then(function(planned){
-              console.log(planned[0].id, ' has been updated as favML');
-              return planned[0].id;
+            }, '*').then(function(newPick){
+              console.log(newPick[0].id, ' has been updated as favML');
+              return [newPick, game];
             });
           }
         } else if (pick.plan === 'dogSpreads') {
@@ -138,9 +138,9 @@ module.exports = {
               favType: 'Underdog',
               betType: 'Dog Spread',
               geoType: 'Home Dog'
-            }, '*').then(function(planned){
-              console.log(planned[0].id, ' has been updated as dogSpread');
-              return planned[0].id;
+            }, '*').then(function(newPick){
+              console.log(newPick[0].id, ' has been updated as dogSpread');
+              return [newPick, game];
             });
           } else {
             Picks().where({id: pick.id}).update({
@@ -152,13 +152,13 @@ module.exports = {
               favType: 'Underdog',
               betType: 'Dog Spread',
               geoType: 'Away Dog'
-            }, '*').then(function(planned){
-              console.log(planned[0].id, ' has been updated as dogSpread');
-              return planned[0].id;
+            }, '*').then(function(newPick){
+              console.log(newPick[0].id, ' has been updated as dogSpread');
+              return [newPick, game];
             });
           }
         } else {
-          return
+          return [pick, game]
         }
       }
     })
