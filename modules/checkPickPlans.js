@@ -32,10 +32,13 @@ function mlFormat (ml) {
 
 module.exports = {
   checkPickPlans: function(pick){
+    var retObj = {};
     return Lines().where({EventID: pick.EventID}).then(function(game){
       if (pick.activePick === null) {
         if (pick.plan === 'noPlan' || pick.plan === null) {
-          return [pick, game]
+          retObj.pick = pick;
+          retObj.game = game;
+          return retObj;
         } else if (pick.plan === 'homeSpreads') {
 
           if (game[0].PointSpreadHome > 0) {
@@ -64,7 +67,9 @@ module.exports = {
             geoType: geoType
           }, '*').then(function(newPick){
             console.log(newPick[0].id, ' has been updated as homeSpread');
-            return [newPick, game];
+            retObj.pick = newPick;
+            retObj.game = game;
+            return retObj;
           });
         } else if (pick.plan === 'awaySpreads') {
 
@@ -94,7 +99,9 @@ module.exports = {
             geoType: geoType
           }, '*').then(function(newPick){
             console.log(newPick[0].id, ' has been updated as awaySpread');
-            return [newPick, game];
+            retObj.pick = newPick;
+            retObj.game = game;
+            return retObj;
           });
 
         } else if (pick.plan === 'favMLs') {
@@ -110,7 +117,9 @@ module.exports = {
               geoType: 'Home Fav'
             }, '*').then(function(newPick){
               console.log(newPick[0].id, ' has been updated as favML');
-              return [newPick, game];
+              retObj.pick = newPick;
+              retObj.game = game;
+              return retObj;
             });
           } else {
             Picks().where({id: pick.id}).update({
@@ -124,7 +133,9 @@ module.exports = {
               geoType: 'Away Fav'
             }, '*').then(function(newPick){
               console.log(newPick[0].id, ' has been updated as favML');
-              return [newPick, game];
+              retObj.pick = newPick;
+              retObj.game = game;
+              return retObj;
             });
           }
         } else if (pick.plan === 'dogSpreads') {
@@ -140,7 +151,9 @@ module.exports = {
               geoType: 'Home Dog'
             }, '*').then(function(newPick){
               console.log(newPick[0].id, ' has been updated as dogSpread');
-              return [newPick, game];
+              retObj.pick = newPick;
+              retObj.game = game;
+              return retObj;
             });
           } else {
             Picks().where({id: pick.id}).update({
@@ -154,11 +167,15 @@ module.exports = {
               geoType: 'Away Dog'
             }, '*').then(function(newPick){
               console.log(newPick[0].id, ' has been updated as dogSpread');
-              return [newPick, game];
+              retObj.pick = newPick;
+              retObj.game = game;
+              return retObj;
             });
           }
         } else {
-          return [pick, game]
+          retObj.pick = pick;
+          retObj.game = game;
+          return retObj;
         }
       }
     })
