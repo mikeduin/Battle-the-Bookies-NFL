@@ -10,11 +10,10 @@ function Picks() {
 
 module.exports = {
 
-// retArray[0] = pick, retArray[1] = game;
 
-  setCapperGrades: function(retArray){
-    var pick = retArray[0];
-    var game = retArray[1];
+  setCapperGrades: function(retObj){
+    var pick = retObj.pick;
+    var game = retObj.game;
     var startGrade = 10;
     var capperGrade;
     var bestLineAvail;

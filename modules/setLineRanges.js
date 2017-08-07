@@ -186,8 +186,8 @@ module.exports = {
           var numPicks = picks.length;
           var capCounter = 0;
           picks.forEach(function(pick){
-            checkPlans.checkPickPlans(pick).then(function(retArray){
-              setCapperGrades.setCapperGrades(retArray)
+            checkPlans.checkPickPlans(pick).then(function(retObj){
+              setCapperGrades.setCapperGrades(retObj)
                 .then(function(eventIDret){
                   capCounter++;
                   console.log('capCounter is ', capCounter);
