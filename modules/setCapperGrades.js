@@ -10,8 +10,8 @@ function Picks() {
 
 module.exports = {
 
-
   setCapperGrades: function(retObj){
+    console.log('retObj returned to setCapperGrades is ', retObj);
     var pick = retObj.pick;
     var game = retObj.game;
     var startGrade = 10;
@@ -133,7 +133,7 @@ module.exports = {
         }
       }
     } else {
-      console.log ("pick is null");
+      console.log ("pick is null, no capperGrade added");
       return;
     };
 
