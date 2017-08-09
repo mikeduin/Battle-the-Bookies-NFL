@@ -187,9 +187,9 @@ module.exports = {
           var capCounter = 0;
           picks.forEach(function(pick){
             checkPlans.checkPickPlans(pick).then(function(retObj){
-              console.log('retObj in LINERANGES is ', retObj);
               setCapperGrades.setCapperGrades(retObj)
                 .then(function(eventIDret){
+                  console.log('eventIDret returned is ', eventIDret);
                   capCounter++;
                   console.log('capCounter is ', capCounter);
                   if (capCounter === numPicks) {

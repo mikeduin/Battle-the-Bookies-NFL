@@ -35,10 +35,11 @@ module.exports = {
     var retObj = {};
     return Lines().where({EventID: pick.EventID}).then(function(game){
       if (pick.activePick === null) {
+        console.log('type of pick is ', typeof pick.activePick);
+        console.log('this pick is null or undefined ', pick);
         if (pick.plan === 'noPlan' || pick.plan === null) {
           retObj.pick = pick;
           retObj.game = game[0];
-          // console.log('retObj for ', pick.username, ' at beg is ', retObj);
           return retObj;
         } else if (pick.plan === 'homeSpreads') {
 
@@ -70,7 +71,6 @@ module.exports = {
             console.log(newPick[0].id, ' has been updated as homeSpread');
             retObj.pick = newPick[0];
             retObj.game = game[0];
-            // console.log('retObj for ', newPick[0].username,' in homeSpreads is ', retObj);
             return retObj;
           });
         } else if (pick.plan === 'awaySpreads') {
@@ -103,7 +103,6 @@ module.exports = {
             console.log(newPick[0].id, ' has been updated as awaySpread');
             retObj.pick = newPick[0];
             retObj.game = game[0];
-            // console.log('retObj for ', newPick[0].username,' in awaySpreads is ', retObj);
             return retObj;
           });
 
@@ -122,7 +121,6 @@ module.exports = {
               console.log(newPick[0].id, ' has been updated as favML');
               retObj.pick = newPick[0];
               retObj.game = game[0];
-              // console.log('retObj for ', newPick[0].username,' in favMLs part 1 is ', retObj);
               return retObj;
             });
           } else {
@@ -139,7 +137,6 @@ module.exports = {
               console.log(newPick[0].id, ' has been updated as favML');
               retObj.pick = newPick[0];
               retObj.game = game[0];
-              // console.log('retObj for ', newPick[0].username,' in favMLs part 2 is ', retObj);
               return retObj;
             });
           }
@@ -158,7 +155,6 @@ module.exports = {
               console.log(newPick[0].id, ' has been updated as dogSpread');
               retObj.pick = newPick[0];
               retObj.game = game[0];
-              // console.log('retObj for ', newPick[0].username,' in dogSpreads part 1 is ', retObj);
               return retObj;
             });
           } else {
@@ -175,16 +171,18 @@ module.exports = {
               console.log(newPick[0].id, ' has been updated as dogSpread');
               retObj.pick = newPick[0];
               retObj.game = game[0];
-              // console.log('retObj for ', newPick[0].username,' in dogSpreads part 2 is ', retObj);
               return retObj;
             });
           }
         } else {
           retObj.pick = pick;
           retObj.game = game[0];
-          // console.log('retObj for ', pick.username,' at end is ', retObj);
           return retObj;
         }
+      } else {
+        retObj.pick = pick;
+        retObj.game = game[0];
+        return retObj;
       }
     })
   }
