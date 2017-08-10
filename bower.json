@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular-spinkit": "^0.3.4"
+    "angular-spinkit": "^0.3.4",
+    "angular-modal-service": "^0.12.1"
   }
 }

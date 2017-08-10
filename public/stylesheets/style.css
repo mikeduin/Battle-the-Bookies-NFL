@@ -938,6 +938,10 @@ standings th, standings td {
 .ytdwBox {
   width: 40px;
 }
+.plan-txt {
+  font-weight: 300;
+  color: #2F5032;
+}
 
 .wBox {
   width: 25px;

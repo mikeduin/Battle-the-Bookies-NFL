@@ -6,8 +6,6 @@ function AuthController ($state, authService) {
   var vm = this;
 
   vm.register = function(user) {
-    console.log('user.buyin is ', user.buyin);
-    console.log('user.plan is ', user.plan);
     if (user.buyin === undefined || user.plan === undefined) {
       vm.error = 'Please select your buy-in and pick plan.'
     } else {
@@ -26,5 +24,6 @@ function AuthController ($state, authService) {
     }).then(function(){
       $state.go('home.makepicks');
     })
-  }
+  };
+
 }

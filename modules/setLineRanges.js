@@ -189,7 +189,6 @@ module.exports = {
             checkPlans.checkPickPlans(pick).then(function(retObj){
               setCapperGrades.setCapperGrades(retObj)
                 .then(function(eventIDret){
-                  console.log('eventIDret returned is ', eventIDret);
                   capCounter++;
                   console.log('capCounter is ', capCounter);
                   if (capCounter === numPicks) {

@@ -36,6 +36,9 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
       user.ytdW = result.totalW;
       user.ytdL = result.totalG - result.totalW;
       user.ytdPct = result.totalW / result.totalG;
+      if (user.plan === "noPlan") {
+        user.plan = "";
+      };
     }).then(function(){
       username = user.username;
       picksService.getWeeklyStats(username).then(function(result){
