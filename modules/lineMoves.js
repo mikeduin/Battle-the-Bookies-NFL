@@ -87,7 +87,7 @@ module.exports = {
 
   logIndLineMove: function(game){
     LineMoves().where({EventID: game[0].EventID}).then(function(result){
-      // if (result.length === 0) {
+      if (result.length === 0) {
         var homeSpread = game[0].PointSpreadHome;
         var homeSpreadJuice = game[0].PointSpreadHomeLine;
         var awaySpread = game[0].PointSpreadAway;
@@ -135,10 +135,10 @@ module.exports = {
         }, '*').then(function(line){
           console.log('linemove arrays initiated for ', line[0].EventID);
         });
-      // } else {
-      //   // can delete this else once its been confirmed to work
-      //   console.log("line move array ALREADY INITIATED for this event");
-      // }
+      } else {
+        // can delete this else once its been confirmed to work
+        console.log("line move array ALREADY INITIATED for this event");
+      }
     })
   },
 
