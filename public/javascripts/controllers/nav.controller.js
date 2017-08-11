@@ -31,7 +31,7 @@ function NavController (authService, oddsService, $state) {
   }
 
   vm.logOut = function(){
-    authService.logOut()
+    authService.logOut();
   }
 
   vm.currentUser = function(){

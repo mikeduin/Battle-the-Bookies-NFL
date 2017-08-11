@@ -138,6 +138,9 @@ function PickController (oddsService, picksService, resultsService, authService,
   };
 
   function submitPick () {
+    if (vm.pick.username === undefined) {
+      Materialize.toast('YOUR PICK WAS NOT SAVED; you are not logged in. If you believe this is an error, please log out and login again.', 7000, 'rounded');
+    };
     picksService.submitPick(vm.pick).then(function(){
       console.log('pick submitted!');
       vm.pick.activeGame = {};

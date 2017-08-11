@@ -7,6 +7,7 @@ function AuthController ($state, authService) {
 
   $(document).ready(function () {
     $('.modal').modal();
+    $('.tooltipped').tooltip({delay: 20});
   })
 
   vm.register = function(user) {

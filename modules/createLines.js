@@ -70,6 +70,7 @@ module.exports = {
               console.log(line[0].EventID + ' was added as a new line');
               // This function below adds the user pick templates for each pick once it's been added as a line.
               Users().then(function(users){
+                var count = 0;
                 for (var i=0; i<users.length; i++) {
                   Picks().insert({
                     username: users[i].username,
@@ -84,9 +85,14 @@ module.exports = {
                     finalPayout: 0
                   }, '*').then(function(pick){
                     console.log('pick has been added for user ', pick[0].username, ' and event ', pick[0].EventID);
-                    Lines().where({EventID: pick[0].EventID}).then(function(res){
-                      logLineMoves.logIndLineMove(res);
-                    })
+                    if (count === 0) {
+                      count++;
+                      console.log('count is ', count);
+                      Lines().where({EventID: pick[0].EventID}).then(function(res){
+                        console.log('count in second leg is ', count);
+                        logLineMoves.logIndLineMove(res);
+                      })
+                    }
                   })
                 }
               })

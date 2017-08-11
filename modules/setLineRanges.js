@@ -1,6 +1,8 @@
+
 var knex = require('../db/knex');
 var setCapperGrades = require('../modules/setCapperGrades.js');
 var pickArrays = require('../modules/pickArrays.js');
+var checkPlans = require('../modules/checkPickPlans.js');
 
 function Lines () {
   return knex('lines')
@@ -183,14 +185,22 @@ module.exports = {
         console.log('line move objects have been set for ', gameID);
         Picks().where({EventID: gameID}).then(function(picks){
           var numPicks = picks.length;
-          var counter = 0;
+          var capCounter = 0;
           picks.forEach(function(pick){
-            setCapperGrades.setCapperGrades(pick).then(function(eventIDret){
-              counter++;
-              if (counter === numPicks) {
-                setTimeout(pickArrays.buildArrays(gameID), 20000);
-              };
-            });
+            checkPlans.checkPickPlans(pick).then(function(retObj){
+              setCapperGrades.setCapperGrades(retObj)
+                .then(function(eventIDret){
+                  console.log('eventIDret returned is ', eventIDret);
+                  capCounter++;
+                  console.log('capCounter is ', capCounter);
+                  if (capCounter === numPicks) {
+                    setTimeout(function(){
+                      console.log('function gets to build pickArrays');
+                      pickArrays.buildArrays(gameID);
+                    }, 20000);
+                  };
+                })
+            })
           })
         })
       })
