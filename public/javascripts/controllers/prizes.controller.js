@@ -39,19 +39,19 @@ function PrizesController (usersService) {
       vm.silverPool = 0;
       vm.goldPool = 0;
       for (i=0; i<users.length; i++) {
-        if (users[i].buyin === '50') {
+        if (users[i].buyin === 50) {
           vm.bronzePool += 50;
           if (users[i].plan !== 'noPlan') {
             vm.bronzePool += 20;
           };
-        } else if (users[i].buyin === '100') {
+        } else if (users[i].buyin === 100) {
           vm.bronzePool += 50;
           vm.silverPool += 50;
           if (users[i].plan !== 'noPlan') {
             vm.bronzePool += 10;
             vm.silverPool += 10;
           }
-        } else if (users[i].buyin === '200') {
+        } else if (users[i].buyin === 200) {
             vm.bronzePool += 50;
             vm.silverPool += 50;
             vm.goldPool += 100;

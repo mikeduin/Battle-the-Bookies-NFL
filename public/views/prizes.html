@@ -36,8 +36,8 @@
           <td class="center-align"> <span ng-if="user.plan !== 'noPlan'">{{user.plan}}</span> </td>
           <td class="center-align"> <b>${{user.buyin}}</b> </td>
           <td class="center-align bronze"> $50 </td>
-          <td ng-if="user.buyin === '100' || user.buyin === '200'" class="center-align silver"> $50 </td>
-          <td ng-if="user.buyin === '200'" class="center-align gold"> $100 </td>
+          <td ng-if="user.buyin === 100 || user.buyin === 200" class="center-align silver"> $50 </td>
+          <td ng-if="user.buyin === 200" class="center-align gold"> $100 </td>
         </tr>
       </tbody>
     </table>
