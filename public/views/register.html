@@ -62,7 +62,7 @@
                 <label for="goldTier" ng-style="user.buyin === '200' ? {'font-weight': 800} : {'font-weight': 200}"> <color class="gold">Gold</color> ($200) </label>
               </buyInLevel>
               <pickProtect class="col m4">
-                <span class="buy-in-label tooltipped" data-position="top" data-delay="50" data-tooltip="I am a tooltip"> Pick Protection Plan ($25):</span>
+                <span ng-click="vm.openModal()" class="buy-in-label pick-plan"> <i class="fa fa-question-circle" aria-hidden="true"></i> Pick Protection Plan ($25):</span>
                 <br>
                 <input class="with-gap" name="group2" type="radio" id="noPlan" value="noPlan" ng-model="user.plan">
                 <label for="noPlan" ng-style="user.plan === 'noPlan' ? {'font-weight': 800, 'color': 'black'} : {'font-weight': 200}"> No Plan (free) </label>
@@ -76,10 +76,10 @@
                 <label for="dogSpreads" ng-style="user.plan === 'dogSpreads' ? {'font-weight': 800, 'color': 'black'} : {'font-weight': 200}"> Dog Spreads </label>
               </pickProtect>
               <div class="col m3">
-                <button type="submit" class="btn btn-large waves-effect waves-light login-button" > GAME ON! </button>
-                <div>
+                <button type="submit" class="btn btn-large waves-effect waves-light login-button"> GAME ON! </button>
+                <!-- <div>
                   <i> <b> Registration is now closed for the 2016 NFL season. </b> </i>
-                </div>
+                </div> -->
               </div>
             </div>
           </form>
@@ -88,3 +88,18 @@
     </regBox>
   </regBack>
 </div>
+
+<div id="modal1" class="modal">
+   <div class="modal-content">
+     <h4>What is a Pick Protection Plan?</h4>
+     <p>New this season is the option for entrants to pay an additional $25 to protect themselves from missed picks -- which would otherwise earn them an automatic loss of $100 in-game dollars -- by selecting from one of four pick protection plans which will automatically make selections for a user in the event that no pick is selected for a game. Those options are:</p>
+     <div><b>Home Team Against the Spread</b></div>
+     <div><b>Road Team Against the Spread</b></div>
+     <div><b>Favored Team's Moneyline</b></div>
+     <div><b>Underdog Against the Spread</b></div>
+     <p>In other words, if you paid $25 for a 'Home Team ATS' plan and did not make a selection for a game, you would automatically be given the home team at their closing spread at gametime. The $25 from each pick protection plan will be re-distributed into the prize pool proportionally based on a user's buy-in. </p>
+   </div>
+   <div class="modal-footer">
+     <h5 ng-click="vm.closeModal()" class="modal-action modal-close waves-effect waves-green btn-flat">Got it!</h5>
+   </div>
+ </div>

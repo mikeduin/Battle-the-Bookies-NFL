@@ -372,6 +372,22 @@ buyInLevel span {
   color: #B68708;
 }
 
+.pick-plan {
+  cursor: pointer;
+}
+
+pickProtect {
+  margin-top: -6px;
+}
+
+.modal-content h4 {
+  color: #2F5032;
+}
+
+.modal-footer {
+  margin-top: -60px;
+}
+
 /*END LOGIN/REG STYLES*/
 /*BEGIN TUTORIAL STYLES*/
 
