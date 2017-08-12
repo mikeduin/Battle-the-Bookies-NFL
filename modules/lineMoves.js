@@ -135,10 +135,6 @@ module.exports = {
         }, '*').then(function(line){
           console.log('linemove arrays initiated for ', line[0].EventID);
         });
-      // } else {
-      //   // can delete this else once its been confirmed to work
-      //   console.log("line move array ALREADY INITIATED for this event");
-      // }
     })
   },
 
