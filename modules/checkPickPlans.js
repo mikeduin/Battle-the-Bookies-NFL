@@ -34,9 +34,7 @@ module.exports = {
   checkPickPlans: function(pick){
     var retObj = {};
     return Lines().where({EventID: pick.EventID}).then(function(game){
-      if (pick.activePick === null) {
-        console.log('type of pick is ', typeof pick.activePick);
-        console.log('this pick is null or undefined ', pick);
+      if (pick.activePick === undefined) {
         if (pick.plan === 'noPlan' || pick.plan === null) {
           retObj.pick = pick;
           retObj.game = game[0];
@@ -68,7 +66,6 @@ module.exports = {
             betType: betType,
             geoType: geoType
           }, '*').then(function(newPick){
-            console.log(newPick[0].id, ' has been updated as homeSpread');
             retObj.pick = newPick[0];
             retObj.game = game[0];
             return retObj;
@@ -100,7 +97,6 @@ module.exports = {
             betType: betType,
             geoType: geoType
           }, '*').then(function(newPick){
-            console.log(newPick[0].id, ' has been updated as awaySpread');
             retObj.pick = newPick[0];
             retObj.game = game[0];
             return retObj;
@@ -118,7 +114,6 @@ module.exports = {
               betType: 'Fav ML',
               geoType: 'Home Fav'
             }, '*').then(function(newPick){
-              console.log(newPick[0].id, ' has been updated as favML');
               retObj.pick = newPick[0];
               retObj.game = game[0];
               return retObj;
@@ -134,7 +129,6 @@ module.exports = {
               betType: 'Fav ML',
               geoType: 'Away Fav'
             }, '*').then(function(newPick){
-              console.log(newPick[0].id, ' has been updated as favML');
               retObj.pick = newPick[0];
               retObj.game = game[0];
               return retObj;
@@ -146,13 +140,13 @@ module.exports = {
               submittedAt: new Date(),
               activePick: game[0].HomeAbbrev + ' ' + mlFormat(game[0].PointSpreadHome),
               activeLine: game[0].PointSpreadHomeLine,
+              activeSpread: game[0].PointSpreadHome,
               activePayout: activePayCalc(game[0].PointSpreadHomeLine),
               pickType: 'Home Spread',
               favType: 'Underdog',
               betType: 'Dog Spread',
               geoType: 'Home Dog'
             }, '*').then(function(newPick){
-              console.log(newPick[0].id, ' has been updated as dogSpread');
               retObj.pick = newPick[0];
               retObj.game = game[0];
               return retObj;
@@ -162,13 +156,13 @@ module.exports = {
               submittedAt: new Date(),
               activePick: game[0].AwayAbbrev + ' ' + mlFormat(game[0].PointSpreadAway),
               activeLine: game[0].PointSpreadAwayLine,
+              activeSpread: game[0].PointSpreadAway,
               activePayout: activePayCalc(game[0].PointSpreadAwayLine),
               pickType: 'Away Spread',
               favType: 'Underdog',
               betType: 'Dog Spread',
               geoType: 'Away Dog'
             }, '*').then(function(newPick){
-              console.log(newPick[0].id, ' has been updated as dogSpread');
               retObj.pick = newPick[0];
               retObj.game = game[0];
               return retObj;

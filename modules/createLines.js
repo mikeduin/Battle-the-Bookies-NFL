@@ -84,12 +84,9 @@ module.exports = {
                     matchup: line[0].AwayAbbrev + ' @ ' + line[0].HomeAbbrev,
                     finalPayout: 0
                   }, '*').then(function(pick){
-                    console.log('pick has been added for user ', pick[0].username, ' and event ', pick[0].EventID);
                     if (count === 0) {
                       count++;
-                      console.log('count is ', count);
                       Lines().where({EventID: pick[0].EventID}).then(function(res){
-                        console.log('count in second leg is ', count);
                         logLineMoves.logIndLineMove(res);
                       })
                     }
