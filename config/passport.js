@@ -8,7 +8,7 @@ function Users() {
 }
 
 function checkPassword (user, password) {
-  var hash = crypto.pbkdf2Sync(password, user[0].salt, 1000, 64).toString('hex');
+  var hash = crypto.pbkdf2Sync(password, user[0].salt, 1000, 64, 'sha512').toString('hex');
 
   return user[0].hash === hash;
 };

@@ -47,7 +47,7 @@ router.post('/register', function(req, res, next){
   };
 
   var salt = crypto.randomBytes(16).toString('hex');
-  var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64).toString('hex');
+  var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
 
   Users().insert({
     username: req.body.username,
