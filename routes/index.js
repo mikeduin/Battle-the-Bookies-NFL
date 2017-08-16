@@ -6,7 +6,7 @@ var fetch = require('node-fetch');
 var moment = require('moment');
 var passport = require('passport');
 var knex = require('../db/knex');
-var request = require('request-promise');
+// var request = require('request-promise');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
