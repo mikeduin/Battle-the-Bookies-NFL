@@ -97,7 +97,7 @@ function PickController (oddsService, picksService, resultsService, authService,
          vm.weeksOfGames.push(newWeek)
        };
       var currentWeek = vm.weekSetter(moment().format());
-      console.log('currentWeek is ', currentWeek);
+      // console.log('currentWeek is ', currentWeek);
       if (currentWeek === "Preseason") {
         vm.gameWeekFilter = "Week 1"
       } else if (

@@ -34,7 +34,6 @@ module.exports = {
   checkPickPlans: function(pick){
     var retObj = {};
     return Lines().where({EventID: pick.EventID}).then(function(game){
-      console.log('pick.activePick is ', pick.activePick);
       if (pick.activePick === null) {
         if (pick.plan === 'noPlan' || pick.plan === null) {
           retObj.pick = pick;

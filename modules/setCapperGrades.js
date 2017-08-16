@@ -1,4 +1,3 @@
-
 var knex = require('../db/knex');
 
 function Lines() {
@@ -141,11 +140,9 @@ module.exports = {
         bestLineAvail: bestLineAvail,
         bestJuiceAvail: bestJuiceAvail
       }, '*').then(function(ret){
-        console.log(ret[0].EventID, ' has been updated with capperGrade for ', ret[0].username)
         return ret[0].EventID;
       })
     } else {
-      console.log ("pick is null, no capperGrade added");
       return line.EventID;
     };
   }

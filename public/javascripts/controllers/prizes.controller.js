@@ -29,6 +29,9 @@ function PrizesController (usersService) {
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
       vm.users = result;
+        for (user in vm.users) {
+
+        }
     })
   }
 
@@ -80,4 +83,18 @@ function PrizesController (usersService) {
       vm.goldFourth = (vm.goldPool * 0.075);
     })
   }
+
+  vm.detPlan = function(plan) {
+    if (user.plan === "noPlan") {
+      user.plan = "";
+    } else if (user.plan === "dogSpreads") {
+      user.plan = "Underdog ATS"
+    } else if (user.plan === "homeSpreads") {
+      user.plan = "Home ATS"
+    } else if (user.plan === "awaySpreads") {
+      user.plan = "Away ATS"
+    } else if (user.plan === "favMLs") {
+      user.plan = "Favorite ML"
+    }
+  };
 }

@@ -38,7 +38,15 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
       user.ytdPct = result.totalW / result.totalG;
       if (user.plan === "noPlan") {
         user.plan = "";
-      };
+      } else if (user.plan === "dogSpreads") {
+        user.plan = "Underdog ATS"
+      } else if (user.plan === "homeSpreads") {
+        user.plan = "Home ATS"
+      } else if (user.plan === "awaySpreads") {
+        user.plan = "Away ATS"
+      } else if (user.plan === "favMLs") {
+        user.plan = "Favorite ML"
+      }
     }).then(function(){
       username = user.username;
       picksService.getWeeklyStats(username).then(function(result){

@@ -1,4 +1,3 @@
-var mongoose = require('mongoose');
 var fetch = require('node-fetch');
 var moment = require('moment');
 var abbrevs = require('../modules/abbrevs.js');
@@ -7,7 +6,6 @@ var colors = require('../modules/colors.js');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
 var logLineMoves = require('../modules/lineMoves.js');
-// var Line = mongoose.model('Line');
 var knex = require ('../db/knex');
 
 function Lines() {

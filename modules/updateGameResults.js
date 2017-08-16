@@ -1,5 +1,4 @@
 var fetch = require('node-fetch');
-var mongoose = require('mongoose');
 var knex = require('../db/knex');
 
 function Results () {

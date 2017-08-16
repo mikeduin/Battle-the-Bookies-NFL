@@ -4,7 +4,6 @@ var jwt = require('express-jwt');
 var auth = jwt({secret: process.env.SESSION_SECRET, userProperty: 'payload'});
 var fetch = require('node-fetch');
 var moment = require('moment');
-var mongoose = require('mongoose');
 var passport = require('passport');
 var knex = require('../db/knex');
 var request = require('request-promise');
@@ -14,19 +13,13 @@ router.get('/', function(req, res, next) {
   res.redirect('index.html');
 });
 
-var User = mongoose.model('User');
-var Line = mongoose.model('Line');
-var Result = mongoose.model('Result');
-var Pick = mongoose.model('Pick');
-var PickArray = mongoose.model('PickArray');
-var LineMove = mongoose.model('LineMove');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
 var updateGameResults = require('../modules/updateGameResults.js');
 var createLines = require('../modules/createLines.js');
 var lineMoves = require('../modules/lineMoves.js');
 var checkStartTimes = require('../modules/checkStartTimes.js');
-var addPickTemplates = require('../modules/addPickTemplates.js');
+// var addPickTemplates = require('../modules/addPickTemplates.js');
 var setLineRanges = require('../modules/setLineRanges.js');
 var setCapperGrades = require('../modules/setCapperGrades.js');
 var pickArrays = require('../modules/pickArrays.js');
@@ -59,24 +52,17 @@ function Picks() {
 }
 
 // This first function updates game results every 11 minutes.
-// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
-// ! UPDATED FOR SQL + merged w/updateFinalScores and updatePickResults !
-
 setInterval(function (){
   updateGameResults.updateGameResults()
 }, 660000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
-// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no lines to update)
-// ! UPDATED FOR SQL !
 setInterval(function (){
   createLines.createLines();
 }, 420000);
 
 
 // The function below runs once every 15 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
-// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no results to update)
-// ! UPDATED FOR SQL !
 setInterval(function (){
   lineMoves.logAllLineMoves();
 }, 900000);
@@ -86,13 +72,6 @@ setInterval(function (){
 // setInterval(function (){
 //   checkStartTimes.checkStartTimes();
 // }, 50000000)
-
-// This function below checks every 17 minutes to see if new lines have been added, and if so, adds user pick templates for those lines to ensure results are displayed correctly and in the proper order.
-// DISABLED + COMMENTED OUT AS OF 1.5.17 (offseason = no picks to update)
-
-// setInterval(function (){
-//   addPickTemplates.addPickTemplates()
-// }, 1020000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
@@ -134,8 +113,6 @@ router.get('/updateOdds', function(req, res, next) {
 
 // This massive function below runs every 3 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
 
-// REBUILT FOR SQL -- Initial tests good, re-test with differing line data
-// MODULE REBUILT TO TRANSITION TO CAPPER GRADES
 setInterval(function (){
   var now = moment();
   Lines()
@@ -152,43 +129,38 @@ setInterval(function (){
   })
 }, 180000);
 
-// below REBUILT FOR SQL
 router.get('/weeks', function(req, res, next){
   getWeeks.getWeeks().then(function(weeks){
     res.json(weeks);
   })
 })
 
-// below REBUILT FOR SQL -- NOT TESTED YET!
 router.get('/line/:gameID', function(req, res, next){
   fetchLines.byID(req.params.gameID).then(function(lines){
     res.json(lines);
   })
 })
 
-// below REBUILT FOR SQL -- NOT TESTED YET!
 router.get('/matchups', function(req, res, next){
   fetchLines.matchups().then(function(matchups){
     res.json(matchups);
   })
 })
 
-// below REBUILT FOR SQL -- NOT TESTED YET!
 router.get('/linemove/:gameID', function(req, res, next){
   lineMoves.byId(req.params.gameID).then(function(game){
     res.json(game)
   });
 })
 
-router.get('/results', function(req, res, next){
-  Result.find(function(err, games) {
-    if (err) { next(err) };
+// router.get('/results', function(req, res, next){
+//   Result.find(function(err, games) {
+//     if (err) { next(err) };
+//
+//     res.json(games);
+//   })
+// })
 
-    res.json(games);
-  })
-})
-
-// below REBUILT FOR SQL -- NOT TESTED YET!
 router.get('/pullGame/:gameID', function(req, res, next){
   pickArrays.byId(req.params.gameID).then(function(arrays){
     console.log('arrays in server are ', arrays);
@@ -196,7 +168,6 @@ router.get('/pullGame/:gameID', function(req, res, next){
   })
 })
 
-// REBUILT FOR SQL, NOT TESTED YET
 router.get('/weeklyStats/:username', function(req, res, next){
   var username = req.params.username;
   var weekArray = [];

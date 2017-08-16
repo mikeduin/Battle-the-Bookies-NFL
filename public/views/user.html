@@ -117,7 +117,7 @@
           {{game.bestLineAvail | mlFormat}} <span ng-hide="vm.weekNumb < 6 || (game.pickType === 'Home Moneyline' || game.pickType === 'Away Moneyline')">
           ({{game.bestJuiceAvail | mlFormat}})</span>
         </td>
-        <td ng-show="!game.bestLineAvail && game.capperGraded"> <i>error</i></td>
+        <td ng-show="!game.bestLineAvail && game.capperGraded"> <i>no pick made</i></td>
         <td ng-show="game.bestLineAvail && (game.pickType === 'Total Over')" class="bestLn">
           O{{game.bestLineAvail}}
           <span ng-hide="vm.weekNumb < 6">({{game.bestJuiceAvail | mlFormat}})</span>
@@ -126,7 +126,7 @@
           U{{game.bestLineAvail}}
           <span ng-hide="vm.weekNumb < 6">({{game.bestJuiceAvail | mlFormat}})</span>
         </td>
-        <td ng-show="game.capperGrade" ng-class="{capperHigh: game.capperGrade >= 9, capperMed: game.capperGrade < 9 && game.capperGrade > 7.5, capperLow: game.capperGrade <= 7.5}"> {{game.capperGrade}}</td>
+        <td ng-class="{capperHigh: game.capperGrade >= 9, capperMed: game.capperGrade < 9 && game.capperGrade > 7.5, capperLow: game.capperGrade <= 7.5}"> {{game.capperGrade}}</td>
       </tr>
     </tbody>
   </table>

@@ -4,30 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var moment = require('moment-timezone');
 require('dotenv').load();
-
-mongoose.connect(
-  process.env.MONGODB_URI
-);
-
-require('./models/Users');
-require('./models/Lines');
-require('./models/Results');
-require('./models/Picks');
-require('./models/PickArrays');
-require('./models/LineMoves');
-require('./config/passport');
-
-var db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log("we connected to Battle the Bookies!")
-})
 
 var routes = require('./routes/index');
 var users = require('./routes/users');

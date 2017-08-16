@@ -115,7 +115,6 @@ router.get('/:username/:weeknumb', function (req, res, next) {
 })
 
 // Adding auth as middleware here will ensure that the JWTToken is valid in order for a user to be accessing this route
-// TEST THIS TO MAKE SURE IT RETURNS / POSTS PROPERLY
 router.post('/addTemp', auth, function (req, res, next){
   Picks().insert({
     username: req.payload.username,
@@ -132,7 +131,6 @@ router.post('/addTemp', auth, function (req, res, next){
 })
 
 // The following function both updates the user pick template with the user's actual pick and then updates the line's counters that track pick types.
-
 router.put('/', auth, function(req, res, next){
   var activeSpread;
   var activeTotal;

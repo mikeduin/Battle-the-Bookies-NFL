@@ -1,4 +1,3 @@
-
 var knex = require('../db/knex');
 var setCapperGrades = require('../modules/setCapperGrades.js');
 var pickArrays = require('../modules/pickArrays.js');
