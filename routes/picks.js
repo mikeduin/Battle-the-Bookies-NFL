@@ -116,10 +116,12 @@ router.get('/:username/:weeknumb', function (req, res, next) {
 
 // Adding auth as middleware here will ensure that the JWTToken is valid in order for a user to be accessing this route
 router.post('/addTemp', auth, function (req, res, next){
+  console.log('req.body is ', req.body);
   Picks().insert({
     username: req.payload.username,
     EventID: req.body.EventID,
     MatchDay: req.body.MatchDay,
+    matchup: req.body.AwayAbbrev + ' @ ' + req.body.HomeAbbrev,
     MatchTime: req.body.MatchTime,
     DateNumb: req.body.DateNumb,
     WeekNumb: setWeekNumb.weekNumbSetter(req.body.MatchTime),
