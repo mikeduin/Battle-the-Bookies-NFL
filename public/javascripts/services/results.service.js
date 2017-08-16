@@ -11,7 +11,6 @@ function resultsService ($http){
     },
     getNflResults: function() {
       return $http.get('/results').then(function(results){
-        console.log(results.data);
         return results.data
       })
     }

@@ -97,7 +97,7 @@ function PickController (oddsService, picksService, resultsService, authService,
          vm.weeksOfGames.push(newWeek)
        };
       var currentWeek = vm.weekSetter(moment().format());
-      // console.log('currentWeek is ', currentWeek);
+      console.log('currentWeek is ', currentWeek);
       if (currentWeek === "Preseason") {
         vm.gameWeekFilter = "Week 1"
       } else if (
@@ -142,10 +142,8 @@ function PickController (oddsService, picksService, resultsService, authService,
       Materialize.toast('YOUR PICK WAS NOT SAVED; you are not logged in. If you believe this is an error, please log out and login again.', 7000, 'rounded');
     };
     picksService.submitPick(vm.pick).then(function(){
-      console.log('pick submitted!');
       vm.pick.activeGame = {};
     }, function(){
-      console.log('pick failed to submit!');
       vm.pick.activeGame = {};
     });
   };
@@ -175,7 +173,6 @@ function PickController (oddsService, picksService, resultsService, authService,
     };
 
     vm.pick.activeGame = game.EventID;
-    // console.log('vm.pick.activeGame is', vm.pick.activeGame);
     vm.pick.activeSpread = game.PointSpreadAway;
     vm.pick.activeLine = game.PointSpreadAwayLine;
     vm.pick.activePick = (game.AwayAbbrev + ' ' + vm.mlFormat(game.PointSpreadAway));
@@ -355,44 +352,44 @@ function PickController (oddsService, picksService, resultsService, authService,
   };
 
   vm.weekSetter = function(MatchTime) {
-    if (moment(MatchTime).isBetween('2017-06-23', '2017-07-11')) {
+    if (moment(MatchTime).isBetween('2017-06-23', '2017-09-01')) {
       return "Preseason"
-    } else if (moment(MatchTime).isBetween('2017-07-11', '2017-07-19')) {
+    } else if (moment(MatchTime).isBetween('2017-09-02', '2017-09-13')) {
+      return "Week 1"
+    } else if (moment(MatchTime).isBetween('2017-09-13', '2017-09-20')) {
+      return "Week 2"
+    } else if (moment(MatchTime).isBetween('2017-09-20', '2017-09-27')) {
       return "Week 3"
-    } else if (moment(MatchTime).isBetween('2017-07-19', '2017-07-26')) {
+    } else if (moment(MatchTime).isBetween('2017-09-27', '2017-10-04')) {
       return "Week 4"
-    } else if (moment(MatchTime).isBetween('2017-07-26', '2017-08-02')) {
+    } else if (moment(MatchTime).isBetween('2017-10-04', '2017-10-11')) {
       return "Week 5"
-    } else if (moment(MatchTime).isBetween('2017-08-02', '2017-08-09')) {
+    } else if (moment(MatchTime).isBetween('2017-10-11', '2017-10-18')) {
       return "Week 6"
-    } else if (moment(MatchTime).isBetween('2017-08-09', '2017-08-16')) {
+    } else if (moment(MatchTime).isBetween('2017-10-18', '2017-10-25')) {
       return "Week 7"
-    } else if (moment(MatchTime).isBetween('2017-08-16', '2017-08-23')) {
+    } else if (moment(MatchTime).isBetween('2017-10-25', '2017-11-01')) {
       return "Week 8"
-    } else if (moment(MatchTime).isBetween('2017-08-23', '2017-08-30')) {
+    } else if (moment(MatchTime).isBetween('2017-11-01', '2017-11-08')) {
       return "Week 9"
-    } else if (moment(MatchTime).isBetween('2017-10-26', '2017-11-02')) {
+    } else if (moment(MatchTime).isBetween('2017-11-08', '2017-11-15')) {
       return "Week 10"
-    } else if (moment(MatchTime).isBetween('2017-11-02', '2017-11-09')) {
+    } else if (moment(MatchTime).isBetween('2017-11-15', '2017-11-22')) {
       return "Week 11"
-    } else if (moment(MatchTime).isBetween('2017-11-09', '2017-11-16')) {
+    } else if (moment(MatchTime).isBetween('2017-11-22', '2017-11-29')) {
       return "Week 12"
-    } else if (moment(MatchTime).isBetween('2017-11-16', '2017-11-23')) {
+    } else if (moment(MatchTime).isBetween('2017-11-29', '2017-12-06')) {
       return "Week 13"
-    } else if (moment(MatchTime).isBetween('2017-11-23', '2017-11-30')) {
+    } else if (moment(MatchTime).isBetween('2017-12-06', '2017-12-13')) {
       return "Week 14"
-    } else if (moment(MatchTime).isBetween('2017-11-30', '2017-12-07')) {
+    } else if (moment(MatchTime).isBetween('2017-12-13', '2017-12-20')) {
       return "Week 15"
-    } else if (moment(MatchTime).isBetween('2017-12-07', '2017-12-14')) {
+    } else if (moment(MatchTime).isBetween('2017-12-20', '2017-12-21')) {
       return "Week 16"
-    } else if (moment(MatchTime).isBetween('2017-12-14', '2017-12-21')) {
+    } else if (moment(MatchTime).isBetween('2017-12-21', '2017-01-03')) {
       return "Week 17"
-    } else if (moment(MatchTime).isBetween('2017-12-21', '2017-12-28')) {
-      return "Week 18"
-    } else if (moment(MatchTime).isBetween('2017-12-28', '2017-01-04')) {
-      return "Week 19"
     } else {
       return "Postseason"
-    }
-  };
+    };
+  }
 }

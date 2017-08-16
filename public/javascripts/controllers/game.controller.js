@@ -185,13 +185,9 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
         vm.overPickPct = Math.round((vm.overPicks.length/totalUsers)*100);
         vm.underPickPct = Math.round((vm.underPicks.length/totalUsers)*100);
 
-        // RESET THIS BEFORE FOOTBALL
-        // vm.homeAbbrev = vm.homeSpreadPicks[0].activePick.substr(0, vm.homeSpreadPicks[0].activePick.indexOf(' '));
-        vm.homeAbbrev = 'ONE'
+        vm.homeAbbrev = vm.homeSpreadPicks[0].activePick.substr(0, vm.homeSpreadPicks[0].activePick.indexOf(' '));
 
-        // RESET THIS BEFORE FOOTBALL
-        // vm.awayAbbrev = vm.awaySpreadPicks[0].activePick.substr(0, vm.awaySpreadPicks[0].activePick.indexOf(' '));
-        vm.awayAbbrev = 'TWO'
+        vm.awayAbbrev = vm.awaySpreadPicks[0].activePick.substr(0, vm.awaySpreadPicks[0].activePick.indexOf(' '));
 
         vm.myConfig.graphset[2].subtitle.fontColor = vm.homeColor;
         vm.myConfig.graphset[7].subtitle.fontColor = vm.homeColor;
@@ -240,8 +236,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
 
         for (i=0; i<vm.awaySpreadPicks.length; i++) {
           var unixTime = moment(vm.awaySpreadPicks[i].submittedAt).valueOf();
-          // var awayAbbrev = vm.awaySpreadPicks[i].activePick.substr(0, vm.awaySpreadPicks[i].activePick.indexOf(' '));
-          var awayAbbrev = "TWO";
+          var awayAbbrev = vm.awaySpreadPicks[i].activePick.substr(0, vm.awaySpreadPicks[i].activePick.indexOf(' '));
 
           var dogInd;
           if (vm.awaySpreadPicks[i].relevantLine>1) {

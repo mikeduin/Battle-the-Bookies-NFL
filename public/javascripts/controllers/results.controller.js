@@ -88,7 +88,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     vm.week = parseInt(vm.weekNumb);
     oddsService.getWeeklyPicks(vm.weekNumb).then(function(data){
       vm.picks = data;
-      console.log('vm.picks are ', vm.picks)
     })
   }
 
@@ -107,7 +106,6 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   function getWeeklyNflLines(){
     vm.showSpinner = true;
     oddsService.getWeeklyNflLines($stateParams.weekNumb).then(function(games){
-      console.log('games are ', games);
       vm.nflLines = games;
       for (i=0; i<vm.nflLines.length; i++){
         vm.nflLines[i].homeColor = "#B68708";
