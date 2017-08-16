@@ -18,7 +18,7 @@ function Picks () {
 module.exports = {
 
   updateGameResults: function() {
-    fetch('https://jsonodds.com/api/results/mlb?oddType=Game&final=true', {
+    fetch('https://jsonodds.com/api/results/nfl?oddType=Game&final=true', {
       method: 'GET',
       headers: {
         'JsonOdds-API-Key': process.env.API_KEY

@@ -28,7 +28,7 @@ function LineMoves() {
 
 module.exports = {
   createLines: function(){
-    fetch('https://jsonodds.com/api/odds/mlb?oddType=Game', {
+    fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
       method: 'GET',
       headers: {
         'JsonOdds-API-Key': process.env.API_KEY

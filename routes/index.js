@@ -76,7 +76,7 @@ setInterval(function (){
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 
 router.get('/updateOdds', function(req, res, next) {
-  fetch('https://jsonodds.com/api/odds/mlb?oddType=Game', {
+  fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
     method: 'GET',
     headers: {
       'JsonOdds-API-Key': process.env.API_KEY
