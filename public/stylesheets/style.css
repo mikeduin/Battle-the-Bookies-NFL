@@ -984,6 +984,14 @@ pagination {
   margin-top: 50px;
 }
 
+.pagination {
+  font-size: 18px;
+}
+
+.pagination > .active {
+  width: 30px;
+}
+
 standings table {
   margin-top: 20px
 }
