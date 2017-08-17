@@ -1,4 +1,4 @@
-  <script type="text/javascript">
+<script type="text/javascript">
 $(document).ready(function(){
    $(".button-collapse").sideNav({
      menuWidth: 360,
@@ -6,7 +6,7 @@ $(document).ready(function(){
      closeOnClick: true
    });
 
-   $(".dropdown-button").dropdown();
+   $('.dropdown-button').dropdown();
    $('.collapsible').collapsible();
  });
 </script>
@@ -35,25 +35,25 @@ $(document).ready(function(){
         <li><a ui-sref='home.user({username: vm.currentUser()})'>Users</a></li>
         <li><a href='http://www.mikeduin.com/alevelabove/blog/main'>ALA Home</a></li>
       </ul>
-      <ul class="side-nav" id="mobile-nav">
-        <li>
-          <div class="userView">
-            <img class="background" src="images/nfl-money-resize.jpg">
-          </div>
-        </li>
-        <li><a ui-sref="home" style="color: #B68708; font-size: 32px">Battle the Bookies</a></li>
-        <li ng-show="vm.isLoggedIn() !== false" class="ala-link"><a ui-sref="home.user({username: vm.currentUser()})">{{ vm.currentUser() }}</a></li>
-        <li ng-hide="vm.isLoggedIn() !== false" class="ala-link"><a ui-sref='home.login'>Login</a></li>
-        <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()" style="color: #B68708">Logout</a></li>
-        <li><a ui-sref="home.tutorial">How to Play</a></li>
-        <li><a ui-sref="home.makepicks">Make Picks</a></li>
-        <li><a ui-sref='home.standings'>YTD Standings</a></li>
-        <li><a ui-sref='home.capper-grades'>capperGrades</a></li>
-        <li><a ui-sref='home.results.picks({weekNumb: vm.currentWeekNumb})'>Results</a></li>
-        <li><a ui-sref='home.user({username: vm.currentUser()})'>Users</a></li>
-        <li><a ui-sref='home.prizes'>Prizes</a></li>
-        <li class="ala-link"><a class="ala-linkage" style="color: #E1DFE1; font-size: 24px" href='http://www.mikeduin.com/alevelabove/blog/main'>A Level Above Home</a></li>
-      </ul>
     </div>
   </nav>
 </div>
+<ul class="side-nav" id="mobile-nav">
+  <li>
+    <div class="userView">
+      <img class="background" src="images/nfl-money-resize.jpg">
+    </div>
+  </li>
+  <li><a ui-sref="home" style="color: #B68708; font-size: 32px">Battle the Bookies</a></li>
+  <li ng-show="vm.isLoggedIn() !== false" class="ala-link"><a ui-sref="home.user({username: vm.currentUser()})">{{ vm.currentUser() }}</a></li>
+  <li ng-hide="vm.isLoggedIn() !== false" class="ala-link"><a ui-sref='home.login'>Login</a></li>
+  <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()" style="color: #B68708">Logout</a></li>
+  <li><a ui-sref="home.tutorial">How to Play</a></li>
+  <li><a ui-sref="home.makepicks">Make Picks</a></li>
+  <li><a ui-sref='home.standings'>YTD Standings</a></li>
+  <li><a ui-sref='home.capper-grades'>capperGrades</a></li>
+  <li><a ui-sref='home.results.picks({weekNumb: vm.currentWeekNumb})'>Results</a></li>
+  <li><a ui-sref='home.user({username: vm.currentUser()})'>Users</a></li>
+  <li><a ui-sref='home.prizes'>Prizes</a></li>
+  <li class="ala-link"><a class="ala-linkage" style="color: #E1DFE1; font-size: 24px" href='http://www.mikeduin.com/alevelabove/blog/main'>A Level Above Home</a></li>
+</ul>
