@@ -89,7 +89,8 @@ nav {
 }
 
 .fa-bars {
-  margin-left: 20px
+  margin-left: 20px;
+  font-size: 40px !important;
 }
 
 #results-dropdown, #standings-dropdown {
