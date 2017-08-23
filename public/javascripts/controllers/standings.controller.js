@@ -42,8 +42,8 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
         user.plan = "Underdog ATS"
       } else if (user.plan === "homeSpreads") {
         user.plan = "Home ATS"
-      } else if (user.plan === "awaySpreads") {
-        user.plan = "Away ATS"
+      } else if (user.plan === "roadSpreads") {
+        user.plan = "Road ATS"
       } else if (user.plan === "favMLs") {
         user.plan = "Favorite ML"
       }
