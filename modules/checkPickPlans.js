@@ -70,7 +70,7 @@ module.exports = {
             retObj.game = game[0];
             return retObj;
           });
-        } else if (pick.plan === 'awaySpreads') {
+        } else if (pick.plan === 'roadSpreads') {
 
           if (game[0].PointSpreadAway > 0) {
             var favType = "Underdog";
