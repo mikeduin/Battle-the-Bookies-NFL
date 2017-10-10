@@ -18,8 +18,10 @@ module.exports = {
       var weekNumbers = [];
       var newWeeks = [];
       for (i=0; i<weeks.length; i++) {
-        var weekNumber = parseInt(weeks[i].substring(5));
-        weekNumbers.push(weekNumber);
+        if (weeks[i] !== 'Preseason' && weeks[i] !== 'Postseason'){
+          var weekNumber = parseInt(weeks[i].substring(5));
+          weekNumbers.push(weekNumber);
+        }
       };
       var maxWeek = Array.max(weekNumbers);
       for (i=1; i<maxWeek+1; i++) {

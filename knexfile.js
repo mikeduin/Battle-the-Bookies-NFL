@@ -4,7 +4,8 @@ module.exports = {
 
   development: {
     client: 'postgresql',
-    connection: 'postgres://localhost/btb-nfl'
+    connection: process.env.DATABASE_URL
+    // connection: 'postgres://localhost/btb-nfl'
   },
 
   production: {
