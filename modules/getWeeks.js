@@ -8,6 +8,10 @@ function sortNumber(a, b) {
   return a - b
 };
 
+Array.max = function(array){
+  return Math.max.apply(Math, array)
+};
+
 module.exports = {
   getWeeks: function() {
     return Lines().pluck('Week').distinct().then(function(weeks){
@@ -17,9 +21,9 @@ module.exports = {
         var weekNumber = parseInt(weeks[i].substring(5));
         weekNumbers.push(weekNumber);
       };
-      weekNumbers.sort(sortNumber);
-      for (i=0; i<weekNumbers.length; i++) {
-        var newWeek = "Week " + weekNumbers[i];
+      var maxWeek = Array.max(weekNumbers);
+      for (i=1; i<maxWeek+1; i++) {
+        var newWeek = "Week " + i;
         if (newWeek !== 'Week NaN') {
           newWeeks.push(newWeek)
         };
