@@ -37,6 +37,7 @@ module.exports = {
       return res.json()
     }).then(function(odds){
       odds.forEach(function(game){
+        console.log('game is ', game);
         Lines().where({EventID: game.Odds[0].EventID}).then(function(exist){
           if (exist.length === 0) {
             Lines().insert({

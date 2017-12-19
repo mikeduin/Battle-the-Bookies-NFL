@@ -34,9 +34,9 @@ module.exports = {
       return "14"
     } else if (moment(MatchTime).isBetween('2017-12-13', '2017-12-20')) {
       return "15"
-    } else if (moment(MatchTime).isBetween('2017-12-20', '2017-12-21')) {
+    } else if (moment(MatchTime).isBetween('2017-12-20', '2017-12-27')) {
       return "16"
-    } else if (moment(MatchTime).isBetween('2017-12-21', '2017-01-03')) {
+    } else if (moment(MatchTime).isBetween('2017-12-27', '2017-01-03')) {
       return "17"
     } else {
       return "POST"
