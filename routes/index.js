@@ -19,7 +19,6 @@ var updateGameResults = require('../modules/updateGameResults.js');
 var createLines = require('../modules/createLines.js');
 var lineMoves = require('../modules/lineMoves.js');
 var checkStartTimes = require('../modules/checkStartTimes.js');
-// var addPickTemplates = require('../modules/addPickTemplates.js');
 var setLineRanges = require('../modules/setLineRanges.js');
 var setCapperGrades = require('../modules/setCapperGrades.js');
 var pickArrays = require('../modules/pickArrays.js');

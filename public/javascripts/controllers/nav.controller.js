@@ -74,7 +74,7 @@ function NavController (authService, oddsService, $state) {
       return "Week 15"
     } else if (moment(MatchTime).isBetween('2017-12-20', '2017-12-27')) {
       return "Week 16"
-    } else if (moment(MatchTime).isBetween('2017-12-27', '2017-01-03')) {
+    } else if (moment(MatchTime).isBetween('2017-12-27', '2018-01-03')) {
       return "Week 17"
     } else {
       return "Postseason"
