@@ -30,7 +30,7 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
         },
         'content': {
           templateUrl: 'views/content.html',
-          controller: 'MainController',
+          controller: 'ArbController',
           controllerAs: 'vm'
         }
       }
@@ -80,7 +80,7 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
       views: {
         'content@': {
           templateUrl: 'views/tutorial.html',
-          controller: 'MainController',
+          controller: 'ArbController',
           controllerAs: 'vm'
         }
       }

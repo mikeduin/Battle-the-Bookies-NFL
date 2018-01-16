@@ -1,9 +1,9 @@
 angular
   .module('battleBookies')
-  .controller('MainController', ['$location', '$anchorScroll', MainController])
+  .controller('ArbController', ['$location', '$anchorScroll', ArbController])
 
 
-function MainController($location, $anchorScroll) {
+function ArbController($location, $anchorScroll) {
   var vm = this;
 
   vm.goToId = function(id) {
