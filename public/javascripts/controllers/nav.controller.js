@@ -3,18 +3,30 @@ angular
   .controller('NavController', ['authService', 'oddsService', '$state', NavController])
 
 function NavController (authService, oddsService, $state) {
+  Array.max = function(array){
+    return Math.max.apply(Math, array)
+  };
+
   var vm = this;
+  getSeasons();
 
   function sortNumber(a, b) {
     return a - b
   };
 
   vm.getDates = function () {
-    oddsService.getDates().then(function(dates){
+    oddsService.getDates(vm.season).then(function(dates){
       var currentWeek = vm.weekSetter(moment().format());
       vm.currentWeekNumb = parseInt(currentWeek.substring(5));
       // console.log('current week is ', vm.currentWeekNumb);
       vm.weeksOfGames = dates.reverse();
+    })
+  };
+
+  function getSeasons () {
+    oddsService.getSeasons().then(function(seasons){
+      vm.seasons = seasons;
+      vm.season = Array.max(seasons);
     })
   };
 
