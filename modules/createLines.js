@@ -6,6 +6,7 @@ var colors = require('../modules/colors.js');
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
 var logLineMoves = require('../modules/lineMoves.js');
+var currentSeason = require('../modules/currentSeason.js');
 var knex = require ('../db/knex');
 
 function Lines() {
@@ -31,9 +32,10 @@ module.exports = {
     fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
       method: 'GET',
       headers: {
-        'JsonOdds-API-Key': process.env.API_KEY
+        'x-API-Key': process.env.API_KEY
       }
     }).then(function(res){
+      // console.log('res is ', res);
       return res.json()
     }).then(function(odds){
       odds.forEach(function(game){
@@ -64,11 +66,12 @@ module.exports = {
               PointSpreadHomeLine: game.Odds[0].PointSpreadHomeLine,
               TotalNumber: game.Odds[0].TotalNumber,
               OverLine: game.Odds[0].OverLine,
-              UnderLine: game.Odds[0].UnderLine
+              UnderLine: game.Odds[0].UnderLine,
+              season: currentSeason.returnSeason(game.MatchTime)
             }, '*').then(function(line){
               console.log(line[0].EventID + ' was added as a new line');
               // This function below adds the user pick templates for each pick once it's been added as a line.
-              Users().then(function(users){
+              Users().where({"2018": true}).then(function(users){
                 var count = 0;
                 for (var i=0; i<users.length; i++) {
                   Picks().insert({
@@ -81,7 +84,8 @@ module.exports = {
                     DateNumb: line[0].DateNumb,
                     WeekNumb: line[0].WeekNumb,
                     matchup: line[0].AwayAbbrev + ' @ ' + line[0].HomeAbbrev,
-                    finalPayout: 0
+                    finalPayout: 0,
+                    season: '2018'
                   }, '*').then(function(pick){
                     if (count === 0) {
                       count++;

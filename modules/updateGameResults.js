@@ -21,7 +21,7 @@ module.exports = {
     fetch('https://jsonodds.com/api/results/nfl?oddType=Game&final=true', {
       method: 'GET',
       headers: {
-        'JsonOdds-API-Key': process.env.API_KEY
+        'x-api-Key': process.env.API_KEY
       }
     }).then(function(res){
       return res.json()

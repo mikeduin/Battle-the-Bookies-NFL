@@ -14,8 +14,8 @@ function oddsService ($http) {
         return lines.data
       })
     },
-    getWeeklyNflLines: function(week) {
-      return $http.get('/lines/' + week).then(function(lines){
+    getWeeklyNflLines: function(season, week) {
+      return $http.get('/lines/' + season + '/' + week).then(function(lines){
         return lines.data
       })
     },

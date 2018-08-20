@@ -109,7 +109,7 @@ router.get('/:username/stats', function (req, res, next){
   })
 })
 
-router.get('/:username/:weeknumb', function (req, res, next) {
+router.get('/:username/:season/:weeknumb', function (req, res, next) {
   if (req.params.weeknumb < 10) {
     var weekNumb = '0' + req.params.weeknumb
   } else {
@@ -117,6 +117,7 @@ router.get('/:username/:weeknumb', function (req, res, next) {
   };
   Picks().where({
     username: req.params.username,
+    season: req.params.season,
     WeekNumb: weekNumb
   }).then(function(picks){
     res.json(picks);

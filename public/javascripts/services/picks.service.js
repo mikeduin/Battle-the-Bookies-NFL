@@ -31,14 +31,14 @@ function picksService ($http, authService) {
         console.log(result)
       })
     },
-    sumWeek: function(username, weeknumb) {
-      return $http.get('/picks/' + username + '/' + weeknumb).then(function(result){
+    sumWeek: function(username, season, weeknumb) {
+      return $http.get('/picks/' + username + '/' + season + '/' + weeknumb).then(function(result){
         var weekPicks = result.data;
         var total = 0;
         for (i=0; i<weekPicks.length; i++) {
           var pickPayout = weekPicks[i].finalPayout;
           total += pickPayout;
-        }
+        };
         return total;
       })
     },

@@ -31,7 +31,7 @@ $(document).ready(function(){
         <li><a ui-sref="home.tutorial">How to Play</a></li>
         <li><a ui-sref="home.makepicks({season: vm.season})">Make Picks</a></li>
         <li><a class='dropdown-button' data-beloworigin="true" data-constrainwidth="false" href="#" data-activates='standings-dropdown'>Standings</a></li>
-        <li><a ui-sref='home.results.picks({weekNumb: vm.currentWeekNumb})'>Results</a></li>
+        <li><a ui-sref='home.results.picks({season: vm.season, weekNumb: vm.currentWeekNumb})'>Results</a></li>
         <li><a ui-sref='home.user({username: vm.currentUser()})'>Users</a></li>
         <li><a href='http://www.mikeduin.com/alevelabove/blog/main'>ALA Home</a></li>
       </ul>
@@ -52,7 +52,7 @@ $(document).ready(function(){
   <li><a ui-sref="home.makepicks({season: vm.season})">Make Picks</a></li>
   <li><a ui-sref='home.standings({season: vm.season})'>YTD Standings</a></li>
   <li><a ui-sref='home.capper-grades({season: vm.season})'>capperGrades</a></li>
-  <li><a ui-sref='home.results.picks({weekNumb: vm.currentWeekNumb})'>Results</a></li>
+  <li><a ui-sref='home.results.picks({season: vm.season, weekNumb: vm.currentWeekNumb})'>Results</a></li>
   <li><a ui-sref='home.user({username: vm.currentUser()})'>Users</a></li>
   <li><a ui-sref='home.prizes'>Prizes</a></li>
   <li class="ala-link"><a class="ala-linkage" style="color: #E1DFE1; font-size: 24px" href='http://www.mikeduin.com/alevelabove/blog/main'>A Level Above Home</a></li>

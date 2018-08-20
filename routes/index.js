@@ -57,10 +57,9 @@ function Picks() {
 // }, 660000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
-// DISABLED FOR OFFSEASON
-// setInterval(function (){
-//   createLines.createLines();
-// }, 420000);
+setInterval(function (){
+  createLines.createLines();
+}, 10000);
 
 
 // The function below runs once every 15 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
@@ -80,7 +79,7 @@ router.get('/updateOdds', function(req, res, next) {
   fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
     method: 'GET',
     headers: {
-      'JsonOdds-API-Key': process.env.API_KEY
+      'x-api-Key': process.env.API_KEY
     }
   }).then(function(res){
     return res.json()

@@ -28,7 +28,7 @@ module.exports = {
       "Oakland Raiders": "http://www.riddell.com/media/catalog/product/3/0/3001646_SP_Raiders_3.png",
       "Philadelphia Eagles": "http://www.riddell.com/media/catalog/product/E/a/Eagles-DR-30528.png",
       "Pittsburgh Steelers": "http://www.riddell.com/media/catalog/product/S/t/Steelers-DR-30530.png",
-      "San Diego Chargers": "http://www.riddell.com/media/catalog/product/C/h/Chargers_Speed_Authentic_3001650.png",
+      "Los Angeles Chargers": "http://www.riddell.com/media/catalog/product/C/h/Chargers_Speed_Authentic_3001650.png",
       "San Francisco 49ers": "http://www.riddell.com/media/catalog/product/4/9/49ers-speed-replica-8035368.png",
       "Seattle Seahawks": "http://www.riddell.com/media/catalog/product/3/0/30134_pl_seahawks.png",
       "Tampa Bay Buccaneers": "http://www.riddell.com/media/catalog/product/3/0/30135_PL_Buccaneers_3.png",

@@ -2,7 +2,7 @@
 
 <resultsHead class="row" ng-init="vm.getDates()">
   <leadDiv class="col s12 result-head z-depth-1" style="width: 100%">
-    <div class="col m5 left-align" style="margin-left: -2%">
+    <div class="col m4 left-align" style="margin-left: -2%">
       <div class="col s12 default week-list">
         <a ui-sref="home.results.picks" class="res-options" ng-class="{activeResult: uiRouterState.current.name === 'home.results.picks'}">USER SELECTIONS</a> |
         <a ui-sref="home.results.poolsplits" ng-class="{activeResult: uiRouterState.current.name === 'home.results.poolsplits'}">PICK DISTRIBUTION</a>
@@ -12,9 +12,15 @@
         <span ng-repeat="week in vm.weeks" ng-show="week <= vm.lastWeekNumb"> <a ui-sref='home.results.picks({weekNumb: vm.weekConfig(week)})' ng-class="{activeResult: vm.week === week}">{{week}}</a> </span>
       </div>
     </div>
-    <div class="col m5 left-align">
+    <div class="col m4 left-align">
       <p class="resHead"> Weekly Results</p>
     </div>
+    <selectDiv class="col m2 res-select">
+        <label> Select Season </label>
+        <select class="browser-default" ng-model="vm.season" ng-change="vm.seasonChange(vm.season)">
+          <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option>
+        </select>
+    </selectDiv>
     <selectDiv class="col m2 res-select" ng-show="uiRouterState.current.name === 'home.results.picks'">
         <label> Sort by </label>
         <select class="browser-default" ng-model="vm.userSort">
