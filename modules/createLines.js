@@ -39,7 +39,7 @@ module.exports = {
       return res.json()
     }).then(function(odds){
       odds.forEach(function(game){
-        console.log('game is ', game);
+        var season = currentSeason.returnSeason(game.MatchTime);
         Lines().where({EventID: game.Odds[0].EventID}).then(function(exist){
           if (exist.length === 0) {
             Lines().insert({
@@ -52,9 +52,12 @@ module.exports = {
               AwayHelmet: helmets.teamHelmet(game.AwayTeam),
               HomeColor: colors.teamColor(game.HomeTeam),
               AwayColor: colors.teamColor(game.AwayTeam),
-              MatchTime: new Date(game.MatchTime),
-              MatchDay: moment(new Date(game.MatchTime)).format('MMMM Do, YYYY'),
-              DateNumb: parseInt(moment(new Date(game.MatchTime)).format('YYYYMMDD')),
+              MatchTime: moment.utc(game.MatchTime),
+              MatchDay: moment.utc(game.MatchTime).format('MMMM Do, YYYY'),
+              DateNumb: parseInt(moment.utc(game.MatchTime).format('YYYYMMDD')),
+              // MatchTime: new Date(game.MatchTime),
+              // MatchDay: moment(new Date(game.MatchTime)).format('MMMM Do, YYYY'),
+              // DateNumb: parseInt(moment(new Date(game.MatchTime)).format('YYYYMMDD')),
               Week: setWeek.weekSetter(game.MatchTime),
               WeekNumb: setWeekNumb.weekNumbSetter(game.MatchTime),
               OddType: game.Odds[0].OddType,
@@ -67,7 +70,7 @@ module.exports = {
               TotalNumber: game.Odds[0].TotalNumber,
               OverLine: game.Odds[0].OverLine,
               UnderLine: game.Odds[0].UnderLine,
-              season: currentSeason.returnSeason(game.MatchTime)
+              season: season
             }, '*').then(function(line){
               console.log(line[0].EventID + ' was added as a new line');
               // This function below adds the user pick templates for each pick once it's been added as a line.
@@ -85,14 +88,14 @@ module.exports = {
                     WeekNumb: line[0].WeekNumb,
                     matchup: line[0].AwayAbbrev + ' @ ' + line[0].HomeAbbrev,
                     finalPayout: 0,
-                    season: '2018'
+                    season: season
                   }, '*').then(function(pick){
-                    if (count === 0) {
-                      count++;
-                      Lines().where({EventID: pick[0].EventID}).then(function(res){
-                        logLineMoves.logIndLineMove(res);
-                      })
-                    }
+                    // if (count === 0) {
+                    //   count++;
+                    //   Lines().where({EventID: pick[0].EventID}).then(function(res){
+                    //     logLineMoves.logIndLineMove(res);
+                    //   })
+                    // }
                   })
                 }
               })
