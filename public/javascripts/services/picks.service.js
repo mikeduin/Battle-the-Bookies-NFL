@@ -91,8 +91,8 @@ function picksService ($http, authService) {
         return stats
       })
     },
-    getWeeklyStats: function(username){
-      return $http.get('/weeklyStats/' + username).then(function(result){
+    getWeeklyStats: function(username, season){
+      return $http.get('/weeklyStats/' + username + '/' + season).then(function(result){
         return result
       })
     }

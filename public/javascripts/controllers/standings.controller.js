@@ -5,6 +5,7 @@ angular
 function StandingsController (picksService, oddsService, usersService, $scope, $timeout, $stateParams, $state) {
   var vm = this;
   vm.getDates = getDates;
+  getSeasons();
   vm.weeksOfGames = [];
   vm.dayArrayLength;
   vm.pageArray = [1];
@@ -55,7 +56,7 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
       }
     }).then(function(){
       username = user.username;
-      picksService.getWeeklyStats(username).then(function(result){
+      picksService.getWeeklyStats(username, season).then(function(result){
         user.dailyStats = result.data;
         vm.showStandings = true;
       })
@@ -108,12 +109,18 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
     vm.standingsView();
   };
 
-  function getDates () {
+  function getDates (season) {
     vm.showSpinner = true;
-    oddsService.getDates().then(function(dates){
+    oddsService.getDates(season).then(function(dates){
       vm.dayArrayLength = dates.length;
       vm.weeksOfGames = dates;
       getPageArray(dates)
+    })
+  };
+
+  function getSeasons () {
+    oddsService.getSeasons().then(function(seasons){
+      vm.seasons = seasons;
     })
   };
 

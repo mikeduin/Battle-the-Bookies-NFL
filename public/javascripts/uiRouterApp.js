@@ -132,7 +132,7 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
       }
     })
     .state('home.capper-grades', {
-      url: 'capper-grades',
+      url: 'capper-grades/:season',
       views: {
         'content@': {
           templateUrl: 'views/capper-grades.html',

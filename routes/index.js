@@ -130,8 +130,17 @@ router.get('/updateOdds', function(req, res, next) {
 //   })
 // }, 180000);
 
-router.get('/weeks', function(req, res, next){
-  getWeeks.getWeeks().then(function(weeks){
+router.get('/seasons', function(req, res, next){
+  Lines().pluck('season').distinct()
+  .then(function(seasons){
+    // res.json(seasons);
+    var array = ['2018', '2017'];
+    res.json(array)
+  })
+})
+
+router.get('/weeks/:season', function(req, res, next){
+  getWeeks.getWeeks(req.params.season).then(function(weeks){
     res.json(weeks);
   })
 })
@@ -169,10 +178,11 @@ router.get('/pullGame/:gameID', function(req, res, next){
   })
 })
 
-router.get('/weeklyStats/:username', function(req, res, next){
+router.get('/weeklyStats/:username/:season', function(req, res, next){
   var username = req.params.username;
+  var season = req.params.season;
   var weekArray = [];
-  Picks().pluck('Week').distinct().then(function(weeks){
+  Picks().where({season: season}).pluck('Week').distinct().then(function(weeks){
     weekArray = weeks;
     weeks = weekArray.sort();
     return weeks

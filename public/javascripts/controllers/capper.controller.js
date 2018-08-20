@@ -1,15 +1,16 @@
 angular
   .module('battleBookies')
-  .controller('capperController', ['picksService', 'oddsService', 'usersService', '$scope', '$state', '$location', '$anchorScroll', capperController])
+  .controller('capperController', ['picksService', 'oddsService', 'usersService', '$scope', '$state', '$location', '$anchorScroll', '$stateParams', capperController])
 
-function capperController (picksService, oddsService, usersService, $scope, $state, $location, $anchorScroll) {
+function capperController (picksService, oddsService, usersService, $scope, $state, $location, $anchorScroll, $stateParams) {
   var vm = this;
-
+  getSeasons();
   vm.getDates = getDates;
   vm.getCapperGrades = getCapperGrades;
   vm.getAllUsers = getAllUsers;
   vm.sortOrder = "-totalCapperScore";
   vm.tutRedirect = tutRedirect;
+  vm.season = $stateParams.season;
 
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
@@ -21,9 +22,13 @@ function capperController (picksService, oddsService, usersService, $scope, $sta
     })
   };
 
-  function getDates () {
+  vm.seasonChange = function(){
+    $state.go('home.capper-grades', {season: vm.season});
+  };
+
+  function getDates (season) {
     vm.showSpinner = true;
-    oddsService.getDates().then(function(dates){
+    oddsService.getDates(season).then(function(dates){
       vm.dayArrayLength = dates.length;
       vm.weeksOfGames = dates;
       vm.weekNumbs = [];
@@ -34,16 +39,22 @@ function capperController (picksService, oddsService, usersService, $scope, $sta
     })
   };
 
-  function getCapperGrades (user) {
+  function getSeasons () {
+    oddsService.getSeasons().then(function(seasons){
+      vm.seasons = seasons;
+    })
+  }
+
+  function getCapperGrades (user, season) {
     username = user.username;
-    picksService.sumAllPicks(username).then(function(result){
+    picksService.sumSeasonPicks(username, season).then(function(result){
       user.sumYtd = result.totalDollars;
       user.ytdW = result.totalW;
       user.ytdL = result.totalG - result.totalW;
       user.ytdPct = result.totalW / result.totalG;
     }).then(function(){
       username = user.username;
-      picksService.getWeeklyStats(username).then(function(result){
+      picksService.getWeeklyStats(username, season).then(function(result){
         user.capperGrades = result.data;
         user.totalCapperScore = 0;
         for (var i=0; i<user.capperGrades.length; i++) {

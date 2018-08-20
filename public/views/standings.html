@@ -1,6 +1,6 @@
 <chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
 
-<standingsHead class="row" ng-init="vm.getDates(); vm.getAllUsers()">
+<standingsHead class="row" ng-init="vm.getDates(vm.season); vm.getAllUsers()">
   <standDiv class="col m12 result-head z-depth-1">
     <div class="col m5 left-align">
       <p class="resHead"> Overall Standings </p>
@@ -8,8 +8,7 @@
     <selectDiv class="col m2 res-select">
         <label> Select Season </label>
         <select class="browser-default" ng-model="vm.season" ng-change="vm.seasonChange(vm.season)">
-          <option value="2018"> 2018 </option>
-          <option value="2017"> 2017 </option>
+          <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option>
         </select>
     </selectDiv>
     <pagination class="col m4 offset-m1 right-align">

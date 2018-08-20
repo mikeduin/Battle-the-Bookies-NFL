@@ -29,10 +29,16 @@ function oddsService ($http) {
         return picks.data
       })
     },
-    getDates: function() {
-      return $http.get('/weeks')
+    getDates: function(season) {
+      return $http.get('/weeks/' + season)
       .then(function(weeks) {
         return weeks.data;
+      })
+    },
+    getSeasons: function() {
+      return $http.get('/seasons')
+      .then(function(seasons){
+        return seasons.data;
       })
     }
   }

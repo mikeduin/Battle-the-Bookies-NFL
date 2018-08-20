@@ -13,8 +13,8 @@ Array.max = function(array){
 };
 
 module.exports = {
-  getWeeks: function() {
-    return Lines().pluck('Week').distinct().then(function(weeks){
+  getWeeks: function(season) {
+    return Lines().where({season: season}).pluck('Week').distinct().then(function(weeks){
       var weekNumbers = [];
       var newWeeks = [];
       for (i=0; i<weeks.length; i++) {

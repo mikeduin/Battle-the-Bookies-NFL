@@ -1,10 +1,16 @@
 <chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
 
-<standingsHead class="row" ng-init="vm.getDates(); vm.getAllUsers()">
+<standingsHead class="row" ng-init="vm.getDates(vm.season); vm.getAllUsers()">
   <standDiv class="col s12 capper-head z-depth-1">
-    <div class="col s12 left-align">
+    <div class="col s10 left-align">
       <p class="capHead"> <a ng-click="vm.tutRedirect()" class="btn-floating float-color tut-btn-page"><i class="fa fa-graduation-cap tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a> capperGrades </p>
     </div>
+    <selectDiv class="col s2 res-select">
+        <label> Select Season </label>
+        <select class="browser-default" ng-model="vm.season" ng-change="vm.seasonChange(vm.season)">
+          <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option>
+        </select>
+    </selectDiv>
     <howTo>
       <p class="col s12">
         - The capperGrade methodology is explained in detail in the <a ng-click="vm.tutRedirect()" class="pointer">How to Play</a> page.
@@ -35,7 +41,7 @@
       </tr>
     </thead>
     <tbody ng-show="vm.showStandings">
-      <tr ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-init="vm.getCapperGrades(user)" class="pushdown">
+      <tr ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-init="vm.getCapperGrades(user, vm.season)" class="pushdown">
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</td>
         <td class="ytdwBox"> <b> {{user.ytdW}} </b> </td>
         <td class="ytdwBox"> <b> {{user.ytdL}} </b> </td>
