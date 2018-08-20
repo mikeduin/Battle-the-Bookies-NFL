@@ -9,8 +9,8 @@ function oddsService ($http) {
         console.log("odds updated")
       })
     },
-    getNflLines: function() {
-      return $http.get('/lines').then(function(lines){
+    getNflLines: function(season) {
+      return $http.get('/lines/season/' + season).then(function(lines){
         return lines.data
       })
     },

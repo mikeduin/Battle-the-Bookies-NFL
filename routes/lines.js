@@ -4,14 +4,14 @@ var knex = require('../db/knex');
 
 var fetchLines = require('../modules/fetchLines.js');
 
-router.get('/', function(req, res, next){
-  fetchLines.allLines().then(function(lines){
+router.get('/season/:season', function(req, res, next){
+  fetchLines.allLines(req.params.season).then(function(lines){
     res.json(lines);
   })
 })
 
-router.get('/:week', function(req, res, next){
-  fetchLines.wkLines(req.params.week).then(function(lines){
+router.get('/:season/:week', function(req, res, next){
+  fetchLines.wkLines(req.params.season, req.params.week).then(function(lines){
     res.json(lines);
   })
 })

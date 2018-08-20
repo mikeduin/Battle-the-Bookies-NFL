@@ -7,23 +7,27 @@ function Lines() {
 };
 
 module.exports = {
-  allLines: function() {
+  allLines: function(season) {
     // hide triple-week setting in offseason
     // var week = setWeek.weekSetter(moment());
     // var week2 = setWeek.weekSetter(moment().add(1, 'w'));
     // var week3 = setWeek.weekSetter(moment().subtract(1, 'w'));
     return Lines()
     // .whereIn('Week', [week, week2, week3])
+    .where({season: season})
     .whereNotIn('Week', ['Preseason', 'Postseason']);
   },
 
-  wkLines: function(week) {
+  wkLines: function(season, week) {
     if (week.length === 1) {
       week = "0"+week;
     } else {
       week = week;
     };
-    return Lines().where({WeekNumb: week});
+    return Lines().where({
+      season: season,
+      WeekNumb: week
+    });
   },
 
   byID: function(id) {

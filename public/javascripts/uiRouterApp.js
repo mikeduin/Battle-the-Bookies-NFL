@@ -86,7 +86,7 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
       }
     })
     .state('home.makepicks', {
-      url: 'makepicks',
+      url: 'makepicks/:season',
       views: {
         'content@': {
           templateUrl: 'views/makepicks.html',
@@ -96,7 +96,7 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
       }
     })
     .state('home.results', {
-      url: 'weeklyresults/:weekNumb',
+      url: 'weeklyresults/:season/:weekNumb',
       views: {
         'content@': {
           templateUrl: 'views/results.html',

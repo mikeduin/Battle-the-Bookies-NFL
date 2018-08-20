@@ -1,9 +1,11 @@
 angular
   .module('battleBookies')
-  .controller('PickController', ['oddsService', 'picksService', 'resultsService', 'authService', '$scope', PickController])
+  .controller('PickController', ['oddsService', 'picksService', 'resultsService', 'authService', '$scope', '$state', '$stateParams', PickController])
 
-function PickController (oddsService, picksService, resultsService, authService, $scope) {
+function PickController (oddsService, picksService, resultsService, authService, $scope, $state, $stateParams) {
   var vm = this;
+  getSeasons();
+  vm.season = $stateParams.season;
   vm.currentUser = currentUser;
   vm.currentTime = moment().format('MMMM Do YYYY, h:mm:ss a');
   vm.gameWeekFilter;
@@ -38,12 +40,25 @@ function PickController (oddsService, picksService, resultsService, authService,
   vm.mlFormat = mlFormat;
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
-  })
+  });
+  Array.max = function(array){
+    return Math.max.apply(Math, array)
+  };
 
   var now = moment();
 
   function sortNumber(a, b) {
     return a - b
+  };
+
+  function getSeasons () {
+    oddsService.getSeasons().then(function(seasons){
+      vm.seasons = seasons;
+    })
+  };
+
+  vm.seasonChange = function(){
+    $state.go('home.makepicks', {season: vm.season});
   };
 
   vm.checkDisplay = function(game){
@@ -66,9 +81,9 @@ function PickController (oddsService, picksService, resultsService, authService,
     return authService.currentUser();
   }
 
-  function getNflLines() {
+  function getNflLines(season) {
     vm.showSpinner = true;
-    oddsService.getNflLines().then(function(lines){
+    oddsService.getNflLines(season).then(function(lines){
       vm.nflLines = lines;
     })
   };
@@ -85,7 +100,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     // var week2 = vm.weekSetter(moment().add(1, 'w'));
     // var week3 = vm.weekSetter(moment().subtract(1, 'w'));
     // vm.weeksOfGames = [week3, week, week2];
-    oddsService.getDates().then(function(dates){
+    oddsService.getDates(vm.season).then(function(dates){
        var weekNumbers = [];
        for (i=0; i<dates.length; i++) {
          var weekNumber = parseInt(dates[i].substring(5));
