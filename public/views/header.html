@@ -13,7 +13,7 @@ $(document).ready(function(){
 
 <div class="navbar-fixed" ng-init="vm.getDates()">
   <ul id='standings-dropdown' class="dropdown-content">
-    <li><a ui-sref='home.standings'>Overall Standings</a></li>
+    <li><a ui-sref='home.standings({season: "2018"})'>Overall Standings</a></li>
     <li><a ui-sref='home.capper-grades'>capperGrades</a></li>
     <li><a ui-sref='home.prizes'>Prizes</a></li>
   </ul>
@@ -50,7 +50,7 @@ $(document).ready(function(){
   <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()" style="color: #B68708">Logout</a></li>
   <li><a ui-sref="home.tutorial">How to Play</a></li>
   <li><a ui-sref="home.makepicks">Make Picks</a></li>
-  <li><a ui-sref='home.standings'>YTD Standings</a></li>
+  <li><a ui-sref='home.standings({season: "2018"})'>YTD Standings</a></li>
   <li><a ui-sref='home.capper-grades'>capperGrades</a></li>
   <li><a ui-sref='home.results.picks({weekNumb: vm.currentWeekNumb})'>Results</a></li>
   <li><a ui-sref='home.user({username: vm.currentUser()})'>Users</a></li>

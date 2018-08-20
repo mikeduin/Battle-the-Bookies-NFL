@@ -42,7 +42,29 @@ function picksService ($http, authService) {
         return total;
       })
     },
-    sumAllPicks: function(username, date) {
+    sumSeasonPicks: function(username, season) {
+      return $http.get('/picks/' + username + '/' + season + '/all').then(function(result){
+        var ytdPicks = result.data;
+        var totalDollars = 0;
+        var totalW = 0;
+        var totalG = 0;
+        for (i=0; i<ytdPicks.length; i++) {
+          var pickPayout = ytdPicks[i].finalPayout;
+          var resultBinary = ytdPicks[i].resultBinary;
+          if (typeof resultBinary === 'number') {
+            totalDollars += pickPayout;
+            totalW += resultBinary;
+            totalG += 1;
+          };
+        }
+        return {
+          totalDollars: totalDollars,
+          totalW: totalW,
+          totalG: totalG
+        }
+      })
+    },
+    sumAllPicks: function(username, year) {
       return $http.get('/picks/' + username + '/all').then(function(result){
         var ytdPicks = result.data;
         var totalDollars = 0;

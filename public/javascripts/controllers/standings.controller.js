@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('StandingsController', ['picksService', 'oddsService', 'usersService', '$scope', '$timeout', StandingsController])
+  .controller('StandingsController', ['picksService', 'oddsService', 'usersService', '$scope', '$timeout', '$stateParams', '$state', StandingsController])
 
-function StandingsController (picksService, oddsService, usersService, $scope, $timeout) {
+function StandingsController (picksService, oddsService, usersService, $scope, $timeout, $stateParams, $state) {
   var vm = this;
   vm.getDates = getDates;
   vm.weeksOfGames = [];
@@ -15,6 +15,8 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   vm.user = {};
   vm.showStandings = false;
   vm.dailyStats = [];
+  vm.season = $stateParams.season;
+
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
   })
@@ -29,9 +31,13 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
     })
   };
 
-  vm.sumAllPicks = function(user) {
+  vm.seasonChange = function(){
+    $state.go('home.standings', {season: vm.season});
+  };
+
+  vm.sumSeasonPicks = function(user, season) {
     username = user.username;
-    picksService.sumAllPicks(username).then(function(result){
+    picksService.sumSeasonPicks(username, season).then(function(result){
       user.sumYtd = result.totalDollars;
       user.ytdW = result.totalW;
       user.ytdL = result.totalG - result.totalW;
@@ -55,6 +61,33 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
       })
     })
   };
+
+  // vm.sumAllPicks = function(user, year) {
+  //   username = user.username;
+  //   picksService.sumAllPicks(username, year).then(function(result){
+  //     user.sumYtd = result.totalDollars;
+  //     user.ytdW = result.totalW;
+  //     user.ytdL = result.totalG - result.totalW;
+  //     user.ytdPct = result.totalW / result.totalG;
+  //     if (user.plan === "noPlan") {
+  //       user.plan = "";
+  //     } else if (user.plan === "dogSpreads") {
+  //       user.plan = "Underdog ATS"
+  //     } else if (user.plan === "homeSpreads") {
+  //       user.plan = "Home ATS"
+  //     } else if (user.plan === "roadSpreads") {
+  //       user.plan = "Road ATS"
+  //     } else if (user.plan === "favMLs") {
+  //       user.plan = "Favorite ML"
+  //     }
+  //   }).then(function(){
+  //     username = user.username;
+  //     picksService.getWeeklyStats(username).then(function(result){
+  //       user.dailyStats = result.data;
+  //       vm.showStandings = true;
+  //     })
+  //   })
+  // };
 
   vm.pageClick = function (i) {
     vm.activePage = i;
