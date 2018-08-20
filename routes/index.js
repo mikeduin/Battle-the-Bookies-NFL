@@ -59,7 +59,7 @@ function Picks() {
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 setInterval(function (){
   createLines.createLines();
-}, 10000);
+}, 420000);
 
 
 // The function below runs once every 15 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
@@ -133,7 +133,7 @@ router.get('/seasons', function(req, res, next){
   Lines().pluck('season').distinct()
   .then(function(seasons){
     // res.json(seasons);
-    var array = ['2018', '2017'];
+    var array = [2018, 2017];
     res.json(array)
   })
 })
@@ -181,7 +181,7 @@ router.get('/weeklyStats/:username/:season', function(req, res, next){
   var username = req.params.username;
   var season = req.params.season;
   var weekArray = [];
-  Picks().where({season: season}).pluck('Week').distinct().then(function(weeks){
+  Picks().where({season: season}).whereNot({WeekNumb: "PRE"}).whereNot({WeekNumb: "POST"}).pluck('Week').distinct().then(function(weeks){
     weekArray = weeks;
     weeks = weekArray.sort();
     return weeks
@@ -200,7 +200,7 @@ router.get('/weeklyStats/:username/:season', function(req, res, next){
     };
 
     Promise.all(newWeeks.map(function(week){
-      return Picks().where({username: username, Week: week}).then(function(results){
+      return Picks().where({username: username, Week: week, season: season}).then(function(results){
 
         var totCapperGrade = 0;
         var cappedGames = 0;

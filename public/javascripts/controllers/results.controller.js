@@ -110,7 +110,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
       vm.weekNumb = '0' + vm.weekNumb;
     };
     vm.week = parseInt(vm.weekNumb);
-    oddsService.getWeeklyPicks(vm.weekNumb).then(function(data){
+    oddsService.getWeeklyPicks(vm.season, vm.weekNumb).then(function(data){
       vm.picks = data;
     })
   }

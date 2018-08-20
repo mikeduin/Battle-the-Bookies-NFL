@@ -14,8 +14,8 @@ function NavController (authService, oddsService, $state) {
     return a - b
   };
 
-  vm.getDates = function () {
-    oddsService.getDates(vm.season).then(function(dates){
+  vm.getDates = function (season) {
+    oddsService.getDates(season).then(function(dates){
       var currentWeek = vm.weekSetter(moment().format());
       vm.currentWeekNumb = parseInt(currentWeek.substring(5));
       // console.log('current week is ', vm.currentWeekNumb);
@@ -25,6 +25,7 @@ function NavController (authService, oddsService, $state) {
 
   function getSeasons () {
     oddsService.getSeasons().then(function(seasons){
+      // console.log('seasons are ', seasons);
       vm.seasons = seasons;
       vm.season = Array.max(seasons);
     })
@@ -52,9 +53,7 @@ function NavController (authService, oddsService, $state) {
   }
 
   vm.weekSetter = function(MatchTime) {
-    if (moment(MatchTime).isBetween('2018-06-23', '2018-09-01')) {
-      return "Preseason"
-    } else if (moment(MatchTime).isBetween('2018-09-02', '2018-09-12')) {
+    if (moment(MatchTime).isBetween('2018-06-23', '2018-09-12')) {
       return "Week 1"
     } else if (moment(MatchTime).isBetween('2018-09-12', '2018-09-19')) {
       return "Week 2"
@@ -89,7 +88,7 @@ function NavController (authService, oddsService, $state) {
     } else if (moment(MatchTime).isBetween('2018-12-26', '2019-01-02')) {
       return "Week 17"
     } else {
-      return "Postseason" 
+      return "Postseason"
     }
   }
 }

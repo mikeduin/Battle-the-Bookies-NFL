@@ -24,8 +24,8 @@ function oddsService ($http) {
         return picks.data
       })
     },
-    getWeeklyPicks: function(week){
-      return $http.get('/picks/' + week).then(function(picks){
+    getWeeklyPicks: function(season, week){
+      return $http.get('/picks/season/' + season + '/' + week).then(function(picks){
         return picks.data
       })
     },

@@ -11,7 +11,7 @@ $(document).ready(function(){
  });
 </script>
 
-<div class="navbar-fixed" ng-init="vm.getDates()">
+<div class="navbar-fixed" ng-init="vm.getDates(2018)">
   <ul id='standings-dropdown' class="dropdown-content">
     <li><a ui-sref='home.standings({season: vm.season})'>Overall Standings</a></li>
     <li><a ui-sref='home.capper-grades({season: vm.season})'>capperGrades</a></li>

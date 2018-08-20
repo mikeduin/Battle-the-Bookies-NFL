@@ -20,8 +20,11 @@ router.get('/', function (req, res, next){
   })
 })
 
-router.get('/:week', function (req, res, next){
-  Picks().where({WeekNumb: req.params.week}).then(function(picks){
+router.get('/season/:season/:week', function (req, res, next){
+  Picks().where({
+    season: req.params.season,
+    WeekNumb: req.params.week,
+  }).then(function(picks){
     res.json(picks);
   })
 })

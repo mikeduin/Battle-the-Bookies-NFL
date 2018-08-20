@@ -35,7 +35,6 @@ module.exports = {
         'x-API-Key': process.env.API_KEY
       }
     }).then(function(res){
-      // console.log('res is ', res);
       return res.json()
     }).then(function(odds){
       odds.forEach(function(game){
