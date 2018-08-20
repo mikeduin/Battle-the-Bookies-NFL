@@ -161,6 +161,16 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
         }
       }
     })
+    .state('home.userhistory', {
+      url: 'user/:username/history',
+      views: {
+        'content@': {
+          templateUrl: 'views/userhistory.html',
+          controller: 'UserController',
+          controllerAs: 'vm'
+        }
+      }
+    })
     .state('home.game', {
       url: 'game/:EventID',
       views: {

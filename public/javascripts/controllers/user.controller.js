@@ -14,6 +14,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.picks;
   vm.abbrev;
   vm.weekNumb;
+  vm.seasons = [2017, 2018];
 
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
@@ -103,6 +104,14 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
       vm.user.ytdPct = result.totalW / result.totalG;
     })
   }
+
+  vm.getSeasonStats = function() {
+    console.log('params.username is ', $stateParams.username);
+    usersService.getSeasonStats($stateParams.username).then(function(res){
+      console.log(res);
+      vm.seasonStats = res;
+    })
+  };
 
   vm.getWeeklyStats = function(username){
     picksService.getWeeklyStats(username).then(function(result){

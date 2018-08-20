@@ -23,6 +23,11 @@ function usersService ($http) {
       return $http.get('/matchups').then(function(result){
         return result.data
       })
+    },
+    getSeasonStats: function(username){
+      return $http.get('/users/stats/' + username).then(function(result){
+        return result.data
+      })
     }
   }
 

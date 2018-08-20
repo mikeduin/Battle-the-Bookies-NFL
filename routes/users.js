@@ -10,6 +10,10 @@ function Users() {
   return knex('users');
 }
 
+function Picks() {
+  return knex('picks');
+}
+
 function generateJWT (user) {
   // this function sets expiration of token to 1000 days
   var today = new Date();
@@ -37,6 +41,39 @@ router.get('/', function(req, res, next) {
 router.get('/:username', function (req, res, next){
   Users().where({username: req.params.username}).then(function(user){
     res.json(user);
+  })
+})
+
+router.get('/stats/:username', function (req, res, next){
+  var user = req.params.username
+  Users().where({username: user}).pluck('btb_seasons').then(function(seasons){
+    var userStats = {};
+    var len = seasons.length;
+    var count = 0;
+    console.log('seasons are ', seasons);
+    seasons[0].forEach(function(season){
+      var int = parseInt(season);
+      Picks().where({
+        username: user,
+        season: int,
+        Final: true
+      })
+      .sum('finalPayout as profit')
+      .sum('resultBinary as wins')
+      .count('id as total')
+      .then(function(stats){
+        userStats[season] = {
+          profit: stats[0].profit,
+          wins: stats[0].wins,
+          losses: stats[0].total - stats[0].wins,
+          pct: stats[0].wins / stats[0].total
+        };
+        count++;
+        if (count == len) {
+          res.json(userStats)
+        };
+      })
+    })
   })
 })
 
