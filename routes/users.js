@@ -134,4 +134,11 @@ router.post('/login', function(req, res, next){
   })(req, res, next);
 })
 
+router.put('/reregister', function(req, res, next){
+  console.log(req.body);
+  // var username = req.body.username;
+  //
+  // Users().where({username: })
+})
+
 module.exports = router;

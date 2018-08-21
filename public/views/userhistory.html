@@ -3,12 +3,11 @@
     <regBox class="col m8 offset-m2 z-depth-2">
       <loginTitle> {{vm.userFilter}}'s Game History </loginTitle>
       <div class="row">
-        <table class="col s12">
+        <table class="col s12" id="reRegTable">
           <thead>
             <tr>
               <th>Season</th>
               <th>Status</th>
-              <th>Finish</th>
               <th>W</th>
               <th>L</th>
               <th>%</th>
@@ -18,25 +17,23 @@
           </thead>
           <tbody>
             <tr ng-repeat="season in vm.seasons" ng-init="vm.sumSeasonPicks(season)">
-              <td>{{season}}</td>
+              <td><b>{{season}}</b></td>
               <td>
-                <div ng-show="vm.seasonStats[season]"> ACTIVE </div>
+                <div ng-show="vm.seasonStats[season]"> <i> active </i> </div>
                 <div ng-show="!vm.seasonStats[season] && season != 2018">DNP</div>
-                <div class="btn btn-small" ng-show="!vm.seasonStats[season] && season == 2018">REGISTER</div>
+                <div class="btn btn-small btn-rereg" ng-show="!vm.seasonStats[season] && season == 2018 && vm.currentUser() == vm.userFilter" ng-click="vm.reReg = !vm.reReg; vm.regSeason = season">REGISTER</div>
               </td>
-              <td></td>
               <td>{{vm.seasonStats[season].wins}}</td>
               <td>{{vm.seasonStats[season].losses}}</td>
               <td><span ng-show="vm.seasonStats[season].pct">{{vm.seasonStats[season].pct | percentage:2}}</span></td>
-              <td>{{vm.seasonStats[season].profit | currency:$:0}}</td>
+              <td><b>{{vm.seasonStats[season].profit | currency:$:0}}</b></td>
               <td></td>
               <td></td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="2">All-Time Rank</td>
-              <td></td>
+              <td colspan="2">All-Time</td>
               <td>{{vm.user.ytdW}}</td>
               <td>{{vm.user.ytdL}}</td>
               <td>{{vm.user.ytdPct | percentage:2}}</td>
@@ -46,8 +43,8 @@
           </tfoot>
         </table>
       </div>
-      <div class="row">
-        <form class="col s12" name="regForm" ng-submit="vm.newSeason(user)">
+      <div ng-show="vm.reReg" class="row">
+        <form class="col s12" name="regForm" ng-submit="vm.reRegister(user)">
             <div class="row">
               <buyInLevel class="col m3 offset-m1">
                 <span class="buy-in-label"> Choose Your Buy-in:</span>
@@ -76,7 +73,7 @@
                 <label for="dogSpreads" ng-style="user.plan === 'dogSpreads' ? {'font-weight': 800, 'color': 'black'} : {'font-weight': 200}"> Dog Spreads </label>
               </pickProtect>
               <div class="col m3">
-                <button type="submit" class="btn btn-large waves-effect waves-light login-button"> GAME ON! </button>
+                <button type="submit" class="btn btn-large waves-effect waves-light login-button"> LET'S PARTY </button>
                 <!-- <div>
                   <i> <b> Registration is now closed for the 2016 NFL season. </b> </i>
                 </div> -->
@@ -92,7 +89,7 @@
 <div id="modal1" class="modal">
    <div class="modal-content">
      <h4>What is a Pick Protection Plan?</h4>
-     <p>New this season is the option for entrants to pay an additional $20 to protect themselves from missed picks -- which would otherwise earn them an automatic loss of $100 in-game dollars -- by selecting from one of four pick protection plans which will automatically make selections for a user in the event that no pick is selected for a game. Those options are:</p>
+     <p>A pick protection plan allows an entrant to pay an additional $20 to protect themselves from missed picks -- which would otherwise earn them an automatic loss of $100 in-game dollars -- by selecting from one of four pick strategies which will automatically make selections for a user in the event that no pick is selected for a game. Those options are:</p>
      <div><b>Home Team Against the Spread</b></div>
      <div><b>Road Team Against the Spread</b></div>
      <div><b>Favored Team's Moneyline</b></div>

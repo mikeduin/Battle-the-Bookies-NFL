@@ -33,6 +33,11 @@ function usersService ($http) {
       return $http.get('/users/current').then(function(result){
         return result.data
       })
+    },
+    reRegister: function (user) {
+      return $http.put('/users/reregister', user).then(function(result){
+        return result.data
+      })
     }
   }
 

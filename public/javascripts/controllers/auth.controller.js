@@ -21,7 +21,7 @@ function AuthController ($state, authService, usersService) {
   vm.logIn = function(user) {
     authService.logIn(user).error(function(error){
       vm.error = error.message;
-      console.log(error)
+      console.log(error);
     }).then(function(){
       var username = user.username;
       usersService.getCurrentPlayers().then(function(currentUsers){

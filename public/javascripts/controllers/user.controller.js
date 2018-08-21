@@ -15,11 +15,20 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.abbrev;
   vm.weekNumb;
   vm.seasons = [2017, 2018];
+  vm.reReg = false;
+  vm.regSeason;
 
   $(document).ready(function () {
     $('.modal').modal();
     $('.tooltipped').tooltip({delay: 20});
   })
+
+  vm.reRegister = function (user) {
+    user.newSeason = vm.regSeason;
+    usersService.reRegister(user).then(function(res){
+      console.log(res);
+    })
+  };
 
   vm.openModal = function(){
     $('#modal1').modal('open');
