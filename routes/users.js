@@ -64,12 +64,17 @@ router.get('/:username', function (req, res, next){
 
 router.get('/stats/:username', function (req, res, next){
   var user = req.params.username
-  Users().where({username: user}).pluck('btb_seasons').then(function(seasons){
+  Users().where({username: user}).pluck('btb_seasons').then(function(seasonData){
+    var seasons = [];
+    for (var i=0; i<seasonData[0].length; i++) {
+      console.log(seasonData[0][i]);
+      seasons.push(seasonData[0][i].season);
+    };
     var userStats = {};
     var len = seasons.length;
     var count = 0;
     console.log('seasons are ', seasons);
-    seasons[0].forEach(function(season){
+    seasons.forEach(function(season){
       var int = parseInt(season);
       Picks().where({
         username: user,

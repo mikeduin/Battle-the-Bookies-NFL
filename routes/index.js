@@ -50,6 +50,10 @@ function Picks() {
   return knex('picks');
 }
 
+function Users() {
+  return knex('users');
+}
+
 // This first function updates game results every 11 minutes.
 // DISABLED FOR OFFSEASON
 // setInterval(function (){
@@ -60,6 +64,24 @@ function Picks() {
 setInterval(function (){
   createLines.createLines();
 }, 420000);
+
+// setInterval(function(){
+//   Users().select('username', 'buyin', 'plan').then(function(userData){
+//     userData.forEach(function(user){
+//       var insert = [{
+//         "season": 2017,
+//         "active": true,
+//         "buyin": user.buyin,
+//         "plan": user.plan
+//       }];
+//       Users().where({username: user.username}).update({
+//         btb_seasons: insert
+//       }, '*').then(function(updated){
+//         console.log(updated.user, ' has been updated!')
+//       })
+//     })
+//   })
+// }, 10000)
 
 
 // The function below runs once every 15 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
