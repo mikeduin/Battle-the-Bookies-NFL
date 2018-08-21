@@ -28,6 +28,11 @@ function usersService ($http) {
       return $http.get('/users/stats/' + username).then(function(result){
         return result.data
       })
+    },
+    getCurrentPlayers : function() {
+      return $http.get('/users/current').then(function(result){
+        return result.data
+      })
     }
   }
 

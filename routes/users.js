@@ -38,6 +38,24 @@ router.get('/', function(req, res, next) {
   })
 });
 
+router.get('/current', function(req, res, next){
+  var current = [];
+  Users().select('username', 'btb_seasons').then(function(users){
+    var len = users.length;
+    var count = 0;
+    users.forEach(function(user){
+      var seasons = user.btb_seasons;
+      if (seasons.indexOf(2018) != -1) {
+        current.push(user.username);
+      };
+      count ++;
+      if (len == count) {
+        res.json(current);
+      }
+    });
+  })
+})
+
 router.get('/:username', function (req, res, next){
   Users().where({username: req.params.username}).then(function(user){
     res.json(user);

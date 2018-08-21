@@ -47,51 +47,7 @@
         </table>
       </div>
       <div class="row">
-        <form class="col s12" name="regForm" ng-submit="vm.register(user)">
-            <!-- <div class="row">
-              <div class="input-field col s5 offset-s1">
-                <i class="fa fa-user prefix" aria-hidden="true"></i>
-                <input name="username" type="text" class="validate" ng-model="user.username" required>
-                <label>Username</label>
-              </div>
-              <div class="input-field col s5">
-                <i class="material-icons prefix"></i>
-                <input type="email" name="email" class="validate" ng-model="user.email" required ng-focus>
-                <label>Email</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s5 offset-s1">
-                <i class="fa fa-lock prefix" aria-hidden="true"></i>
-                <input type="password" class="validate" name="password" ng-model="user.password" required>
-                <label>Password</label>
-              </div>
-              <div class="input-field col s5">
-                <i class="material-icons prefix"></i>
-                <input type="password" class="validate" ng-class="{invalid: regForm.confirmPassword.$dirty && regForm.confirmPassword.$error.validator && !regForm.confirmPassword.$focused && !regForm.password.$error.required}" name="confirmPassword" ng-model="user.confirmPassword" ui-validate= " '$value==user.password' " ui-validate-watch=" 'user.password' " required ng-focus>
-                <label>Confirm Password</label>
-              </div>
-              <div class="offset-s2 col-s10 center-align form-error" ng-show="regForm.confirmPassword.$dirty && regForm.confirmPassword.$error.validator && !regForm.confirmPassword.$focused && !regForm.password.$error.required">
-                Passwords must match
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s5 offset-s1">
-                <i class="fa fa-child prefix" aria-hidden="true"></i>
-                <input type="text" name="nameFirst" class="validate" ng-model="user.nameFirst" required>
-                <label>First Name</label>
-              </div>
-              <div class="input-field col s5">
-                <i class="material-icons prefix"></i>
-                <input type="text" name="nameLast" class="validate" ng-model="user.nameLast" required>
-                <label>Last Name</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col m12 center-align">
-                <error ng-show="vm.error"> {{vm.error}} </error>
-              </div>
-            </div> -->
+        <form class="col s12" name="regForm" ng-submit="vm.newSeason(user)">
             <div class="row">
               <buyInLevel class="col m3 offset-m1">
                 <span class="buy-in-label"> Choose Your Buy-in:</span>
@@ -132,3 +88,18 @@
     </regBox>
   </regBack>
 </div>
+
+<div id="modal1" class="modal">
+   <div class="modal-content">
+     <h4>What is a Pick Protection Plan?</h4>
+     <p>New this season is the option for entrants to pay an additional $20 to protect themselves from missed picks -- which would otherwise earn them an automatic loss of $100 in-game dollars -- by selecting from one of four pick protection plans which will automatically make selections for a user in the event that no pick is selected for a game. Those options are:</p>
+     <div><b>Home Team Against the Spread</b></div>
+     <div><b>Road Team Against the Spread</b></div>
+     <div><b>Favored Team's Moneyline</b></div>
+     <div><b>Underdog Against the Spread</b></div>
+     <p>In other words, if you paid $20 for a 'Home Team ATS' plan and did not make a selection for a game, you would automatically be given the home team at their closing spread at gametime. The $20 from each pick protection plan will be re-distributed into the prize pool proportionally based on a user's buy-in. </p>
+   </div>
+   <div class="modal-footer">
+     <h5 ng-click="vm.closeModal()" class="modal-action modal-close waves-effect waves-green btn-flat">Got it!</h5>
+   </div>
+ </div>

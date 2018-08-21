@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('AuthController', ['$state', 'authService', AuthController])
+  .controller('AuthController', ['$state', 'authService', 'usersService', AuthController])
 
-function AuthController ($state, authService) {
+function AuthController ($state, authService, usersService) {
   var vm = this;
 
   $(document).ready(function () {
@@ -23,9 +23,23 @@ function AuthController ($state, authService) {
       vm.error = error.message;
       console.log(error)
     }).then(function(){
-      $state.go('home.makepicks');
+      var username = user.username;
+      usersService.getCurrentPlayers().then(function(currentUsers){
+        if (currentUsers.indexOf(username) == -1) {
+          $state.go('home.userhistory', {"username": username});
+        } else {
+          $state.go('home.makepicks', {"season": 2018});
+        };
+      })
     })
   };
+
+  // var getCurrentPlayers = function(){
+  //   usersService.getCurrentPlayers().then(function(res){
+  //     console.log('res from call is ', res);
+  //     return res;
+  //   })
+  // };
 
   vm.openModal = function(){
     $('#modal1').modal('open');

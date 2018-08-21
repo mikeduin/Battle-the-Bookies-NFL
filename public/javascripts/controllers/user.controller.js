@@ -16,6 +16,19 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.weekNumb;
   vm.seasons = [2017, 2018];
 
+  $(document).ready(function () {
+    $('.modal').modal();
+    $('.tooltipped').tooltip({delay: 20});
+  })
+
+  vm.openModal = function(){
+    $('#modal1').modal('open');
+  };
+
+  vm.closeModal = function(){
+    $('#modal1').modal('close');
+  };
+
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
   })
