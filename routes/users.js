@@ -67,13 +67,11 @@ router.get('/stats/:username', function (req, res, next){
   Users().where({username: user}).pluck('btb_seasons').then(function(seasonData){
     var seasons = [];
     for (var i=0; i<seasonData[0].length; i++) {
-      console.log(seasonData[0][i]);
       seasons.push(seasonData[0][i].season);
     };
     var userStats = {};
     var len = seasons.length;
     var count = 0;
-    console.log('seasons are ', seasons);
     seasons.forEach(function(season){
       var int = parseInt(season);
       Picks().where({
@@ -140,10 +138,19 @@ router.post('/login', function(req, res, next){
 })
 
 router.put('/reregister', function(req, res, next){
-  console.log(req.body);
-  // var username = req.body.username;
-  //
-  // Users().where({username: })
+  Users().where({username: req.body.username}).pluck('btb_seasons').then(function(seasonData){
+    var newEntry = [seasonData[0][0], {
+      'plan': req.body.plan,
+      'buyin': req.body.buyin,
+      'season': req.body.newSeason,
+      'active': true
+    }]
+    Users().where({username: req.body.username}).update({
+      btb_seasons: newEntry
+    }, '*').then(function(user){
+      console.log(user[0].username, ' has been updated!');
+    })
+  })
 })
 
 module.exports = router;

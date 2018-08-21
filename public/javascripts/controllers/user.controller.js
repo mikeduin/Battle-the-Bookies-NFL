@@ -130,7 +130,6 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
 
   vm.getSeasonStats = function() {
     usersService.getSeasonStats($stateParams.username).then(function(res){
-      console.log(res);
       vm.seasonStats = res;
     })
   };

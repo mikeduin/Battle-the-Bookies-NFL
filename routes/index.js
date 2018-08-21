@@ -194,7 +194,6 @@ router.get('/linemove/:gameID', function(req, res, next){
 
 router.get('/pullGame/:gameID', function(req, res, next){
   pickArrays.byId(req.params.gameID).then(function(arrays){
-    console.log('arrays in server are ', arrays);
     res.json(arrays);
   })
 })
