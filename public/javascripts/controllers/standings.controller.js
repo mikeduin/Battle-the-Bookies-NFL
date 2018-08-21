@@ -17,7 +17,6 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   vm.showStandings = false;
   vm.dailyStats = [];
   vm.season = $stateParams.season;
-
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
   })
@@ -26,6 +25,13 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
     return a - b
   };
 
+  vm.getSeasonPlayers = function(season) {
+    usersService.getSeasonPlayers(vm.season).then(function(res){
+      console.log(res);
+      // vm.seasonPlayers = res;
+    })
+  }
+
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
       vm.users = result
@@ -33,6 +39,7 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   };
 
   vm.seasonChange = function(){
+    vm.getSeasonPlayers();
     $state.go('home.standings', {season: vm.season});
   };
 

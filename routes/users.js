@@ -38,19 +38,24 @@ router.get('/', function(req, res, next) {
   })
 });
 
-router.get('/current', function(req, res, next){
-  var current = [];
+router.get('/season/:season', function(req, res, next){
+  var players = [];
+  var seasonQuery = parseInt(req.params.season);
   Users().select('username', 'btb_seasons').then(function(users){
     var len = users.length;
     var count = 0;
     users.forEach(function(user){
-      var seasons = user.btb_seasons;
-      if (seasons.indexOf(2018) != -1) {
-        current.push(user.username);
+      var seasons = [];
+      var seasonData = user.btb_seasons;
+      for (var i=0; i<seasonData.length; i++){
+        seasons.push(parseInt(seasonData[i].season));
+      };
+      if (seasons.indexOf(seasonQuery) != -1) {
+        players.push(user.username);
       };
       count ++;
       if (len == count) {
-        res.json(current);
+        res.json(players);
       }
     });
   })
@@ -63,7 +68,7 @@ router.get('/:username', function (req, res, next){
 })
 
 router.get('/stats/:username', function (req, res, next){
-  var user = req.params.username
+  var user = req.params.username;
   Users().where({username: user}).pluck('btb_seasons').then(function(seasonData){
     var seasons = [];
     for (var i=0; i<seasonData[0].length; i++) {
@@ -139,9 +144,10 @@ router.post('/login', function(req, res, next){
 
 router.put('/reregister', function(req, res, next){
   Users().where({username: req.body.username}).pluck('btb_seasons').then(function(seasonData){
+    var buyin = parseInt(req.body.buyin);
     var newEntry = [seasonData[0][0], {
       'plan': req.body.plan,
-      'buyin': req.body.buyin,
+      'buyin': buyin,
       'season': req.body.newSeason,
       'active': true
     }]

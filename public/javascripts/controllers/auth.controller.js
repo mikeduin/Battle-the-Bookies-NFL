@@ -24,7 +24,7 @@ function AuthController ($state, authService, usersService) {
       console.log(error);
     }).then(function(){
       var username = user.username;
-      usersService.getCurrentPlayers().then(function(currentUsers){
+      usersService.getSeasonPlayers(2018).then(function(currentUsers){
         if (currentUsers.indexOf(username) == -1) {
           $state.go('home.userhistory', {"username": username});
         } else {
@@ -33,13 +33,6 @@ function AuthController ($state, authService, usersService) {
       })
     })
   };
-
-  // var getCurrentPlayers = function(){
-  //   usersService.getCurrentPlayers().then(function(res){
-  //     console.log('res from call is ', res);
-  //     return res;
-  //   })
-  // };
 
   vm.openModal = function(){
     $('#modal1').modal('open');

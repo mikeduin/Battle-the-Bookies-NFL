@@ -29,8 +29,8 @@ function usersService ($http) {
         return result.data
       })
     },
-    getCurrentPlayers : function() {
-      return $http.get('/users/current').then(function(result){
+    getSeasonPlayers : function(season) {
+      return $http.get('/users/season/' + season).then(function(result){
         return result.data
       })
     },

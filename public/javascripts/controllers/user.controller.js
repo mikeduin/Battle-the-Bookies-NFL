@@ -17,6 +17,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.seasons = [2017, 2018];
   vm.reReg = false;
   vm.regSeason;
+  vm.season = 2018;
 
   $(document).ready(function () {
     $('.modal').modal();
@@ -108,7 +109,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
       vm.getUserPicks(user[0].username);
       vm.sumAllPicks(user[0].username);
       vm.getPickStats(user[0].username);
-      vm.getWeeklyStats(user[0].username);
+      vm.getWeeklyStats(user[0].username, vm.season);
     })
   }
 
@@ -135,7 +136,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   };
 
   vm.getWeeklyStats = function(username){
-    picksService.getWeeklyStats(username).then(function(result){
+    picksService.getWeeklyStats(username, vm.season).then(function(result){
       stats = result.data;
       var ytdDollars = 0
       for (i=0; i<stats.length; i++) {
