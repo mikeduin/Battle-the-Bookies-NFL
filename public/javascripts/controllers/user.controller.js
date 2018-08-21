@@ -25,6 +25,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
 
   vm.reRegister = function (user) {
     user.newSeason = vm.regSeason;
+    user.username = vm.userFilter;
     usersService.reRegister(user).then(function(res){
       console.log(res);
     })
