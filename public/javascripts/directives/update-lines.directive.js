@@ -9,7 +9,7 @@ function updateLines ($interval) {
 
     function refreshLines () {
       controller.updateOdds();
-      controller.getNflLines();
+      controller.getNflLines(scope.season);
     };
 
     scope.$watch(attrs.updateLines, function() {
@@ -22,6 +22,9 @@ function updateLines ($interval) {
   };
 
   return {
+    scope: {
+      season: '='
+    },
     controller: 'PickController',
     controllerAs: 'vm',
     link: oneMinuteRefresh

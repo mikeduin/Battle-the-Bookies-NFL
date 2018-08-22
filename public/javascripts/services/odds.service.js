@@ -10,6 +10,7 @@ function oddsService ($http) {
       })
     },
     getNflLines: function(season) {
+      console.log('season in service is ', season);
       return $http.get('/lines/season/' + season).then(function(lines){
         return lines.data
       })
