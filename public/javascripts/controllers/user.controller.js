@@ -4,6 +4,7 @@ angular
 
 function UserController ($stateParams, picksService, usersService, oddsService, authService, $state, $scope) {
   var vm = this;
+  vm.season = 2018;
   vm.user = {};
   vm.userFilter;
   vm.username;
@@ -17,7 +18,6 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.seasons = [2017, 2018];
   vm.reReg = false;
   vm.regSeason;
-  vm.season = 2018;
 
   $(document).ready(function () {
     $('.modal').modal();
@@ -107,11 +107,16 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
       vm.user = user[0];
       vm.userFilter = user[0].username;
       vm.getUserPicks(user[0].username);
-      vm.sumAllPicks(user[0].username);
-      vm.getPickStats(user[0].username);
+      vm.sumAllPicks(user[0].username, vm.season);
+      vm.getPickStats(user[0].username, vm.statSeason);
       vm.getWeeklyStats(user[0].username, vm.season);
     })
   }
+
+  vm.statChange = function(season) {
+    vm.getPickStats($stateParams.username, season);
+    vm.getWeeklyStats($stateParams.username);
+  };
 
   vm.getUserPicks = function(username){
     vm.showSpinner = true;
@@ -121,7 +126,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   }
 
   vm.sumAllPicks = function(username) {
-    picksService.sumAllPicks(username).then(function(result){
+    picksService.sumAllPicks(username, vm.season).then(function(result){
       vm.user.sumYtd = result.totalDollars;
       vm.user.ytdW = result.totalW;
       vm.user.ytdL = result.totalG - result.totalW;
@@ -136,8 +141,9 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   };
 
   vm.getWeeklyStats = function(username){
-    picksService.getWeeklyStats(username, vm.season).then(function(result){
+    picksService.getWeeklyStats(username, vm.statSeason).then(function(result){
       stats = result.data;
+      console.log('stats are ', stats);
       var ytdDollars = 0
       for (i=0; i<stats.length; i++) {
         var dayDollars = stats[i].totalDollars;
@@ -153,8 +159,8 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
     })
   }
 
-  vm.getPickStats = function(username) {
-    picksService.getPickStats(username).then(function(stats){
+  vm.getPickStats = function(username, season) {
+    picksService.getPickStats(username, season).then(function(stats){
       stats = stats.data;
       vm.user.awayMlPicks = stats.awayMlPicks;
       vm.tendencyData.series[0].values.push(stats.awayMlPicks);
@@ -182,8 +188,9 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   };
 
   function getDates () {
-    oddsService.getDates().then(function(dates){
-      vm.weeksOfGames = dates;
+    oddsService.getDates(vm.season).then(function(dates){
+      // vm.weeksOfGames = dates;
+      vm.weeksOfGames = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11', 'Week 12', 'Week 13', 'Week 14', 'Week 15', 'Week 16', 'Week 17'];
       var currentWeek = vm.weekSetter(moment().format());
       if (currentWeek === "Preseason") {
         vm.gameWeekFilter = "Week 1"

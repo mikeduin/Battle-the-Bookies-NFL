@@ -1,14 +1,22 @@
-<userHead class="row" ng-init="vm.getUser(); vm.getDates(); vm.getMatchups()">
+<userHead class="row" ng-init="vm.getUser(); vm.getDates(); vm.getMatchups(); vm.season = '2018'; vm.statSeason = '2017'">
   <userInfo class="col m4">
     <section class="col m12">
-      <selectDiv class="col m8">
-        <div class="col m12">
+      <!-- <selectDiv class="col m10"> -->
+        <div class="col m8">
           <label> Select a User </label>
           <select class="browser-default" ng-model="vm.userFilter" ng-init="vm.getAllUsers()" ng-change="vm.userChange()">
             <option ng-repeat = "user in vm.usernames" value="{{user}}"> {{user}} </option>
           </select>
         </div>
-      </selectDiv>
+        <div class="col m4">
+            <label> Select Season </label>
+            <select class="browser-default" ng-model="vm.statSeason">
+              <!-- <option selected value="2018">2018</option> -->
+              <option selected value="2017">2017</option>
+              <!-- <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option> -->
+            </select>
+        </div>
+      <!-- </selectDiv> -->
     </section>
     <userDiv class="col m12 left-align">
       <stats>
@@ -27,7 +35,7 @@
           </div>
           <div class="col m9">
             <div>
-              <gameTitle> NFL 2016 </gameTitle>
+              <gameTitle> NFL 2017 </gameTitle>
             </div>
             <div>
               <profits>
@@ -68,9 +76,17 @@
 </pieCharts>
 
 <div class="row pickSection">
-  <div class="col s9 userPicks">
+  <div class="col s6 userPicks">
     {{vm.userFilter}}'s Picks
   </div>
+  <selectDiv class="col s2 offset-s1 userWkSelect">
+      <label> Select Season </label>
+      <select class="browser-default" ng-model="vm.season" ng-change="vm.seasonChange(vm.season)">
+        <option selected value="2018">2018</option>
+        <option value="2017">2017</option>
+        <!-- <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option> -->
+      </select>
+  </selectDiv>
   <div class="col s3 userWkSelect">
     <label> Select a Week </label>
     <select class="browser-default" ng-change="vm.checkWeekNumb()" ng-model="vm.gameWeekFilter">
@@ -91,7 +107,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="game in vm.picks | orderBy: 'MatchTime' | filter: { Week: vm.gameWeekFilter }" on-finish-render="ngRepeatFinished">
+      <tr ng-repeat="game in vm.picks | orderBy: 'MatchTime' | filter: { Week: vm.gameWeekFilter, season: vm.season }" on-finish-render="ngRepeatFinished">
         <td> {{game.Week}} </td>
         <td> {{game.MatchTime | date:'MM/dd/yyyy'}} <br> {{game.MatchTime | date:'h:mm a'}} </td>
         <td class="gameMatchup">

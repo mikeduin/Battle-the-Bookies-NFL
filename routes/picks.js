@@ -53,8 +53,11 @@ router.get('/:username/:season/all', function (req, res, next) {
   })
 })
 
-router.get('/:username/stats', function (req, res, next){
-  Picks().where({username: req.params.username}).then(function(picks){
+router.get('/:username/stats/:season', function (req, res, next){
+  Picks().where({
+    username: req.params.username,
+    season: req.params.season
+  }).then(function(picks){
     var awaySpreadPicks = 0;
     var homeSpreadPicks = 0;
     var awayMlPicks = 0;

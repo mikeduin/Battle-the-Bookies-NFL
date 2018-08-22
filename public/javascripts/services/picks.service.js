@@ -86,8 +86,8 @@ function picksService ($http, authService) {
         }
       })
     },
-    getPickStats: function(username){
-      return $http.get('/picks/' + username + '/stats').then(function(stats){
+    getPickStats: function(username, season){
+      return $http.get('/picks/' + username + '/stats/' + season).then(function(stats){
         return stats
       })
     },
