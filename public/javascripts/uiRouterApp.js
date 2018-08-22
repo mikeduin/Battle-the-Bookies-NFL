@@ -142,7 +142,7 @@ function siteConfig ($stateProvider, $urlRouterProvider, $locationProvider) {
       }
     })
     .state('home.prizes', {
-      url: 'prizes',
+      url: 'prizes/:season',
       views: {
         'content@': {
           templateUrl: 'views/prizes.html',

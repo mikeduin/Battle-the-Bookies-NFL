@@ -1,10 +1,12 @@
 angular
   .module('battleBookies')
-  .controller('PrizesController', ['usersService', PrizesController])
+  .controller('PrizesController', ['usersService', 'oddsService', '$stateParams', PrizesController])
 
-function PrizesController (usersService) {
+function PrizesController (usersService, oddsService, $stateParams) {
   var vm = this;
+  getSeasons();
   vm.users = [];
+  vm.season = $stateParams.season;
   vm.baseTierTotal = 0;
   vm.silverBuyins = 0;
   vm.goldBuyins = 0;
@@ -26,62 +28,79 @@ function PrizesController (usersService) {
   vm.goldThird = 0;
   vm.goldFourth = 0;
 
-  vm.getAllUsers = function(){
-    usersService.getAllUsers().then(function(result){
-      vm.users = result;
-        for (user in vm.users) {
+  // vm.getAllUsers = function(){
+  //   usersService.getAllUsers().then(function(result){
+  //     vm.users = result;
+  //   })
+  // }
 
+  vm.getSeasonUsers = function(season){
+    usersService.getSeasonUsers(season).then(function(result){
+      for (var i = 0; i < result.length; i++) {
+        var buyin;
+        for (var j = 0; j < result[i].btb_seasons.length; j++) {
+          if (result[i].btb_seasons[j].season == vm.season) {
+            buyin = result[i].btb_seasons[j].buyin;
+            plan = result[i].btb_seasons[j].plan;
+          }
         }
+        result[i].buyin = buyin;
+        result[i].plan = plan;
+      };
+      vm.users = result;
+      calculatePrizes(vm.users);
     })
   }
 
-  vm.calculatePrizes = function(){
-    usersService.getAllUsers().then(function(result){
-      var users = result;
-      vm.bronzePool = -320;
-      vm.silverPool = 0;
-      vm.goldPool = 0;
-      for (i=0; i<users.length; i++) {
-        if (users[i].buyin === 50) {
-          vm.bronzePool += 50;
-          if (users[i].plan !== null && users[i].plan !== 'noPlan') {
-            vm.bronzePool += 20;
-          };
-        } else if (users[i].buyin === 100) {
+  vm.seasonChange = function(){
+    vm.getSeasonUsers(vm.season);
+    $state.go('home.prizes', {season: vm.season});
+  };
+
+  var calculatePrizes = function(users){
+    vm.bronzePool = -320;
+    vm.silverPool = 0;
+    vm.goldPool = 0;
+    for (i=0; i<users.length; i++) {
+      if (users[i].buyin === 50) {
+        vm.bronzePool += 50;
+        if (users[i].plan !== null && users[i].plan !== 'noPlan') {
+          vm.bronzePool += 20;
+        };
+      } else if (users[i].buyin === 100) {
+        vm.bronzePool += 50;
+        vm.silverPool += 50;
+        if (users[i].plan !== null && users[i].plan !== 'noPlan') {
+          vm.bronzePool += 10;
+          vm.silverPool += 10;
+        }
+      } else if (users[i].buyin === 200) {
           vm.bronzePool += 50;
           vm.silverPool += 50;
+          vm.goldPool += 100;
           if (users[i].plan !== null && users[i].plan !== 'noPlan') {
-            vm.bronzePool += 10;
-            vm.silverPool += 10;
+            vm.bronzePool += 5;
+            vm.silverPool += 5;
+            vm.goldPool += 10;
           }
-        } else if (users[i].buyin === 200) {
-            vm.bronzePool += 50;
-            vm.silverPool += 50;
-            vm.goldPool += 100;
-            if (users[i].plan !== null && users[i].plan !== 'noPlan') {
-              vm.bronzePool += 5;
-              vm.silverPool += 5;
-              vm.goldPool += 10;
-            }
-        }
-      };
+      }
+    };
 
-      vm.bronzeFirst = (vm.bronzePool * 0.5);
-      vm.bronzeSecond = (vm.bronzePool * 0.225);
-      vm.bronzeThird = (vm.bronzePool * 0.15);
-      vm.bronzeFourth = (vm.bronzePool * 0.1);
-      vm.bronzeFifth = (vm.bronzePool * 0.025);
+    vm.bronzeFirst = (vm.bronzePool * 0.5);
+    vm.bronzeSecond = (vm.bronzePool * 0.225);
+    vm.bronzeThird = (vm.bronzePool * 0.15);
+    vm.bronzeFourth = (vm.bronzePool * 0.1);
+    vm.bronzeFifth = (vm.bronzePool * 0.025);
 
-      vm.silverFirst = (vm.silverPool * 0.5);
-      vm.silverSecond = (vm.silverPool * 0.275);
-      vm.silverThird = (vm.silverPool * 0.15);
-      vm.silverFourth = (vm.silverPool * 0.075);
+    vm.silverFirst = (vm.silverPool * 0.5);
+    vm.silverSecond = (vm.silverPool * 0.275);
+    vm.silverThird = (vm.silverPool * 0.15);
+    vm.silverFourth = (vm.silverPool * 0.075);
 
-      vm.goldFirst = (vm.goldPool * 0.5);
-      vm.goldSecond = (vm.goldPool * 0.275);
-      vm.goldThird = (vm.goldPool * 0.15);
-      vm.goldFourth = (vm.goldPool * 0.075);
-    })
+    vm.goldFirst = (vm.goldPool * 0.5);
+    vm.goldSecond = (vm.goldPool * 0.275);
+    vm.goldThird = (vm.goldPool * 0.15);
+    vm.goldFourth = (vm.goldPool * 0.075);
   }
 
   vm.detPlan = function(plan) {
@@ -96,5 +115,11 @@ function PrizesController (usersService) {
     } else if (user.plan === "favMLs") {
       user.plan = "Favorite ML"
     }
+  };
+
+  function getSeasons () {
+    oddsService.getSeasons().then(function(seasons){
+      vm.seasons = seasons;
+    })
   };
 }

@@ -1,14 +1,20 @@
-<resultsHead class="row" ng-init="vm.getAllUsers(); vm.calculatePrizes()">
+<resultsHead class="row" ng-init="vm.getSeasonUsers(vm.season)">
   <leadDiv class="col m12 result-head z-depth-1">
     <div class="col m3 left-align">
       <p class="resHead"> Prizes </p>
     </div>
+    <selectDiv class="col m2 offset-m6 res-select">
+        <label> Select Season </label>
+        <select class="browser-default" ng-model="vm.season" ng-change="vm.seasonChange(vm.season)">
+          <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option>
+        </select>
+    </selectDiv>
   </leadDiv>
 </resultsHead>
 
 <prizeIntro class="row">
   <div class="col s12">
-    Below you will find the prize grid for the 2017 ALA NFL Battle the Bookies game. An entrant is permitted to buy-in at one of three buy-in levels and is eligible to win a percentage of the prize pool proportionate to their buy-in amount. From the total base tier of $50 buy-ins, $170 is subtracted to cover the $10 weekly top score prizes and an additional $150 is subtracted to help cover the $70/month cost of subscribing to the API that provides the live odds for the game.
+    Below you will find the prize grid for the {{vm.season}} ALA NFL Battle the Bookies game. An entrant is permitted to buy-in at one of three buy-in levels and is eligible to win a percentage of the prize pool proportionate to their buy-in amount. From the total base tier of $50 buy-ins, $170 is subtracted to cover the $10 weekly top score prizes and an additional $150 is subtracted to help cover the $70/month cost of subscribing to the API that provides the live odds for the game.
   </div>
 </prizeIntro>
 
