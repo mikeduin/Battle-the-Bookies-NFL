@@ -63,11 +63,17 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     }
   }
 
-  vm.getAllUsers = function(){
-    usersService.getAllUsers().then(function(result){
+  // vm.getAllUsers = function(){
+  //   usersService.getAllUsers().then(function(result){
+  //     vm.users = result;
+  //   })
+  // };
+
+  vm.getSeasonUsers = function(season){
+    usersService.getSeasonUsers(season).then(function(result){
       vm.users = result;
     })
-  };
+  }
 
   vm.sumAllPicks = function(user) {
     username = user.username;
