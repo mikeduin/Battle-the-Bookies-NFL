@@ -55,10 +55,9 @@ function Users() {
 }
 
 // This first function updates game results every 11 minutes.
-// DISABLED FOR OFFSEASON
-// setInterval(function (){
-//   updateGameResults.updateGameResults()
-// }, 660000);
+setInterval(function (){
+  updateGameResults.updateGameResults()
+}, 660000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 setInterval(function (){
@@ -85,16 +84,15 @@ setInterval(function (){
 
 
 // The function below runs once every 15 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
-// DISABLED FOR OFFSEASON
-// setInterval(function (){
-//   lineMoves.logAllLineMoves();
-// }, 900000);
+setInterval(function (){
+  lineMoves.logAllLineMoves();
+}, 900000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
 
-// setInterval(function (){
-//   checkStartTimes.checkStartTimes();
-// }, 50000000)
+setInterval(function (){
+  checkStartTimes.checkStartTimes();
+}, 50000000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 router.get('/updateOdds', function(req, res, next) {
@@ -134,22 +132,21 @@ router.get('/updateOdds', function(req, res, next) {
 });
 
 // This massive function below runs every 3 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
-// DISABLED FOR OFFSEASON
-// setInterval(function (){
-//   var now = moment();
-//   Lines()
-//   .where('MatchTime', '<', now)
-//   .andWhere('RangesSet', null)
-//   .then(function(games){
-//     if (!games[0]) {
-//       console.log('no line move objects need to be set');
-//       return
-//     };
-//     games.forEach(function(game){
-//       setLineRanges.setLineRanges(game);
-//     })
-//   })
-// }, 180000);
+setInterval(function (){
+  var now = moment();
+  Lines()
+  .where('MatchTime', '<', now)
+  .andWhere('RangesSet', null)
+  .then(function(games){
+    if (!games[0]) {
+      console.log('no line move objects need to be set');
+      return
+    };
+    games.forEach(function(game){
+      setLineRanges.setLineRanges(game);
+    })
+  })
+}, 180000);
 
 router.get('/seasons', function(req, res, next){
   Lines().pluck('season').distinct()

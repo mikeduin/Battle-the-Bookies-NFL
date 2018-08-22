@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('PickController', ['oddsService', 'picksService', 'resultsService', 'authService', '$scope', '$state', '$stateParams', PickController])
+  .controller('PickController', ['oddsService', 'picksService', 'resultsService', 'authService', '$scope', '$state', '$stateParams', '$interval', PickController])
 
-function PickController (oddsService, picksService, resultsService, authService, $scope, $state, $stateParams) {
+function PickController (oddsService, picksService, resultsService, authService, $scope, $state, $stateParams, $interval) {
   var vm = this;
   getSeasons();
   vm.season = $stateParams.season;
@@ -47,6 +47,11 @@ function PickController (oddsService, picksService, resultsService, authService,
 
   var now = moment();
 
+  $interval(function() {
+    vm.updateOdds();
+    vm.getNflLines(vm.season);
+  }, 60000);
+
   function sortNumber(a, b) {
     return a - b
   };
@@ -62,7 +67,7 @@ function PickController (oddsService, picksService, resultsService, authService,
   };
 
   vm.checkDisplay = function(game){
-    var week = parseInt(vm.gameWeekFilter.substring(4));
+    // var week = parseInt(vm.gameWeekFilter.substring(4));
 
     if (moment(game.MatchTime).isBefore(now)) {
       return true
@@ -85,6 +90,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.showSpinner = true;
     oddsService.getNflLines(season).then(function(lines){
       vm.nflLines = lines;
+      console.log('vm.nflLines are ', vm.nflLines);
     })
   };
 
