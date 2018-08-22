@@ -14,7 +14,7 @@ function AuthController ($state, authService, usersService) {
     authService.register(user).error(function(error){
       vm.error = error.message;
     }).then(function(){
-      $state.go('home.makepicks');
+      $state.go('home.makepicks', {"season": 2018});
     })
   };
 

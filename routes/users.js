@@ -47,6 +47,7 @@ router.get('/seasonUsers/:season', function(req, res, next){
     users.forEach(function(user){
       var seasons = [];
       var seasonData = user.btb_seasons;
+      console.log('seasonData for ', user, ' is ', seasonData);
       for (var i=0; i<seasonData.length; i++){
         seasons.push(parseInt(seasonData[i].season));
       };
@@ -136,14 +137,35 @@ router.post('/register', function(req, res, next){
 
   var salt = crypto.randomBytes(16).toString('hex');
   var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
+  var plan;
+
+  // !!! CHANGE THIS HARD-CODED SEASON BELOW LATER!!!
+
+  if (!req.body.plan) {
+    plan = 'noPlan';
+  } else {
+    plan = req.body.plan;
+  };
+
+  var buyin = parseInt(req.body.buyin);
+
+  var newEntry = [{
+    'plan': plan,
+    'buyin': buyin,
+    'season': 2018,
+    'active': true
+  }];
+
+  // var revEntry = JSON.stringify(newEntry);
 
   Users().insert({
     username: req.body.username,
     nameFirst: req.body.nameFirst,
     nameLast: req.body.nameLast,
     email: req.body.email,
-    buyin: req.body.buyin,
-    plan: req.body.plan,
+    btb_seasons: newEntry,
+    // buyin: req.body.buyin,
+    // plan: req.body.plan,
     salt: salt,
     hash: hash,
   }, '*').then(function(user){
