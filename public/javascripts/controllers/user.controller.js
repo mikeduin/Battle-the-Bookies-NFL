@@ -28,7 +28,8 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
     user.newSeason = vm.regSeason;
     user.username = vm.userFilter;
     usersService.reRegister(user).then(function(res){
-      console.log(res);
+      console.log('rereg hit');
+      $state.go('home.makepicks', {season: vm.season});
     })
   };
 
@@ -143,7 +144,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.getWeeklyStats = function(username){
     picksService.getWeeklyStats(username, vm.statSeason).then(function(result){
       stats = result.data;
-      console.log('stats are ', stats);
+      // console.log('stats are ', stats);
       var ytdDollars = 0
       for (i=0; i<stats.length; i++) {
         var dayDollars = stats[i].totalDollars;

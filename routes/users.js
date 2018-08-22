@@ -27,6 +27,7 @@ function generateJWT (user) {
     email: user[0].email,
     nameFirst: user[0].nameFirst,
     nameLast: user[0].nameLast,
+    plan: user[0].plan,
     exp: parseInt(exp.getTime() / 1000),
   }, process.env.SESSION_SECRET)
 }
@@ -167,6 +168,7 @@ router.post('/register', function(req, res, next){
     nameLast: req.body.nameLast,
     email: req.body.email,
     btb_seasons: newEntry,
+    plan: plan,
     // buyin: req.body.buyin,
     // plan: req.body.plan,
     salt: salt,
@@ -195,18 +197,40 @@ router.post('/login', function(req, res, next){
 router.put('/reregister', function(req, res, next){
   Users().where({username: req.body.username}).pluck('btb_seasons').then(function(seasonData){
     var buyin = parseInt(req.body.buyin);
+    var plan;
+    if (req.body.plan) {
+      plan = req.body.plan;
+    } else {
+      plan = 'noPlan';
+    };
     var newEntry = [seasonData[0][0], {
-      'plan': req.body.plan,
+      'plan': plan,
       'buyin': buyin,
       'season': req.body.newSeason,
       'active': true
-    }]
+    }];
     Users().where({username: req.body.username}).update({
+      plan: plan,
       btb_seasons: newEntry
     }, '*').then(function(user){
-      console.log(user[0].username, ' has been updated!');
+      console.log(user[0].username, ' has been registered for the new season!');
+      res.json(user[0].username);
     })
   })
 })
+
+// setInterval(function (){
+//   var newEntry = [{
+//     'plan': 'noPlan',
+//     'buyin': 200,
+//     'season': 2017,
+//     'active': true
+//   }];
+//   Users().where({username: 'mikeduin'}).update({
+//     btb_seasons: newEntry
+//   }).then(function(){
+//     console.log('user updated');
+//   })
+// }, 10000);
 
 module.exports = router;

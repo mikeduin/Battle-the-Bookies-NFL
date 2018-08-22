@@ -62,26 +62,7 @@ setInterval(function (){
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 setInterval(function (){
   createLines.createLines();
-}, 10000);
-
-// setInterval(function(){
-//   Users().select('username', 'buyin', 'plan').then(function(userData){
-//     userData.forEach(function(user){
-//       var insert = [{
-//         "season": 2017,
-//         "active": true,
-//         "buyin": user.buyin,
-//         "plan": user.plan
-//       }];
-//       Users().where({username: user.username}).update({
-//         btb_seasons: insert
-//       }, '*').then(function(updated){
-//         console.log(updated.user, ' has been updated!')
-//       })
-//     })
-//   })
-// }, 10000)
-
+}, 420000);
 
 // The function below runs once every 15 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 setInterval(function (){

@@ -5,6 +5,8 @@ var jwt = require('express-jwt');
 var auth = jwt({secret: process.env.SESSION_SECRET, userProperty: 'payload'});
 var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
+var moment = require('moment');
+var currentSeason = require('../modules/currentSeason.js');
 
 function Picks () {
   return knex('picks')
@@ -13,6 +15,8 @@ function Picks () {
 function Lines () {
   return knex('lines')
 }
+
+var pickSeason = currentSeason.returnSeason(moment());
 
 router.get('/', function (req, res, next){
   Picks().then(function(picks){
@@ -142,7 +146,9 @@ router.post('/addTemp', auth, function (req, res, next){
     DateNumb: req.body.DateNumb,
     WeekNumb: setWeekNumb.weekNumbSetter(req.body.MatchTime),
     Week: setWeek.weekSetter(req.body.MatchTime),
-    finalPayout: 0
+    finalPayout: 0,
+    plan: req.payload.plan,
+    season: pickSeason
   }, '*').then(function(pick){
     res.json(pick)
   })

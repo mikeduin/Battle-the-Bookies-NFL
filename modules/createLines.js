@@ -9,6 +9,8 @@ var logLineMoves = require('../modules/lineMoves.js');
 var currentSeason = require('../modules/currentSeason.js');
 var knex = require ('../db/knex');
 
+var pickSeason = currentSeason.returnSeason(moment());
+
 function Lines() {
   return knex('lines');
 };
@@ -76,11 +78,10 @@ module.exports = {
               // FIX THIS!!! 2018 DOES NOT EXIST ANYMORE!!
               Users().whereNotNull('btb_seasons').then(function(users){
                 var count = 0;
-                var activeSeason = 2018;
                 for (var i=0; i<users.length; i++) {
                   var plan;
                   for (var j = 0; j < users[i].btb_seasons.length; j++) {
-                    if (users[i].btb_seasons[j].season == activeSeason) {
+                    if (users[i].btb_seasons[j].season == pickSeason) {
                       plan = users[i].btb_seasons[j].plan;
                       Picks().insert({
                         username: users[i].username,
@@ -93,7 +94,7 @@ module.exports = {
                         finalPayout: 0,
                         matchup: line[0].AwayAbbrev + ' @ ' + line[0].HomeAbbrev,
                         plan: plan,
-                        season: season
+                        season: pickSeason
                       }, '*').then(function(pick){
                         if (count === 0) {
                           count++;
