@@ -190,7 +190,7 @@ subLead {
 /*BEGIN LOGIN + REG STYLES*/
 
 loginBox {
-  margin-top: 140px;
+  margin-top: 120px;
   display: inline-block;
   background-color: #eeeeee;
   border: solid 3px #B4B4B4;
@@ -270,7 +270,7 @@ regBox i {
 
 regLink {
   font-weight: 600;
-  margin-top: 20px;
+  margin-top: 8px;
 }
 
 regLink a {

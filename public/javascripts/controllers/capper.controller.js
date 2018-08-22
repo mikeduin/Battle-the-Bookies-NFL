@@ -7,7 +7,7 @@ function capperController (picksService, oddsService, usersService, $scope, $sta
   getSeasons();
   vm.getDates = getDates;
   vm.getCapperGrades = getCapperGrades;
-  vm.getAllUsers = getAllUsers;
+  // vm.getAllUsers = getAllUsers;
   vm.sortOrder = "-totalCapperScore";
   vm.tutRedirect = tutRedirect;
   vm.season = $stateParams.season;
@@ -16,11 +16,17 @@ function capperController (picksService, oddsService, usersService, $scope, $sta
     vm.showSpinner = false;
   })
 
-  function getAllUsers (){
-    usersService.getAllUsers().then(function(result){
-      vm.users = result
+  // function getAllUsers (){
+  //   usersService.getAllUsers().then(function(result){
+  //     vm.users = result
+  //   })
+  // };
+
+  vm.getSeasonUsers = function(season){
+    usersService.getSeasonUsers(season).then(function(result){
+      vm.users = result;
     })
-  };
+  }
 
   vm.seasonChange = function(){
     $state.go('home.capper-grades', {season: vm.season});

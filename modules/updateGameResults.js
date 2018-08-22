@@ -43,10 +43,16 @@ module.exports = {
                 GameStatus: "Final"
               }).then(function(){
                 console.log('line has been updated with final score');
-                Picks().where({EventID: game[0].EventID}).update({
-                  HomeScore: game[0].HomeScore,
-                  AwayScore: game[0].AwayScore,
-                  Final: true
+                Picks()
+                  .where({EventID: game[0].EventID})
+                  .whereNot({
+                    Week: "Preseason",
+                    Week: "Postseason"
+                  })
+                  .update({
+                    HomeScore: game[0].HomeScore,
+                    AwayScore: game[0].AwayScore,
+                    Final: true
                 }, '*').then(function(picks){
                   picks.forEach(function(pick){
                     var activePayout = pick.activePayout;

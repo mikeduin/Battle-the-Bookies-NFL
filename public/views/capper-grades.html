@@ -1,6 +1,6 @@
 <chasing-dots-spinner ng-show="vm.showSpinner === true"></chasing-dots-spinner>
 
-<standingsHead class="row" ng-init="vm.getDates(vm.season); vm.getAllUsers()">
+<standingsHead class="row" ng-init="vm.getDates(vm.season); vm.getSeasonUsers(vm.season)">
   <standDiv class="col s12 capper-head z-depth-1">
     <div class="col s10 left-align">
       <p class="capHead"> <a ng-click="vm.tutRedirect()" class="btn-floating float-color tut-btn-page"><i class="fa fa-graduation-cap tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a> capperGrades </p>
