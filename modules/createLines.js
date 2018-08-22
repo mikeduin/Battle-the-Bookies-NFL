@@ -73,29 +73,37 @@ module.exports = {
             }, '*').then(function(line){
               console.log(line[0].EventID + ' was added as a new line');
               // This function below adds the user pick templates for each pick once it's been added as a line.
-              Users().where({"2018": true}).then(function(users){
+              // FIX THIS!!! 2018 DOES NOT EXIST ANYMORE!!
+              Users().whereNotNull('btb_seasons').then(function(users){
                 var count = 0;
+                var activeSeason = 2018;
                 for (var i=0; i<users.length; i++) {
-                  Picks().insert({
-                    username: users[i].username,
-                    plan: users[i].plan,
-                    EventID: line[0].EventID,
-                    MatchDay: line[0].MatchDay,
-                    MatchTime: line[0].MatchTime,
-                    Week: line[0].Week,
-                    DateNumb: line[0].DateNumb,
-                    WeekNumb: line[0].WeekNumb,
-                    matchup: line[0].AwayAbbrev + ' @ ' + line[0].HomeAbbrev,
-                    finalPayout: 0,
-                    season: season
-                  }, '*').then(function(pick){
-                    // if (count === 0) {
-                    //   count++;
-                    //   Lines().where({EventID: pick[0].EventID}).then(function(res){
-                    //     logLineMoves.logIndLineMove(res);
-                    //   })
-                    // }
-                  })
+                  var plan;
+                  for (var j = 0; j < users[i].btb_seasons.length; j++) {
+                    if (users[i].btb_seasons[j].season == activeSeason) {
+                      plan = users[i].btb_seasons[j].plan;
+                      Picks().insert({
+                        username: users[i].username,
+                        EventID: line[0].EventID,
+                        MatchDay: line[0].MatchDay,
+                        MatchTime: line[0].MatchTime,
+                        Week: line[0].Week,
+                        DateNumb: line[0].DateNumb,
+                        WeekNumb: line[0].WeekNumb,
+                        finalPayout: 0,
+                        matchup: line[0].AwayAbbrev + ' @ ' + line[0].HomeAbbrev,
+                        plan: plan,
+                        season: season
+                      }, '*').then(function(pick){
+                        if (count === 0) {
+                          count++;
+                          Lines().where({EventID: pick[0].EventID}).then(function(res){
+                            logLineMoves.logIndLineMove(res);
+                          })
+                        }
+                      })
+                    };
+                  };
                 }
               })
             })

@@ -62,7 +62,7 @@ setInterval(function (){
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 setInterval(function (){
   createLines.createLines();
-}, 420000);
+}, 10000);
 
 // setInterval(function(){
 //   Users().select('username', 'buyin', 'plan').then(function(userData){
@@ -89,10 +89,10 @@ setInterval(function (){
 }, 900000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
-
-setInterval(function (){
-  checkStartTimes.checkStartTimes();
-}, 50000000)
+//
+// setInterval(function (){
+//   checkStartTimes.checkStartTimes();
+// }, 50000000)
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 router.get('/updateOdds', function(req, res, next) {
