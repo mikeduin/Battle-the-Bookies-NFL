@@ -34,6 +34,11 @@ function usersService ($http) {
         return result.data
       })
     },
+    getSeasonUsers : function(season){
+      return $http.get('/users/seasonUsers/' + season).then(function(result){
+        return result.data
+      })
+    },
     reRegister: function (user) {
       return $http.put('/users/reregister', user).then(function(result){
         return result.data

@@ -38,6 +38,31 @@ router.get('/', function(req, res, next) {
   })
 });
 
+router.get('/seasonUsers/:season', function(req, res, next){
+  var players = [];
+  var seasonQuery = parseInt(req.params.season);
+  Users().select('username', 'btb_seasons').then(function(users){
+    var len = users.length;
+    var count = 0;
+    users.forEach(function(user){
+      var seasons = [];
+      var seasonData = user.btb_seasons;
+      for (var i=0; i<seasonData.length; i++){
+        seasons.push(parseInt(seasonData[i].season));
+      };
+      if (seasons.indexOf(seasonQuery) != -1) {
+        players.push(user.username);
+      };
+      count ++;
+      if (len == count) {
+        Users().whereIn('username', players).then(function(users){
+          res.json(users)
+        })
+      }
+    });
+  })
+})
+
 router.get('/season/:season', function(req, res, next){
   var players = [];
   var seasonQuery = parseInt(req.params.season);

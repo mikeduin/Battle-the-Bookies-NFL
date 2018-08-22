@@ -25,21 +25,27 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
     return a - b
   };
 
-  vm.getSeasonPlayers = function(season) {
-    usersService.getSeasonPlayers(vm.season).then(function(res){
-      console.log(res);
-      // vm.seasonPlayers = res;
-    })
-  }
+  // vm.getSeasonPlayers = function(season) {
+  //   usersService.getSeasonPlayers(vm.season).then(function(res){
+  //     vm.users = res;
+  //   })
+  // }
 
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
-      vm.users = result
+      vm.users = result;
+      console.log(vm.users);
     })
   };
 
+  vm.getSeasonUsers = function(season){
+    usersService.getSeasonUsers(season).then(function(result){
+      vm.users = result;
+    })
+  }
+
   vm.seasonChange = function(){
-    vm.getSeasonPlayers();
+    vm.getSeasonUsers(vm.season);
     $state.go('home.standings', {season: vm.season});
   };
 
