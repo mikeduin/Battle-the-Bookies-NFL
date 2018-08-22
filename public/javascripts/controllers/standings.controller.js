@@ -34,12 +34,22 @@ function StandingsController (picksService, oddsService, usersService, $scope, $
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
       vm.users = result;
-      console.log(vm.users);
     })
   };
 
   vm.getSeasonUsers = function(season){
     usersService.getSeasonUsers(season).then(function(result){
+      for (var i = 0; i < result.length; i++) {
+        var buyin;
+        for (var j = 0; j < result[i].btb_seasons.length; j++) {
+          if (result[i].btb_seasons[j].season == vm.season) {
+            buyin = result[i].btb_seasons[j].buyin;
+            plan = result[i].btb_seasons[j].plan;
+          }
+        }
+        result[i].buyin = buyin;
+        result[i].plan = plan;
+      };
       vm.users = result;
     })
   }

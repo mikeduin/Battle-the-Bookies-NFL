@@ -51,7 +51,7 @@
     <tbody ng-show="vm.showStandings">
       <tr class="bord-bottom" ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-init="vm.sumSeasonPicks(user, vm.season)">
         <td class="pushdown user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a></td>
-        <td class="pushdown" ng-class="{buyGold: user.buyin === '200', buySilver: user.buyin === '100', buyBronze: user.buyin === '50'}"> {{user.buyin | currency:$:0}} </td>
+        <td class="pushdown" ng-class="{buyGold: user.buyin === 200, buySilver: user.buyin === 100, buyBronze: user.buyin === 50}"> {{user.buyin | currency:$:0}} </td>
         <td class="pushdown plan-txt bord-right"> {{user.plan}} </td>
         <td class="pushdown ytdwBox"> <b> {{user.ytdW}} </b> </td>
         <td class="pushdown ytdwBox"> <b> {{user.ytdL}} </b> </td>

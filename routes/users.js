@@ -47,7 +47,6 @@ router.get('/seasonUsers/:season', function(req, res, next){
     users.forEach(function(user){
       var seasons = [];
       var seasonData = user.btb_seasons;
-      console.log('seasonData for ', user, ' is ', seasonData);
       for (var i=0; i<seasonData.length; i++){
         seasons.push(parseInt(seasonData[i].season));
       };
