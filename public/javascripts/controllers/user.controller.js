@@ -126,6 +126,15 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
     })
   }
 
+  vm.seasonChange = function(){
+    if (vm.season != 2018) {
+      vm.gameWeekFilter = 'Week 17'
+    };
+    // if (vm.season = 2018) {
+    //   vm.gameWeekFilter = vm.weekSetter(moment());
+    // }
+  };
+
   vm.sumAllPicks = function(username) {
     picksService.sumAllPicks(username, vm.season).then(function(result){
       vm.user.sumYtd = result.totalDollars;

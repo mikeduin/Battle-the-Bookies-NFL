@@ -160,15 +160,25 @@ router.post('/register', function(req, res, next){
     'active': true
   }];
 
+  var increment = 0;
+
+  Users().max('id').then(function(data){
+    value = data[0].max;
+    increment = value + 1;
+  });
+
+
   // var revEntry = JSON.stringify(newEntry);
 
   Users().insert({
+    id: increment,
     username: req.body.username,
     nameFirst: req.body.nameFirst,
     nameLast: req.body.nameLast,
     email: req.body.email,
     btb_seasons: newEntry,
     plan: plan,
+    buyin: buyin,
     // buyin: req.body.buyin,
     // plan: req.body.plan,
     salt: salt,
