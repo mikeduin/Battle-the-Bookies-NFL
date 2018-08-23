@@ -139,47 +139,62 @@ router.post('/register', function(req, res, next){
     return res.status(400).json({message: 'You left something blank!'});
   };
 
+  // var usernames;
+  // var emails;
+
   var salt = crypto.randomBytes(16).toString('hex');
   var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
   var plan;
 
   // !!! CHANGE THIS HARD-CODED SEASON BELOW LATER!!!
 
-  if (!req.body.plan) {
-    plan = 'noPlan';
-  } else {
-    plan = req.body.plan;
-  };
+  Users().pluck('username').then(function(usernames){
+    if (usernames.indexOf(req.body.username) != -1) {
+      return res.status(400).json({message: 'This username has already been taken.'});
+    };
 
-  var buyin = parseInt(req.body.buyin);
+    Users().pluck('email').then(function(emails){
+      if (emails.indexOf(req.body.email) != -1) {
+        return res.status(400).json({message: 'This email is already in use.'});
+      };
 
-  var newEntry = [{
-    'plan': plan,
-    'buyin': buyin,
-    'season': 2018,
-    'active': true
-  }];
+      if (!req.body.plan) {
+        plan = 'noPlan';
+      } else {
+        plan = req.body.plan;
+      };
 
-  var increment = 0;
+      var buyin = parseInt(req.body.buyin);
 
-  Users().max('id').then(function(data){
-    value = data[0].max;
-    increment = value + 1;
-    Users().insert({
-      id: increment,
-      username: req.body.username,
-      nameFirst: req.body.nameFirst,
-      nameLast: req.body.nameLast,
-      email: req.body.email,
-      btb_seasons: newEntry,
-      plan: plan,
-      buyin: buyin,
-      salt: salt,
-      hash: hash,
-    }, '*').then(function(user){
-      res.json({token: generateJWT(user)});
+      var newEntry = [{
+        'plan': plan,
+        'buyin': buyin,
+        'season': 2018,
+        'active': true
+      }];
+
+      var increment = 0;
+
+      Users().max('id').then(function(data){
+        value = data[0].max;
+        increment = value + 1;
+        Users().insert({
+          id: increment,
+          username: req.body.username,
+          nameFirst: req.body.nameFirst,
+          nameLast: req.body.nameLast,
+          email: req.body.email,
+          btb_seasons: newEntry,
+          plan: plan,
+          buyin: buyin,
+          salt: salt,
+          hash: hash,
+        }, '*').then(function(user){
+          res.json({token: generateJWT(user)});
+        });
+      })
     });
-  })
+  });
 });
 
 router.post('/login', function(req, res, next){
