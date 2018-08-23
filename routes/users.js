@@ -245,7 +245,7 @@ router.put('/reregister', function(req, res, next){
 //     'season': 2017,
 //     'active': true
 //   }];
-//   Users().where({username: 'mikeduin'}).update({
+//   Users().where({username: 'sampleuser'}).update({
 //     btb_seasons: newEntry
 //   }).then(function(){
 //     console.log('user updated');

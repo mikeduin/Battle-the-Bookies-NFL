@@ -90,7 +90,7 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.showSpinner = true;
     oddsService.getNflLines(season).then(function(lines){
       vm.nflLines = lines;
-      console.log('vm.nflLines are ', vm.nflLines);
+      // console.log('vm.nflLines are ', vm.nflLines);
     })
   };
 

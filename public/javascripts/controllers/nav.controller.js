@@ -49,6 +49,7 @@ function NavController (authService, oddsService, $state) {
   }
 
   vm.currentUser = function(){
+    // console.log(authService.currentUser());
     return authService.currentUser();
   }
 

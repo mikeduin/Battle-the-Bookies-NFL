@@ -11,7 +11,7 @@ function oddsService ($http) {
     },
     getNflLines: function(season) {
       return $http.get('/lines/season/' + season).then(function(lines){
-        console.log('lines are ', lines);
+        // console.log('lines are ', lines);
         return lines.data
       })
     },
