@@ -134,10 +134,7 @@ router.get('/:username/:season/:weeknumb', function (req, res, next) {
 
 // Adding auth as middleware here will ensure that the JWTToken is valid in order for a user to be accessing this route
 router.post('/addTemp', auth, function (req, res, next){
-  // console.log('req.body is ', req.body);
   var pickSeason = currentSeason.returnSeason(moment());
-  console.log('req.payload is ', req.payload);
-  console.log('pickSeason is ', pickSeason);
   Picks().insert({
     username: req.payload.username,
     EventID: req.body.EventID,
