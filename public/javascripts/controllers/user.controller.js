@@ -129,7 +129,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.seasonChange = function(){
     if (vm.season != 2018) {
       vm.gameWeekFilter = 'Week 17'
-    };
+    };  
     // if (vm.season = 2018) {
     //   vm.gameWeekFilter = vm.weekSetter(moment());
     // }
