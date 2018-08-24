@@ -217,17 +217,28 @@ router.put('/reregister', function(req, res, next){
   Users().where({username: req.body.username}).pluck('btb_seasons').then(function(seasonData){
     var buyin = parseInt(req.body.buyin);
     var plan;
+    var newEntry;
     if (req.body.plan) {
       plan = req.body.plan;
     } else {
       plan = 'noPlan';
     };
-    var newEntry = [seasonData[0][0], {
-      'plan': plan,
-      'buyin': buyin,
-      'season': req.body.newSeason,
-      'active': true
-    }];
+    if (seasonData[0] != null) {
+      newEntry = [seasonData[0][0], {
+        'plan': plan,
+        'buyin': buyin,
+        'season': req.body.newSeason,
+        'active': true
+      }];
+    } else {
+      newEntry = [{
+        'plan': plan,
+        'buyin': buyin,
+        'season': req.body.newSeason,
+        'active': true
+      }];
+    };
+
     Users().where({username: req.body.username}).update({
       plan: plan,
       btb_seasons: newEntry
