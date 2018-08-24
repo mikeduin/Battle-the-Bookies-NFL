@@ -89,6 +89,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
     vm.showSpinner = true;
     gameService.getLineData(vm.EventID).then(function(result){
       vm.game = result[0];
+      vm.season = vm.game.season;
       vm.awayColor = vm.game.AwayColor;
       vm.homeColor = vm.game.HomeColor;
 
@@ -381,7 +382,7 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
       })
     }).then(function(){
       vm.weekNumb = parseInt(vm.game.Week.substring(5));
-      oddsService.getWeeklyNflLines(vm.weekNumb).then(function(games){
+      oddsService.getWeeklyNflLines(vm.season, vm.weekNumb).then(function(games){
         vm.weeklyGames = [];
         for (var i=0; i<games.length; i++) {
           if (games[i].AwayAbbrev !== vm.game.AwayAbbrev && moment(games[i].MatchTime).isBefore(moment())) {

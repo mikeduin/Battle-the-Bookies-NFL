@@ -54,7 +54,7 @@
   </section>
   <section class="col s12">
     <header class="col s10 offset-s1">
-       The odds for a game will be posted on the <a ui-sref="home.makepicks">Make Picks</a> page as soon as they are set by real-life oddsmakers, and they will change leading up to a game's start time anytime they change in real life. Rather than offering a static, rigid line at a random point prior to the game, <span class="btb">Battle the Bookies</span> simulates a real-life handicapping environment by allowing an entrant to "lock in" a pick at any time from when a line is first posted to when the game begins. Once a pick has been submitted, it cannot be changed (otherwise, an entrant would be able to switch their pick and obtain a better line any time the real-life odds moved in their favor).
+       The odds for a game will be posted on the <a ui-sref="home.makepicks({season: vm.season})">Make Picks</a> page as soon as they are set by real-life oddsmakers, and they will change leading up to a game's start time anytime they change in real life. Rather than offering a static, rigid line at a random point prior to the game, <span class="btb">Battle the Bookies</span> simulates a real-life handicapping environment by allowing an entrant to "lock in" a pick at any time from when a line is first posted to when the game begins. Once a pick has been submitted, it cannot be changed (otherwise, an entrant would be able to switch their pick and obtain a better line any time the real-life odds moved in their favor).
     </header>
   </section>
   <secDiv class="col s12 tut-mid z-depth-1">
@@ -78,7 +78,7 @@
       <i class="fa fa-table base-grey tut-icons" style="font-size: 50px"></i>
     </div>
     <div class="col s9">
-      The <a ui-sref="home.results">results page</a> shows complete daily picks and results for all entrants. Individual game results and entrants' scores will update on the completion of each NFL game. The results table can be sorted both by year-to-date and daily scores, expressed in terms of profit.
+      The <a ui-sref="home.results.picks({season: vm.season, weekNumb: vm.currentWeekNumb})">results page</a> shows complete daily picks and results for all entrants. Individual game results and entrants' scores will update on the completion of each NFL game. The results table can be sorted both by year-to-date and daily scores, expressed in terms of profit.
     </div>
   </section>
   <section class="col s12">
@@ -86,7 +86,7 @@
       <i class="fa fa-line-chart base-grey tut-icons" style="font-size: 50px"></i>
     </div>
     <div class="col s9">
-      The <a ui-sref="home.standings">standings page</a> details a year-to-date breakout of each entrant's performance, expressed as both total profit and wins vs. losses. You can also use the page buttons to scroll through each day's results on the right-hand side of the table.
+      The <a ui-sref="home.standings({season: vm.season})">standings page</a> details a year-to-date breakout of each entrant's performance, expressed as both total profit and wins vs. losses. You can also use the page buttons to scroll through each day's results on the right-hand side of the table.
     </div>
   </section>
   <section class="col s12">
@@ -94,7 +94,7 @@
       <i class="fa fa-pie-chart pie tut-icons" style="font-size: 50px"></i>
     </div>
     <div class="col s9">
-      The <a ui-sref="home.user">user profile pages</a> include detailed analytics of a user's pick tendencies and performance, including statistics for pick types, favorites vs. underdogs, and rolling YTD and daily profit charts.
+      The <a ui-sref="home.user({username: vm.currentUser()})">user profile pages</a> include detailed analytics of a user's pick tendencies and performance, including statistics for pick types, favorites vs. underdogs, and rolling YTD and daily profit charts.
     </div>
   </section>
   <secDiv class="col s12 tut-mid z-depth-1">
@@ -104,8 +104,8 @@
   </secDiv>
   <section class="col s12">
     <div class="col s1 right-align">
-      <!-- <a ui-sref='home.game({EventID: "979a8963-90c6-4d24-a61c-12de60495373"})' class="btn-floating float-color tut-btn"><i class="fa fa-bar-chart tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a> -->
-      <a class="btn-floating float-color tut-btn"><i class="fa fa-bar-chart tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a>
+      <a ui-sref='home.game({EventID: "979a8963-90c6-4d24-a61c-12de60495373"})' class="btn-floating float-color tut-btn"><i class="fa fa-bar-chart tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a>
+      <!-- <a class="btn-floating float-color tut-btn"><i class="fa fa-bar-chart tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a> -->
     </div>
     <header class="col s10">
       <div class="reg col s8">
@@ -129,7 +129,7 @@
   </section>
   <section class="col s12" id="capperGrades">
     <div class="col s1 right-align">
-      <a ui-sref='home.capper-grades' class="btn-floating float-color tut-btn"><i class="fa fa-graduation-cap tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a>
+      <a ui-sref='home.capper-grades({season: vm.season})' class="btn-floating float-color tut-btn"><i class="fa fa-graduation-cap tut-bar" style="font-size: 30px; padding-top: 10%" aria-hidden="true"></i></a>
     </div>
     <header class="col s10">
       <div class="reg col s8">

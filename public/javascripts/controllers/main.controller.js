@@ -5,6 +5,7 @@ angular
 
 function ArbController($location, $anchorScroll) {
   var vm = this;
+  vm.season = 2018;
 
   vm.goToId = function(id) {
     var old = $location.hash();
