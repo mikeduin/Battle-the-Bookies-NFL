@@ -250,17 +250,19 @@ router.put('/reregister', function(req, res, next){
 })
 
 // setInterval(function (){
-//   var newEntry = [{
+//   var newEntry = [
+//   {
 //     'plan': 'noPlan',
 //     'buyin': 200,
-//     'season': 2017,
+//     'season': 2018,
 //     'active': true
 //   }];
-//   Users().where({username: 'sampleuser'}).update({
-//     btb_seasons: newEntry
+//   Users().where({username: 'Shrayday'}).update({
+//     btb_seasons: newEntry,
+//     buyin: 200
 //   }).then(function(){
 //     console.log('user updated');
 //   })
-// }, 10000);
+// }, 5000);
 
 module.exports = router;

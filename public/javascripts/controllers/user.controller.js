@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('UserController', ['$stateParams', 'picksService', 'usersService', 'oddsService', 'authService','$state', '$scope', UserController])
+  .controller('UserController', ['$stateParams', 'picksService', 'usersService', 'oddsService', 'authService', 'dateService', '$state', '$scope', UserController])
 
-function UserController ($stateParams, picksService, usersService, oddsService, authService, $state, $scope) {
+function UserController ($stateParams, picksService, usersService, oddsService, authService, dateService, $state, $scope) {
   var vm = this;
   vm.season = 2018;
   vm.user = {};
@@ -15,7 +15,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.picks;
   vm.abbrev;
   vm.weekNumb;
-  vm.seasons = [2017, 2018];
+  vm.seasons = [2017, 2018, 2019];
   vm.reReg = false;
   vm.regSeason;
 
@@ -23,6 +23,9 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
     $('.modal').modal();
     $('.tooltipped').tooltip({delay: 20});
   })
+
+  vm.systemYear = dateService.fetchSystemYear();
+  console.log(vm.systemYear);
 
   vm.reRegister = function (user) {
     user.newSeason = vm.regSeason;
@@ -129,7 +132,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.seasonChange = function(){
     if (vm.season != 2018) {
       vm.gameWeekFilter = 'Week 17'
-    };  
+    };
     // if (vm.season = 2018) {
     //   vm.gameWeekFilter = vm.weekSetter(moment());
     // }
