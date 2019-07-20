@@ -218,30 +218,31 @@ router.put('/reregister', function(req, res, next){
     var buyin = parseInt(req.body.buyin);
     var plan;
     var newEntry;
+    var dbSeasons = seasonData[0];
     if (req.body.plan) {
       plan = req.body.plan;
     } else {
       plan = 'noPlan';
     };
-    if (seasonData[0] != null) {
-      newEntry = [seasonData[0][0], {
+    if (dbSeasons != null) {
+      dbSeasons.push({
         'plan': plan,
         'buyin': buyin,
-        'season': req.body.newSeason,
-        'active': true
-      }];
+        'active': true,
+        'season': req.body.newSeason
+      })
     } else {
-      newEntry = [{
+      dbSeasons = [{
         'plan': plan,
         'buyin': buyin,
-        'season': req.body.newSeason,
-        'active': true
-      }];
-    };
+        'active': true,
+        'season': req.body.newSeason
+      }]
+    }
 
     Users().where({username: req.body.username}).update({
       plan: plan,
-      btb_seasons: newEntry
+      btb_seasons: dbSeasons
     }, '*').then(function(user){
       console.log(user[0].username, ' has been registered for the new season!');
       res.json(user[0].username);

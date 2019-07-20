@@ -16,12 +16,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="season in vm.seasons" ng-init="vm.sumSeasonPicks(season)">
+            <tr ng-repeat="season in vm.seasons">
               <td><b>{{season}}</b></td>
               <td>
                 <div ng-show="vm.seasonStats[season]"> <i> active </i> </div>
-                <div ng-show="!vm.seasonStats[season] && season != 2019">DNP</div>
-                <div class="btn btn-small btn-rereg" ng-show="!vm.seasonStats[season] && season == 2019 && vm.currentUser() == vm.userFilter" ng-click="vm.reReg = !vm.reReg; vm.regSeason = season">REGISTER</div>
+                <div ng-show="!vm.seasonStats[season] && season != vm.systemYear">DNP</div>
+                <div class="btn btn-small btn-rereg" ng-show="!vm.seasonStats[season] && season == vm.systemYear && vm.currentUser() == vm.userFilter" ng-click="vm.reReg = !vm.reReg; vm.regSeason = season">REGISTER</div>
               </td>
               <td>{{vm.seasonStats[season].wins}}</td>
               <td>{{vm.seasonStats[season].losses}}</td>

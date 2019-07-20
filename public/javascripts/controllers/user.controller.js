@@ -24,8 +24,14 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
     $('.tooltipped').tooltip({delay: 20});
   })
 
+  vm.seasons = dateService.fetchSeasons();
+
   vm.systemYear = dateService.fetchSystemYear();
-  console.log(vm.systemYear);
+  if (vm.seasons.indexOf(vm.systemYear) == -1) {
+    vm.seasons.push(vm.systemYear);
+  }
+
+  console.log(vm.seasons);
 
   vm.reRegister = function (user) {
     user.newSeason = vm.regSeason;
@@ -156,7 +162,6 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.getWeeklyStats = function(username){
     picksService.getWeeklyStats(username, vm.statSeason).then(function(result){
       stats = result.data;
-      // console.log('stats are ', stats);
       var ytdDollars = 0
       for (i=0; i<stats.length; i++) {
         var dayDollars = stats[i].totalDollars;
