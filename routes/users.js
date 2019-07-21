@@ -4,6 +4,7 @@ var knex = require ('../db/knex');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var passport = require('passport');
+var currentSeason = require('../modules/currentSeason.js');
 require('dotenv').load();
 
 function Users() {
@@ -139,14 +140,9 @@ router.post('/register', function(req, res, next){
     return res.status(400).json({message: 'You left something blank!'});
   };
 
-  // var usernames;
-  // var emails;
-
   var salt = crypto.randomBytes(16).toString('hex');
   var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
   var plan;
-
-  // !!! CHANGE THIS HARD-CODED SEASON BELOW LATER!!!
 
   Users().pluck('username').then(function(usernames){
     if (usernames.indexOf(req.body.username) != -1) {
@@ -169,7 +165,7 @@ router.post('/register', function(req, res, next){
       var newEntry = [{
         'plan': plan,
         'buyin': buyin,
-        'season': 2018,
+        'season': currentSeason.fetchSystemYear(),
         'active': true
       }];
 
@@ -249,21 +245,5 @@ router.put('/reregister', function(req, res, next){
     })
   })
 })
-
-// setInterval(function (){
-//   var newEntry = [
-//   {
-//     'plan': 'noPlan',
-//     'buyin': 200,
-//     'season': 2018,
-//     'active': true
-//   }];
-//   Users().where({username: 'Shrayday'}).update({
-//     btb_seasons: newEntry,
-//     buyin: 200
-//   }).then(function(){
-//     console.log('user updated');
-//   })
-// }, 5000);
 
 module.exports = router;
