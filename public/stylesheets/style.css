@@ -285,6 +285,12 @@ regBox form label {
   color: #9E9E9E
 }
 
+.already-reg {
+  margin-top: 40px;
+  font-size: 18px;
+  margin-bottom: 80px;
+}
+
 /* label focus color */
 .input-field input[type=text]:focus + label {
   color: #2F5032;

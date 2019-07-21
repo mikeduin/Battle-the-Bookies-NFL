@@ -15,7 +15,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.picks;
   vm.abbrev;
   vm.weekNumb;
-  vm.seasons = [2017, 2018, 2019];
+  vm.seasons = dateService.fetchSeasons();
   vm.reReg = false;
   vm.regSeason;
 
@@ -24,14 +24,10 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
     $('.tooltipped').tooltip({delay: 20});
   })
 
-  vm.seasons = dateService.fetchSeasons();
-
   vm.systemYear = dateService.fetchSystemYear();
   if (vm.seasons.indexOf(vm.systemYear) == -1) {
     vm.seasons.push(vm.systemYear);
   }
-
-  console.log(vm.seasons);
 
   vm.reRegister = function (user) {
     user.newSeason = vm.regSeason;
@@ -139,9 +135,6 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
     if (vm.season != 2018) {
       vm.gameWeekFilter = 'Week 17'
     };
-    // if (vm.season = 2018) {
-    //   vm.gameWeekFilter = vm.weekSetter(moment());
-    // }
   };
 
   vm.sumAllPicks = function(username) {

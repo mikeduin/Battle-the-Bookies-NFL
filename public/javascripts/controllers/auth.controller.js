@@ -10,6 +10,9 @@ function AuthController ($state, authService, usersService) {
     $('.tooltipped').tooltip({delay: 20});
   })
 
+  vm.currentUser = authService.currentUser();
+  console.log(vm.currentUser);
+
   vm.register = function(user) {
     authService.register(user).error(function(error){
       vm.error = error.message;

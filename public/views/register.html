@@ -2,7 +2,12 @@
   <regBack class="col m12">
     <regBox class="col m8 offset-m2 z-depth-2">
       <loginTitle> Register </loginTitle>
-      <div class="row">
+      <div class="row" ng-show="vm.currentUser">
+        <div class="col s12 center-align already-reg">
+          You are already logged in!
+        </div>
+      </div>
+      <div class="row" ng-show="!vm.currentUser">
         <form class="col s12" name="regForm" ng-submit="vm.register(user)">
             <div class="row">
               <div class="input-field col s5 offset-s1">

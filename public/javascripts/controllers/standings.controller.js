@@ -23,13 +23,7 @@ function StandingsController (picksService, oddsService, usersService, dateServi
 
   function sortNumber(a, b) {
     return a - b
-  };
-
-  // vm.getSeasonPlayers = function(season) {
-  //   usersService.getSeasonPlayers(vm.season).then(function(res){
-  //     vm.users = res;
-  //   })
-  // }
+  };  
 
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
