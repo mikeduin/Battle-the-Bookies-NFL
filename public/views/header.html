@@ -17,6 +17,10 @@ $(document).ready(function(){
     <li><a ui-sref='home.capper-grades({season: vm.season})'>capperGrades</a></li>
     <li><a ui-sref='home.prizes({season: vm.season})'>Prizes</a></li>
   </ul>
+  <ul id='user-dropdown' class="dropdown-content">
+    <li><a ui-sref='home.userhistory({username: vm.currentUser()})'>Game History</a></li>
+    <li><a ui-sref='home.user({username: vm.currentUser()})'>Pick History</a></li>
+  </ul>
   <nav class="z-depth-2">
     <div class="nav-wrapper">
       <a ui-sref="home" class="brand-logo">Battle the Bookies</a>
@@ -25,7 +29,7 @@ $(document).ready(function(){
         A Level Above <span class="weak"> presents <span>
       </ul>
       <ul class="right hide-on-med-and-down">
-        <li ng-show="vm.isLoggedIn() !== false"><a ui-sref="home.user({username: vm.currentUser()})">{{ vm.currentUser() }}</a></li>
+        <li ng-show="vm.isLoggedIn() !== false"><a class='dropdown-button' data-beloworigin="true" data-constrainwidth="false" href="#" data-activates='user-dropdown'>{{ vm.currentUser() }}</a></li>
         <li ng-hide="vm.isLoggedIn() !== false"><a ui-sref='home.login' class="gold">Login</a></li>
         <li ng-show="vm.isLoggedIn() !== false"><a ng-click="vm.logOut()" class="gold">Logout</a></li>
         <li><a ui-sref="home.tutorial">How to Play</a></li>

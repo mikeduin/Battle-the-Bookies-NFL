@@ -93,15 +93,15 @@ nav {
   font-size: 40px !important;
 }
 
-#results-dropdown, #standings-dropdown {
+#results-dropdown, #standings-dropdown, #user-dropdown {
   background-color: #2F5032;
 }
 
-#results-dropdown a, #standings-dropdown a {
+#results-dropdown a, #standings-dropdown a, #user-dropdown a {
   color: white
 }
 
-#results-dropdown a:hover, #standings-dropdown a:hover {
+#results-dropdown a:hover, #standings-dropdown a:hover, #user-dropdown a:hover {
   color: #2F5032;
 }
 
