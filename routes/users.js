@@ -125,6 +125,9 @@ router.get('/stats/:username', function (req, res, next){
           losses: stats[0].total - stats[0].wins,
           pct: stats[0].wins / stats[0].total
         };
+        if (stats[0].wins == null && stats[0].total == 0) {
+          userStats[season].wins = 0;
+        };
         count++;
         if (count == len) {
           res.json(userStats)
