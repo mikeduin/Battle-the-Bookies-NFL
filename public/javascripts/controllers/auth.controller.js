@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('AuthController', ['$state', 'authService', 'usersService', AuthController])
+  .controller('AuthController', ['$state', 'authService', 'usersService', 'dateService', AuthController])
 
-function AuthController ($state, authService, usersService) {
+function AuthController ($state, authService, usersService, dateService) {
   var vm = this;
 
   $(document).ready(function () {
@@ -11,13 +11,13 @@ function AuthController ($state, authService, usersService) {
   })
 
   vm.currentUser = authService.currentUser();
-  console.log(vm.currentUser);
+  vm.systemYear = dateService.fetchSystemYear();
 
   vm.register = function(user) {
     authService.register(user).error(function(error){
       vm.error = error.message;
     }).then(function(){
-      $state.go('home.makepicks', {"season": 2018});
+      $state.go('home.makepicks', {"season": vm.systemYear});
     })
   };
 
@@ -27,11 +27,11 @@ function AuthController ($state, authService, usersService) {
       console.log(error);
     }).then(function(){
       var username = user.username;
-      usersService.getSeasonPlayers(2018).then(function(currentUsers){
+      usersService.getSeasonPlayers(vm.systemYear).then(function(currentUsers){
         if (currentUsers.indexOf(username) == -1) {
           $state.go('home.userhistory', {"username": username});
         } else {
-          $state.go('home.makepicks', {"season": 2018});
+          $state.go('home.makepicks', {"season": vm.systemYear});
         };
       })
     })

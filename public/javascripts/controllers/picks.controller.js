@@ -1,10 +1,10 @@
 angular
   .module('battleBookies')
-  .controller('PickController', ['oddsService', 'picksService', 'resultsService', 'authService', '$scope', '$state', '$stateParams', '$interval', PickController])
+  .controller('PickController', ['oddsService', 'picksService', 'resultsService', 'authService', 'dateService', '$scope', '$state', '$stateParams', '$interval', PickController])
 
-function PickController (oddsService, picksService, resultsService, authService, $scope, $state, $stateParams, $interval) {
+function PickController (oddsService, picksService, resultsService, authService, dateService, $scope, $state, $stateParams, $interval) {
   var vm = this;
-  getSeasons();
+  vm.seasons = dateService.fetchSeasons();
   vm.season = $stateParams.season;
   vm.currentUser = currentUser;
   vm.currentTime = moment().format('MMMM Do YYYY, h:mm:ss a');
@@ -38,6 +38,10 @@ function PickController (oddsService, picksService, resultsService, authService,
   vm.displayPayCalc = displayPayCalc;
   vm.activePayCalc = activePayCalc;
   vm.mlFormat = mlFormat;
+  vm.noLines = false;
+  vm.turnOffSpinner = () => {
+    vm.showSpinner = false;
+  };
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
   });
@@ -54,12 +58,6 @@ function PickController (oddsService, picksService, resultsService, authService,
 
   function sortNumber(a, b) {
     return a - b
-  };
-
-  function getSeasons () {
-    oddsService.getSeasons().then(function(seasons){
-      vm.seasons = seasons;
-    })
   };
 
   vm.seasonChange = function(){
@@ -90,7 +88,10 @@ function PickController (oddsService, picksService, resultsService, authService,
     vm.showSpinner = true;
     oddsService.getNflLines(season).then(function(lines){
       vm.nflLines = lines;
-      // console.log('vm.nflLines are ', vm.nflLines);
+      if (vm.nflLines.length < 1) {
+        vm.noLines = true;
+      }
+      console.log('vm.nflLines are ', vm.nflLines);
     })
   };
 

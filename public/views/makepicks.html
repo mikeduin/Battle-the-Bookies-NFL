@@ -70,7 +70,7 @@
         <th colspan="2" class="center-align"> YOUR PICK </th>
       </tr>
     </thead>
-    <tbody ng-repeat="game in vm.nflLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter }" on-finish-render="ngRepeatFinished">
+    <tbody ng-if="!vm.noLines" ng-repeat="game in vm.nflLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter }" on-finish-render="ngRepeatFinished">
       <tr ng-init="vm.timeCheck(game); vm.checkSubmission(game, vm.currentUser())">
         <td rowspan="2"> <b>{{game.Week}}</b> <br> {{game.MatchTime | date:'MM/dd/yyyy'}} <br> {{game.MatchTime | date:'h:mm a'}} <br> <span ng-show="vm.checkDisplay(game)"> <a class="btn-floating float-color" ui-sref="home.game({EventID: game.EventID})"><i class="fa fa-bar-chart" aria-hidden="true"></i></a> </span> </td>
         <td> <b>(A)</b> {{game.AwayTeam}}</td>
@@ -100,6 +100,11 @@
         <td class="mlMoney"> {{game.MoneyLineHome | payoutFilter}} </td>
         <td> <button ng-class="{disabled: game.locked}" class="btn btn-total" ng-click="game.locked || vm.totalUnder(game)"> U {{game.TotalNumber}} ({{game.UnderLine | mlFormat}}) </button> </td>
         <td class="totalMoney">  {{game.UnderLine | payoutFilter}}  </td>
+      </tr>
+    </tbody>
+    <tbody ng-if="vm.noLines" ng-init="vm.turnOffSpinner()">
+      <tr>
+        <td colspan="9" rowspan="2" class="center-align"><b>Lines have not yet been posted for the upcoming season.</b> <br> Use the 'Select Season' dropdown above to view lines and selection functionality from past seasons.</td>
       </tr>
     </tbody>
   </table>
