@@ -1,10 +1,10 @@
 angular
   .module('battleBookies')
-  .controller('PrizesController', ['usersService', 'oddsService', '$stateParams', PrizesController])
+  .controller('PrizesController', ['usersService', 'oddsService', 'dateService', '$stateParams', PrizesController])
 
-function PrizesController (usersService, oddsService, $stateParams) {
+function PrizesController (usersService, oddsService, dateService, $stateParams) {
   var vm = this;
-  getSeasons();
+  vm.seasons = dateService.fetchSeasons();
   vm.users = [];
   vm.season = $stateParams.season;
   vm.baseTierTotal = 0;
@@ -117,9 +117,4 @@ function PrizesController (usersService, oddsService, $stateParams) {
     }
   };
 
-  function getSeasons () {
-    oddsService.getSeasons().then(function(seasons){
-      vm.seasons = seasons;
-    })
-  };
 }

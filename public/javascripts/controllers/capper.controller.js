@@ -1,10 +1,10 @@
 angular
   .module('battleBookies')
-  .controller('capperController', ['picksService', 'oddsService', 'usersService', '$scope', '$state', '$location', '$anchorScroll', '$stateParams', capperController])
+  .controller('capperController', ['picksService', 'oddsService', 'usersService', 'dateService', '$scope', '$state', '$location', '$anchorScroll', '$stateParams', capperController])
 
-function capperController (picksService, oddsService, usersService, $scope, $state, $location, $anchorScroll, $stateParams) {
+function capperController (picksService, oddsService, usersService, dateService, $scope, $state, $location, $anchorScroll, $stateParams) {
   var vm = this;
-  getSeasons();
+  vm.seasons = dateService.fetchSeasons();
   vm.getDates = getDates;
   vm.getCapperGrades = getCapperGrades;
   // vm.getAllUsers = getAllUsers;
@@ -45,11 +45,11 @@ function capperController (picksService, oddsService, usersService, $scope, $sta
     })
   };
 
-  function getSeasons () {
-    oddsService.getSeasons().then(function(seasons){
-      vm.seasons = seasons;
-    })
-  }
+  // function getSeasons () {
+  //   oddsService.getSeasons().then(function(seasons){
+  //     vm.seasons = seasons;
+  //   })
+  // }
 
   function getCapperGrades (user, season) {
     username = user.username;

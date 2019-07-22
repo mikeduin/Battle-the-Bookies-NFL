@@ -3,8 +3,10 @@ angular
   .controller('UserController', ['$stateParams', 'picksService', 'usersService', 'oddsService', 'authService', 'dateService', '$state', '$scope', UserController])
 
 function UserController ($stateParams, picksService, usersService, oddsService, authService, dateService, $state, $scope) {
+  Array.max = function(array){
+    return Math.max.apply(Math, array)
+  };
   var vm = this;
-  vm.season = 2018;
   vm.user = {};
   vm.userFilter;
   vm.username;
@@ -16,6 +18,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.abbrev;
   vm.weekNumb;
   vm.seasons = dateService.fetchSeasons();
+  vm.season = Array.max(vm.seasons);
   vm.reReg = false;
   vm.regSeason;
 

@@ -1,18 +1,20 @@
 angular
   .module('battleBookies')
-  .controller('NavController', ['authService', 'oddsService', '$state', NavController])
+  .controller('NavController', ['authService', 'oddsService', 'dateService', '$state', NavController])
 
-function NavController (authService, oddsService, $state) {
+function NavController (authService, oddsService, dateService, $state) {
   Array.max = function(array){
     return Math.max.apply(Math, array)
   };
 
   var vm = this;
-  getSeasons();
 
   function sortNumber(a, b) {
     return a - b
   };
+
+  vm.seasons = dateService.fetchSeasons();
+  vm.season = Array.max(vm.seasons);
 
   vm.getDates = function (season) {
     oddsService.getDates(season).then(function(dates){
@@ -20,14 +22,6 @@ function NavController (authService, oddsService, $state) {
       vm.currentWeekNumb = parseInt(currentWeek.substring(5));
       // console.log('current week is ', vm.currentWeekNumb);
       vm.weeksOfGames = dates.reverse();
-    })
-  };
-
-  function getSeasons () {
-    oddsService.getSeasons().then(function(seasons){
-      // console.log('seasons are ', seasons);
-      vm.seasons = seasons;
-      vm.season = Array.max(seasons);
     })
   };
 
@@ -49,7 +43,6 @@ function NavController (authService, oddsService, $state) {
   }
 
   vm.currentUser = function(){
-    // console.log(authService.currentUser());
     return authService.currentUser();
   }
 

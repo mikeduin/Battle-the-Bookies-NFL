@@ -1,12 +1,12 @@
 angular
   .module('battleBookies')
-  .controller('ResultController', ['oddsService', 'picksService', 'resultsService', 'usersService', '$scope', '$timeout', '$stateParams', '$state', ResultController])
+  .controller('ResultController', ['oddsService', 'picksService', 'resultsService', 'usersService', 'dateService', '$scope', '$timeout', '$stateParams', '$state', ResultController])
 
-function ResultController (oddsService, picksService, resultsService, usersService, $scope, $timeout, $stateParams, $state) {
+function ResultController (oddsService, picksService, resultsService, usersService, dateService, $scope, $timeout, $stateParams, $state) {
 
   $scope.uiRouterState = $state;
   var vm = this;
-  getSeasons();
+  vm.seasons = dateService.fetchSeasons();
   vm.season = $stateParams.season;
   vm.weekNumb;
   vm.week;
@@ -248,10 +248,5 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     }
   };
 
-  function getSeasons () {
-    oddsService.getSeasons().then(function(seasons){
-      vm.seasons = seasons;
-    })
-  };
 
 }
