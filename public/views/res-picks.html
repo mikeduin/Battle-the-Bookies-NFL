@@ -5,14 +5,14 @@
         <th class="left-align">
           <span class="table-sorter" ng-click="vm.userToggle()">Entrant</span>
         </th>
-        </th>
+        <!-- </th> -->
         <th class="center-align">
           <span class="table-sorter" ng-click="vm.ytdToggle()">YTD</span>
         </th>
         <th class="left-align">
           <span class="table-sorter" ng-click="vm.weeklyToggle()">Week</span>
         </th>
-        </th>
+        <!-- </th> -->
         <th ng-repeat="game in vm.nflLines | orderBy: [vm.gameSort, vm.gameSortTwo]" ng-if="vm.checkTime(game.MatchTime) === true"> <span class="nobr">{{game.AwayAbbrev}} {{game.AwayScore}} </span> <br> <span class="nobr"> {{game.HomeAbbrev}} {{game.HomeScore}} </span> <br> {{game.GameStatus}}
           <br> <span ng-hide="vm.chartDisplay(game.MatchTime) === false"> <a class="btn-floating float-color" ui-sref="home.game({EventID: game.EventID})"><i class="fa fa-bar-chart" aria-hidden="true"></i></a> </span>
         </th>

@@ -36,6 +36,7 @@ function usersService ($http) {
     },
     getSeasonUsers : function(season){
       return $http.get('/users/seasonUsers/' + season).then(function(result){
+        console.log('result in service is ', result);
         return result.data
       })
     },

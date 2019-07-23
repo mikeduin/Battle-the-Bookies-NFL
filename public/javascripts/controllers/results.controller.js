@@ -70,6 +70,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   // };
 
   vm.getSeasonUsers = function(season){
+    console.log('season is ', season);
     usersService.getSeasonUsers(season).then(function(result){
       vm.users = result;
     })
