@@ -87,6 +87,7 @@ function picksService ($http, authService) {
       })
     },
     getPickStats: function(username, season){
+      console.log('gets to getPickStats');
       return $http.get('/picks/' + username + '/stats/' + season).then(function(stats){
         return stats
       })

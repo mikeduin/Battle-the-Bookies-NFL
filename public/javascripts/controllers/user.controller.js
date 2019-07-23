@@ -21,7 +21,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.season = Array.max(vm.seasons);
   vm.reReg = false;
   vm.regSeason;
-  weekSetter = matchTime => {
+  vm.weekSetter = matchTime => {
     return dateService.weekSetter(matchTime);
   }
 
@@ -119,8 +119,9 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
       vm.userFilter = user[0].username;
       vm.getUserPicks(user[0].username);
       vm.sumAllPicks(user[0].username, vm.season);
-      vm.getPickStats(user[0].username, vm.statSeason);
+      vm.getPickStats(user[0].username, vm.season);
       vm.getWeeklyStats(user[0].username, vm.season);
+      vm.getSeasonStats(user[0].username);
     })
   }
 
@@ -137,9 +138,207 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   }
 
   vm.seasonChange = function(){
-    if (vm.season != 2018) {
+    if (vm.season != Array.max(vm.seasons)) {
       vm.gameWeekFilter = 'Week 17'
     };
+    vm.dailyData = {
+      'type':'mixed',
+      'title': {
+        'text':'Profit Progression',
+        "fontFamily": "Raleway"
+      },
+      'plot':{
+        'aspect': 'spline',
+        'tooltip': '%scale-key-label',
+        'line-width': 5,
+        'marker': {
+          'background-color': '#B68708',
+          'size': 7,
+          'border-color': '#2F5032',
+          'border-width': 1
+        }
+      },
+      'scaleX':{
+        'values': [],
+        'offset-y': 4,
+      },
+      'scaleY':{
+        'format': '$%v'
+      },
+      'tooltip':{
+        'text': '$%v',
+        'decimals': 2,
+        'negation':'currency',
+        'thousands-separator':','
+      },
+      'legend':{
+      },
+      'series':[
+        {
+          "values": [],
+          "type": 'bar',
+          "background-color": "#2F5032",
+          'legend-text': 'Weekly $',
+          "animation": {
+            "delay": 0,
+            "effect": 13,
+            "speed": "1500",
+            "method": 0,
+            "sequence": "0"
+          }
+        },
+        {
+          "values": [],
+          "type": 'line',
+          "line-color": "#B68708",
+          'legend-text': 'YTD $',
+          "animation": {
+            "delay":10,
+            "effect":5,
+            "speed":"1500"
+          }
+        }
+      ]
+    }
+
+    vm.tendencyData = {
+      'type':'pie',
+      'title': {
+        'text':'Tendency Drill-Down',
+        "fontFamily": "Raleway"
+      },
+      'plot':{
+        "animation":{
+            "effect":"2",
+            "delay":"1000",
+            "speed":"2000",
+            "method":"5",
+            "sequence":"1"
+        },
+        "valueBox": {
+        "placement": 'out',
+        "text": '%t\n%npv%',
+        "fontFamily": "Raleway",
+        "font-size": 10,
+        "shadow": true,
+        "padding": "10%"
+        }
+      },
+      'series':[
+        {
+          "values": [],
+          "text": 'Away ML',
+          "background-color": "#2196f3"
+        },
+        {
+          "values":[],
+          "text": "Home ML",
+          "background-color": "#90caf9"
+        },
+        {
+          "values":[],
+          "text": "Away Spread",
+          "background-color": "#4caf50"
+        },
+        {
+          "values":[],
+          "text": "Home Spread",
+          "background-color": "#a5d6a7"
+        },
+        {
+          "values":[],
+          "text": "Total Over",
+          "background-color": "#ff5722"
+        },
+        {
+          "values":[],
+          "text": "Total Under",
+          "background-color": "#ffab91"
+        }
+      ]
+    }
+
+    vm.pickTypeData = {
+      'type':'pie',
+      'title': {
+        'text':'Pick Tendencies',
+        "fontFamily": "Raleway"
+      },
+      'plot':{
+        "animation":{
+            "effect":"2",
+            "delay":"1000",
+            "speed":"1500",
+            "method":"5",
+            "sequence":"1"
+        },
+        "valueBox": {
+        "placement": 'in',
+        "text": '%t\n%npv%',
+        "fontFamily": "Raleway",
+        "font-size": 12,
+        "shadow": true,
+        "padding": "10%"
+        }
+      },
+      'series':[
+        {
+          "values": [],
+          "text": 'Moneylines',
+          "background-color": "#1A237E"
+        },
+        {
+          "values":[],
+          "text": "Spreads",
+          "background-color": "#1B5E20"
+        },
+        {
+          "values":[],
+          "text": "Totals",
+          "background-color": "#BF360C"
+        }
+      ]
+    }
+
+    vm.favData = {
+      'type':'ring',
+      'title': {
+        'text':'David ... or Goliath?',
+        "fontFamily": "Raleway"
+      },
+      'plot':{
+        "animation":{
+            "effect":"4",
+            "delay":"2000",
+            "speed":"1500",
+            "method":"5",
+            "sequence":"1"
+        },
+        "valueBox": {
+        "placement": 'in',
+        "text": '%t\n%npv%',
+        "fontFamily": "Raleway",
+        "font-size": 12,
+        "shadow": true,
+        "padding": "10%"
+        }
+      },
+      'series':[
+        {
+          "values": [],
+          "text": 'Favorites',
+          "background-color": "#4A148C"
+        },
+        {
+          "values":[],
+          "text": "Underdogs",
+          "background-color": "#B71C1C"
+        }
+      ]
+    }
+    vm.sumAllPicks(vm.user.username, vm.season);
+    vm.getPickStats(vm.user.username, vm.season);
+    vm.getWeeklyStats(vm.user.username, vm.season);
   };
 
   vm.sumAllPicks = function(username) {
@@ -158,7 +357,7 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   };
 
   vm.getWeeklyStats = function(username){
-    picksService.getWeeklyStats(username, vm.statSeason).then(function(result){
+    picksService.getWeeklyStats(username, vm.season).then(function(result){
       stats = result.data;
       var ytdDollars = 0
       for (i=0; i<stats.length; i++) {
@@ -178,6 +377,12 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.getPickStats = function(username, season) {
     picksService.getPickStats(username, season).then(function(stats){
       stats = stats.data;
+      // vm.tendencyData.series[0].values = [];
+      // vm.tendencyData.series[1].values = [];
+      // vm.tendencyData.series[2].values = [];
+      // vm.tendencyData.series[3].values = [];
+      // vm.tendencyData.series[4].values = [];
+      // vm.tendencyData.series[5].values = [];
       vm.user.awayMlPicks = stats.awayMlPicks;
       vm.tendencyData.series[0].values.push(stats.awayMlPicks);
       vm.user.homeMlPicks = stats.homeMlPicks;
@@ -200,12 +405,13 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
       vm.favData.series[0].values.push(stats.favPicks);
       vm.user.dogPicks = stats.dogPicks;
       vm.favData.series[1].values.push(stats.dogPicks);
+      console.log(vm.tendencyData);
+      console.log(vm.pickTypeData);
     })
   };
 
   function getDates () {
     oddsService.getDates(vm.season).then(function(dates){
-      // vm.weeksOfGames = dates;
       vm.weeksOfGames = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11', 'Week 12', 'Week 13', 'Week 14', 'Week 15', 'Week 16', 'Week 17'];
       var currentWeek = vm.weekSetter(moment().format());
       if (currentWeek === "Preseason") {

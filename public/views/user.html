@@ -10,10 +10,8 @@
         </div>
         <div class="col m4">
             <label> Select Season </label>
-            <select class="browser-default" ng-model="vm.statSeason">
-              <!-- <option selected value="2018">2018</option> -->
-              <option selected value="2017">2017</option>
-              <!-- <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option> -->
+            <select class="browser-default" ng-model="vm.season" ng-change="vm.seasonChange(vm.season)">
+              <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option>
             </select>
         </div>
       <!-- </selectDiv> -->
@@ -35,21 +33,24 @@
           </div>
           <div class="col m9">
             <div>
-              <gameTitle> NFL 2017 </gameTitle>
+              <gameTitle> NFL {{vm.season}} </gameTitle>
             </div>
             <div>
               <profits>
-                <b>TOTAL PROFITS:</b> <span class="nobr"> {{vm.user.sumYtd | currency:$:0}} </span>
+                <b>TOTAL PROFITS:</b> <span class="nobr"> {{vm.seasonStats[vm.season].profit | currency:$:0}} </span>
               </profits>
             </div>
             <div>
-              <b>Wins</b>: {{vm.user.ytdW}}
+              <b>Wins</b>:
+                {{vm.seasonStats[vm.season].wins}}
             </div>
             <div>
-              <b>Losses</b>: {{vm.user.ytdL}}
+              <b>Losses</b>:
+              {{vm.seasonStats[vm.season].losses}}
             </div>
             <div>
-              <b>Win %</b>: {{vm.user.ytdPct | percentage:2}}
+              <b>Win %</b>:
+              {{vm.seasonStats[vm.season].pct | percentage:2}}
             </div>
           </div>
         </div>
@@ -82,9 +83,7 @@
   <selectDiv class="col s2 offset-s1 userWkSelect">
       <label> Select Season </label>
       <select class="browser-default" ng-model="vm.season" ng-change="vm.seasonChange(vm.season)">
-        <option selected value="2018">2018</option>
-        <option value="2017">2017</option>
-        <!-- <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option> -->
+        <option ng-repeat = "season in vm.seasons" value="{{season}}"> {{season}} </option>
       </select>
   </selectDiv>
   <div class="col s3 userWkSelect">

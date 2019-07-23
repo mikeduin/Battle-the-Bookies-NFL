@@ -56,6 +56,7 @@ router.get('/:username/:season/all', function (req, res, next) {
 })
 
 router.get('/:username/stats/:season', function (req, res, next){
+  console.log('season is ', req.params.season);
   Picks().where({
     username: req.params.username,
     season: req.params.season
