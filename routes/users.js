@@ -35,7 +35,7 @@ function generateJWT (user) {
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  Users().then(function(users){
+  Users().whereNotNull('btb_seasons').then(function(users){
     res.json(users);
   })
 });

@@ -132,7 +132,6 @@ setInterval(function (){
 router.get('/seasons', function(req, res, next){
   Lines().pluck('season').distinct()
   .then(function(seasons){
-    // res.json(seasons);
     var array = [2018, 2017];
     res.json(array)
   })
@@ -162,14 +161,6 @@ router.get('/linemove/:gameID', function(req, res, next){
   });
 })
 
-// router.get('/results', function(req, res, next){
-//   Result.find(function(err, games) {
-//     if (err) { next(err) };
-//
-//     res.json(games);
-//   })
-// })
-
 router.get('/pullGame/:gameID', function(req, res, next){
   pickArrays.byId(req.params.gameID).then(function(arrays){
     res.json(arrays);
@@ -180,7 +171,13 @@ router.get('/weeklyStats/:username/:season', function(req, res, next){
   var username = req.params.username;
   var season = req.params.season;
   var weekArray = [];
-  Picks().where({season: season}).whereNot({WeekNumb: "PRE"}).whereNot({WeekNumb: "POST"}).pluck('Week').distinct().then(function(weeks){
+  Picks()
+    .where({season: season})
+    .whereNot({WeekNumb: "PRE"})
+    .whereNot({WeekNumb: "POST"})
+    .pluck('Week')
+    .distinct()
+  .then(function(weeks){
     weekArray = weeks;
     weeks = weekArray.sort();
     return weeks

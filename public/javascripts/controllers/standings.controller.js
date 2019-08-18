@@ -23,7 +23,7 @@ function StandingsController (picksService, oddsService, usersService, dateServi
 
   function sortNumber(a, b) {
     return a - b
-  };  
+  };
 
   vm.getAllUsers = function(){
     usersService.getAllUsers().then(function(result){
@@ -131,7 +131,7 @@ function StandingsController (picksService, oddsService, usersService, dateServi
     oddsService.getDates(season).then(function(dates){
       vm.dayArrayLength = dates.length;
       vm.weeksOfGames = dates;
-      getPageArray(dates)
+      getPageArray(dates);
     })
   };
 

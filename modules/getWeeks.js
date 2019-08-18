@@ -14,7 +14,11 @@ Array.max = function(array){
 
 module.exports = {
   getWeeks: function(season) {
-    return Lines().where({season: season}).pluck('Week').distinct().then(function(weeks){
+    return Lines()
+      .where({season: season})
+      .whereNot({WeekNumb: "PRE"})
+      .whereNot({WeekNumb: "POST"})
+      .pluck('Week').distinct().then(function(weeks){
       var weekNumbers = [];
       var newWeeks = [];
       for (i=0; i<weeks.length; i++) {

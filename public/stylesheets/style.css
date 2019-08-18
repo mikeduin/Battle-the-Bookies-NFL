@@ -264,6 +264,10 @@ loginBox i {
   left: 0;
 }
 
+regBack .row {
+  margin-bottom: 0 !important;
+}
+
 regBox i {
   padding-top: 10px
 }
@@ -275,6 +279,14 @@ regLink {
 
 regLink a {
   color: #2F5032
+}
+
+.userRegRow {
+  margin-bottom: 40px;
+}
+
+div.filler {
+  height: 60px;
 }
 
 regBox form label {
@@ -1006,6 +1018,11 @@ pagination {
 
 .pagination > .active {
   width: 30px;
+}
+
+.pagination li {
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 standings table {

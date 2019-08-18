@@ -46,9 +46,9 @@ function dateService () {
     };
 
     date.weekSetter = matchTime => {
-      if (moment(matchTime).isBefore('2019-08-30')) {
+      if (moment(matchTime).isBefore('2019-08-17')) {
         return "Preseason"
-      } else if (moment(matchTime).isBetween('2019-09-01', '2019-09-10')) {
+      } else if (moment(matchTime).isBetween('2019-08-16', '2019-09-10')) {
         return "Week 1"
       } else if (moment(matchTime).isBetween('2019-09-10', '2019-09-17')) {
         return "Week 2"

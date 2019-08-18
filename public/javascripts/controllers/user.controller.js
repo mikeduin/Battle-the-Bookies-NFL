@@ -103,7 +103,10 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
       for (var i=0; i<result.length; i++) {
         vm.usernames.push(result[i].username);
       };
-      vm.usernames.sort();
+      var sorted = vm.usernames.sort(function(a, b) {
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+      });
+      vm.usernames = sorted;
     })
   }
 

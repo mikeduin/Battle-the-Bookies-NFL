@@ -65,6 +65,9 @@ function PickController (oddsService, picksService, resultsService, authService,
 
   vm.seasonChange = function(){
     $state.go('home.makepicks', {season: vm.season});
+    // if (vm.season != Array.max(vm.seasons)) {
+    //   vm.gameWeekFilter = 'Week 17'
+    // };
   };
 
   vm.checkDisplay = function(game){
@@ -122,7 +125,6 @@ function PickController (oddsService, picksService, resultsService, authService,
          vm.weeksOfGames.push(newWeek)
        };
       var currentWeek = vm.weekSetter(moment().format());
-      // console.log('currentWeek is ', currentWeek);
       if (currentWeek === "Preseason") {
         vm.gameWeekFilter = "Week 1"
       } else if (
