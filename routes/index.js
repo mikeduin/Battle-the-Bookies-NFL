@@ -24,6 +24,7 @@ var setCapperGrades = require('../modules/setCapperGrades.js');
 var pickArrays = require('../modules/pickArrays.js');
 var getWeeks = require('../modules/getWeeks.js');
 var fetchLines = require('../modules/fetchLines.js');
+var checkActiveLines = require('../modules/checkActiveLines');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -71,9 +72,14 @@ setInterval(function (){
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
 //
-// setInterval(function (){
-//   checkStartTimes.checkStartTimes();
-// }, 50000000)
+setInterval(function (){
+  checkStartTimes.checkStartTimes();
+}, 50000000);
+
+// This function checks to make sure there are no stale lines in the DB, available for picking, which have been taken off the board in real life.
+setInterval(() => {
+  checkActiveLines.checkActiveLines();
+}, 5000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 router.get('/updateOdds', function(req, res, next) {
