@@ -79,7 +79,7 @@ setInterval(function (){
 // This function checks to make sure there are no stale lines in the DB, available for picking, which have been taken off the board in real life.
 setInterval(() => {
   checkActiveLines.checkActiveLines();
-}, 5000);
+}, 60000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 router.get('/updateOdds', function(req, res, next) {
