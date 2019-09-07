@@ -8,8 +8,6 @@ function Lines () {
   return knex('lines');
 }
 
-let now = new Date();
-
 module.exports = {
   checkActiveLines: async () => {
     const pendingGames = await Lines().where({

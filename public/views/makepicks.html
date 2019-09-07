@@ -70,7 +70,7 @@
         <th colspan="2" class="center-align"> YOUR PICK </th>
       </tr>
     </thead>
-    <tbody ng-if="!vm.noLines" ng-repeat="game in vm.nflLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter }" on-finish-render="ngRepeatFinished">
+    <tbody ng-if="!vm.noLines" ng-repeat="game in vm.nflLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter, active: true }" on-finish-render="ngRepeatFinished">
       <tr ng-init="vm.timeCheck(game); vm.checkSubmission(game, vm.currentUser())">
         <td rowspan="2"> <b>{{game.Week}}</b> <br> {{game.MatchTime | date:'MM/dd/yyyy'}} <br> {{game.MatchTime | date:'h:mm a'}} <br> <span ng-show="vm.checkDisplay(game)"> <a class="btn-floating float-color" ui-sref="home.game({EventID: game.EventID})"><i class="fa fa-bar-chart" aria-hidden="true"></i></a> </span> </td>
         <td> <b>(A)</b> {{game.AwayTeam}}</td>
