@@ -54,8 +54,19 @@ function Picks() {
 }
 
 function Users() {
-  return mainDb('users');
+  return userDb('users');
 }
+
+// This first function is only used to update users in the new DB (mikeduin.com) with btb_season data from the original BtB DB. It can be deleted once everything is working properly.
+
+// setTimeout(() => {UsersOld().then(oldUsers => oldUsers.forEach(oldUser => {
+//   UsersNew().where({username: oldUser.username}).update({
+//     btb_seasons: oldUser.btb_seasons,
+//     plan: oldUser.plan
+//   }, '*').then(retUser => {
+//     console.log(retUser[0].username, 'has been updated');
+//   })
+// }))}, 3000)
 
 // This first function updates game results every 11 minutes.
 setInterval(function (){

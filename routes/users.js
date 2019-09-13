@@ -11,7 +11,7 @@ var mainDb = knex.mainDb;
 var userDb = knex.userDb;
 
 function Users() {
-  return mainDb('users');
+  return userDb('users');
 }
 
 function Picks() {

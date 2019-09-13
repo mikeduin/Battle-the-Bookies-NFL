@@ -7,7 +7,7 @@ function Picks() {
 }
 
 function Users() {
-  return mainDb('users');
+  return userDb('users');
 }
 
 function Lines() {
