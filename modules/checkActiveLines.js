@@ -2,10 +2,13 @@ var fetch = require('node-fetch');
 var knex = require('../db/knex');
 var currentSeason = require('./currentSeason');
 
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
+
 const seasonYear = currentSeason.fetchSystemYear();
 
 function Lines () {
-  return knex('lines');
+  return mainDb('lines');
 }
 
 module.exports = {

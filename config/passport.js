@@ -3,8 +3,11 @@ var LocalStrategy = require('passport-local').Strategy;
 var knex = require ('../db/knex');
 var crypto = require ('crypto');
 
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
+
 function Users() {
-  return knex('users');
+  return mainDb('users');
 }
 
 function checkPassword (user, password) {

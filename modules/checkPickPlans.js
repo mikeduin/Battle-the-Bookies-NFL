@@ -1,15 +1,17 @@
 var knex = require('../db/knex')
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
 
 function Picks() {
-  return knex('picks');
+  return mainDb('picks');
 }
 
 function Users() {
-  return knex('users');
+  return mainDb('users');
 }
 
 function Lines() {
-  return knex('lines');
+  return mainDb('lines');
 }
 
 function activePayCalc (line) {

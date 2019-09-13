@@ -8,12 +8,15 @@ var setWeekNumb = require('../modules/weekNumbSetter.js');
 var moment = require('moment');
 var currentSeason = require('../modules/currentSeason.js');
 
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
+
 function Picks () {
-  return knex('picks')
+  return mainDb('picks')
 }
 
 function Lines () {
-  return knex('lines')
+  return mainDb('lines')
 }
 
 router.get('/', function (req, res, next){

@@ -1,16 +1,18 @@
 var moment = require('moment');
 var knex = require('../db/knex');
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
 
 function Lines() {
-  return knex('lines');
+  return mainDb('lines');
 }
 
 function Picks() {
-  return knex('picks');
+  return mainDb('picks');
 }
 
 function PickArrays() {
-  return knex('pick_arrays');
+  return mainDb('pick_arrays');
 }
 
 module.exports = {

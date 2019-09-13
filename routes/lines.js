@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var knex = require('../db/knex');
-
 var fetchLines = require('../modules/fetchLines.js');
 
 router.get('/season/:season', function(req, res, next){

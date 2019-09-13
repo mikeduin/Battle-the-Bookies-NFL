@@ -1,11 +1,13 @@
 var knex = require('../db/knex');
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
 
 function Lines() {
-  return knex('lines')
+  return mainDb('lines')
 }
 
 function Picks() {
-  return knex('picks')
+  return mainDb('picks')
 }
 
 module.exports = {

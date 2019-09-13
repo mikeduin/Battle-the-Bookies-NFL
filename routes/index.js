@@ -6,7 +6,9 @@ var fetch = require('node-fetch');
 var moment = require('moment');
 var passport = require('passport');
 var knex = require('../db/knex');
-// var request = require('request-promise');
+
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -40,19 +42,19 @@ function sortNumber(a, b) {
 };
 
 function Lines() {
-  return knex('lines');
+  return mainDb('lines');
 };
 
 function LineMoves() {
-  return knex ('line_moves');
+  return mainDb('line_moves');
 };
 
 function Picks() {
-  return knex('picks');
+  return mainDb('picks');
 }
 
 function Users() {
-  return knex('users');
+  return mainDb('users');
 }
 
 // This first function updates game results every 11 minutes.

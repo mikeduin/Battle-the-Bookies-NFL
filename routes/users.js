@@ -7,12 +7,15 @@ var passport = require('passport');
 var currentSeason = require('../modules/currentSeason.js');
 require('dotenv').load();
 
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
+
 function Users() {
-  return knex('users');
+  return mainDb('users');
 }
 
 function Picks() {
-  return knex('picks');
+  return mainDb('picks');
 }
 
 function generateJWT (user) {
@@ -39,6 +42,22 @@ router.get('/', function(req, res, next) {
     res.json(users);
   })
 });
+
+router.post('/login', function(req, res, next){
+  if(!req.body.username || !req.body.password){
+    return res.status(400).json({message: 'You forgot to include either your username or your password!'});
+  };
+
+  passport.authenticate('local', function(err, user, info){
+    if(err){ return next(err); }
+
+    if(user){
+      return res.json({token: generateJWT(user)});
+    } else {
+      return res.status(401).json(info);
+    }
+  })(req, res, next);
+})
 
 router.get('/seasonUsers/:season', function(req, res, next){
   var players = [];
@@ -195,22 +214,6 @@ router.post('/register', function(req, res, next){
     });
   });
 });
-
-router.post('/login', function(req, res, next){
-  if(!req.body.username || !req.body.password){
-    return res.status(400).json({message: 'You forgot to include either your username or your password!'});
-  };
-
-  passport.authenticate('local', function(err, user, info){
-    if(err){ return next(err); }
-
-    if(user){
-      return res.json({token: generateJWT(user)});
-    } else {
-      return res.status(401).json(info);
-    }
-  })(req, res, next);
-})
 
 router.put('/reregister', function(req, res, next){
   Users().where({username: req.body.username}).pluck('btb_seasons').then(function(seasonData){

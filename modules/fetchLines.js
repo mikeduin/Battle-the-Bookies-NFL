@@ -2,8 +2,11 @@ var knex = require ('../db/knex');
 var moment = require('moment');
 var setWeek = require('../modules/weekSetter.js');
 
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
+
 function Lines() {
-  return knex('lines');
+  return mainDb('lines');
 };
 
 module.exports = {

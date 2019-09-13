@@ -3,16 +3,19 @@ var setCapperGrades = require('../modules/setCapperGrades.js');
 var pickArrays = require('../modules/pickArrays.js');
 var checkPlans = require('../modules/checkPickPlans.js');
 
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
+
 function Lines () {
-  return knex('lines')
+  return mainDb('lines')
 }
 
 function LineMoves() {
-  return knex('line_moves')
+  return mainDb('line_moves')
 }
 
 function Picks() {
-  return knex('picks')
+  return mainDb('picks')
 }
 
 Array.max = function(array){

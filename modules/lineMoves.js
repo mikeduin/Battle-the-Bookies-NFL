@@ -1,13 +1,17 @@
 var moment = require('moment');
 var knex = require ('../db/knex');
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
 
 function Lines() {
-  return knex ('lines');
+  return mainDb('lines');
 };
 
 function LineMoves() {
-  return knex ('line_moves');
+  return mainDb('line_moves');
 };
+
+// IF LINE MOVES DON'T WORK, IT'S BECAUSE OF DEFAULT KNEX REFS BELOW
 
 // The function below runs once every 35 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
 

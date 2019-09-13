@@ -7,24 +7,26 @@ var setWeek = require('../modules/weekSetter.js');
 var setWeekNumb = require('../modules/weekNumbSetter.js');
 var logLineMoves = require('../modules/lineMoves.js');
 var currentSeason = require('../modules/currentSeason.js');
-var knex = require ('../db/knex');
+var knex = require('../db/knex');
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
 
 var pickSeason = currentSeason.returnSeason(moment());
 
 function Lines() {
-  return knex('lines');
+  return mainDb('lines');
 };
 
 function Users() {
-  return knex('users');
+  return mainDb('users');
 }
 
 function Picks() {
-  return knex('picks');
+  return mainDb('picks');
 }
 
 function LineMoves() {
-  return knex('line_moves');
+  return mainDb('line_moves');
 };
 
 // This function checks every 7 minutes to see if new lines are available and, if so, adds them to the DB.
