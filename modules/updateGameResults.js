@@ -1,16 +1,18 @@
 var fetch = require('node-fetch');
 var knex = require('../db/knex');
+var mainDb = knex.mainDb;
+var userDb = knex.userDb;
 
 function Results () {
-  return knex('results');
+  return mainDb('results');
 };
 
 function Lines () {
-  return knex('lines');
+  return mainDb('lines');
 };
 
 function Picks () {
-  return knex('picks');
+  return mainDb('picks');
 }
 
 // This function updates game results.
