@@ -24,7 +24,7 @@ function generateJWT (user) {
   var exp = new Date(today);
   exp.setDate(today.getDate()+ 1000);
 
-  //this function below takes two arguments - the payload that will be signed by the JWT + the secret. Hard-coding 'SECRET' for now but need to come back and change that to an environment variable so the secret is kept out of our code. This 'SECRET' reference is also included in the auth variable in index.js, so remember to change that too.
+  // this function below takes two arguments - the payload that will be signed by the JWT + the secret.
   return jwt.sign({
     _id: user[0]._id,
     username: user[0].username,
