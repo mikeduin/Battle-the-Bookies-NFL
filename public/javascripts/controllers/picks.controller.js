@@ -96,8 +96,7 @@ function PickController (oddsService, picksService, resultsService, authService,
       vm.nflLines = lines;
       if (vm.nflLines.length < 1) {
         vm.noLines = true;
-      }
-      console.log('vm.nflLines are ', vm.nflLines);
+      };
     })
   };
 
