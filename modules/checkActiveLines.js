@@ -1,5 +1,6 @@
 var fetch = require('node-fetch');
 var knex = require('../db/knex');
+var moment = require('moment');
 var currentSeason = require('./currentSeason');
 
 var mainDb = knex.mainDb;
@@ -13,7 +14,8 @@ function Lines () {
 
 module.exports = {
   checkActiveLines: async () => {
-    const pendingGames = await Lines().where({
+    var now = moment();
+    const pendingGames = await Lines().where('MatchTime', '>', now).andWhere({
       GameStatus: null,
       season: seasonYear,
       active: true
@@ -34,14 +36,14 @@ module.exports = {
         Lines().where({EventID: game}).update({
           active: false
         }, '*').then(game => {
-          console.log(game[0].ID, ' has been deactivated');
+          console.log(game, ' has been deactivated');
         })
       } else {
         console.log(game, ' is active');
       }
     });
 
-    const inactiveGames = await Lines().where({
+    const inactiveGames = await Lines().where('MatchTime', '>', now).andWhere({
       GameStatus: null,
       season: seasonYear,
       active: false
@@ -51,8 +53,8 @@ module.exports = {
       if (activeGameIds.indexOf(inactiveGame) !== -1) {
         Lines().where({EventID: inactiveGame}).update({
           active: true
-        }, '*'),then(ret => {
-          console.log(ret[0].ID, ' has been reactivated!');
+        }, '*').then(ret => {
+          console.log(inactiveGame, ' has been reactivated!');
         })
       } else {
         console.log(inactiveGame, ' is still inactive');
