@@ -70,16 +70,16 @@ module.exports = {
             });
           } else {
             LineMoves().where({EventID: game.EventID}).update({
-              'HomeSpreads': knex.raw('array_append("HomeSpreads", ?)', [homeSpread]),
-              'HomeSpreadJuices': knex.raw('array_append("HomeSpreadJuices", ?)', [homeSpreadJuice]),
-              'AwaySpreads': knex.raw('array_append("AwaySpreads", ?)', [awaySpread]),
-              'AwaySpreadJuices': knex.raw('array_append("AwaySpreadJuices", ?)', [awaySpreadJuice]),
-              'HomeMLs': knex.raw('array_append("HomeMLs", ?)', [homeML]),
-              'AwayMLs': knex.raw('array_append("AwayMLs", ?)', [awayML]),
-              'Totals': knex.raw('array_append("Totals", ?)', [total]),
-              'TotalOverJuices': knex.raw('array_append("TotalOverJuices", ?)', [totalOverJuice]),
-              'TotalUnderJuices': knex.raw('array_append("TotalUnderJuices", ?)', [totalUnderJuice]),
-              'TimeLogged': knex.raw('array_append("TimeLogged", ?)', [logged]),
+              'HomeSpreads': mainDb.raw('array_append("HomeSpreads", ?)', [homeSpread]),
+              'HomeSpreadJuices': mainDb.raw('array_append("HomeSpreadJuices", ?)', [homeSpreadJuice]),
+              'AwaySpreads': mainDb.raw('array_append("AwaySpreads", ?)', [awaySpread]),
+              'AwaySpreadJuices': mainDb.raw('array_append("AwaySpreadJuices", ?)', [awaySpreadJuice]),
+              'HomeMLs': mainDb.raw('array_append("HomeMLs", ?)', [homeML]),
+              'AwayMLs': mainDb.raw('array_append("AwayMLs", ?)', [awayML]),
+              'Totals': mainDb.raw('array_append("Totals", ?)', [total]),
+              'TotalOverJuices': mainDb.raw('array_append("TotalOverJuices", ?)', [totalOverJuice]),
+              'TotalUnderJuices': mainDb.raw('array_append("TotalUnderJuices", ?)', [totalUnderJuice]),
+              'TimeLogged': mainDb.raw('array_append("TimeLogged", ?)', [logged]),
             }, '*').then(function(returned){
               console.log('array updated!');
             })
