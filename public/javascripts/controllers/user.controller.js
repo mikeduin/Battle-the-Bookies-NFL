@@ -143,6 +143,8 @@ function UserController ($stateParams, picksService, usersService, oddsService, 
   vm.seasonChange = function(){
     if (vm.season != Array.max(vm.seasons)) {
       vm.gameWeekFilter = 'Week 17'
+    } else {
+      vm.gameWeekFilter = vm.weekSetter(moment().format());
     };
     vm.dailyData = {
       'type':'mixed',
