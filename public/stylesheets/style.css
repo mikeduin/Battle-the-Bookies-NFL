@@ -82,6 +82,10 @@ nav {
     margin-top: -20px;
     margin-left: 10px;
   }
+
+  .brand-logo {
+    left: 0;
+  }
 }
 
 .weak {
