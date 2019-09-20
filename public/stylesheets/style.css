@@ -774,6 +774,16 @@ chasing-dots-spinner {
   cursor: pointer;
 }
 
+.res-rank {
+  width: 10px;
+  font-size: 20px;
+}
+
+.res-table tbody td {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
 .sort-indicator {
   padding: 3px;
   font-size: 10px;
