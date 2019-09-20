@@ -70,7 +70,7 @@ function StandingsController (picksService, oddsService, usersService, dateServi
         user.plan = "Road ATS"
       } else if (user.plan === "favMLs") {
         user.plan = "Favorite ML"
-      }
+      };
     }).then(function(){
       username = user.username;
       picksService.getWeeklyStats(username, season).then(function(result){

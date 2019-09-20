@@ -27,20 +27,21 @@
   <table  class="striped">
     <thead>
       <tr>
-        <th colspan="3"> </th>
+        <th colspan="4"> </th>
         <th colspan="4" class="center-align ytd-header"> Year to Date </th>
         <th colspan="4" class="center-align day-header" ng-repeat="day in vm.weeksOfGames | limitTo: 4: vm.pageView"> {{day}} </th>
       </tr>
       <tr class="bord-bottom">
-        <th class="pushdown"> Entrant </th>
-        <th class="pushdown"> Buy-in </th>
-        <th class="pushdown bord-right"> Protection Plan </th>
-        <th class="pushdown"> W </th>
-        <th class="pushdown"> L </th>
-        <th class="pushdown"> Win% </th>
-        <th class="pushdown bord-right"> $ </th>
+        <th> Rank </th>
+        <th class="entrant-header"> Entrant </th>
+        <th> Buy-in </th>
+        <th class="bord-right"> Protection <br>Plan </th>
+        <th> W </th>
+        <th> L </th>
+        <th> Win% </th>
+        <th class="bord-right"> $ </th>
         <th colspan="4" ng-repeat="day in vm.weeksOfGames | limitTo: 4: vm.pageView" class="bord-right">
-          <table><tr>
+          <table class="standings-sub-table"><tr>
             <th class="wBox"> W </th>
             <th class="wBox"> L </th>
             <th class="dollBox"> $ </th>
@@ -50,15 +51,16 @@
     </thead>
     <tbody ng-show="vm.showStandings">
       <tr class="bord-bottom" ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-init="vm.sumSeasonPicks(user, vm.season)">
-        <td class="pushdown user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a></td>
-        <td class="pushdown" ng-class="{buyGold: user.buyin === 200, buySilver: user.buyin === 100, buyBronze: user.buyin === 50}"> {{user.buyin | currency:$:0}} </td>
-        <td class="pushdown plan-txt bord-right"> {{user.plan}} </td>
-        <td class="pushdown ytdwBox"> <b> {{user.ytdW}} </b> </td>
-        <td class="pushdown ytdwBox"> <b> {{user.ytdL}} </b> </td>
-        <td class="pushdown"> <i> {{user.ytdPct | percentage:2}} </i> </td>
-        <td class="pushdown bord-right sum-total" ng-class="{dayWin: user.sumYtd > 0, dayLoss: user.sumYtd < 0}"> {{user.sumYtd | currency:$:2}} </td>
+        <td>{{$index + 1}}</td>
+        <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a></td>
+        <td ng-class="{buyGold: user.buyin === 200, buySilver: user.buyin === 100, buyBronze: user.buyin === 50}"> {{user.buyin | currency:$:0}} </td>
+        <td class="plan-txt bord-right"> {{user.plan}} </td>
+        <td class="ytdwBox"> <b> {{user.ytdW}} </b> </td>
+        <td class="ytdwBox"> <b> {{user.ytdL}} </b> </td>
+        <td> <i> {{user.ytdPct | percentage:2}} </i> </td>
+        <td class="bord-right sum-total" ng-class="{dayWin: user.sumYtd > 0, dayLoss: user.sumYtd < 0}"> {{user.sumYtd | currency:$:2}} </td>
         <td colspan="4" ng-repeat="day in user.dailyStats | limitTo: 4: vm.pageView" class="bord-right" on-finish-render="ngRepeatFinished">
-          <table><tr>
+          <table class="standings-sub-table"><tr>
             <td class="wBox"> {{day.totalWins}} </td>
             <td class="wBox"> {{day.totalLosses}} </td>
             <td class="dollBox" ng-class="{dayWin: day.totalDollars > 0, dayLoss: day.totalDollars < 0}"> <b>{{day.totalDollars | currency:$:2}} </b> </td>
