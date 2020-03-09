@@ -22,7 +22,7 @@ function NavController (authService, oddsService, dateService, $state) {
   vm.getDates = function (season) {
     oddsService.getDates(season).then(function(dates){
       var currentWeek = vm.weekSetter(moment().format("YYYY-MM-DD"));
-      console.log('current week is ', currentWeek);
+      // console.log('current week is ', currentWeek);
       vm.currentWeekNumb = parseInt(currentWeek.substring(5));
       // console.log('current weekNumb is ', vm.currentWeekNumb);
       vm.weeksOfGames = dates.reverse();
