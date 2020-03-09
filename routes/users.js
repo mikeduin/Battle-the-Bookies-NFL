@@ -18,6 +18,31 @@ function Picks() {
   return mainDb('picks');
 }
 
+// Dummy Function here to modify User season entries
+
+// setTimeout(() => {
+//   let seasons = [
+//     {
+//       'plan': 'noPlan',
+//       'buyin': 50,
+//       'active': true,
+//       'season': 2018
+//     },
+//     {
+//       'plan': 'noPlan',
+//       'buyin': 100,
+//       'active': true,
+//       'season': 2019
+//     }
+//   ];
+//   Users().where({username: 'dbrand17'}).update({
+//     btb_seasons: seasons
+//   }, '*').then(upd => {
+//     console.log(upd[0].username, ' has been updated');
+//   })
+// }, 1000)
+
+
 function generateJWT (user) {
   // this function sets expiration of token to 1000 days
   var today = new Date();
