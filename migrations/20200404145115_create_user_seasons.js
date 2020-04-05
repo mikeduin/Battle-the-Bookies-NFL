@@ -3,7 +3,7 @@ exports.up = function(knex) {
     t.increments();
     t.string('username');
     t.integer('season');
-    t.interger('buyin');
+    t.integer('buyin');
     t.string('plan');
     t.float('ytd_w');
     t.float('ytd_l');
