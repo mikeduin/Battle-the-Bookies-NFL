@@ -49,17 +49,17 @@
         </th>
       </tr>
     </thead>
-    <tbody ng-show="vm.showStandings">
-      <tr class="bord-bottom" ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-init="vm.sumSeasonPicks(user, vm.season)">
+    <tbody>
+      <tr class="bord-bottom" ng-repeat="user in vm.users | orderBy: vm.sortOrder">
         <td>{{$index + 1}}</td>
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a></td>
         <td ng-class="{buyGold: user.buyin === 200, buySilver: user.buyin === 100, buyBronze: user.buyin === 50}"> {{user.buyin | currency:$:0}} </td>
         <td class="plan-txt bord-right"> {{user.plan}} </td>
-        <td class="ytdwBox"> <b> {{user.ytdW}} </b> </td>
-        <td class="ytdwBox"> <b> {{user.ytdL}} </b> </td>
-        <td> <i> {{user.ytdPct | percentage:2}} </i> </td>
-        <td class="bord-right sum-total" ng-class="{dayWin: user.sumYtd > 0, dayLoss: user.sumYtd < 0}"> {{user.sumYtd | currency:$:2}} </td>
-        <td colspan="4" ng-repeat="day in user.dailyStats | limitTo: 4: vm.pageView" class="bord-right" on-finish-render="ngRepeatFinished">
+        <td class="ytdwBox"> <b> {{user.ytd_w}} </b> </td>
+        <td class="ytdwBox"> <b> {{user.ytd_l}} </b> </td>
+        <td> <i> {{(user.ytd_w / (user.ytd_w + user.ytd_l)) | percentage:2}} </i> </td>
+        <td class="bord-right sum-total" ng-class="{dayWin: user.ytd_dollars > 0, dayLoss: user.ytd_dollars < 0}"> {{user.ytd_dollars | currency:$:2}} </td>
+        <td colspan="4" ng-repeat="day in user.weekly_results | limitTo: 4: vm.pageView" class="bord-right" on-finish-render="ngRepeatFinished">
           <table class="standings-sub-table"><tr>
             <td class="wBox"> {{day.totalWins}} </td>
             <td class="wBox"> {{day.totalLosses}} </td>

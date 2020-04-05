@@ -11,40 +11,33 @@ function StandingsController (picksService, oddsService, usersService, dateServi
   vm.pageArray = [1];
   vm.activePage = 1;
   vm.pageView;
-  vm.sortOrder = "-sumYtd";
+  vm.sortOrder = "-ytd_dollars";
   vm.users = [];
   vm.user = {};
-  vm.showStandings = false;
   vm.dailyStats = [];
   vm.season = $stateParams.season;
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
   })
 
+  const plans = {
+    "noPlan": "",
+    "dogSpreads": "Underdog ATS",
+    "homeSpreads": "Home ATS",
+    "roadSpreads": "Road ATS",
+    "favMLs": "Favorite ML"
+  }
+
   function sortNumber(a, b) {
     return a - b
   };
 
-  // vm.getAllUsers = function(){
-  //   usersService.getAllUsers().then(function(result){
-  //     vm.users = result;
-  //   })
-  // };
-
   vm.getSeasonUsers = function(season){
-    usersService.getSeasonUsers(season).then(function(result){
-      for (var i = 0; i < result.length; i++) {
-        var buyin;
-        for (var j = 0; j < result[i].btb_seasons.length; j++) {
-          if (result[i].btb_seasons[j].season == vm.season) {
-            buyin = result[i].btb_seasons[j].buyin;
-            plan = result[i].btb_seasons[j].plan;
-          }
-        }
-        result[i].buyin = buyin;
-        result[i].plan = plan;
+    usersService.getSeasonUsers(season).then(function(users){
+      for (var i = 0; i < users.length; i++) {
+        users[i].plan = plans[users[i].plan];
       };
-      vm.users = result;
+      vm.users = users;
     })
   }
 
@@ -52,60 +45,6 @@ function StandingsController (picksService, oddsService, usersService, dateServi
     vm.getSeasonUsers(vm.season);
     $state.go('home.standings', {season: vm.season});
   };
-
-  vm.sumSeasonPicks = function(user, season) {
-    username = user.username;
-    picksService.sumSeasonPicks(username, season).then(function(result){
-      user.sumYtd = result.totalDollars;
-      user.ytdW = result.totalW;
-      user.ytdL = result.totalG - result.totalW;
-      user.ytdPct = result.totalW / result.totalG;
-      if (user.plan === "noPlan") {
-        user.plan = "";
-      } else if (user.plan === "dogSpreads") {
-        user.plan = "Underdog ATS"
-      } else if (user.plan === "homeSpreads") {
-        user.plan = "Home ATS"
-      } else if (user.plan === "roadSpreads") {
-        user.plan = "Road ATS"
-      } else if (user.plan === "favMLs") {
-        user.plan = "Favorite ML"
-      };
-    }).then(function(){
-      username = user.username;
-      picksService.getWeeklyStats(username, season).then(function(result){
-        user.dailyStats = result.data;
-        vm.showStandings = true;
-      })
-    })
-  };
-
-  // vm.sumAllPicks = function(user, year) {
-  //   username = user.username;
-  //   picksService.sumAllPicks(username, year).then(function(result){
-  //     user.sumYtd = result.totalDollars;
-  //     user.ytdW = result.totalW;
-  //     user.ytdL = result.totalG - result.totalW;
-  //     user.ytdPct = result.totalW / result.totalG;
-  //     if (user.plan === "noPlan") {
-  //       user.plan = "";
-  //     } else if (user.plan === "dogSpreads") {
-  //       user.plan = "Underdog ATS"
-  //     } else if (user.plan === "homeSpreads") {
-  //       user.plan = "Home ATS"
-  //     } else if (user.plan === "roadSpreads") {
-  //       user.plan = "Road ATS"
-  //     } else if (user.plan === "favMLs") {
-  //       user.plan = "Favorite ML"
-  //     }
-  //   }).then(function(){
-  //     username = user.username;
-  //     picksService.getWeeklyStats(username).then(function(result){
-  //       user.dailyStats = result.data;
-  //       vm.showStandings = true;
-  //     })
-  //   })
-  // };
 
   vm.pageClick = function (i) {
     vm.activePage = i;

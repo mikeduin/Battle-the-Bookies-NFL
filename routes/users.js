@@ -202,7 +202,7 @@ router.post('/register', async (req, res, next) => {
   res.json({token: generateJWT(user)});
 });
 
-router.put('/reregister', function(req, res, next){
+router.put('/reregister', async (req, res, next) => {
   const seasonData = await Users().where({username: req.body.username}).pluck('btb_seasons');
   const buyin = parseInt(req.body.buyin);
   let plan;

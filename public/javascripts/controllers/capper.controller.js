@@ -6,21 +6,13 @@ function capperController (picksService, oddsService, usersService, dateService,
   var vm = this;
   vm.seasons = dateService.fetchSeasons();
   vm.getDates = getDates;
-  vm.getCapperGrades = getCapperGrades;
-  // vm.getAllUsers = getAllUsers;
-  vm.sortOrder = "-totalCapperScore";
+  vm.sortOrder = "-capper_grade";
   vm.tutRedirect = tutRedirect;
   vm.season = $stateParams.season;
 
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
   })
-
-  // function getAllUsers (){
-  //   usersService.getAllUsers().then(function(result){
-  //     vm.users = result
-  //   })
-  // };
 
   vm.getSeasonUsers = function(season){
     usersService.getSeasonUsers(season).then(function(result){
@@ -41,35 +33,8 @@ function capperController (picksService, oddsService, usersService, dateService,
       for (var i=0; i<vm.weeksOfGames.length; i++){
         vm.weekNumbs.push(parseInt(vm.weeksOfGames[i].substring(5)))
       };
-      // getPageArray(dates)
     })
   };
-
-  // function getSeasons () {
-  //   oddsService.getSeasons().then(function(seasons){
-  //     vm.seasons = seasons;
-  //   })
-  // }
-
-  function getCapperGrades (user, season) {
-    username = user.username;
-    picksService.sumSeasonPicks(username, season).then(function(result){
-      user.sumYtd = result.totalDollars;
-      user.ytdW = result.totalW;
-      user.ytdL = result.totalG - result.totalW;
-      user.ytdPct = result.totalW / result.totalG;
-    }).then(function(){
-      username = user.username;
-      picksService.getWeeklyStats(username, season).then(function(result){
-        user.capperGrades = result.data;
-        user.totalCapperScore = 0;
-        for (var i=0; i<user.capperGrades.length; i++) {
-          user.totalCapperScore += user.capperGrades[i].avgCapperGrade
-        };
-        vm.showStandings = true;
-      })
-    })
-  }
 
   function tutRedirect () {
     $state.go('home.tutorial').then(function(){
