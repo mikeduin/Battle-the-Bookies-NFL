@@ -6,6 +6,7 @@ var fetch = require('node-fetch');
 var moment = require('moment');
 var passport = require('passport');
 var knex = require('../db/knex');
+require('../modules/updateStandings');
 
 var mainDb = knex.mainDb;
 var userDb = knex.userDb;
@@ -175,6 +176,12 @@ router.get('/pullGame/:gameID', function(req, res, next){
   })
 })
 
+// writing a function that updates the standings
+// will update every 20 minutes
+setTimeout(() => {
+
+}, 10000)
+
 router.get('/weeklyStats/:username/:season', function(req, res, next){
   var username = req.params.username;
   var season = req.params.season;
@@ -239,6 +246,7 @@ router.get('/weeklyStats/:username/:season', function(req, res, next){
       })
 
     })).then(function(userArray){
+      console.log(userArray);
       res.json(userArray)
     })
   })

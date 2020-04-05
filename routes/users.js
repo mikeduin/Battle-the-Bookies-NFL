@@ -6,6 +6,7 @@ var jwt = require('jsonwebtoken');
 var passport = require('passport');
 var currentSeason = require('../modules/currentSeason.js');
 require('dotenv').load();
+const getSeasonUsers = require('../modules/getSeasonUsers');
 
 var mainDb = knex.mainDb;
 var userDb = knex.userDb;
@@ -59,31 +60,34 @@ router.post('/login', function(req, res, next){
   })(req, res, next);
 })
 
-router.get('/seasonUsers/:season', function(req, res, next){
-  var players = [];
-  var seasonQuery = parseInt(req.params.season);
-  Users().select('username', 'btb_seasons').then(function(users){
-    var len = users.length;
-    var count = 0;
-    users.forEach(function(user){
-      if (user.btb_seasons) {
-        var seasons = [];
-        var seasonData = user.btb_seasons;
-        for (var i=0; i<seasonData.length; i++){
-          seasons.push(parseInt(seasonData[i].season));
-        };
-        if (seasons.indexOf(seasonQuery) != -1) {
-          players.push(user.username);
-        };
-      };
-      count ++;
-      if (len == count) {
-        Users().whereIn('username', players).then(function(users){
-          res.json(users)
-        })
-      }
-    });
-  })
+router.get('/seasonUsers/:season', async (req, res, next) => {
+  const users = await getSeasonUsers.getUsers(req.params.season)
+  console.log(users);
+  res.json(users);
+  // var players = [];
+  // var seasonQuery = parseInt(req.params.season);
+  // Users().select('username', 'btb_seasons').then(function(users){
+  //   var len = users.length;
+  //   var count = 0;
+  //   users.forEach(function(user){
+  //     if (user.btb_seasons) {
+  //       var seasons = [];
+  //       var seasonData = user.btb_seasons;
+  //       for (var i=0; i<seasonData.length; i++){
+  //         seasons.push(parseInt(seasonData[i].season));
+  //       };
+  //       if (seasons.indexOf(seasonQuery) != -1) {
+  //         players.push(user.username);
+  //       };
+  //     };
+  //     count ++;
+  //     if (len == count) {
+  //       Users().whereIn('username', players).then(function(users){
+  //         res.json(users)
+  //       })
+  //     }
+  //   });
+  // })
 })
 
 router.get('/season/:season', function(req, res, next){
