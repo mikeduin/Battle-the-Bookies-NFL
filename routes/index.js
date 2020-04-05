@@ -58,6 +58,25 @@ function Users() {
   return userDb('users');
 }
 
+// function Standings() {
+//   return mainDb('standings');
+// }
+//
+// const seasonUsers = require('../modules/getSeasonUsers');
+// const seasons = [2017, 2018, 2019];
+//
+// seasons.forEach(async season => {
+//   let users = await seasonUsers.getUsers(season);
+//   users.forEach(user => {
+//     Standings().insert({
+//       username: user.username,
+//       season: season
+//     }, '*').then(inserted => {
+//       console.log(inserted[0].username, ' has been added for ', inserted[0].season)
+//     })
+//   })
+// })
+
 // This first function updates game results every 11 minutes.
 setInterval(function (){
   updateGameResults.updateGameResults()

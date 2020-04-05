@@ -25,11 +25,11 @@ function StandingsController (picksService, oddsService, usersService, dateServi
     return a - b
   };
 
-  vm.getAllUsers = function(){
-    usersService.getAllUsers().then(function(result){
-      vm.users = result;
-    })
-  };
+  // vm.getAllUsers = function(){
+  //   usersService.getAllUsers().then(function(result){
+  //     vm.users = result;
+  //   })
+  // };
 
   vm.getSeasonUsers = function(season){
     usersService.getSeasonUsers(season).then(function(result){
