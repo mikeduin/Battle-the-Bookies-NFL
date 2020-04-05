@@ -3,7 +3,11 @@ exports.up = function(knex) {
     t.increments();
     t.string('username');
     t.integer('season');
-    t.integer('ytd_w')
+    t.float('ytd_w');
+    t.float('ytd_l');
+    t.float('ytd_dollars');
+    t.float('capper_grade');
+    t.string('weekly_results');
   })
 };
 

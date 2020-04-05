@@ -178,9 +178,9 @@ router.get('/pullGame/:gameID', function(req, res, next){
 
 // writing a function that updates the standings
 // will update every 20 minutes
-setTimeout(() => {
-
-}, 10000)
+// setTimeout(() => {
+//
+// }, 10000)
 
 router.get('/weeklyStats/:username/:season', function(req, res, next){
   var username = req.params.username;
