@@ -1,8 +1,10 @@
 exports.up = function(knex) {
-  return knex.schema.createTable('standings', t => {
+  return knex.schema.createTable('user_seasons', t => {
     t.increments();
     t.string('username');
     t.integer('season');
+    t.interger('buyin');
+    t.string('plan');
     t.float('ytd_w');
     t.float('ytd_l');
     t.float('ytd_dollars');
@@ -12,5 +14,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  return knex.schema.dropTable('standings');
+  return knex.schema.dropTable('user_seasons');
 };

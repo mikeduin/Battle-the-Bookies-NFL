@@ -1,7 +1,7 @@
 const knex = require('../db/knex');
 
 function Users () {
-  return knex.mainDb('users');
+  return knex.userDb('users');
 }
 
 module.exports = {

@@ -21,7 +21,8 @@ function sortWeekNumbers(a, b) {
 };
 // change this to setInterval
 
-setInterval(async () => {
+setTimeout(async () => {
+  let season = 2017;
   const seasonUsers = await getSeasonUsers.getUsers(season);
   const weeks = await Picks()
     .where({season: season})
@@ -31,6 +32,10 @@ setInterval(async () => {
     .distinct();
   weeks.sort(sortWeekNumbers);
   seasonUsers.forEach(async user => {
+
+    seasonObj = user.btb_seasons.filter(btb_season => btb_season.season === season);
+    console.log('seasonObj for ', user.username, ' is ', seasonObj);
+
     let ytdResults = {
       dollars: 0,
       games: 0,
@@ -76,13 +81,13 @@ setInterval(async () => {
       })
     }));
 
-    let upd = await Standings().where({username: user.username, season: season}).update({
-      ytd_w: ytdResults.wins,
-      ytd_l: ytdResults.losses,
-      ytd_dollars: ytdResults.dollars,
-      capper_grade: ytdResults.capperGrade,
-      weekly_results: JSON.stringify(weekResults)
-    }, '*');
-    console.log(upd[0].username, ' has been updated for ', season);
+    // let upd = await Standings().where({username: user.username, season: season}).update({
+    //   ytd_w: ytdResults.wins,
+    //   ytd_l: ytdResults.losses,
+    //   ytd_dollars: ytdResults.dollars,
+    //   capper_grade: ytdResults.capperGrade,
+    //   weekly_results: JSON.stringify(weekResults)
+    // }, '*');
+    // console.log(upd[0].username, ' has been updated for ', season);
   })
-}, 600000)
+}, 1000)

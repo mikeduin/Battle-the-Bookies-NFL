@@ -191,6 +191,11 @@ router.post('/register', function(req, res, next){
           salt: salt,
           hash: hash,
         }, '*').then(function(user){
+
+          // Standings().insert({
+          //
+          // })
+
           res.json({token: generateJWT(user)});
         });
       })

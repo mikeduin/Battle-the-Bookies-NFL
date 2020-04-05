@@ -13,6 +13,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var lines = require('./routes/lines');
 var picks = require('./routes/picks');
+// var standings = require('./routes/standings');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use('/', routes);
 app.use('/lines', lines);
 app.use('/users', users);
 app.use('/picks', picks);
+// app.use('/standings', standings);
 
 app.all('/*', function(req, res, next){
   res.sendFile('public/index.html', { root: __dirname });
