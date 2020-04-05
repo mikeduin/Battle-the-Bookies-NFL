@@ -19,8 +19,8 @@ function Picks() {
   return mainDb('picks');
 }
 
-function Standings () {
-  return mainDb('standings');
+function UserSeasons () {
+  return mainDb('user_seasons');
 }
 
 function generateJWT (user) {
@@ -139,105 +139,110 @@ router.get('/stats/:username', function (req, res, next){
   })
 })
 
-router.post('/register', function(req, res, next){
+router.post('/register', async (req, res, next) => {
   if(!req.body.username || !req.body.password || !req.body.nameFirst || !req.body.nameLast || !req.body.email || !req.body.buyin
   ){
     return res.status(400).json({message: 'You left something blank!'});
   };
 
-  var salt = crypto.randomBytes(16).toString('hex');
-  var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
-  var plan;
+  const salt = crypto.randomBytes(16).toString('hex');
+  const hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
+  let plan;
 
-  Users().pluck('username').then(function(usernames){
-    if (usernames.indexOf(req.body.username) != -1) {
-      return res.status(400).json({message: 'This username has already been taken.'});
-    };
+  const usernames = await Users().pluck('username');
+  if (usernames.indexOf(req.body.username) != -1) {
+    return res.status(400).json({message: 'This username has already been taken.'});
+  };
 
-    Users().pluck('email').then(function(emails){
-      if (emails.indexOf(req.body.email) != -1) {
-        return res.status(400).json({message: 'This email is already in use.'});
-      };
+  const emails = await Users().pluck('email');
+  if (emails.indexOf(req.body.email) != -1) {
+    return res.status(400).json({message: 'This email is already in use.'});
+  };
 
-      if (!req.body.plan) {
-        plan = 'noPlan';
-      } else {
-        plan = req.body.plan;
-      };
+  if (!req.body.plan) {
+    plan = 'noPlan';
+  } else {
+    plan = req.body.plan;
+  };
 
-      var buyin = parseInt(req.body.buyin);
+  const buyin = parseInt(req.body.buyin);
 
-      var newEntry = [{
-        'plan': plan,
-        'buyin': buyin,
-        'season': currentSeason.fetchSystemYear(),
-        'active': true
-      }];
+  const newEntry = [{
+    'plan': plan,
+    'buyin': buyin,
+    'season': currentSeason.fetchSystemYear(),
+    'active': true
+  }];
 
-      var increment = 0;
+  let increment = 0;
 
-      Users().max('id').then(function(data){
-        value = data[0].max;
-        increment = value + 1;
-        Users().insert({
-          id: increment,
-          username: req.body.username,
-          nameFirst: req.body.nameFirst,
-          nameLast: req.body.nameLast,
-          email: req.body.email,
-          btb_seasons: newEntry,
-          plan: plan,
-          buyin: buyin,
-          salt: salt,
-          hash: hash,
-        }, '*').then(function(user){
+  const data = await Users().max('id');
+  value = data[0].max;
+  increment = value + 1;
+  const user = await Users().insert({
+      id: increment,
+      username: req.body.username,
+      nameFirst: req.body.nameFirst,
+      nameLast: req.body.nameLast,
+      email: req.body.email,
+      btb_seasons: newEntry,
+      plan: plan,
+      buyin: buyin,
+      salt: salt,
+      hash: hash,
+    }, '*');
 
-          // Standings().insert({
-          //
-          // })
+  const seasonInsert = await UserSeasons().insert({
+    username: user[0].username,
+    season: currentSeason.fetchSystemYear(),
+    buyin: buyin,
+    plan: plan
+  }, '*')
 
-          res.json({token: generateJWT(user)});
-        });
-      })
-    });
-  });
+  res.json({token: generateJWT(user)});
 });
 
 router.put('/reregister', function(req, res, next){
-  Users().where({username: req.body.username}).pluck('btb_seasons').then(function(seasonData){
-    var buyin = parseInt(req.body.buyin);
-    var plan;
-    var newEntry;
-    var dbSeasons = seasonData[0];
-    if (req.body.plan) {
-      plan = req.body.plan;
-    } else {
-      plan = 'noPlan';
-    };
-    if (dbSeasons != null) {
-      dbSeasons.push({
-        'plan': plan,
-        'buyin': buyin,
-        'active': true,
-        'season': req.body.newSeason
-      })
-    } else {
-      dbSeasons = [{
-        'plan': plan,
-        'buyin': buyin,
-        'active': true,
-        'season': req.body.newSeason
-      }]
-    }
-
-    Users().where({username: req.body.username}).update({
-      plan: plan,
-      btb_seasons: dbSeasons
-    }, '*').then(function(user){
-      console.log(user[0].username, ' has been registered for the new season!');
-      res.json(user[0].username);
+  const seasonData = await Users().where({username: req.body.username}).pluck('btb_seasons');
+  const buyin = parseInt(req.body.buyin);
+  let plan;
+  let newEntry;
+  let dbSeasons = seasonData[0];
+  if (req.body.plan) {
+    plan = req.body.plan;
+  } else {
+    plan = 'noPlan';
+  };
+  if (dbSeasons != null) {
+    dbSeasons.push({
+      'plan': plan,
+      'buyin': buyin,
+      'active': true,
+      'season': req.body.newSeason
     })
-  })
+  } else {
+    dbSeasons = [{
+      'plan': plan,
+      'buyin': buyin,
+      'active': true,
+      'season': req.body.newSeason
+    }]
+  }
+
+  const user = await Users().where({username: req.body.username}).update({
+    plan: plan,
+    btb_seasons: dbSeasons
+  }, '*');
+
+  const seasonInsert = await UserSeasons().insert({
+    username: user[0].username,
+    season: currentSeason.fetchSystemYear(),
+    buyin: buyin,
+    plan: plan
+  }, '*')
+
+  console.log(user[0].username, ' has been registered for the new season!');
+  res.json(user[0].username);
 })
 
 module.exports = router;
