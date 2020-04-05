@@ -83,7 +83,7 @@ function dateService () {
       } else if (moment(matchTime).isBetween('2019-12-24', '2020-01-02')) {
         return "Week 17"
       } else {
-        return "Postseason"
+        return "Week 17"
       };
     }
 

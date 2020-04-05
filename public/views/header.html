@@ -36,7 +36,7 @@ $(document).ready(function(){
         <li><a ui-sref="home.makepicks({season: vm.season})">Make Picks</a></li>
         <li><a class='dropdown-button' data-beloworigin="true" data-constrainwidth="false" href="#" data-activates='standings-dropdown'>Standings</a></li>
         <li><a ui-sref='home.results.picks({season: vm.season, weekNumb: vm.currentWeekNumb})'>Results</a></li>
-        <li><a ui-sref='home.user({username: vm.currentUser()})'>Users</a></li>
+        <li><a ui-sref='home.user({username: vm.currentUser() || "mikeduin"})'>Users</a></li>
         <li><a href='http://www.mikeduin.com/alevelabove/blog/main'>ALA Home</a></li>
       </ul>
     </div>
