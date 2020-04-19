@@ -42,6 +42,11 @@ function picksService ($http, authService) {
         return total;
       })
     },
+    sumWeeklyPicks: function (season, week) {
+      return $http.get(`/picks/sumWeekly/${season}/${week}`).then(res => {
+        return res.data;
+      })
+    },
     sumSeasonPicks: function(username, season) {
       return $http.get('/picks/' + username + '/' + season + '/all').then(function(result){
         var ytdPicks = result.data;

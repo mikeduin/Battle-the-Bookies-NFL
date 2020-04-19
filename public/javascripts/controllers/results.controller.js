@@ -16,17 +16,13 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.getWeeklyNflLines = getWeeklyNflLines;
   vm.gameSort = "MatchTime";
   vm.gameSortTwo = "EventID";
-  vm.userSort = "-sumYtd";
+  vm.userSort = "-ytd_dollars";
   vm.updateResults = updateResults;
   vm.getWeeklyPicks = getWeeklyPicks;
   vm.getDates = getDates;
   vm.showResults = false;
   vm.picks = [];
   vm.users = [];
-
-  $timeout(function(){
-    vm.showSpinner = false
-  }, 6000);
 
   function sortNumber(a, b) {
     return a - b
@@ -63,48 +59,19 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     }
   }
 
-  // vm.getAllUsers = function(){
-  //   usersService.getAllUsers().then(function(result){
-  //     vm.users = result;
-  //   })
-  // };
-
   vm.getSeasonUsers = function(season){
-    console.log('season is ', season);
     usersService.getSeasonUsers(season).then(function(result){
       vm.users = result;
-    })
-  }
-
-  vm.sumAllPicks = function(user) {
-    username = user.username;
-    picksService.sumSeasonPicks(username, vm.season).then(function(result){
-      return result.totalDollars
-    }).then(function(totalDollars){
-      username = user.username;
-      picksService.sumWeek(username, $stateParams.season, $stateParams.weekNumb).then(function(weeklyDollars){
+      console.log('res from getSeasonUsers is ', vm.users);
+      picksService.sumWeeklyPicks(vm.season, vm.weekNumb).then(weeklyTotals => {
+        vm.users.forEach((user, i) => {
+          vm.users[i].weeklyDollars = weeklyTotals[user.username];
+        })
+        vm.showSpinner = false;
         vm.showResults = true;
-        username = user.username;
-        user.sumYtd = totalDollars;
-        user.weeklyDollars = weeklyDollars;
       })
     })
-  };
-
-  // vm.sumAllPicks = function(user) {
-  //   username = user.username;
-  //   picksService.sumAllPicks(username).then(function(result){
-  //     return result.totalDollars
-  //   }).then(function(totalDollars){
-  //     username = user.username;
-  //     picksService.sumWeek(username, $stateParams.weekNumb).then(function(weeklyDollars){
-  //       vm.showResults = true;
-  //       username = user.username;
-  //       user.sumYtd = totalDollars;
-  //       user.weeklyDollars = weeklyDollars;
-  //     })
-  //   })
-  // };
+  }
 
   function updateResults () {
     resultsService.updateResults().then(function(){
@@ -119,8 +86,9 @@ function ResultController (oddsService, picksService, resultsService, usersServi
     vm.week = parseInt(vm.weekNumb);
     oddsService.getWeeklyPicks(vm.season, vm.weekNumb).then(function(data){
       vm.picks = data;
-    })
+    });
   }
+
 
   function getDates () {
     oddsService.getDates(vm.season).then(function(dates){
@@ -234,10 +202,10 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   };
 
   vm.ytdToggle = function() {
-    if (vm.userSort !== '-sumYtd') {
-      vm.userSort = '-sumYtd'
+    if (vm.userSort !== '-ytd_dollars') {
+      vm.userSort = '-ytd_dollars'
     } else {
-      vm.userSort = 'sumYtd'
+      vm.userSort = 'ytd_dollars'
     }
   };
 

@@ -29,9 +29,24 @@ router.get('/season/:season/:week', function (req, res, next){
   Picks().where({
     season: req.params.season,
     WeekNumb: req.params.week,
-  }).then(function(picks){
+  }).select('*').then(function(picks){
     res.json(picks);
   })
+})
+
+router.get('/sumWeekly/:season/:week', async (req, res, next) => {
+  const sums = await Picks().where({
+    season: req.params.season,
+    WeekNumb: req.params.week,
+  }).groupBy('username').sum('finalPayout as fp').select('username');
+
+  let totals = sums.reduce((accum, userData, i) => {
+    let doll = userData.fp == null ? 0 : userData.fp;
+    accum[userData.username] = doll;
+    return accum;
+  }, {});
+
+  res.json(totals);
 })
 
 router.get('/checkSubmission/:EventID', auth, function(req, res, next){

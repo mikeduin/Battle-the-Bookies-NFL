@@ -18,11 +18,12 @@
       </tr>
     </thead>
     <tbody ng-show="vm.showResults">
-      <tr ng-repeat="user in vm.users | orderBy: vm.userSort" ng-init="vm.sumAllPicks(user)">
-        <td class="center-align" ng-if="vm.userSort === '-weeklyDollars' || vm.userSort === '-sumYtd' || vm.userSort === 'username'"> {{$index + 1}}</td>
-        <td class="center-align" ng-if="vm.userSort === 'weeklyDollars' || vm.userSort === 'sumYtd' || vm.userSort === '-username'"> {{vm.users.length - ($index)}}</td>
+      <tr ng-repeat="user in vm.users | orderBy: vm.userSort">
+      <!-- <tr ng-repeat="user in vm.users | orderBy: vm.userSort" ng-init="vm.sumAllPicks(user)"> -->
+        <td class="center-align" ng-if="vm.userSort === '-weeklyDollars' || vm.userSort === '-ytd_dollars' || vm.userSort === 'username'"> {{$index + 1}}</td>
+        <td class="center-align" ng-if="vm.userSort === 'weeklyDollars' || vm.userSort === 'ytd_dollars' || vm.userSort === '-username'"> {{vm.users.length - ($index)}}</td>
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a> </td>
-        <td class="nobr center-align"> <b> {{user.sumYtd | currency:$:0}} </b> </td>
+        <td class="nobr center-align"> <b> {{user.ytd_dollars | currency:$:0}} </b> </td>
         <td class="nobr"> <b>
            <span>{{user.weeklyDollars | currency:$:0}} </span>
         </b> </td>
