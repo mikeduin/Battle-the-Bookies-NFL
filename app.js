@@ -34,7 +34,7 @@ app.use('/picks', picks);
 // app.use('/standings', standings);
 
 app.get('*', function(req, res, next){
-  res.redirect("https://" + request.headers.host + request.url);
+  res.redirect("https://" + req.headers.host + req.url);
 });
 
 app.all('/*', function(req, res, next){
