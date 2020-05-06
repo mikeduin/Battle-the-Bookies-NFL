@@ -33,6 +33,10 @@ app.use('/users', users);
 app.use('/picks', picks);
 // app.use('/standings', standings);
 
+app.get('*', function(req, res, next){
+  res.redirect("https://" + request.headers.host + request.url);
+});
+
 app.all('/*', function(req, res, next){
   res.sendFile('public/index.html', { root: __dirname });
 });
