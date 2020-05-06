@@ -18,6 +18,17 @@ var picks = require('./routes/picks');
 
 var app = express();
 
+var forceSsl = function (req, res, next) {
+   if (req.headers['x-forwarded-proto'] !== 'https') {
+       return res.redirect(['https://', req.get('Host'), req.url].join(''));
+   }
+   return next();
+};
+
+if (app.get('env') === 'production') {
+  app.use(forceSsl);
+}
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -34,9 +45,9 @@ app.use('/users', users);
 app.use('/picks', picks);
 // app.use('/standings', standings);
 
-app.get('*', function(req, res, next){
-  res.redirect("https://" + request.headers.host + request.url);
-});
+// app.get('*', function(req, res, next){
+//   res.redirect("https://" + request.headers.host + request.url);
+// });
 
 app.all('/*', function(req, res, next){
   res.sendFile('public/index.html', { root: __dirname });
