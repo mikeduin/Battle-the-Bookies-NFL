@@ -3,6 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var request = require('request');
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
@@ -34,7 +35,7 @@ app.use('/picks', picks);
 // app.use('/standings', standings);
 
 app.get('*', function(req, res, next){
-  res.redirect("https://" + req.headers.host + req.url);
+  res.redirect("https://" + request.headers.host + request.url);
 });
 
 app.all('/*', function(req, res, next){
