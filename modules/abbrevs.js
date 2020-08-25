@@ -18,6 +18,7 @@ module.exports = {
       "Indianapolis Colts": "IND",
       "Jacksonville Jaguars": "JAX",
       "Kansas City Chiefs": "KC",
+      "Las Vegas Raiders": "LV",
       "Los Angeles Rams": "LAR",
       "Miami Dolphins": "MIA",
       "Minnesota Vikings": "MIN",
