@@ -47,7 +47,7 @@ function PrizesController (usersService, oddsService, dateService, $stateParams)
   };
 
   var calculatePrizes = function(users){
-    vm.bronzePool = -370;
+    vm.bronzePool = -450;
     vm.silverPool = 0;
     vm.goldPool = 0;
     for (i=0; i<users.length; i++) {

@@ -196,7 +196,11 @@ router.post('/register', async (req, res, next) => {
     username: user[0].username,
     season: currentSeason.fetchSystemYear(),
     buyin: buyin,
-    plan: plan
+    plan: plan,
+    ytd_w: 0,
+    ytd_l: 0,
+    ytd_dollars: 0,
+    capper_grade: 0
   }, '*')
 
   res.json({token: generateJWT(user)});

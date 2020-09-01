@@ -28,6 +28,7 @@ var pickArrays = require('../modules/pickArrays.js');
 var getWeeks = require('../modules/getWeeks.js');
 var fetchLines = require('../modules/fetchLines.js');
 var checkActiveLines = require('../modules/checkActiveLines');
+var currentSeason = require('../modules/currentSeason.js');
 
 // methods for determining pick ranges
 Array.max = function(array){
@@ -141,11 +142,12 @@ router.get('/updateOdds', function(req, res, next) {
 });
 
 // This massive function below runs every 3 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
-setInterval(function (){
-  var now = moment();
+setTimeout(function (){
+  var season = currentSeason.returnSeason(new Date());
   Lines()
-  .where('MatchTime', '<', now)
+  .where('MatchTime', '<', new Date())
   .andWhere('RangesSet', null)
+  .andWhere({season: season})
   .then(function(games){
     if (!games[0]) {
       console.log('no line move objects need to be set');
@@ -155,15 +157,15 @@ setInterval(function (){
       setLineRanges.setLineRanges(game);
     })
   })
-}, 180000);
+}, 6000);
 
-router.get('/seasons', function(req, res, next){
-  Lines().pluck('season').distinct()
-  .then(function(seasons){
-    var array = [2018, 2017];
-    res.json(array)
-  })
-})
+// router.get('/seasons', function(req, res, next){
+//   Lines().pluck('season').distinct()
+//   .then(function(seasons){
+//     var array = [2018, 2017];
+//     res.json(array)
+//   })
+// })
 
 router.get('/weeks/:season', function(req, res, next){
   getWeeks.getWeeks(req.params.season).then(function(weeks){

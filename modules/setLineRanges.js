@@ -30,7 +30,6 @@ module.exports = {
 
   setLineRanges: function(game) {
     LineMoves().where({EventID: game.EventID}).then(function(gameArrays){
-
       if (gameArrays.length < 1) {
         return
       };
@@ -165,6 +164,8 @@ module.exports = {
       var awaySpreadHigh = Array.max(awaySpreadValues);
       var totalHigh = Array.max(totalValues);
       var totalLow = Array.min(totalValues);
+
+      console.log(awayMLHigh, awayMLLow, homeMLHigh, homeMLLow, totalHigh, totalLow, homeSpreadHigh, homeSpreadLow, awaySpreadHigh, awaySpreadLow);
 
       Lines().where({EventID: game.EventID}).update({
         AwaySpreadIndex: awaySpreadObject,
