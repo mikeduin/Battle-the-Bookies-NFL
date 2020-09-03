@@ -242,7 +242,11 @@ router.put('/reregister', async (req, res, next) => {
     username: user[0].username,
     season: currentSeason.fetchSystemYear(),
     buyin: buyin,
-    plan: plan
+    plan: plan,
+    ytd_w: 0,
+    ytd_l: 0,
+    ytd_dollars: 0,
+    capper_grade: 0
   }, '*')
 
   console.log(user[0].username, ' has been registered for the new season!');
