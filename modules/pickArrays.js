@@ -16,7 +16,6 @@ function PickArrays() {
 }
 
 module.exports = {
-
   buildArrays: function(game) {
     var overPickArray = [];
     var underPickArray = [];
@@ -86,7 +85,8 @@ module.exports = {
   },
   byId: function(id){
     return PickArrays().where({EventID: id}).then(function(arrays){
-      return arrays
+      console.log('arrays are ', arrays);
+      return arrays;
     });
   }
 }

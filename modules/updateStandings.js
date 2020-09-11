@@ -3,6 +3,7 @@ const mainDb = knex.mainDb;
 const dateConstants = require('./dateConstants');
 const sf = require('./currentSeason');
 const getSeasonUsers = require('./getSeasonUsers');
+const moment = require('moment');
 
 function Picks () {
   return mainDb('picks')
@@ -29,10 +30,8 @@ setInterval(async () => {
       .pluck('Week')
       .distinct();
     weeks.sort(sortWeekNumbers);
+
     seasonUsers.forEach(async user => {
-
-      let seasonObj = user.btb_seasons.filter(btb_season => btb_season.season === season);
-
       let ytdResults = {
         dollars: 0,
         games: 0,
@@ -40,6 +39,7 @@ setInterval(async () => {
         losses: 0,
         capperGrade: 0
       }
+
       const weekResults = await Promise.all(weeks.map(week => {
         return Picks().where({username: user.username, Week: week, season: season}).then(function(results){
 
@@ -49,8 +49,7 @@ setInterval(async () => {
           let totalGames = 0;
           let totalWins = 0;
           let totalLosses = 0;
-          let week;
-          let username;
+          // let username;
 
           results.forEach(result => {
             // these results logged below are divided into EACH PICK
@@ -72,7 +71,7 @@ setInterval(async () => {
               };
           });
 
-          const avgCapperGrade = totCapperGrade / cappedGames;
+          const avgCapperGrade = (totCapperGrade / cappedGames) || 0;
           ytdResults.capperGrade += (avgCapperGrade || 0);
           return {username: user.username, week, totalDollars, totalWins, totalLosses, totalGames, avgCapperGrade}
         })
@@ -97,11 +96,9 @@ setInterval(async () => {
         ytd_l: ytdResults.losses,
         ytd_dollars: ytdResults.dollars,
         capper_grade: ytdResults.capperGrade,
-        buyin: seasonObj[0].buyin,
-        plan: seasonObj[0].plan,
         weekly_results: JSON.stringify(weekResults)
       }, '*');
       console.log(upd[0].username, ' has been updated for ', season);
     })
   }
-}, 600000)
+}, 300000)

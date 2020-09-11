@@ -142,7 +142,7 @@ router.get('/updateOdds', function(req, res, next) {
 });
 
 // This massive function below runs every 3 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
-setTimeout(function (){
+setInterval(function (){
   var season = currentSeason.returnSeason(new Date());
   Lines()
   .where('MatchTime', '<', new Date())
@@ -157,7 +157,7 @@ setTimeout(function (){
       setLineRanges.setLineRanges(game);
     })
   })
-}, 6000);
+}, 180000);
 
 // router.get('/seasons', function(req, res, next){
 //   Lines().pluck('season').distinct()

@@ -168,7 +168,6 @@ function GameController ($stateParams, $scope, $location, gameService, oddsServi
 
     }).then(function(){
       gameService.getPickArrays(vm.EventID).then(function(result){
-
         vm.awayMLPicks = result[0].AwayMLPickArray;
         vm.awaySpreadPicks = result[0].AwaySpreadPickArray;
         vm.homeMLPicks = result[0].HomeMLPickArray;
