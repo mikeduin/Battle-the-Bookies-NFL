@@ -3,6 +3,8 @@ var knex = require('../db/knex');
 var mainDb = knex.mainDb;
 var userDb = knex.userDb;
 
+const updateStandings = require('./updateStandings');
+
 function Results () {
   return mainDb('results');
 };
@@ -55,7 +57,7 @@ module.exports = {
                     AwayScore: game[0].AwayScore,
                     Final: true
                 }, '*').then(function(picks){
-                  picks.forEach(function(pick){
+                  picks.forEach((pick, idx) => {
                     var activePayout = pick.activePayout;
                     if (
                       ((pick.pickType === "Away Moneyline") && (pick.AwayScore > pick.HomeScore))
@@ -109,6 +111,13 @@ module.exports = {
                           console.log(pick.id, " has been graded a loss")
                         });
                       };
+
+                      if (idx === picks.length-1) {
+                        setTimeout(() => {
+                          updateStandings.updateStandings();
+                          console.log('standings have been updated');
+                        }, 10000)
+                      }
                   })
                 })
               })

@@ -6,7 +6,7 @@ var fetch = require('node-fetch');
 var moment = require('moment');
 var passport = require('passport');
 var knex = require('../db/knex');
-require('../modules/updateStandings');
+// require('../modules/updateStandings');
 
 var mainDb = knex.mainDb;
 var userDb = knex.userDb;
@@ -78,10 +78,10 @@ function Users() {
 //   })
 // })
 
-// This first function updates game results every 11 minutes.
-setInterval(function (){
+// This first function updates game results every 1 minute.
+setTimeout(function (){
   updateGameResults.updateGameResults()
-}, 660000);
+}, 60000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 setInterval(function (){
