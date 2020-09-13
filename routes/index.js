@@ -59,6 +59,10 @@ function Users() {
   return userDb('users');
 }
 
+function UserSeasons() {
+  return mainDb('user_seasons');
+}
+
 // function Standings() {
 //   return mainDb('standings');
 // }
@@ -77,9 +81,14 @@ function Users() {
 //     })
 //   })
 // })
+// (async() => {
+//   const users20 = await UserSeasons().where({season: 2020}).pluck('username');
+//   const emails20 = await Users().whereIn('username', users20).pluck('email');
+//   console.log('emails20 are ', emails20);
+// })()
 
 // This first function updates game results every 1 minute.
-setTimeout(function (){
+setInterval(function (){
   updateGameResults.updateGameResults()
 }, 60000);
 
