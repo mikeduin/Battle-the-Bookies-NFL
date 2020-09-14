@@ -50,7 +50,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="bord-bottom" ng-repeat="user in vm.users | orderBy: vm.sortOrder">
+      <tr class="bord-bottom" ng-repeat="user in vm.users | orderBy: vm.sortOrder" ng-class="{userRow: user.username === vm.activeUser}">
         <td>{{$index + 1}}</td>
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</a></td>
         <td ng-class="{buyGold: user.buyin === 200, buySilver: user.buyin === 100, buyBronze: user.buyin === 50}"> {{user.buyin | currency:$:0}} </td>

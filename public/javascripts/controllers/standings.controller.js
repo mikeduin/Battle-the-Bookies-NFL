@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('StandingsController', ['picksService', 'oddsService', 'usersService', 'dateService', '$scope', '$timeout', '$stateParams', '$state', StandingsController])
+  .controller('StandingsController', ['picksService', 'oddsService', 'usersService', 'dateService', 'authService', '$scope', '$timeout', '$stateParams', '$state', StandingsController])
 
-function StandingsController (picksService, oddsService, usersService, dateService, $scope, $timeout, $stateParams, $state) {
+function StandingsController (picksService, oddsService, usersService, dateService, authService, $scope, $timeout, $stateParams, $state) {
   var vm = this;
   vm.getDates = getDates;
   vm.seasons = dateService.fetchSeasons();
@@ -16,6 +16,7 @@ function StandingsController (picksService, oddsService, usersService, dateServi
   vm.user = {};
   vm.dailyStats = [];
   vm.season = $stateParams.season;
+  vm.activeUser;
   $scope.$on('ngRepeatFinished', function(ngRepeatFinishedEvent){
     vm.showSpinner = false;
   })
@@ -40,6 +41,12 @@ function StandingsController (picksService, oddsService, usersService, dateServi
       vm.users = users;
     })
   }
+
+  async function getActiveUser() {
+    const user = await authService.currentUser();
+    vm.activeUser = user;
+  }
+  getActiveUser();
 
   vm.seasonChange = function(){
     vm.getSeasonUsers(vm.season);

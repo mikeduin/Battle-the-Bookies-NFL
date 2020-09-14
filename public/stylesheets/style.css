@@ -765,6 +765,19 @@ chasing-dots-spinner {
   top: 5%;
 }
 
+.res-buyin {
+  font-weight: 800;
+  font-size: 12px !important;
+  display: inline-block;
+  position: relative;
+  bottom: 10px;
+  left: -2px;
+}
+
+.userRow {
+  background-color: #a3c1a6 !important;
+}
+
 .table-sorter {
   font-size: 20px
 }

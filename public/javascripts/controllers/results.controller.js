@@ -1,8 +1,8 @@
 angular
   .module('battleBookies')
-  .controller('ResultController', ['oddsService', 'picksService', 'resultsService', 'usersService', 'dateService', '$scope', '$timeout', '$stateParams', '$state', ResultController])
+  .controller('ResultController', ['oddsService', 'picksService', 'resultsService', 'usersService', 'dateService', 'authService', '$scope', '$timeout', '$stateParams', '$state', ResultController])
 
-function ResultController (oddsService, picksService, resultsService, usersService, dateService, $scope, $timeout, $stateParams, $state) {
+function ResultController (oddsService, picksService, resultsService, usersService, dateService, authService, $scope, $timeout, $stateParams, $state) {
 
   $scope.uiRouterState = $state;
   var vm = this;
@@ -23,6 +23,7 @@ function ResultController (oddsService, picksService, resultsService, usersServi
   vm.showResults = false;
   vm.picks = [];
   vm.users = [];
+  vm.activeUser;
 
   function sortNumber(a, b) {
     return a - b
@@ -39,6 +40,12 @@ function ResultController (oddsService, picksService, resultsService, usersServi
       return false
     }
   };
+
+  async function getActiveUser() {
+    const user = await authService.currentUser();
+    vm.activeUser = user;
+  }
+  getActiveUser();
 
   vm.seasonChange = function(){
     $state.go('home.results.picks', {
