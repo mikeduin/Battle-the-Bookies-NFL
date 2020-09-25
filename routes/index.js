@@ -87,10 +87,10 @@ function UserSeasons() {
 //   console.log('emails20 are ', emails20);
 // })()
 
-// This first function updates game results every 2 minutes.
+// This first function updates game results every 5 minutes.
 setInterval(function (){
   updateGameResults.updateGameResults()
-}, 120000);
+}, 300000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 setInterval(function (){
