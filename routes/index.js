@@ -89,7 +89,17 @@ function UserSeasons() {
 
 // This first function updates game results every 5 minutes.
 setInterval(function (){
-  updateGameResults.updateGameResults()
+  let dateCheck = false;
+  let pstMoment = moment().subtract(8, 'hours');
+  const noScoreDays = [2, 3, 5];
+
+  console.log('pstDay is ', moment(pstMoment).day(), ' and pstHour is ', moment(pstMoment).hour())
+  if (!noScoreDays.includes(moment(pstMoment).day()) && moment(pstMoment).hour() > 8) {
+    console.log('results being updated');
+    updateGameResults.updateGameResults();
+  } else {
+    console.log('results NOT being updated');
+  }
 }, 300000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
