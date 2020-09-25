@@ -87,10 +87,10 @@ function UserSeasons() {
 //   console.log('emails20 are ', emails20);
 // })()
 
-// This first function updates game results every 1 minute.
+// This first function updates game results every 2 minutes.
 setInterval(function (){
   updateGameResults.updateGameResults()
-}, 60000);
+}, 120000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
 setInterval(function (){
@@ -109,9 +109,9 @@ setInterval(function (){
 }, 50000000);
 
 // This function checks to make sure there are no stale lines in the DB, available for picking, which have been taken off the board in real life.
-setInterval(() => {
-  checkActiveLines.checkActiveLines();
-}, 60000);
+// setInterval(() => {
+//   checkActiveLines.checkActiveLines();
+// }, 60000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 router.get('/updateOdds', function(req, res, next) {

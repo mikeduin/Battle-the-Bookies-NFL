@@ -57,7 +57,7 @@ function PickController (oddsService, picksService, resultsService, authService,
   $interval(function() {
     vm.updateOdds();
     vm.getNflLines(vm.season);
-  }, 60000);
+  }, 120000);
 
   function sortNumber(a, b) {
     return a - b
