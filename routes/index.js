@@ -168,14 +168,6 @@ setInterval(function (){
   })
 }, 180000);
 
-// router.get('/seasons', function(req, res, next){
-//   Lines().pluck('season').distinct()
-//   .then(function(seasons){
-//     var array = [2018, 2017];
-//     res.json(array)
-//   })
-// })
-
 router.get('/weeks/:season', function(req, res, next){
   getWeeks.getWeeks(req.params.season).then(function(weeks){
     res.json(weeks);
@@ -205,12 +197,6 @@ router.get('/pullGame/:gameID', function(req, res, next){
     res.json(arrays);
   })
 })
-
-// writing a function that updates the standings
-// will update every 20 minutes
-// setTimeout(() => {
-//
-// }, 10000)
 
 router.get('/weeklyStats/:username/:season', function(req, res, next){
   var username = req.params.username;
