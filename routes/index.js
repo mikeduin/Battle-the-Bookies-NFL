@@ -124,7 +124,45 @@ setInterval(function (){
 // }, 60000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
-router.get('/updateOdds', function(req, res, next) {
+// router.get('/updateOdds', function(req, res, next) {
+//   fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
+//     method: 'GET',
+//     headers: {
+//       'x-api-Key': process.env.API_KEY
+//     }
+//   }).then(function(res){
+//     return res.json()
+//   }).then(function(odds){
+//       for (i=0; i<odds.length; i++) {
+//         Lines().where({EventID: odds[i].ID}).update({
+//           MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
+//           MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
+//           PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
+//           PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
+//           PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
+//           PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
+//           TotalNumber: odds[i].Odds[0].TotalNumber,
+//           OverLine: odds[i].Odds[0].OverLine,
+//           UnderLine: odds[i].Odds[0].UnderLine
+//         }, '*').then(function(upd){
+//           if (upd.length > 0) {
+//             console.log('line ', upd[0].EventID, ' has been updated');
+//           } else {
+//             console.log('line not created yet')
+//           }
+//         })
+//       };
+//     }
+//   ).then(function(){
+//     return Lines();
+//   }).then(function(updOdds){
+//     console.log('updOdds are ', updOdds);
+//     res.json(updOdds);
+//   })
+// });
+
+// This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
+setInterval(function() {
   fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
     method: 'GET',
     headers: {
@@ -153,12 +191,8 @@ router.get('/updateOdds', function(req, res, next) {
         })
       };
     }
-  ).then(function(){
-    return Lines();
-  }).then(function(updOdds){
-    res.json(updOdds)
-  })
-});
+  )
+}, 30000);
 
 // This massive function below runs every 3 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
 setInterval(function (){
@@ -177,6 +211,11 @@ setInterval(function (){
     })
   })
 }, 180000);
+
+router.get('/updateOdds', async (req, res, next) => {
+  const lines = await Lines();
+  res.json(lines);
+});
 
 router.get('/weeks/:season', function(req, res, next){
   getWeeks.getWeeks(req.params.season).then(function(weeks){
