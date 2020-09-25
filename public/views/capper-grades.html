@@ -26,29 +26,31 @@
   <table class="striped">
     <thead>
       <tr>
-        <th colspan="1">  </th>
+        <th colspan="2">  </th>
         <th colspan="5" class="center-align ytd-header"> Year to Date </th>
         <th colspan="{{vm.weeksOfGames.length}}" class="center-align ytd-header">Week</th>
       </tr>
       <tr class="bord-bottom">
+        <th class="center-align"> Rank </th>
         <th>Entrant</th>
-        <th> W </th>
-        <th> L </th>
-        <th> Win% </th>
-        <th class="center-align"> $ </th>
-        <th class="center-align bord-right">capperScore</th>
+        <th class="center-align">capperScore</th>
+        <th class="center-align"> W </th>
+        <th class="center-align"> L </th>
+        <th class="center-align"> Win% </th>
+        <th class="center-align bord-right"> $ </th>
         <th ng-repeat="week in vm.weekNumbs" class="center-align ">{{week}}</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="user in vm.users | orderBy: vm.sortOrder" class="pushdown">
+        <td class="center-align">{{$index + 1}}</td>
         <td class="user-size"> <a ui-sref="home.user({username: user.username})">{{user.username}}</td>
-        <td class="ytdwBox"> <b> {{user.ytd_w}} </b> </td>
-        <td class="ytdwBox"> <b> {{user.ytd_w}} </b> </td>
-        <td> <i> {{(user.ytd_w / (user.ytd_w + user.ytd_l)) | percentage:2}} </i> </td>
-        <td class="sum-total" ng-class="{dayWin: user.ytd_dollars > 0, dayLoss: user.ytd_dollars < 0}"> {{user.ytd_dollars | currency:$:2}} </td>
         <td class="center-align capperScore"> {{user.capper_grade | number:2}} </td>
-        <td ng-repeat="week in user.weekly_results" ng-class="{capperHigh: week.avgCapperGrade >= 9, capperMed: week.avgCapperGrade < 9 && week.avgCapperGrade > 7.5, capperLow: week.avgCapperGrade <= 7.5}" on-finish-render="ngRepeatFinished"> {{week.avgCapperGrade | number:2}}</td>
+        <td class="ytdwBox center-align"> <b> {{user.ytd_w}} </b> </td>
+        <td class="ytdwBox center-align"> <b> {{user.ytd_w}} </b> </td>
+        <td class="center-align"> <i> {{(user.ytd_w / (user.ytd_w + user.ytd_l)) | percentage:2}} </i> </td>
+        <td class="sum-total center-align bord-right" ng-class="{dayWin: user.ytd_dollars > 0, dayLoss: user.ytd_dollars < 0}"> {{user.ytd_dollars | currency:$:2}} </td>
+        <td ng-repeat="week in user.weekly_results" class="center-align" ng-class="{capperHigh: week.avgCapperGrade >= 9, capperMed: week.avgCapperGrade < 9 && week.avgCapperGrade > 7.5, capperLow: week.avgCapperGrade <= 7.5}" on-finish-render="ngRepeatFinished"> {{week.avgCapperGrade | number:2}}</td>
       </tr>
     </tbody>
   </table>
