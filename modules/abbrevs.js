@@ -34,7 +34,7 @@ module.exports = {
       "Seattle Seahawks": "SEA",
       "Tampa Bay Buccaneers": "TB",
       "Tennessee Titans": "TEN",
-      "Washington Redskins": "WAS",
+      "Washington Football Team": "WAS",
       "Baltimore Orioles": "BAL",
       "Boston Red Sox": "BOS",
       "Chicago White Sox": "CHW",
