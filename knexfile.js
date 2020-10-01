@@ -5,13 +5,14 @@ module.exports = {
 
   development: {
     client: 'postgresql',
-    connection: process.env.DATABASE_URL
-    // connection: 'postgres://localhost/btb-nfl'
+    // connection: process.env.DATABASE_URL
+    connection: process.env.TEST_DB_URL
   },
 
   production: {
     client: 'postgresql',
-    connection: process.env.DATABASE_URL
+    // connection: process.env.DATABASE_URL
+    connection: process.env.TEST_DB_URL
   }
 
 };

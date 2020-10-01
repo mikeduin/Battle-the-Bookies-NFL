@@ -70,15 +70,15 @@
         <th colspan="2" class="center-align"> YOUR PICK </th>
       </tr>
     </thead>
-    <tbody ng-if="!vm.noLines" ng-repeat="game in vm.nflLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter, active: true }" on-finish-render="ngRepeatFinished">
-      <tr ng-init="vm.timeCheck(game); vm.checkSubmission(game, vm.currentUser())">
+    <tbody ng-if="!vm.noLines" ng-repeat="game in vm.nflLines | orderBy: vm.sortOrder | filter: { Week: vm.gameWeekFilter }" on-finish-render="ngRepeatFinished">
+      <tr ng-init="vm.timeCheck(game); vm.checkSubmission(game, vm.currentUser())" ng-class="{'off-the-board': !game.active}">
         <td rowspan="2"> <b>{{game.Week}}</b> <br> {{game.MatchTime | date:'MM/dd/yyyy'}} <br> {{game.MatchTime | date:'h:mm a'}} <br> <span ng-show="vm.checkDisplay(game)"> <a class="btn-floating float-color" ui-sref="home.game({EventID: game.EventID})"><i class="fa fa-bar-chart" aria-hidden="true"></i></a> </span> </td>
-        <td> <b>(A)</b> {{game.AwayTeam}}</td>
-        <td> <button ng-class="{disabled: game.locked}" class="btn btn-spread" ng-click="game.locked || vm.awaySpread(game)"> {{game.PointSpreadAway | mlFormat}} ({{game.PointSpreadAwayLine | mlFormat}})</button> </td>
+        <td class="away-tm"> <b>(A)</b> {{game.AwayTeam}} <div ng-if="!game.active" class="game-off-board center-align"> <i class="fas fa-window-close"></i> <div>OFF THE BOARD</div></div></td>
+        <td> <button ng-class="{disabled: (game.locked || !game.active)}" class="btn btn-spread" ng-click="game.locked || vm.awaySpread(game)"> {{game.PointSpreadAway | mlFormat}} ({{game.PointSpreadAwayLine | mlFormat}})</button> </td>
         <td class="spreadMoney"> {{game.PointSpreadAwayLine | payoutFilter}} </td>
-        <td> <button ng-class="{disabled: game.locked}" class="btn btn-ml" ng-click="game.locked || vm.awayML(game)"> {{game.MoneyLineAway | mlFormat}} </button> </td>
+        <td> <button ng-class="{disabled: (game.locked || !game.active)}" class="btn btn-ml" ng-click="game.locked || vm.awayML(game)"> {{game.MoneyLineAway | mlFormat}} </button> </td>
         <td class="mlMoney"> {{game.MoneyLineAway | payoutFilter}} </td>
-        <td> <button ng-class="{disabled: game.locked}" class="btn btn-total" ng-click="game.locked || vm.totalOver(game)"> O {{game.TotalNumber}} ({{game.OverLine | mlFormat}}) </button> </td>
+        <td> <button ng-class="{disabled: (game.locked || !game.active)}" class="btn btn-total" ng-click="game.locked || vm.totalOver(game)"> O {{game.TotalNumber}} ({{game.OverLine | mlFormat}}) </button> </td>
         <td class="totalMoney"> {{game.OverLine | payoutFilter}} </td>
         <td rowspan="2" class="center-align" ng-class="{submitted: game.locked}"> {{game.pick}} <br> {{game.displayPayout}} </td>
         <td rowspan="2">
@@ -92,13 +92,13 @@
           </pickLocked>
         </td>
       </tr>
-      <tr>
+      <tr ng-class="{'off-the-board': !game.active}">
         <td> <b>(H)</b> {{game.HomeTeam}} </td>
-        <td> <button ng-class="{disabled: game.locked}" class="btn btn-spread" ng-click="game.locked || vm.homeSpread(game)"> {{game.PointSpreadHome | mlFormat}} ({{game.PointSpreadHomeLine | mlFormat}})</button> </td>
+        <td> <button ng-class="{disabled: (game.locked || !game.active)}" class="btn btn-spread" ng-click="game.locked || vm.homeSpread(game)"> {{game.PointSpreadHome | mlFormat}} ({{game.PointSpreadHomeLine | mlFormat}})</button> </td>
         <td class="spreadMoney"> {{game.PointSpreadHomeLine | payoutFilter}} </td>
-        <td> <button ng-class="{disabled: game.locked}" class="btn btn-ml" ng-click="game.locked || vm.homeML(game)"> {{game.MoneyLineHome | mlFormat}} </button> </td>
+        <td> <button ng-class="{disabled: (game.locked || !game.active)}" class="btn btn-ml" ng-click="game.locked || vm.homeML(game)"> {{game.MoneyLineHome | mlFormat}} </button> </td>
         <td class="mlMoney"> {{game.MoneyLineHome | payoutFilter}} </td>
-        <td> <button ng-class="{disabled: game.locked}" class="btn btn-total" ng-click="game.locked || vm.totalUnder(game)"> U {{game.TotalNumber}} ({{game.UnderLine | mlFormat}}) </button> </td>
+        <td> <button ng-class="{disabled: (game.locked || !game.active)}" class="btn btn-total" ng-click="game.locked || vm.totalUnder(game)"> U {{game.TotalNumber}} ({{game.UnderLine | mlFormat}}) </button> </td>
         <td class="totalMoney">  {{game.UnderLine | payoutFilter}}  </td>
       </tr>
     </tbody>

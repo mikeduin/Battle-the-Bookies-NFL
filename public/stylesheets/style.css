@@ -619,6 +619,38 @@ section > div {
 /*END TUTORIAL STYLES*/
 /*BEGIN MAKE PICK STYLES*/
 
+.off-the-board {
+  background-color: #be9573;
+}
+
+.away-tm {
+  position: relative;
+}
+
+@media (max-width: 700px) {
+  .game-off-board {
+    font-size: 18px !important;
+    right: -80px;
+  }
+
+  .game-off-board i {
+    font-size: 24px;
+  }
+}
+
+.game-off-board {
+  color: #5c0f00;
+  font-weight: 800;
+  position: absolute;
+  right: 1%;
+  top: 30px;
+  font-size: 24px;
+}
+
+.game-off-board i {
+  font-size: 32px;
+}
+
 .picks-head {
   background: url('../images/bet_board2.png') no-repeat center center;
   background-size: cover;

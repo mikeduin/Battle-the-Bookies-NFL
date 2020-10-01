@@ -63,37 +63,13 @@ function UserSeasons() {
   return mainDb('user_seasons');
 }
 
-// function Standings() {
-//   return mainDb('standings');
-// }
-//
-// const seasonUsers = require('../modules/getSeasonUsers');
-// const seasons = [2017, 2018, 2019];
-//
-// seasons.forEach(async season => {
-//   let users = await seasonUsers.getUsers(season);
-//   users.forEach(user => {
-//     Standings().insert({
-//       username: user.username,
-//       season: season
-//     }, '*').then(inserted => {
-//       console.log(inserted[0].username, ' has been added for ', inserted[0].season)
-//     })
-//   })
-// })
-// (async() => {
-//   const users20 = await UserSeasons().where({season: 2020}).pluck('username');
-//   const emails20 = await Users().whereIn('username', users20).pluck('email');
-//   console.log('emails20 are ', emails20);
-// })()
-
 // This first function updates game results every 5 minutes.
 setInterval(function (){
   let dateCheck = false;
   let pstMoment = moment().subtract(8, 'hours');
   const noScoreDays = [2, 3, 5];
 
-  console.log('pstDay is ', moment(pstMoment).day(), ' and pstHour is ', moment(pstMoment).hour())
+  console.log('pstDay is ', moment(pstMoment).day(), ' and pstHour is ', moment(pstMoment).hour());
   if (!noScoreDays.includes(moment(pstMoment).day()) && moment(pstMoment).hour() > 8) {
     console.log('results being updated');
     updateGameResults.updateGameResults();
@@ -122,6 +98,10 @@ setInterval(function (){
 // setInterval(() => {
 //   checkActiveLines.checkActiveLines();
 // }, 60000);
+
+setTimeout(() => {
+  checkActiveLines.checkActiveLines();
+}, 10000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 // router.get('/updateOdds', function(req, res, next) {

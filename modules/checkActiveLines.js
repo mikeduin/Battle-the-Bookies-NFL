@@ -31,6 +31,8 @@ module.exports = {
     const activeGames = await activeGamesPull.json();
     const activeGameIds = activeGames.map(activeGame => activeGame.ID);
 
+    console.log('activeGameIds are ', activeGameIds);
+
     pendingGames.forEach(game => {
       if (activeGameIds.indexOf(game) == -1) {
         Lines().where({EventID: game}).update({
