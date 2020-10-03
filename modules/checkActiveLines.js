@@ -16,8 +16,6 @@ module.exports = {
   checkActiveLines: async () => {
     var now = moment();
     const pendingGames = await Lines().where('MatchTime', '>', now).andWhere({
-      GameStatus: null,
-      season: seasonYear,
       active: true
     }).pluck('EventID');
 
@@ -30,8 +28,6 @@ module.exports = {
 
     const activeGames = await activeGamesPull.json();
     const activeGameIds = activeGames.map(activeGame => activeGame.ID);
-
-    console.log('activeGameIds are ', activeGameIds);
 
     pendingGames.forEach(game => {
       if (activeGameIds.indexOf(game) == -1) {
