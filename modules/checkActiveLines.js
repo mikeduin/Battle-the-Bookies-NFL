@@ -36,29 +36,25 @@ module.exports = {
     // console.log(updatedTimes);
 
     pendingGames.forEach(game => {
-      const adjHours = moment(updatedTimes[game]).isDST() ? 7 : 8;
-      // console.log(moment(updatedTimes[game]).subtract(adjHours, 'hours').utc().isBefore(moment().utc().subtract(15, 'minutes')));
-
-      if (activeGameIds.indexOf(game) == -1 || (moment(updatedTimes[game]).subtract(adjHours, 'hours').utc().isBefore(moment().utc().subtract(15, 'minutes')))) {
+      if (activeGameIds.indexOf(game) == -1) {
         Lines().where({EventID: game}).update({
           active: false
         }, '*').then(game => {
-          console.log(game[0].EventID, ' has been deactivated as it is not in DB or its updated time is outdated');
+          console.log(game[0].EventID, ' has been deactivated as it is not in DB');
         })
       } else {
         // console.log('for ', game, ' last updated is ', moment(updatedTimes[game]).format(), ' and now minus 15 minutes is ', moment().utc().subtract(15, 'minutes').format());
-
-
-        // if (moment(updatedTimes[game]).subtract(adjHours, 'hours').utc().isBefore(moment().utc().subtract(15, 'minutes'))) {
-        //   Lines().where({EventID: game}).update({
-        //     active: false
-        //   }, '*').then(game => {
-        //     console.log(game[0].EventID, ' has been deactivated as its updated time is outdated');
-        //   })
-        // } else {
-        //   console.log(game[0].EventID, ' has been updated recently, staying active');
-        // }
-        console.log(game, ' has been updated recently, staying active');
+        const adjHours = moment(updatedTimes[game]).isDST() ? 7 : 8;
+        console.log(moment(updatedTimes[game]).subtract(adjHours, 'hours').utc().isBefore(moment().utc().subtract(15, 'minutes')));
+        if (moment(updatedTimes[game]).subtract(adjHours, 'hours').utc().isBefore(moment().utc().subtract(15, 'minutes'))) {
+          Lines().where({EventID: game}).update({
+            active: false
+          }, '*').then(game => {
+            console.log(game[0].EventID, ' has been deactivated as its updated time is outdated');
+          })
+        } else {
+          console.log(game[0].EventID, ' has been updated recently, staying active');
+        }
       }
     });
 
@@ -69,8 +65,7 @@ module.exports = {
     }).pluck('EventID');
 
     inactiveGames.forEach(inactiveGame => {
-      const adjHours = moment(updatedTimes[inactiveGame]).isDST() ? 7 : 8;
-      if (activeGameIds.indexOf(inactiveGame) !== -1 && (moment(updatedTimes[inactiveGame]).subtract(adjHours, 'hours').utc().isAfter(moment().utc().subtract(15, 'minutes')))) {
+      if (activeGameIds.indexOf(inactiveGame) !== -1) {
         Lines().where({EventID: inactiveGame}).update({
           active: true
         }, '*').then(ret => {
