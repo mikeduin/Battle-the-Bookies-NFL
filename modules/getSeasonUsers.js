@@ -16,7 +16,7 @@ module.exports = {
         active: true
       });
     users.forEach(user => {
-      user.weekly_results = JSON.parse(user.weekly_results);
+      user.weekly_results = JSON.parse(user.weekly_results).reverse();
     })
     return users;
   }

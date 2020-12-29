@@ -63,6 +63,36 @@ function UserSeasons() {
   return mainDb('user_seasons');
 }
 
+
+// This function updates a game with the earliest pick from a chosen matchup
+// (async () => {
+//   const matchup = "DAL @ BAL";
+//   const season = 2020;
+//   const users = await UserSeasons().where({season}).distinct('username').pluck('username');
+//   const trueEventID = '0e17f302-92b5-410f-be6a-85eabf67de95';
+//   users.forEach(async user => {
+//     const picks = await Picks().where({username: user, season, matchup}).orderBy('submittedAt', 'asc');
+//     console.log('picks are ', picks);
+//     // const update = await Picks().where({
+//     //   username: user,
+//     //   EventID: trueEventID,
+//     //   }).update({
+//     //   submittedAt: picks[0].submittedAt,
+//     //   activePick: picks[0].activePick,
+//     //   activeSpread: picks[0].activeSpread,
+//     //   activeTotal: picks[0].activeTotal,
+//     //   activeLine: picks[0].activeLine,
+//     //   activePayout: picks[0].activePayout,
+//     //   pickType: picks[0].pickType,
+//     //   favType: picks[0].favType,
+//     //   betType: picks[0].betType,
+//     //   geoType: picks[0].geoType,
+//     // }, '*');
+//     // console.log('pick has been updated for ', update[0].username);
+//   })
+//
+// })
+
 // This first function updates game results every 5 minutes.
 setInterval(function (){
   let dateCheck = false;

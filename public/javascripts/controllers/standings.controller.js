@@ -76,7 +76,7 @@ function StandingsController (picksService, oddsService, usersService, dateServi
     vm.showSpinner = true;
     oddsService.getDates(season).then(function(dates){
       vm.dayArrayLength = dates.length;
-      vm.weeksOfGames = dates;
+      vm.weeksOfGames = dates.reverse();
       getPageArray(dates);
     })
   };
