@@ -18,8 +18,8 @@ $(document).ready(function(){
     <li><a ui-sref='home.prizes({season: vm.season})'>Prizes</a></li>
   </ul>
   <ul id='user-dropdown' class="dropdown-content">
+    <li><a ui-sref='home.user({username: vm.currentUser()})'>Profile</a></li>
     <li><a ui-sref='home.userhistory({username: vm.currentUser()})'>Game History</a></li>
-    <li><a ui-sref='home.user({username: vm.currentUser()})'>Pick History</a></li>
   </ul>
   <nav class="z-depth-2">
     <div class="nav-wrapper">
