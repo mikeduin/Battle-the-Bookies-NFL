@@ -118,7 +118,6 @@ nav {
   }
 
   .para-div {
-    height: 500px;
     background: url('../images/bet_board2.png') no-repeat center center;
     background-size: cover;
   }
@@ -130,10 +129,20 @@ nav {
   }
 
   .para-div {
-    height: 500px;
     background: url('../images/bet_board2.png') no-repeat center center;
     background-size: cover;
   }
+}
+
+.landing-logo-cont {
+  display: inline-flex;
+  align-items: center;
+}
+
+.landing-logo-cont img {
+  width: 145px;
+  height: 145px;
+  margin-left: 0;
 }
 
 .splash-lead {
@@ -600,10 +609,10 @@ section > div {
 }
 
 .tut-mid {
-    background: url('../images/bet_board2.png') no-repeat center center;
-    background-size: cover;
-    height: 120px;
-    margin-top: 20px;
+  background: url('../images/bet_board2.png') no-repeat center center;
+  background-size: cover;
+  margin-top: 20px;
+  border-top: solid 1px #acacac;
 }
 
 .fa-calculator {
@@ -660,6 +669,9 @@ section > div {
   font-size: 32px;
   font-weight: 800;
   color: #2F5032;
+  display: flex;
+  align-items: center;
+  margin: 15px 0 20px 0;
 }
 
 pickleadDiv {
@@ -904,8 +916,15 @@ leadDiv {
 .resHead {
   font-size: 32px;
   font-weight: 800;
-  margin-top: 30px;
+  margin: 15px 0 15px 0;
   color: #2F5032;
+  display: flex;
+  align-items: center;
+}
+
+img.header-img {
+  max-height: 80px;
+  display: inline-block;
 }
 
 .gameHead {
