@@ -145,6 +145,14 @@ nav {
   margin-left: 0;
 }
 
+@media screen and (min-width: 1600px) {
+  .landing-logo-cont img {
+    width: 10vw;
+    height: 10vw;
+    margin-left: 0;
+  }
+}
+
 .splash-lead {
   color: #2F5032;
   font-weight: 800;
