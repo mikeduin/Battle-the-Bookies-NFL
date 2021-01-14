@@ -94,40 +94,43 @@ function UserSeasons() {
 // })
 
 // This first function updates game results every 5 minutes.
-setInterval(function (){
-  let dateCheck = false;
-  let pstMoment = moment().subtract(8, 'hours');
-  const noScoreDays = [2, 3, 5];
-
-  if (!noScoreDays.includes(moment(pstMoment).day()) && moment(pstMoment).hour() > 8) {
-    console.log('results being updated');
-    updateGameResults.updateGameResults();
-  } else {
-    console.log('results NOT being updated');
-  }
-}, 300000);
+// DISABLING FOR OFFSEASON
+// setInterval(function (){
+//   let dateCheck = false;
+//   let pstMoment = moment().subtract(8, 'hours');
+//   const noScoreDays = [2, 3, 5];
+//
+//   if (!noScoreDays.includes(moment(pstMoment).day()) && moment(pstMoment).hour() > 8) {
+//     console.log('results being updated');
+//     updateGameResults.updateGameResults();
+//   } else {
+//     console.log('results NOT being updated');
+//   }
+// }, 300000);
 
 // This function checks every seven minutes to see if new lines are available and, if so, adds them to the DB.
-setInterval(function (){
-  createLines.createLines();
-}, 420000);
+// DISABLING FOR OFFSEASON
+// setInterval(function (){
+//   createLines.createLines();
+// }, 420000);
 
 // The function below runs once every 15 mins and updates the LineMove arrays to track each game's line movement over the course of the week.
-setInterval(function (){
-  lineMoves.logAllLineMoves();
-}, 900000);
+// DISABLING FOR OFFSEASON
+// setInterval(function (){
+//   lineMoves.logAllLineMoves();
+// }, 900000);
 
 // The function below checks to make sure that no game start times have been adjusted and then updates the associated picks with the new start times in order to show that games and picks are displayed in an identical order on the Results page. It runs roughly four times a day.
-setInterval(function (){
-  checkStartTimes.checkStartTimes();
-}, 50000000);
+// DISABLING FOR OFFSEASON
+// setInterval(function (){
+//   checkStartTimes.checkStartTimes();
+// }, 50000000);
 
 // This function checks to make sure there are no stale lines in the DB, available for picking, which have been taken off the board in real life.
-setInterval(() => {
-// setTimeout(() => {
-  checkActiveLines.checkActiveLines();
-}, 60000);
-// }, 1000);
+// DISABLING FOR OFFSEASON
+// setInterval(() => {
+//   checkActiveLines.checkActiveLines();
+// }, 60000);
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
 // router.get('/updateOdds', function(req, res, next) {
@@ -168,41 +171,43 @@ setInterval(() => {
 // });
 
 // This next function is that which updates game lines. It runs on every page refresh or every 30 seconds otherwise (via a custom directive) within the application.
-setInterval(function() {
-  fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
-    method: 'GET',
-    headers: {
-      'x-api-Key': process.env.API_KEY
-    }
-  }).then(function(res){
-    return res.json()
-  }).then(function(odds){
-      for (i=0; i<odds.length; i++) {
-        Lines().where({EventID: odds[i].ID}).update({
-          MatchTime: moment.utc(odds[i].MatchTime),
-          MatchDay: moment.utc(odds[i].MatchTime).format('MMMM Do, YYYY'),
-          MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
-          MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
-          PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
-          PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
-          PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
-          PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
-          TotalNumber: odds[i].Odds[0].TotalNumber,
-          OverLine: odds[i].Odds[0].OverLine,
-          UnderLine: odds[i].Odds[0].UnderLine
-        }, '*').then(function(upd){
-          if (upd.length > 0) {
-            console.log('line ', upd[0].EventID, ' has been updated');
-          } else {
-            console.log('line not created yet')
-          }
-        })
-      };
-    }
-  )
-}, 30000);
+// DISABLING FOR OFFSEASON
+// setInterval(function() {
+//   fetch('https://jsonodds.com/api/odds/nfl?oddType=Game', {
+//     method: 'GET',
+//     headers: {
+//       'x-api-Key': process.env.API_KEY
+//     }
+//   }).then(function(res){
+//     return res.json()
+//   }).then(function(odds){
+//       for (i=0; i<odds.length; i++) {
+//         Lines().where({EventID: odds[i].ID}).update({
+//           MatchTime: moment.utc(odds[i].MatchTime),
+//           MatchDay: moment.utc(odds[i].MatchTime).format('MMMM Do, YYYY'),
+//           MoneyLineHome: odds[i].Odds[0].MoneyLineHome,
+//           MoneyLineAway: odds[i].Odds[0].MoneyLineAway,
+//           PointSpreadHome: odds[i].Odds[0].PointSpreadHome,
+//           PointSpreadAway: odds[i].Odds[0].PointSpreadAway,
+//           PointSpreadAwayLine: odds[i].Odds[0].PointSpreadAwayLine,
+//           PointSpreadHomeLine: odds[i].Odds[0].PointSpreadHomeLine,
+//           TotalNumber: odds[i].Odds[0].TotalNumber,
+//           OverLine: odds[i].Odds[0].OverLine,
+//           UnderLine: odds[i].Odds[0].UnderLine
+//         }, '*').then(function(upd){
+//           if (upd.length > 0) {
+//             console.log('line ', upd[0].EventID, ' has been updated');
+//           } else {
+//             console.log('line not created yet')
+//           }
+//         })
+//       };
+//     }
+//   )
+// }, 30000);
 
 // This massive function below runs every 3 minutes and -- if a game has started and has not yet had the subsequent actions performed -- (a) checks to see whether a game's pick ranges have been added to the original line data, (b) updates the CapperGrades for each pick, and (c) adds the pick arrays to the line data. Once completed, it sets all indicators to 'true' so that the functions do not needlessly repeat themselves in the future.
+// DISABLING FOR OFFSEASON
 setInterval(function (){
   var season = currentSeason.returnSeason(new Date());
   Lines()
